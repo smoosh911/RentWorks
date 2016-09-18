@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C73E10871D8E417D008E475F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10861D8E417D008E475F /* AppDelegate.swift */; };
-		C73E10891D8E417D008E475F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10881D8E417D008E475F /* ViewController.swift */; };
+		C73E10891D8E417D008E475F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10881D8E417D008E475F /* MainViewController.swift */; };
 		C73E108C1D8E417D008E475F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C73E108A1D8E417D008E475F /* Main.storyboard */; };
 		C73E108F1D8E417D008E475F /* RentWorks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C73E108D1D8E417D008E475F /* RentWorks.xcdatamodeld */; };
 		C73E10911D8E417D008E475F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C73E10901D8E417D008E475F /* Assets.xcassets */; };
@@ -37,7 +37,7 @@
 /* Begin PBXFileReference section */
 		C73E10831D8E417D008E475F /* RentWorks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RentWorks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E10861D8E417D008E475F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C73E10881D8E417D008E475F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C73E10881D8E417D008E475F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		C73E108B1D8E417D008E475F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C73E108E1D8E417D008E475F /* RentWorks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RentWorks.xcdatamodel; sourceTree = "<group>"; };
 		C73E10901D8E417D008E475F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -102,6 +102,7 @@
 				C73E10BA1D8E4313008E475F /* Model */,
 				C73E10B91D8E4310008E475F /* View */,
 				C73E10B71D8E4303008E475F /* Controller */,
+				C73E10BB1D8E449C008E475F /* Helper Classes */,
 				C73E10B81D8E4308008E475F /* Supporting Files */,
 			);
 			path = RentWorks;
@@ -129,7 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				C73E10861D8E417D008E475F /* AppDelegate.swift */,
-				C73E10881D8E417D008E475F /* ViewController.swift */,
+				C73E10881D8E417D008E475F /* MainViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -158,6 +159,13 @@
 				C73E108D1D8E417D008E475F /* RentWorks.xcdatamodeld */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		C73E10BB1D8E449C008E475F /* Helper Classes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Helper Classes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,7 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C73E10891D8E417D008E475F /* ViewController.swift in Sources */,
+				C73E10891D8E417D008E475F /* MainViewController.swift in Sources */,
 				C73E108F1D8E417D008E475F /* RentWorks.xcdatamodeld in Sources */,
 				C73E10871D8E417D008E475F /* AppDelegate.swift in Sources */,
 			);
