@@ -99,13 +99,10 @@
 		C73E10851D8E417D008E475F /* RentWorks */ = {
 			isa = PBXGroup;
 			children = (
-				C73E10861D8E417D008E475F /* AppDelegate.swift */,
-				C73E10881D8E417D008E475F /* ViewController.swift */,
-				C73E108A1D8E417D008E475F /* Main.storyboard */,
-				C73E10901D8E417D008E475F /* Assets.xcassets */,
-				C73E10921D8E417D008E475F /* LaunchScreen.storyboard */,
-				C73E10951D8E417D008E475F /* Info.plist */,
-				C73E108D1D8E417D008E475F /* RentWorks.xcdatamodeld */,
+				C73E10BA1D8E4313008E475F /* Model */,
+				C73E10B91D8E4310008E475F /* View */,
+				C73E10B71D8E4303008E475F /* Controller */,
+				C73E10B81D8E4308008E475F /* Supporting Files */,
 			);
 			path = RentWorks;
 			sourceTree = "<group>";
@@ -126,6 +123,41 @@
 				C73E10AB1D8E417D008E475F /* Info.plist */,
 			);
 			path = RentWorksUITests;
+			sourceTree = "<group>";
+		};
+		C73E10B71D8E4303008E475F /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				C73E10861D8E417D008E475F /* AppDelegate.swift */,
+				C73E10881D8E417D008E475F /* ViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		C73E10B81D8E4308008E475F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				C73E10901D8E417D008E475F /* Assets.xcassets */,
+				C73E10951D8E417D008E475F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C73E10B91D8E4310008E475F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C73E108A1D8E417D008E475F /* Main.storyboard */,
+				C73E10921D8E417D008E475F /* LaunchScreen.storyboard */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		C73E10BA1D8E4313008E475F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C73E108D1D8E417D008E475F /* RentWorks.xcdatamodeld */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
