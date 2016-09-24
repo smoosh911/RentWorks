@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */; };
 		C73E10871D8E417D008E475F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10861D8E417D008E475F /* AppDelegate.swift */; };
 		C73E10891D8E417D008E475F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10881D8E417D008E475F /* MainViewController.swift */; };
 		C73E108C1D8E417D008E475F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C73E108A1D8E417D008E475F /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
 		C73E10831D8E417D008E475F /* RentWorks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RentWorks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E10861D8E417D008E475F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C73E10881D8E417D008E475F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				C73E10861D8E417D008E475F /* AppDelegate.swift */,
+				467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */,
 				C73E10881D8E417D008E475F /* MainViewController.swift */,
 			);
 			name = Controller;
@@ -302,6 +305,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */,
 				C73E10891D8E417D008E475F /* MainViewController.swift in Sources */,
 				C73E108F1D8E417D008E475F /* RentWorks.xcdatamodeld in Sources */,
 				C73E10871D8E417D008E475F /* AppDelegate.swift in Sources */,
@@ -547,6 +551,7 @@
 				C73E10B01D8E417D008E475F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C73E10B11D8E417D008E475F /* Build configuration list for PBXNativeTarget "RentWorksTests" */ = {
 			isa = XCConfigurationList;
@@ -555,6 +560,7 @@
 				C73E10B31D8E417D008E475F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C73E10B41D8E417D008E475F /* Build configuration list for PBXNativeTarget "RentWorksUITests" */ = {
 			isa = XCConfigurationList;
@@ -563,6 +569,7 @@
 				C73E10B61D8E417D008E475F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
