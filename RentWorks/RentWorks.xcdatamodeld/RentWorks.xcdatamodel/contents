@@ -28,14 +28,14 @@
         <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="profileImageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="profileImageEndpoint" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="User" positionX="7" positionY="-204" width="128" height="150"/>
-        <element name="Renter" positionX="-254" positionY="174" width="128" height="118"/>
         <element name="Landlord" positionX="270" positionY="162" width="128" height="148"/>
         <element name="Like" positionX="-0" positionY="171" width="128" height="118"/>
+        <element name="Renter" positionX="-254" positionY="174" width="128" height="118"/>
+        <element name="User" positionX="7" positionY="-204" width="128" height="150"/>
     </elements>
 </model>
