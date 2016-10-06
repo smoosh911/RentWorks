@@ -24,10 +24,10 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
         </scene>
-        <!--View Controller-->
+        <!--Login View Controller-->
         <scene sceneID="c5i-qi-9kL">
             <objects>
-                <viewController id="9Z4-ai-1st" sceneMemberID="viewController">
+                <viewController id="9Z4-ai-1st" customClass="LoginViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Uva-PS-c7E"/>
                         <viewControllerLayoutGuide type="bottom" id="UqD-JY-oma"/>
@@ -52,15 +52,11 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yj2-uA-Cta">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojR-n1-Y5s">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="x6s-Rb-sKb"/>
+                                    <constraint firstAttribute="width" constant="343" id="kP1-CU-h7i"/>
+                                    <constraint firstAttribute="height" constant="30" id="pLe-eo-w6g"/>
                                 </constraints>
-                                <state key="normal" title="Log In"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojR-n1-Y5s">
-                                <frame key="frameInset" minX="16" minY="629" width="343" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="20"/>
                                 <state key="normal" title="Don't have an account?"/>
                                 <connections>
@@ -70,23 +66,28 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="ojR-n1-Y5s" firstAttribute="leading" secondItem="cdA-ib-g0p" secondAttribute="leadingMargin" id="1DQ-cJ-aGb"/>
                             <constraint firstItem="xcH-Wi-mpy" firstAttribute="top" secondItem="EaP-Vn-kqW" secondAttribute="bottom" constant="8" id="BTu-MR-C1j"/>
                             <constraint firstAttribute="leadingMargin" secondItem="xcH-Wi-mpy" secondAttribute="leading" id="K8P-Ll-FdK"/>
+                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="ojR-n1-Y5s" secondAttribute="bottom" constant="8" id="NVy-HH-Hxh"/>
+                            <constraint firstItem="ojR-n1-Y5s" firstAttribute="trailing" secondItem="cdA-ib-g0p" secondAttribute="trailingMargin" id="Opz-aI-9k4"/>
                             <constraint firstItem="OOP-wK-AgD" firstAttribute="top" secondItem="Uva-PS-c7E" secondAttribute="bottom" constant="40" id="POj-kX-eqq"/>
                             <constraint firstAttribute="leadingMargin" secondItem="EaP-Vn-kqW" secondAttribute="leading" id="RIW-WQ-FaJ"/>
                             <constraint firstAttribute="trailingMargin" secondItem="xcH-Wi-mpy" secondAttribute="trailing" id="RIk-oC-Ej9"/>
                             <constraint firstAttribute="trailingMargin" secondItem="EaP-Vn-kqW" secondAttribute="trailing" id="bew-P4-aLe"/>
-                            <constraint firstItem="yj2-uA-Cta" firstAttribute="top" secondItem="xcH-Wi-mpy" secondAttribute="bottom" constant="8" id="byH-hC-VLv"/>
                             <constraint firstItem="EaP-Vn-kqW" firstAttribute="top" secondItem="OOP-wK-AgD" secondAttribute="bottom" constant="29" id="foA-Z4-gy7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="OOP-wK-AgD" secondAttribute="trailing" constant="52" id="h9G-d9-fQd"/>
-                            <constraint firstItem="yj2-uA-Cta" firstAttribute="centerX" secondItem="cdA-ib-g0p" secondAttribute="centerX" id="nea-VS-cDy"/>
                             <constraint firstItem="OOP-wK-AgD" firstAttribute="leading" secondItem="cdA-ib-g0p" secondAttribute="leadingMargin" constant="51" id="ucc-D4-zcg"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="emailTextField" destination="EaP-Vn-kqW" id="3HH-2T-u59"/>
+                        <outlet property="passwordTextField" destination="xcH-Wi-mpy" id="kAR-Ll-D7F"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YLq-Mj-cPN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-975" y="10"/>
+            <point key="canvasLocation" x="-975.20000000000005" y="9.4452773613193415"/>
         </scene>
         <!--Create Account View Controller-->
         <scene sceneID="VlS-jV-hTE">

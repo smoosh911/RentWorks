@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46600C941DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */; };
+		46600C951DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */; };
+		46600C961DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */; };
+		46600C971DA2F7B700A7FB4B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C921DA2F7B700A7FB4B /* FBSDKLoginKit.framework */; };
+		46600C981DA2F7B700A7FB4B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C921DA2F7B700A7FB4B /* FBSDKLoginKit.framework */; };
+		46600C991DA2F7B700A7FB4B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C921DA2F7B700A7FB4B /* FBSDKLoginKit.framework */; };
+		46600C9A1DA2F7B700A7FB4B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C931DA2F7B700A7FB4B /* FBSDKShareKit.framework */; };
+		46600C9B1DA2F7B700A7FB4B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C931DA2F7B700A7FB4B /* FBSDKShareKit.framework */; };
+		46600C9C1DA2F7B700A7FB4B /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C931DA2F7B700A7FB4B /* FBSDKShareKit.framework */; };
+		46600C9E1DA2F91600A7FB4B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */; };
+		46600C9F1DA2F91600A7FB4B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */; };
+		46600CA01DA2F91600A7FB4B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */; };
+		46600CA21DA2F9C400A7FB4B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600CA11DA2F9C400A7FB4B /* Bolts.framework */; };
+		46600CA31DA2F9C400A7FB4B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600CA11DA2F9C400A7FB4B /* Bolts.framework */; };
+		46600CA41DA2F9C400A7FB4B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600CA11DA2F9C400A7FB4B /* Bolts.framework */; };
 		467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */; };
 		C73E10871D8E417D008E475F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10861D8E417D008E475F /* AppDelegate.swift */; };
 		C73E10891D8E417D008E475F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10881D8E417D008E475F /* MainViewController.swift */; };
@@ -36,6 +51,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		46600C921DA2F7B700A7FB4B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		46600C931DA2F7B700A7FB4B /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		46600CA11DA2F9C400A7FB4B /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		466497D71DA6A28400BA249A /* RentWorks.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RentWorks.entitlements; sourceTree = "<group>"; };
+		466497D91DA6A7F400BA249A /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "Bridging-Header.h"; path = "RentWorks/Bridging-Header.h"; sourceTree = "<group>"; };
 		467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
 		C73E10831D8E417D008E475F /* RentWorks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RentWorks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E10861D8E417D008E475F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +80,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46600C971DA2F7B700A7FB4B /* FBSDKLoginKit.framework in Frameworks */,
+				46600C941DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */,
+				46600C9A1DA2F7B700A7FB4B /* FBSDKShareKit.framework in Frameworks */,
+				46600CA21DA2F9C400A7FB4B /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +91,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46600C981DA2F7B700A7FB4B /* FBSDKLoginKit.framework in Frameworks */,
+				46600C951DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */,
+				46600C9B1DA2F7B700A7FB4B /* FBSDKShareKit.framework in Frameworks */,
+				46600CA31DA2F9C400A7FB4B /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,6 +102,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46600C991DA2F7B700A7FB4B /* FBSDKLoginKit.framework in Frameworks */,
+				46600C961DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */,
+				46600C9C1DA2F7B700A7FB4B /* FBSDKShareKit.framework in Frameworks */,
+				46600CA41DA2F9C400A7FB4B /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +115,7 @@
 		C73E107A1D8E417D008E475F = {
 			isa = PBXGroup;
 			children = (
+				466497D91DA6A7F400BA249A /* Bridging-Header.h */,
 				C73E10851D8E417D008E475F /* RentWorks */,
 				C73E109D1D8E417D008E475F /* RentWorksTests */,
 				C73E10A81D8E417D008E475F /* RentWorksUITests */,
@@ -101,6 +136,7 @@
 		C73E10851D8E417D008E475F /* RentWorks */ = {
 			isa = PBXGroup;
 			children = (
+				466497D71DA6A28400BA249A /* RentWorks.entitlements */,
 				C73E10BA1D8E4313008E475F /* Model */,
 				C73E10B91D8E4310008E475F /* View */,
 				C73E10B71D8E4303008E475F /* Controller */,
@@ -132,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				C73E10861D8E417D008E475F /* AppDelegate.swift */,
+				46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */,
 				467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */,
 				C73E10881D8E417D008E475F /* MainViewController.swift */,
 			);
@@ -142,6 +179,10 @@
 			isa = PBXGroup;
 			children = (
 				C73E10901D8E417D008E475F /* Assets.xcassets */,
+				46600CA11DA2F9C400A7FB4B /* Bolts.framework */,
+				46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */,
+				46600C921DA2F7B700A7FB4B /* FBSDKLoginKit.framework */,
+				46600C931DA2F7B700A7FB4B /* FBSDKShareKit.framework */,
 				C73E10951D8E417D008E475F /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -239,7 +280,13 @@
 				TargetAttributes = {
 					C73E10821D8E417D008E475F = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = W4BT774F98;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					C73E10991D8E417D008E475F = {
 						CreatedOnToolsVersion = 8.0;
@@ -308,6 +355,7 @@
 				467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */,
 				C73E10891D8E417D008E475F /* MainViewController.swift in Sources */,
 				C73E108F1D8E417D008E475F /* RentWorks.xcdatamodeld in Sources */,
+				46600C9E1DA2F91600A7FB4B /* LoginViewController.swift in Sources */,
 				C73E10871D8E417D008E475F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -316,6 +364,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46600C9F1DA2F91600A7FB4B /* LoginViewController.swift in Sources */,
 				C73E109F1D8E417D008E475F /* RentWorksTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -324,6 +373,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46600CA01DA2F91600A7FB4B /* LoginViewController.swift in Sources */,
 				C73E10AA1D8E417D008E475F /* RentWorksUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -458,10 +508,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RentWorks/RentWorks.entitlements;
+				DEVELOPMENT_TEAM = W4BT774F98;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RentWorks",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = /Users/SpencerCurtis/Documents/FacebookSDK;
 				INFOPLIST_FILE = RentWorks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = smoosh911.RentWorks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RentWorks/Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -470,10 +528,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = RentWorks/RentWorks.entitlements;
+				DEVELOPMENT_TEAM = W4BT774F98;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RentWorks",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = /Users/SpencerCurtis/Documents/FacebookSDK;
 				INFOPLIST_FILE = RentWorks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = smoosh911.RentWorks;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RentWorks/Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
@@ -483,6 +549,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RentWorks",
+				);
 				INFOPLIST_FILE = RentWorksTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = smoosh911.RentWorksTests;
@@ -497,6 +567,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RentWorks",
+				);
 				INFOPLIST_FILE = RentWorksTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = smoosh911.RentWorksTests;
@@ -510,6 +584,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RentWorks",
+				);
 				INFOPLIST_FILE = RentWorksUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = smoosh911.RentWorksUITests;
@@ -523,6 +601,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/RentWorks",
+				);
 				INFOPLIST_FILE = RentWorksUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = smoosh911.RentWorksUITests;
