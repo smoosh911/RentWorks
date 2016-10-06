@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4651FF8C1DA6F7980075AAFA /* AppearanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651FF8B1DA6F7980075AAFA /* AppearanceController.swift */; };
+		4651FF8E1DA6F9780075AAFA /* LandlordAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651FF8D1DA6F9780075AAFA /* LandlordAddressViewController.swift */; };
+		4651FF901DA6F9820075AAFA /* LandlordPropertyTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651FF8F1DA6F9820075AAFA /* LandlordPropertyTypeViewController.swift */; };
+		4651FF921DA6F98E0075AAFA /* LandlordBedBathViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651FF911DA6F98E0075AAFA /* LandlordBedBathViewController.swift */; };
+		4651FF941DA6F9980075AAFA /* LandlordMonthlyPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651FF931DA6F9980075AAFA /* LandlordMonthlyPaymentViewController.swift */; };
+		4651FF961DA6F9F40075AAFA /* LandlordAllowedOnPropertyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651FF951DA6F9F40075AAFA /* LandlordAllowedOnPropertyViewController.swift */; };
+		4651FF991DA706230075AAFA /* LandlordCreationPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4651FF981DA706230075AAFA /* LandlordCreationPageViewController.swift */; };
 		46600C941DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */; };
 		46600C951DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */; };
 		46600C961DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */; };
@@ -51,6 +58,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		4651FF8B1DA6F7980075AAFA /* AppearanceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppearanceController.swift; sourceTree = "<group>"; };
+		4651FF8D1DA6F9780075AAFA /* LandlordAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordAddressViewController.swift; sourceTree = "<group>"; };
+		4651FF8F1DA6F9820075AAFA /* LandlordPropertyTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordPropertyTypeViewController.swift; sourceTree = "<group>"; };
+		4651FF911DA6F98E0075AAFA /* LandlordBedBathViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordBedBathViewController.swift; sourceTree = "<group>"; };
+		4651FF931DA6F9980075AAFA /* LandlordMonthlyPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordMonthlyPaymentViewController.swift; sourceTree = "<group>"; };
+		4651FF951DA6F9F40075AAFA /* LandlordAllowedOnPropertyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LandlordAllowedOnPropertyViewController.swift; path = Assets.xcassets/LandlordAllowedOnPropertyViewController.swift; sourceTree = "<group>"; };
+		4651FF981DA706230075AAFA /* LandlordCreationPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordCreationPageViewController.swift; sourceTree = "<group>"; };
 		46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		46600C921DA2F7B700A7FB4B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		46600C931DA2F7B700A7FB4B /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
@@ -112,6 +126,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4651FF971DA6F9F90075AAFA /* Landlord Creation View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4651FF981DA706230075AAFA /* LandlordCreationPageViewController.swift */,
+				4651FF8D1DA6F9780075AAFA /* LandlordAddressViewController.swift */,
+				4651FF8F1DA6F9820075AAFA /* LandlordPropertyTypeViewController.swift */,
+				4651FF911DA6F98E0075AAFA /* LandlordBedBathViewController.swift */,
+				4651FF931DA6F9980075AAFA /* LandlordMonthlyPaymentViewController.swift */,
+				4651FF951DA6F9F40075AAFA /* LandlordAllowedOnPropertyViewController.swift */,
+			);
+			name = "Landlord Creation View Controllers";
+			sourceTree = "<group>";
+		};
 		C73E107A1D8E417D008E475F = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				C73E108A1D8E417D008E475F /* Main.storyboard */,
+				4651FF971DA6F9F90075AAFA /* Landlord Creation View Controllers */,
 				C73E10921D8E417D008E475F /* LaunchScreen.storyboard */,
 			);
 			name = View;
@@ -208,6 +236,7 @@
 		C73E10BB1D8E449C008E475F /* Helper Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4651FF8B1DA6F7980075AAFA /* AppearanceController.swift */,
 			);
 			name = "Helper Classes";
 			sourceTree = "<group>";
@@ -352,11 +381,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4651FF991DA706230075AAFA /* LandlordCreationPageViewController.swift in Sources */,
+				4651FF961DA6F9F40075AAFA /* LandlordAllowedOnPropertyViewController.swift in Sources */,
 				467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */,
+				4651FF941DA6F9980075AAFA /* LandlordMonthlyPaymentViewController.swift in Sources */,
+				4651FF901DA6F9820075AAFA /* LandlordPropertyTypeViewController.swift in Sources */,
+				4651FF8C1DA6F7980075AAFA /* AppearanceController.swift in Sources */,
 				C73E10891D8E417D008E475F /* MainViewController.swift in Sources */,
 				C73E108F1D8E417D008E475F /* RentWorks.xcdatamodeld in Sources */,
+				4651FF8E1DA6F9780075AAFA /* LandlordAddressViewController.swift in Sources */,
 				46600C9E1DA2F91600A7FB4B /* LoginViewController.swift in Sources */,
 				C73E10871D8E417D008E475F /* AppDelegate.swift in Sources */,
+				4651FF921DA6F98E0075AAFA /* LandlordBedBathViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
