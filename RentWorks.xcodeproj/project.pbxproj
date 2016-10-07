@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		056D53475EEB92AA0645706F /* Pods_RentWorks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A907929AFB2E6E1FD9FB6DC /* Pods_RentWorks.framework */; };
+		460E15A71DA83E25000EF21B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 460E15A61DA83E25000EF21B /* GoogleService-Info.plist */; };
 		46600C941DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */; };
 		46600C951DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */; };
 		46600C961DA2F7B700A7FB4B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */; };
@@ -59,6 +60,7 @@
 		1DCF933E2B618D84FA533A05 /* Pods-RentWorksUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RentWorksUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RentWorksUITests/Pods-RentWorksUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		3EE42ACDB92816245A76D5BE /* Pods-RentWorksTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RentWorksTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RentWorksTests/Pods-RentWorksTests.release.xcconfig"; sourceTree = "<group>"; };
 		4056C05B39B990DA4031004E /* Pods_RentWorksUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RentWorksUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		460E15A61DA83E25000EF21B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		46600C921DA2F7B700A7FB4B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		46600C931DA2F7B700A7FB4B /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		C73E10851D8E417D008E475F /* RentWorks */ = {
 			isa = PBXGroup;
 			children = (
+				460E15A61DA83E25000EF21B /* GoogleService-Info.plist */,
 				466497D71DA6A28400BA249A /* RentWorks.entitlements */,
 				C73E10BA1D8E4313008E475F /* Model */,
 				C73E10B91D8E4310008E475F /* View */,
@@ -374,6 +377,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C73E10941D8E417D008E475F /* LaunchScreen.storyboard in Resources */,
+				460E15A71DA83E25000EF21B /* GoogleService-Info.plist in Resources */,
 				C73E10911D8E417D008E475F /* Assets.xcassets in Resources */,
 				C73E108C1D8E417D008E475F /* Main.storyboard in Resources */,
 			);
