@@ -14,24 +14,25 @@ class LandlordAddressViewController: UIViewController {
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var nextButton: UIButton!
     
-    var pageViewController: UIPageViewController?
+    var pageViewController: LandlordCreationPageViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        pageViewController = storyboard.instantiateViewController(withIdentifier: "LandlordPVC") as? LandlordCreationPageViewController
         
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
         AppearanceController.appearanceFor(nextButton: nextButton)
     }
     
+    @IBAction func nextButtonTapped(_ sender: AnyObject) {
+        guard let pageViewController = pageViewController, let index = pageViewController.orderedViewControllers.index(of: self) else { return }
+        let nextVC = pageViewController.orderedViewControllers[index + 1] as! LandlordPropertyTypeViewController
+        self.pageViewController?.setViewControllers([nextVC], direction: .forward, animated: true, completion: nil)
+        
+        
+    }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    
     
 }

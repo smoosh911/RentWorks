@@ -23,6 +23,10 @@
         <attribute name="maritalStatus" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="like" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Like" inverseName="renter" inverseEntity="Like" syncable="YES"/>
     </entity>
+    <entity name="TestUser" syncable="YES">
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="User" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -37,5 +41,6 @@
         <element name="Like" positionX="-0" positionY="171" width="128" height="118"/>
         <element name="Renter" positionX="-254" positionY="174" width="128" height="118"/>
         <element name="User" positionX="7" positionY="-204" width="128" height="150"/>
+        <element name="TestUser" positionX="-54" positionY="-63" width="128" height="75"/>
     </elements>
 </model>
