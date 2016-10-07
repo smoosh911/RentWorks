@@ -95,7 +95,7 @@
 		46DAC6761DA7FC310040BB4C /* FirebaseDatabase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FirebaseDatabase.framework; sourceTree = "<group>"; };
 		46DAC6781DA7FCDD0040BB4C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		46DAC67C1DA7FDBC0040BB4C /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
-		46DAC67D1DA7FEBF0040BB4C /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		46DAC67D1DA7FEBF0040BB4C /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Firebase.h; path = ../Firebase.h; sourceTree = "<group>"; };
 		46DAC68E1DA800CC0040BB4C /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		C73E10831D8E417D008E475F /* RentWorks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RentWorks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E10861D8E417D008E475F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -203,7 +203,6 @@
 			isa = PBXGroup;
 			children = (
 				46DAC68E1DA800CC0040BB4C /* Bridging-Header.h */,
-				46DAC67D1DA7FEBF0040BB4C /* Firebase.h */,
 				C73E10851D8E417D008E475F /* RentWorks */,
 				C73E109D1D8E417D008E475F /* RentWorksTests */,
 				C73E10A81D8E417D008E475F /* RentWorksUITests */,
@@ -267,6 +266,7 @@
 			isa = PBXGroup;
 			children = (
 				C73E10901D8E417D008E475F /* Assets.xcassets */,
+				46DAC67D1DA7FEBF0040BB4C /* Firebase.h */,
 				46DAC67C1DA7FDBC0040BB4C /* module.modulemap */,
 				46DAC6641DA7FBAA0040BB4C /* Facebook Frameworks */,
 				C73E10951D8E417D008E475F /* Info.plist */,
