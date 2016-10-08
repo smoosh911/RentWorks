@@ -8,8 +8,10 @@ target 'RentWorks' do
   # Pods for RentWorks
 
 pod ‘Firebase’
+pod ‘Firebase/Core’
 pod ‘Firebase/Auth’
 pod ‘Firebase/Database’
+pod ‘Firebase/Storage’
 
   target 'RentWorksTests' do
     inherit! :search_paths

@@ -9,6 +9,7 @@
 import UIKit
 import FBSDKLoginKit
 import FirebaseAuth
+import FirebaseDatabase
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
@@ -26,43 +27,40 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         self.view.addSubview(facebookLoginButton)
         constraintsForFacebookLoginButton()
         
-        guard let token = FBSDKAccessToken.current() else { return }
-        if token.hasGranted("email") {
-            print("Granted")
-//            let dict = initialRequest()
+        guard FBSDKAccessToken.current() != nil else { return }
+        
+        AuthenticationController.attemptToSignInToFirebase {
+            self.initialRequest(completion: { (dict) in
+                print(dict)
+                guard let user = TestUser(dictionary: dict) else { return }
+                
+                FirebaseController.sharedController.createFirebaseUser(user: user)
+            })
         }
         
-        // TODO: - Run a check to see if the user has already created a RW account with Facebook. (Using the FBSDKAccessToken.current().userID
-        
+        // TODO: - Run a check to see if the user has already created a RW account with Facebook. (Using the FBSDKAccessToken.current().userID)
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         
-        let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
-
-        FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
-            if error != nil {
-                print(error?.localizedDescription)
-            }
-            
-            print(user)
-        })
-//        initialRequest()
-        
+        AuthenticationController.attemptToSignInToFirebase {
+            self.initialRequest(completion: { (dict) in
+                guard let user = TestUser(dictionary: dict as [String : AnyObject]) else { return }
+                
+                FirebaseController.sharedController.createFirebaseUser(user: user)
+            })
+        }
     }
-    func initialRequest() -> [String: Any]? {
-        var resultDictionary: [String: Any]?
-        guard let request = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "email, name"], httpMethod: "GET") else { return  nil }
-        request.start(completionHandler: { (connection, result, error) in
-            print(connection)
-            guard error == nil else { print(error?.localizedDescription); return }
-            
-            guard let resultDict = result as? [String: Any] else { return }
-            print(resultDict)
-            resultDictionary = resultDict
-        })
+    
+    func initialRequest(completion: @escaping ([String: Any])-> Void) {
         
-        return resultDictionary
+        guard let request = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "email, name"], httpMethod: "GET") else { return }
+        request.start(completionHandler: { (connection, result, error) in
+            
+            guard error == nil, let resultDict = result as? [String: Any] else { print(error?.localizedDescription); return }
+            
+            completion(resultDict)
+        })
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {

@@ -9,22 +9,33 @@
 import Foundation
 
 class TestUser {
-    
-    private static let kName = "name"
-    private static let kEmail = "email"
+    private let kID = "id"
+    private let kFirebaseID = "uuid"
+    private let kName = "name"
+    private let kEmail = "email"
     
     var name: String
     var email: String
+    var id: String
     var profilePic: UIImage?
     
-    init(name: String, email: String, profilePic: UIImage?) {
+    init(name: String, email: String, id: String, profilePic: UIImage? = nil) {
         self.name = name
         self.email = email
         self.profilePic = profilePic
+        self.id = id
     }
     
-    var dictionaryRepresentation: [String: Any] {
-        return [TestUser.kName: name, TestUser.kEmail: email]
+    init?(dictionary: [String: Any]) {
+        guard let id = dictionary[kID] as? String, let name = dictionary[kName] as? String, let email = dictionary[kEmail] as? String else { return nil }
+        
+        self.name = name
+        self.email = email
+        self.id = id
+    }
+    
+    var dictionaryRepresentation: [String: String] {
+        return ["name": name, "email": email]
     }
     
 }
