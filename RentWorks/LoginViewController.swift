@@ -8,6 +8,7 @@
 
 import UIKit
 import FBSDKLoginKit
+import FirebaseAuth
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
@@ -28,7 +29,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         guard let token = FBSDKAccessToken.current() else { return }
         if token.hasGranted("email") {
             print("Granted")
-            let dict = initialRequest()
+//            let dict = initialRequest()
         }
         
         // TODO: - Run a check to see if the user has already created a RW account with Facebook. (Using the FBSDKAccessToken.current().userID
@@ -37,8 +38,16 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         
-        
-        initialRequest()
+        let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+
+        FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
+            if error != nil {
+                print(error?.localizedDescription)
+            }
+            
+            print(user)
+        })
+//        initialRequest()
         
     }
     func initialRequest() -> [String: Any]? {
