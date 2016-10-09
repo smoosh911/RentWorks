@@ -31,10 +31,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         AuthenticationController.attemptToSignInToFirebase {
             self.initialRequest(completion: { (dict) in
-                print(dict)
                 guard let user = TestUser(dictionary: dict) else { return }
-                
-                FirebaseController.sharedController.createFirebaseUser(user: user)
+                MatchController.observeMatchesFor(user: user)
             })
         }
         
@@ -46,21 +44,27 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         AuthenticationController.attemptToSignInToFirebase {
             self.initialRequest(completion: { (dict) in
                 guard let user = TestUser(dictionary: dict as [String : AnyObject]) else { return }
-                
-                FirebaseController.sharedController.createFirebaseUser(user: user)
+                FirebaseController.checkForExistingUserInformation(user: user, completion: { (exists) in
+                    if exists == true {
+                        // Pull information?
+                    } else {
+                        FirebaseController.sharedController.createFirebaseUser(user: user)
+                    }
+                })
             })
         }
     }
     
     func initialRequest(completion: @escaping ([String: Any])-> Void) {
+        FacebookRequestController.requestCurrentUsers(information: [.email, .name]) { (dict) in
+            print(dict)
+        }
+        FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080) { (image) in
+            // Do stuff with the image here.
+        }
         
-        guard let request = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "email, name"], httpMethod: "GET") else { return }
-        request.start(completionHandler: { (connection, result, error) in
-            
-            guard error == nil, let resultDict = result as? [String: Any] else { print(error?.localizedDescription); return }
-            
-            completion(resultDict)
-        })
+            completion(["'": ""])
+        
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {

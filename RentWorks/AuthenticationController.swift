@@ -8,12 +8,14 @@
 
 import Foundation
 import FirebaseAuth
-
+import FirebaseDatabase
 
 class AuthenticationController {
     
     static func attemptToSignInToFirebase(completion: @escaping () -> Void) {
-        let credential = FIRFacebookAuthProvider.credential(withAccessToken: FBSDKAccessToken.current().tokenString)
+        guard let token = FBSDKAccessToken.current() else { return }
+        
+        let credential = FIRFacebookAuthProvider.credential(withAccessToken: token.tokenString)
         
         FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
             if error != nil {
@@ -25,7 +27,7 @@ class AuthenticationController {
         })
     }
     
-
+    
     
     static func signOutOfFirebase() {
         do {

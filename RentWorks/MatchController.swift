@@ -14,8 +14,8 @@ class MatchController {
     static func observeMatchesFor(user: TestUser) {
         
         FirebaseController.matchesRef.child(user.id).observe(FIRDataEventType.value, with: { (snapshot)in
-
-            print(snapshot.value)
+            print("Changes observed")
+            print(snapshot.value as? [String: Any])
             
             
         })

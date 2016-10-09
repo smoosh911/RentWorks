@@ -27,4 +27,15 @@ class FirebaseController {
         // May need to change the endpoint and/or the key for the dictionaryRepresentation.
         
     }
+    
+    static func checkForExistingUserInformation(user: TestUser, completion: @escaping (_ exists: Bool) -> Void) {
+        FirebaseController.allUsersRef.child("\(user.id)").observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let informationDictionary = snapshot.value as? [String: Any] else { completion(false); return }
+            
+            print(informationDictionary)
+            completion(true)
+
+        })
+        
+    }
 }
