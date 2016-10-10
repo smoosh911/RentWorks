@@ -9,6 +9,7 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseStorage
 
 class FirebaseController {
     
@@ -17,6 +18,9 @@ class FirebaseController {
     static let ref = FIRDatabase.database().reference()
     static let allUsersRef = ref.child("users")
     static let matchesRef = ref.child("matches")
+    
+    static let storageRef = FIRStorage.storage().reference()
+    static let profileImagesRef = storageRef.child("profileImages")
     
     func createFirebaseUser(user: TestUser) {
         
@@ -36,6 +40,40 @@ class FirebaseController {
             completion(true)
 
         })
+    }
+    
+    static func store(profileImage: UIImage, forUser user: TestUser, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
+        
+        let profileImageRef = profileImagesRef.child(user.id)
+        guard let imageData = UIImageJPEGRepresentation(profileImage, 1.0) else { return }
+        
+        let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
+        
+        uploadTask.resume()
+        
+        uploadTask.observe(.progress) { (snapshot) in
+            if let progress = snapshot.progress {
+                let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
+                print("Upload percentage: \(percentComplete)%")
+            }
+        }
+        
+        uploadTask.observe(.failure) { (snapshot) in
+            guard let storageError = snapshot.error else { return }
+            print(storageError.localizedDescription)
+        }
+    }
+    
+    static func downloadProfileImage(forUser user: TestUser, completion: @escaping (UIImage?) -> Void) {
+        
+        let profileImageRef = profileImagesRef.child(user.id)
+
+        profileImageRef.downloadURL { (url, error) in
+            guard error != nil, let urlString = url?.absoluteString else { print(error?.localizedDescription); completion(nil); return }
+            
+            ImageController.imageFor(url: urlString, completion: completion)
+        }
         
     }
+    
 }

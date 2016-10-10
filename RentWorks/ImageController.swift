@@ -10,16 +10,17 @@ import Foundation
 
 class ImageController {
     
-    static func imageFor(url: String, completion: @escaping ((_ image: UIImage?) -> Void)) {
+    static func imageFor(url: String, completion: @escaping ((UIImage?) -> Void)) {
         
         guard let url = URL(string: url) else { fatalError("Image URL optional is nil") }
         
-        NetworkController.performRequestForURL(url: url, httpMethod: .Get) { (data, error) in
+        NetworkController.performRequestForPremadeURL(url: url, httpMethod: .Get) { (data, error) in
             
             guard let data = data else { completion(nil); return }
             
             DispatchQueue.main.async {
-                completion(UIImage(data: data))
+                let image = UIImage(data: data)
+                completion(image)
             }
         }
     }
