@@ -19,7 +19,6 @@ class FacebookRequestController {
             guard let resultDictionary = result as? [String: Any], let pictureDict = resultDictionary["picture"] as? [String: Any], let dataDict = pictureDict["data"] as? [String: Any], let urlString = dataDict["url"] as? String else { return }
             
             ImageController.imageFor(url: urlString, completion: completion)
-            
         })
     }
     
