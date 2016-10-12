@@ -27,13 +27,25 @@ class TestUser {
     }
     
     init?(dictionary: [String: Any]) {
-        guard let id = dictionary[kID] as? String, let name = dictionary[kName] as? String, let email = dictionary[kEmail] as? String else { return nil }
+        guard let id = dictionary[kID] as? String,
+            let name = dictionary[kName] as? String,
+            let email = dictionary[kEmail] as? String
+            else { return nil }
         
         self.name = name
         self.email = email
         self.id = id
     }
     
+    init?(dictionary: [String: Any], id: String) {
+        guard let name = dictionary[kName] as? String,
+            let email = dictionary[kEmail] as? String
+            else { return nil }
+        
+        self.name = name
+        self.email = email
+        self.id = id
+    }
     var dictionaryRepresentation: [String: String] {
         return ["name": name, "email": email]
     }

@@ -16,11 +16,15 @@ class MatchController {
         FirebaseController.matchesRef.child(user.id).observe(FIRDataEventType.value, with: { (snapshot)in
             print("Changes observed")
             print(snapshot.value as? [String: Any])
-            
-            
         })
-        
     }
     
+    static func add(currentUser: TestUser, toMatchlistOf matchedUser: TestUser, completion: (() -> Void)? = nil) {
+        let matchedUserRef = FirebaseController.matchesRef.child(matchedUser.id)
+        
+        matchedUserRef.child(currentUser.id).setValue(true)
+        
+        completion?()
+    }
     
 }

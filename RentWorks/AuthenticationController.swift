@@ -12,6 +12,8 @@ import FirebaseDatabase
 
 class AuthenticationController {
     
+    static var currentUser: TestUser?
+    
     static func attemptToSignInToFirebase(completion: @escaping () -> Void) {
         guard let token = FBSDKAccessToken.current() else { return }
         
@@ -27,7 +29,24 @@ class AuthenticationController {
         })
     }
     
+    static func checkFirebaseLoginStatus(completion: @escaping (_ status: Bool) -> Void) {
+        if FIRAuth.auth()?.currentUser == nil {
+            completion(false)
+        } else {
+            completion(true)
+        }
+    }
     
+    static func getCurrentUser() {
+        checkFirebaseLoginStatus { (loggedIn) in
+            if loggedIn {
+                FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
+                    guard let dict = dict, let user = TestUser(dictionary: dict) else { return }
+                    self.currentUser = user
+                })
+            }
+        }
+    }
     
     static func signOutOfFirebase() {
         do {

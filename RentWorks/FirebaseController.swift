@@ -22,14 +22,39 @@ class FirebaseController {
     static let storageRef = FIRStorage.storage().reference()
     static let profileImagesRef = storageRef.child("profileImages")
     
-    func createFirebaseUser(user: TestUser) {
+    var users: [TestUser] = []
+    
+    init() {
         
-        FirebaseController.allUsersRef.setValue([user.id: user.dictionaryRepresentation])
-        FirebaseController.matchesRef.setValue([user.id: ["none"]])
+        AuthenticationController.attemptToSignInToFirebase {
+            
+            FirebaseController.fetchAllFirebaseUsers { (testUsers) in
+                guard let testUsers = testUsers else { return }
+                self.users = testUsers
+            }
+        }
+    }
+    
+    
+    func createFirebaseUser(user: TestUser) {
+        let userRef =  FirebaseController.allUsersRef.child(user.id)
+        userRef.setValue(user.dictionaryRepresentation)
+        
+        
+        
         
         MatchController.observeMatchesFor(user: user)
         // May need to change the endpoint and/or the key for the dictionaryRepresentation.
         
+    }
+    
+    static func createMockUsers() {
+        
+        for i in 1...15 {
+            let userRef =  FirebaseController.allUsersRef.child("\(i)")
+            let dict = ["name": "testUser", "email": "testUser@test.com"]
+            userRef.setValue(dict)
+        }
     }
     
     static func checkForExistingUserInformation(user: TestUser, completion: @escaping (_ exists: Bool) -> Void) {
@@ -38,8 +63,40 @@ class FirebaseController {
             
             print(informationDictionary)
             completion(true)
-
+            
         })
+    }
+    
+    static func uploadAndStoreMockPhotos() {
+        
+        for i in 1...15 {
+            guard let image = UIImage(named: "\(i)") else { print("could not find image"); return }
+            storei(profileImage: image, forUser: "\(i)", completion: { (_, error) in
+                if error != nil { print(error?.localizedDescription); return }
+            })
+        }
+    }
+    
+    static func storei(profileImage: UIImage, forUser userID: String, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
+        
+        let profileImageRef = profileImagesRef.child(userID)
+        guard let imageData = UIImageJPEGRepresentation(profileImage, 1.0) else { return }
+        
+        let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
+        
+        uploadTask.resume()
+        
+        uploadTask.observe(.progress) { (snapshot) in
+            if let progress = snapshot.progress {
+                let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
+                print("Upload percentage: \(percentComplete)%")
+            }
+        }
+        
+        uploadTask.observe(.failure) { (snapshot) in
+            guard let storageError = snapshot.error else { return }
+            print(storageError.localizedDescription)
+        }
     }
     
     static func store(profileImage: UIImage, forUser user: TestUser, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
@@ -67,13 +124,36 @@ class FirebaseController {
     static func downloadProfileImage(forUser user: TestUser, completion: @escaping (UIImage?) -> Void) {
         
         let profileImageRef = profileImagesRef.child(user.id)
-
-        profileImageRef.downloadURL { (url, error) in
-            guard error != nil, let urlString = url?.absoluteString else { print(error?.localizedDescription); completion(nil); return }
-            
-            ImageController.imageFor(url: urlString, completion: completion)
-        }
         
+        profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
+            if error != nil { print(error?.localizedDescription) }
+            guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
+            completion(image)
+        }
+    }
+    
+//    static func downloadProfileImageFor(id: String, completion: @escaping (UIImage?) -> Void) {
+//        
+//        let profileImageRef = profileImagesRef.child("\(id).jpg")
+//        
+//        profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
+//            if error != nil { print(error?.localizedDescription) }
+//            guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
+//            completion(image)
+//        }
+//    }
+    
+    
+    
+    // WARNING: - At its current state, this function will pull ALL the users, including their profilepictures. This is not a final function, but only to test.
+    static func fetchAllFirebaseUsers(completion: @escaping ([TestUser]?) -> Void)  {
+        allUsersRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allUsersDictionary = snapshot.value as? [String: [String: Any]] else { completion(nil); return }
+            
+            let testUsers = allUsersDictionary.flatMap({TestUser(dictionary: $0.value, id: $0.key)})
+            
+            completion(testUsers)
+        })
     }
     
 }
