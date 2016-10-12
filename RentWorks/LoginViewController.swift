@@ -20,47 +20,23 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     let facebookLoginButton = FBSDKLoginButton()
     let loginManager = FBSDKLoginManager()
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
         facebookLoginButton.readPermissions = ["email"]
+        
         self.view.addSubview(facebookLoginButton)
+        
         constraintsForFacebookLoginButton()
-        
-        guard FBSDKAccessToken.current() != nil else { return }
-        
-        AuthenticationController.attemptToSignInToFirebase {
-            FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                guard let dict = dict, let user = TestUser(dictionary: dict as [String : Any]) else { return }
-                FirebaseController.checkForExistingUserInformation(user: user, completion: { (exists) in
-                    if exists == true {
-                        FirebaseController.downloadProfileImage(forUser: user, completion: { (image) in
-                            
-                        })
-                    } else {
-                        FirebaseController.sharedController.createFirebaseUser(user: user)
-                        FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-                            guard let image = image else { return }
-                            FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
-                                guard error != nil else { print(error?.localizedDescription); return }
-                            })
-                        })
-                    }
-                })
-            })
-        }
-        
-        
-        
         //        AuthenticationController.attemptToSignInToFirebase {
         //            self.initialRequest(completion: { (dict) in
         //                guard let user = TestUser(dictionary: dict) else { return }
-        //                MatchController.observeMatchesFor(user: user)
+        //                MatchController.observeLikesFor(user: user)
         //            })
     }
+    
     
     // TODO: - Run a check to see if the user has already created a RW account with Facebook. (Using the FBSDKAccessToken.current().userID)
     
@@ -74,7 +50,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     if exists == true {
                         // Pull information?
                     } else {
-                        FirebaseController.sharedController.createFirebaseUser(user: user)
+                        FirebaseController.createFirebaseUser(user: user)
                         FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
                             guard let image = image else { return }
                             FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in

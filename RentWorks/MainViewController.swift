@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController, RWKSwipeableViewDelegate {
+class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDelegate {
     
     @IBOutlet weak var swipeableView: RWKSwipeableView!
     @IBOutlet weak var imageView: UIImageView!
@@ -50,25 +50,8 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
-        
-        AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
-            if loggedIn == true {
-                FirebaseController.fetchAllFirebaseUsers { (users) in
-                    guard let users = users else { return }
-                    for user in users {
-                        FirebaseController.downloadProfileImage(forUser: user, completion: { (image) in
-                            guard let image = image else { print("Could not download image"); return }
-                            user.profilePic = image
-                            self.setupViews()
-                        })
-                    }
-                    self.users = users
-                    self.setupViews()
-                }
-            } else {
-                print("Not logged in")
-            }
-        }
+        MatchController.delegate = self
+        thisIsATerribleFunction()
         
         
         
@@ -77,9 +60,36 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate {
         swipeableView.delegate = self
     }
 
-    
-    
-    
+    func currentUserDidMatchWith(IDsOf users: [String]) {
+        let group = DispatchGroup()
+        var usersArray: [TestUser] = []
+        for userID in users {
+            group.enter()
+            
+            FirebaseController.fetchUserFor(userID: userID, completion: { (user) in
+                guard let user = user else { group.leave(); return }
+                
+                usersArray.append(user)
+                group.leave()
+            })
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            
+            let usersString = usersArray.flatMap({$0.name}).joined(separator: ", ")
+            
+            let message = usersArray.count == 1 ? "\(usersArray.first!) has matched with you!" : "\(usersString) have all matched with you!"
+            let title = usersArray.count == 1 ? "You have a new match!" : "You have new matches!"
+            
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let dismissAction = UIAlertAction(title: "Dimiss", style: .cancel, handler: nil)
+            
+            alertController.addAction(dismissAction)
+            self.present(alertController, animated: true, completion: {
+                //
+            })
+        }
+    }
     
     func setupViews() {
         
@@ -95,6 +105,31 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate {
         backgroundImageView.contentMode = .scaleAspectFit
     }
     
+    func thisIsATerribleFunction() {
+        guard FBSDKAccessToken.current() != nil else { return }
+        
+        AuthenticationController.attemptToSignInToFirebase {
+            FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
+                guard let dict = dict, let user = TestUser(dictionary: dict as [String : Any]) else { return }
+                FirebaseController.checkForExistingUserInformation(user: user, completion: { (exists) in
+                    if exists == true {
+                        MatchController.observeLikesFor(user: user)
+                        //                        FirebaseController.downloadProfileImage(forUser: user, completion: { (image) in
+                        //
+                        //                        })
+                    } else {
+                        FirebaseController.createFirebaseUser(user: user)
+                        FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
+                            guard let image = image else { return }
+                            FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
+                                guard error != nil else { print(error?.localizedDescription); return }
+                            })
+                        })
+                    }
+                })
+            })
+        }
+    }
     
     @IBAction func deleteButtonTapped(_ sender: AnyObject) {
         leftAnimationFor(swipeableView: swipeableView, inSuperview: self.view)
@@ -135,7 +170,7 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate {
             self.imageFor(imageView: self.imageView, with: self.users, imageIndex: &self.imageIndex)
             self.backgroundImageView.image = self.users[self.backgroundimageIndex].profilePic
             guard let swipeableView = swipeableView as? RWKSwipeableView, let currentUser = AuthenticationController.currentUser else { return }
-            MatchController.add(currentUser: currentUser, toMatchlistOf: swipeableView.user!)
+            MatchController.add(currentUser: currentUser, toLikelistOf: swipeableView.user!)
             
         }
     }

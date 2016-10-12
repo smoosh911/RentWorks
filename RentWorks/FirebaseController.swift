@@ -13,8 +13,6 @@ import FirebaseStorage
 
 class FirebaseController {
     
-    static let sharedController = FirebaseController()
-    
     static let ref = FIRDatabase.database().reference()
     static let allUsersRef = ref.child("users")
     static let matchesRef = ref.child("matches")
@@ -22,7 +20,7 @@ class FirebaseController {
     static let storageRef = FIRStorage.storage().reference()
     static let profileImagesRef = storageRef.child("profileImages")
     
-    var users: [TestUser] = []
+    static var users: [TestUser] = []
     
     init() {
         
@@ -30,20 +28,17 @@ class FirebaseController {
             
             FirebaseController.fetchAllFirebaseUsers { (testUsers) in
                 guard let testUsers = testUsers else { return }
-                self.users = testUsers
+                FirebaseController.users = testUsers
             }
         }
     }
     
     
-    func createFirebaseUser(user: TestUser) {
+    static func createFirebaseUser(user: TestUser) {
         let userRef =  FirebaseController.allUsersRef.child(user.id)
         userRef.setValue(user.dictionaryRepresentation)
         
-        
-        
-        
-        MatchController.observeMatchesFor(user: user)
+        MatchController.observeLikesFor(user: user)
         // May need to change the endpoint and/or the key for the dictionaryRepresentation.
         
     }
@@ -60,10 +55,8 @@ class FirebaseController {
     static func checkForExistingUserInformation(user: TestUser, completion: @escaping (_ exists: Bool) -> Void) {
         FirebaseController.allUsersRef.child("\(user.id)").observeSingleEvent(of: .value, with: { (snapshot) in
             guard let informationDictionary = snapshot.value as? [String: Any] else { completion(false); return }
-            
             print(informationDictionary)
             completion(true)
-            
         })
     }
     
@@ -153,6 +146,16 @@ class FirebaseController {
             let testUsers = allUsersDictionary.flatMap({TestUser(dictionary: $0.value, id: $0.key)})
             
             completion(testUsers)
+        })
+    }
+    
+    static func fetchUserFor(userID: String, completion: @escaping (TestUser?) -> Void) {
+        
+        let userRef = allUsersRef.child(userID)
+        userRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let userDictionary = snapshot.value as? [String: Any] else { completion(nil); return }
+            let user = TestUser(dictionary: userDictionary, id: userID)
+            completion(user)
         })
     }
     
