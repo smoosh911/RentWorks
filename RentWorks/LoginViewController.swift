@@ -26,7 +26,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
         facebookLoginButton.readPermissions = ["email"]
-        
+    
         self.view.addSubview(facebookLoginButton)
         
         constraintsForFacebookLoginButton()
@@ -45,19 +45,12 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         AuthenticationController.attemptToSignInToFirebase {
             FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                guard let dict = dict, let user = TestUser(dictionary: dict as [String : Any]) else { return }
-                FirebaseController.checkForExistingUserInformation(user: user, completion: { (exists) in
-                    if exists == true {
-                        // Pull information?
-                    } else {
-                        FirebaseController.createFirebaseUser(user: user)
-                        FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-                            guard let image = image else { return }
-                            FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
-                                guard error != nil else { print(error?.localizedDescription); return }
-                            })
-                        })
-                    }
+                guard let dict = dict, let currentUser = TestUser(dictionary: dict as [String : Any]) else { return }
+                
+                FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
+                    FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: { 
+                        // Do stuff like segue to the next VC?
+                    })
                 })
             })
         }

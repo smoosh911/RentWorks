@@ -8,32 +8,33 @@
 
 import UIKit
 
-class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDelegate {
+class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDelegate, FirebaseUserDelegate {
     
     @IBOutlet weak var swipeableView: RWKSwipeableView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var backgroundImageView: UIImageView!
-    
-    var users: [TestUser] = [] {
-        didSet {
-            if users.count > 16 {
-                setupViews()
-            }
-        }
-    }
-    
-    var count = 0
-    var originalCenter: CGPoint = CGPoint.zero {
-        didSet {
-            print(originalCenter)
-        }
-    }
     
     var rotationAngle: CGFloat = 0.0
     var xFromCenter: CGFloat = 0.0
     var yFromCenter: CGFloat = 0.0
     var velocity: CGPoint = CGPoint.zero
     var previousX: CGFloat = 0.0
+    
+    var constraints: [NSLayoutConstraint] = []
+    
+    var count = 0
+    
+    var users: [TestUser] = [] {
+        didSet {
+            setupViews()
+        }
+    }
+    
+    var originalCenter: CGPoint = CGPoint.zero {
+        didSet {
+            print(originalCenter)
+        }
+    }
     
     var imageIndex = 0 {
         didSet {
@@ -45,50 +46,41 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDe
         return imageIndex + 1 <= users.count - 1 ? imageIndex + 1 : 0
     }
     
-    var constraints: [NSLayoutConstraint] = []
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        FirebaseController.delegate = self
         MatchController.delegate = self
+        swipeableView.delegate = self
+        
         thisIsATerribleFunction()
         
-        
-        
+        FirebaseController.getAllFirebaseUsersAndTheirProfilePictures()
         //        view.translatesAutoresizingMaskIntoConstraints = false
         //        constraints = self.view.constraints
-        swipeableView.delegate = self
     }
-
+    
+    func firebaseUsersWereUpdated() {
+        self.users = FirebaseController.users
+    }
     func currentUserDidMatchWith(IDsOf users: [String]) {
-        let group = DispatchGroup()
-        var usersArray: [TestUser] = []
-        for userID in users {
-            group.enter()
-            
-            FirebaseController.fetchUserFor(userID: userID, completion: { (user) in
-                guard let user = user else { group.leave(); return }
-                
-                usersArray.append(user)
-                group.leave()
-            })
-        }
         
-        group.notify(queue: DispatchQueue.main) {
+        FirebaseController.fetchUsersFor(userIDs: users, completion: { (usersArray) in
+            let unwrappedUsersArray = usersArray.flatMap({$0})
             
-            let usersString = usersArray.flatMap({$0.name}).joined(separator: ", ")
+            let usersString = unwrappedUsersArray.flatMap({$0.name}).joined(separator: ", ")
             
             let message = usersArray.count == 1 ? "\(usersArray.first!) has matched with you!" : "\(usersString) have all matched with you!"
             let title = usersArray.count == 1 ? "You have a new match!" : "You have new matches!"
             
             let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            let dismissAction = UIAlertAction(title: "Dimiss", style: .cancel, handler: nil)
+            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             
             alertController.addAction(dismissAction)
             self.present(alertController, animated: true, completion: {
                 //
             })
-        }
+        })
     }
     
     func setupViews() {
@@ -109,23 +101,16 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDe
         guard FBSDKAccessToken.current() != nil else { return }
         
         AuthenticationController.attemptToSignInToFirebase {
+            
+            // TODO: - Please change this function later. Once you have persistence, stop requesting your own information from Facebook each time, and just skip down to like the checkForExisting... or the observeLikesFor.... functions below.
+            
             FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                guard let dict = dict, let user = TestUser(dictionary: dict as [String : Any]) else { return }
-                FirebaseController.checkForExistingUserInformation(user: user, completion: { (exists) in
-                    if exists == true {
-                        MatchController.observeLikesFor(user: user)
-                        //                        FirebaseController.downloadProfileImage(forUser: user, completion: { (image) in
-                        //
-                        //                        })
-                    } else {
-                        FirebaseController.createFirebaseUser(user: user)
-                        FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-                            guard let image = image else { return }
-                            FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
-                                guard error != nil else { print(error?.localizedDescription); return }
-                            })
-                        })
-                    }
+                guard let dict = dict, let currentUser = TestUser(dictionary: dict as [String : Any]) else { return }
+                FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
+                    FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
+                        MatchController.observeLikesFor(user: currentUser)
+                        // I can't remember why I made this function have a completion closure.
+                    })
                 })
             })
         }
