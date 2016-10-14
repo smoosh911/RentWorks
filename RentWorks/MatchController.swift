@@ -11,7 +11,7 @@ import FirebaseDatabase
 
 class MatchController {
     
-    static weak var delegate: MatchingDelegate?
+    static weak var delegate: UserMatchingDelegate?
     
     static func observeLikesFor(user: TestUser) {
         
@@ -65,7 +65,7 @@ class MatchController {
     }
 }
 
-protocol MatchingDelegate: class {
+protocol UserMatchingDelegate: class {
     
     func currentUserDidMatchWith(IDsOf users: [String])
 }

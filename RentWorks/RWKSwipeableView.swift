@@ -17,6 +17,9 @@ class RWKSwipeableView: UIView {
             print("SwipeableView user: \(user.id)")
         }
     }
+    
+    
+    
     var count = 0
     
     var rotationAngle: CGFloat = 0.0

@@ -232,17 +232,24 @@ class FirebaseController {
         }
     }
     
+    static func createAddressesForMockUsers() {
+        for i in 1...15 {
+            let addressRef =  FirebaseController.allUsersRef.child("\(i)").child("address")
+            addressRef.setValue("1234 S Testing Road, MockTown, UT, 84321")
+        }
+    }
+    
     static func uploadAndStoreMockPhotos() {
         
         for i in 1...15 {
             guard let image = UIImage(named: "\(i)") else { print("could not find image"); return }
-            storei(profileImage: image, forUser: "\(i)", completion: { (_, error) in
+            storeMock(profileImage: image, forUser: "\(i)", completion: { (_, error) in
                 if error != nil { print(error?.localizedDescription); return }
             })
         }
     }
     
-    static func storei(profileImage: UIImage, forUser userID: String, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
+    static func storeMock(profileImage: UIImage, forUser userID: String, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
         
         let profileImageRef = profileImagesRef.child(userID)
         guard let imageData = UIImageJPEGRepresentation(profileImage, 1.0) else { return }
@@ -266,6 +273,5 @@ class FirebaseController {
 }
 
 protocol FirebaseUserDelegate: class {
-    
     func firebaseUsersWereUpdated()
 }

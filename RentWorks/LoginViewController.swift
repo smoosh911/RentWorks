@@ -45,7 +45,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         AuthenticationController.attemptToSignInToFirebase {
             FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                guard let dict = dict, let currentUser = TestUser(dictionary: dict as [String : Any]) else { return }
+                guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict as [String : Any]) else { return }
                 
                 FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
                     FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: { 

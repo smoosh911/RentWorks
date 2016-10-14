@@ -41,7 +41,7 @@ class AuthenticationController {
         checkFirebaseLoginStatus { (loggedIn) in
             if loggedIn {
                 FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                    guard let dict = dict, let user = TestUser(dictionary: dict) else { return }
+                    guard let dict = dict, let user = TestUser(facebookDictionary: dict) else { return }
                     self.currentUser = user
                 })
             }

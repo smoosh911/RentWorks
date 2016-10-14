@@ -8,37 +8,36 @@
 
 import UIKit
 
-class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDelegate, FirebaseUserDelegate {
+class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDelegate {
     
     @IBOutlet weak var swipeableView: RWKSwipeableView!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
+    
+    @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
+    @IBOutlet weak var backgroundNameLabel: UILabel!
+    @IBOutlet weak var backgroundAddressLabel: UILabel!
     
     var rotationAngle: CGFloat = 0.0
     var xFromCenter: CGFloat = 0.0
     var yFromCenter: CGFloat = 0.0
     var velocity: CGPoint = CGPoint.zero
     var previousX: CGFloat = 0.0
+    var originalCenter: CGPoint = CGPoint.zero
     
     var constraints: [NSLayoutConstraint] = []
     
-    var count = 0
+    var loadingView: UIView?
+    var loadingActivityIndicator: UIActivityIndicatorView?
+    
+    
+    var imageIndex = 0
     
     var users: [TestUser] = [] {
         didSet {
             setupViews()
-        }
-    }
-    
-    var originalCenter: CGPoint = CGPoint.zero {
-        didSet {
-            print(originalCenter)
-        }
-    }
-    
-    var imageIndex = 0 {
-        didSet {
-            print(imageIndex)
         }
     }
     
@@ -48,7 +47,9 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViews()
+        
+        setUpAndDisplayLoadingScreen()
+        
         FirebaseController.delegate = self
         MatchController.delegate = self
         swipeableView.delegate = self
@@ -56,13 +57,18 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDe
         thisIsATerribleFunction()
         
         FirebaseController.getAllFirebaseUsersAndTheirProfilePictures()
-        //        view.translatesAutoresizingMaskIntoConstraints = false
-        //        constraints = self.view.constraints
     }
+    
+    
+    // FirebaseUserDelegate
     
     func firebaseUsersWereUpdated() {
         self.users = FirebaseController.users
+        dismissLoadingScreen()
     }
+    
+    // UserMatchingDelegate
+    
     func currentUserDidMatchWith(IDsOf users: [String]) {
         
         FirebaseController.fetchUsersFor(userIDs: users, completion: { (usersArray) in
@@ -77,26 +83,12 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDe
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             
             alertController.addAction(dismissAction)
-            self.present(alertController, animated: true, completion: {
-                //
-            })
+//            self.present(alertController, animated: true, completion: {
+            
+//            })
         })
     }
-    
-    func setupViews() {
-        
-        //        swipeableView.layer.borderWidth = 0.2
-        //        swipeableView.layer.borderColor = UIColor.black.cgColor
-        //        swipeableView.backgroundColor = UIColor.lightGray
-        guard users.count > 2 else { return }
-        imageView.image = users[0].profilePic
-        backgroundImageView.image = users[1].profilePic
-        imageIndex = 1
-        swipeableView.user = users.first!
-        imageView.contentMode = .scaleAspectFit
-        backgroundImageView.contentMode = .scaleAspectFit
-    }
-    
+   
     func thisIsATerribleFunction() {
         guard FBSDKAccessToken.current() != nil else { return }
         
@@ -105,7 +97,7 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDe
             // TODO: - Please change this function later. Once you have persistence, stop requesting your own information from Facebook each time, and just skip down to like the checkForExisting... or the observeLikesFor.... functions below.
             
             FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                guard let dict = dict, let currentUser = TestUser(dictionary: dict as [String : Any]) else { return }
+                guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict as [String : Any]) else { return }
                 FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
                     FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
                         MatchController.observeLikesFor(user: currentUser)
@@ -116,12 +108,16 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDe
         }
     }
     
-    @IBAction func deleteButtonTapped(_ sender: AnyObject) {
-        leftAnimationFor(swipeableView: swipeableView, inSuperview: self.view)
-    }
     
-    @IBAction func checkButtonTapped(_ sender: AnyObject) {
-        rightAnimationFor(swipeableView: swipeableView, inSuperview: self.view)
+    // UI Related
+    
+    func updateLabelsWith(user: TestUser) {
+        nameLabel.text = user.name
+        addressLabel.text = user.address
+        
+        let nextUser = users[backgroundimageIndex]
+        backgroundNameLabel.text = nextUser.name
+        backgroundAddressLabel.text = nextUser.address
     }
     
     func imageFor(imageView: UIImageView, with imageArray: [TestUser], imageIndex: inout Int) {
@@ -132,6 +128,58 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDe
         }
         imageView.image = imageArray[imageIndex].profilePic
     }
+    
+    func setupViews() {
+        
+        guard users.count > 2 else { return }
+        let user = users[imageIndex]
+        imageView.image = user.profilePic
+        backgroundImageView.image = users[backgroundimageIndex].profilePic
+        swipeableView.user = user
+        updateLabelsWith(user: user)
+    }
+    
+    func setUpAndDisplayLoadingScreen() {
+        self.loadingView = UIView(frame: self.view.frame)
+        self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x, y: self.view.center.y, width: 50, height: 50))
+        
+        guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator else { return }
+        loadingView.backgroundColor = UIColor(red: 0.961, green: 0.482, blue: 0.220, alpha: 1.00)
+        loadingActivityIndicator.activityIndicatorViewStyle = .whiteLarge
+        
+        
+        loadingView.addSubview(loadingActivityIndicator)
+        self.view.addSubview(loadingView)
+        
+        self.view.bringSubview(toFront: loadingView)
+        loadingView.bringSubview(toFront: loadingActivityIndicator)
+        
+        
+        let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
+        let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
+        let centerXIndicatorConstraint = NSLayoutConstraint(item: loadingActivityIndicator, attribute: .centerX, relatedBy: .equal, toItem: loadingView, attribute: .centerX, multiplier: 1, constant: 0)
+        let centerYIndicatorConstraint = NSLayoutConstraint(item: loadingActivityIndicator, attribute: .centerY, relatedBy: .equal, toItem: loadingView, attribute: .centerY, multiplier: 1, constant: 0)
+        
+        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint])
+        loadingView.addConstraints([centerXIndicatorConstraint, centerYIndicatorConstraint])
+        
+        loadingActivityIndicator.startAnimating()
+    }
+    
+    func dismissLoadingScreen() {
+        UIView.animate(withDuration: 0.8, animations: {
+            self.loadingActivityIndicator?.alpha = 0
+            self.loadingView?.alpha = 0
+        }) { (_) in
+            self.loadingActivityIndicator?.removeFromSuperview()
+            self.loadingView?.removeFromSuperview()
+        }
+    }
+    
+    
+}
+
+extension MainViewController: RWKSwipeableViewDelegate {
     
     func swipeAnimationsFor(swipeableView: UIView, inSuperview superview: UIView) {
         if swipeableView.center.x > superview.center.x + 45 {
@@ -190,12 +238,13 @@ class MainViewController: UIViewController, RWKSwipeableViewDelegate, MatchingDe
         
         swipeableView.transform = CGAffineTransform(rotationAngle: 0.0)
         guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
-        swipeableView.user = users[imageIndex]
-        
+        let newUser = users[imageIndex]
+        swipeableView.user = newUser
+        updateLabelsWith(user: newUser)
     }
     
     func degreesToRadians(degree: Double) -> CGFloat {
         return CGFloat(M_PI * (degree) / 180.0)
     }
+    
 }
-
