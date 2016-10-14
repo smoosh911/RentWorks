@@ -83,6 +83,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     func currentUserDidMatchWith(IDsOf users: [String]) {
         
         FirebaseController.fetchUsersFor(userIDs: users, completion: { (usersArray) in
+            guard usersArray.count > 0 else { return }
+            
             let unwrappedUsersArray = usersArray.flatMap({$0})
             
             let usersString = unwrappedUsersArray.flatMap({$0.name}).joined(separator: ", ")
@@ -94,8 +96,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             
             alertController.addAction(dismissAction)
-            self.present(alertController, animated: true, completion: {
-                
+            Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: { (_) in
+                self.present(alertController, animated: true, completion: nil)
             })
         })
     }

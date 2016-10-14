@@ -27,7 +27,7 @@ class MatchController {
                 delegate?.currentUserDidMatchWith(IDsOf: matchingIDArray)
                 
                 // Do some stuff... Haha. Get the user information or something.
-                // May have to wipe the like endpoint when the information is retrieved here...?
+                // May have to wipe the like endpoint when the information is retrieved here so that the alert doesn't always pop up saying they have the same matches.
             })
         })
     }
