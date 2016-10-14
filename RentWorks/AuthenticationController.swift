@@ -14,7 +14,7 @@ class AuthenticationController {
     
     static var currentUser: TestUser?
     
-    static func attemptToSignInToFirebase(completion: @escaping () -> Void) {
+    static func attemptToSignInToFirebase(completion: @escaping (_ success: Bool) -> Void) {
         guard let token = FBSDKAccessToken.current() else { return }
         
         let credential = FIRFacebookAuthProvider.credential(withAccessToken: token.tokenString)
@@ -22,10 +22,11 @@ class AuthenticationController {
         FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
             if error != nil {
                 print(error?.localizedDescription)
+                completion(false)
             }
             // Warning: Incomplete Implementation
             print(user)
-            completion()
+            completion(true)
         })
     }
     
@@ -45,6 +46,7 @@ class AuthenticationController {
                     FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
                         FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
                             if hasPhoto {
+                                self.currentUser = currentUser
                                 MatchController.observeLikesFor(user: currentUser)
                             }
                             

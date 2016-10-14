@@ -26,7 +26,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
         facebookLoginButton.readPermissions = ["email"]
-    
+        
         self.view.addSubview(facebookLoginButton)
         
         constraintsForFacebookLoginButton()
@@ -43,21 +43,23 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         
-        AuthenticationController.attemptToSignInToFirebase {
-            FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict as [String : Any]) else { return }
-                
-                FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
-                    FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: { 
-                        // Do stuff like segue to the next VC?
+        AuthenticationController.attemptToSignInToFirebase { (success) in
+            if success {
+                FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
+                    guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict as [String : Any]) else { return }
+                    
+                    FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
+                        FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
+                            // Do stuff like segue to the next VC?
+                        })
                     })
                 })
-            })
+            } else {
+                
+                print("Unsuccessful log in.")
+            }
         }
     }
-    
-    
-    
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         
@@ -78,95 +80,3 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         self.view.addConstraints([centerXConstraint, widthConstraint, topConstraint, heightConstraint])
     }
 }
-
-/*
- // MARK: - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
- // Get the new view controller using segue.destinationViewController.
- // Pass the selected object to the new view controller.
- }
- */
-
-
-// MARK: - Chris' Facebook code
-/*
- func returnMyData(){
- if((FBSDKAccessToken.currentAccessToken()) != nil){
- FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id, first_name, last_name, gender"]).startWithCompletionHandler({ (connection, result, error) -> Void in
- if ((error) != nil)
- {
- print("Error: \(error)")
- }
- else
- {
- let resultdict = result as! NSDictionary
- 
- let fID = resultdict.objectForKey("id") as! String
- let firstName = resultdict.objectForKey("first_name") as! String
- let lastName = resultdict.objectForKey("last_name") as! String
- let gender = resultdict.objectForKey("gender") as! String
- 
- // Adds Facebook data to Firebase
- 
- let detailedUser = ["fID": fID, "firstName": firstName, "lastName": lastName, "gender": gender]
- 
- //Add Facebook User Detail into facebookUser
- let facebookUserAuthID = ["\(fID)": "\(self.uid)"]
- let facebookUsersReference = self.firebaseURL.child("facebookUser")
- facebookUsersReference.updateChildValues(facebookUserAuthID)
- 
- //Add user deatil
- self.addUserDetail(detailedUser)
- }
- })
- }
- }
- 
- 
- func returnFriendListData() {
- let graphRequest : FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "/me/friends", parameters: nil)
- graphRequest.startWithCompletionHandler({ (connection, result, error) -> Void in
- 
- if ((error) != nil)
- {
- print("Error: \(error)")
- }
- else
- {
- let resultdict = result as! NSDictionary
- //                print("Result Dict: \(resultdict)")
- 
- let data : NSArray = resultdict.objectForKey("data") as! NSArray
- 
- for i in 0..<data.count {
- let valueDict : NSDictionary = data[i] as! NSDictionary
- let id = valueDict.objectForKey("id") as! String
- let name = valueDict.objectForKey("name") as! String
- 
- //                    print("the id value is \(id)") print("\(name)")
- 
- self.createFriend("\(id)", friendName: "\(name)")
- }
- let friends = resultdict.objectForKey("data") as! NSArray
- print("Found \(friends.count) friends")
- 
- //Test Query For Miles
- // TODO: - Need to look into why FB wasn't logging in
- 
- HealthKitController.sharedController.authorizeHealthKit({ (success, error) in
- if success {
- HealthKitController.sharedController.setLastDaysToZero()
- HealthKitController.sharedController.setupMilesCollectionStatisticQuery()
- HealthKitController.sharedController.setupStepsCollectionStatisticQuery()
- 
- self.queryMiles()
- }
- })
- }
- 
- 
- */
-
-

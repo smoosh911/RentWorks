@@ -14,8 +14,10 @@ class MatchController {
     static weak var delegate: UserMatchingDelegate?
     
     static func observeLikesFor(user: TestUser) {
+        let userLikesRef = FirebaseController.likesRef.child(user.id)
         
-        FirebaseController.matchesRef.child(user.id).observe(FIRDataEventType.value, with: { (snapshot)in
+        print(userLikesRef.url)
+        userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
             print("Changes observed")
             
             guard let likeDictionary = snapshot.value as? [String: Any] else { return }
@@ -31,7 +33,7 @@ class MatchController {
     }
     
     static func add(currentUser: TestUser, toLikelistOf matchedUser: TestUser, completion: (() -> Void)? = nil) {
-        let matchedUserRef = FirebaseController.matchesRef.child(matchedUser.id)
+        let matchedUserRef = FirebaseController.likesRef.child(matchedUser.id)
         
         matchedUserRef.child(currentUser.id).setValue(true)
         
@@ -44,7 +46,7 @@ class MatchController {
         var matchingUsersIDArray: [String] = []
         for id in otherUserDictionary.keys {
             group.enter()
-            FirebaseController.matchesRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+            FirebaseController.likesRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
                 print("Snapshot: \(snapshot.value)")
                 guard let matchDictionary = snapshot.value as? [String: Any], let currentUser = AuthenticationController.currentUser else { group.leave(); return }
                 if matchDictionary.keys.contains(currentUser.id) {

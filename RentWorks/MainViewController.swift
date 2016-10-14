@@ -87,16 +87,16 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             
             let usersString = unwrappedUsersArray.flatMap({$0.name}).joined(separator: ", ")
             
-            let message = usersArray.count == 1 ? "\(usersArray.first!) has matched with you!" : "\(usersString) have all matched with you!"
-            let title = usersArray.count == 1 ? "You have a new match!" : "You have new matches!"
+            let message = unwrappedUsersArray.count == 1 ? "\(unwrappedUsersArray[0].name) has matched with you!" : "\(usersString) have all matched with you!"
+            let title = unwrappedUsersArray.count == 1 ? "You have a new match!" : "You have new matches!"
             
             let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             
             alertController.addAction(dismissAction)
-            //            self.present(alertController, animated: true, completion: {
-            
-            //            })
+            self.present(alertController, animated: true, completion: {
+                
+            })
         })
     }
     
@@ -144,7 +144,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         let bottomLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .bottom, relatedBy: .equal, toItem: self.loadingActivityIndicator, attribute: .top, multiplier: 1, constant: -25)
         
         self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint, centerXLoadingLabelConstraint,
-            bottomLoadingLabelConstraint])
+                                  bottomLoadingLabelConstraint])
         
         loadingActivityIndicator.startAnimating()
     }
@@ -206,10 +206,10 @@ extension MainViewController: RWKSwipeableViewDelegate {
     
     
     func put(swipeableView: UIView, inCenterOf superview: UIView) {
-        UIView.animate(withDuration: 0.3) {
+        UIView.animate(withDuration: 0.3, animations: {
             swipeableView.center = self.view.center
             swipeableView.transform = CGAffineTransform(rotationAngle: 0.0)
-        }
+        })
     }
     
     
@@ -224,6 +224,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
         guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
         let newUser = users[imageIndex]
         swipeableView.user = newUser
+        
     }
     
     func degreesToRadians(degree: Double) -> CGFloat {

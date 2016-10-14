@@ -15,7 +15,7 @@ class FirebaseController {
     
     static let ref = FIRDatabase.database().reference()
     static let allUsersRef = ref.child("users")
-    static let matchesRef = ref.child("matches")
+    static let likesRef = ref.child("likes")
     
     static let storageRef = FIRStorage.storage().reference()
     static let profileImagesRef = storageRef.child("profileImages")
@@ -136,6 +136,13 @@ class FirebaseController {
                         completion?(users)
                     })
                 }
+            } else {
+                AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
+                    if success {
+                        getAllFirebaseUsersAndTheirProfilePictures(completion: nil)
+                    }
+                })
+                print("Not logged in")
             }
         }
     }
