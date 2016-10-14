@@ -44,7 +44,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var users: [TestUser] = [] {
         didSet {
-            setupViews()
+            updateUIElements()
         }
     }
     
@@ -109,6 +109,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         nameLabel.text = user.name
         addressLabel.text = user.address
         
+        swipeableView.user = user
+        
         let nextUser = users[backgroundimageIndex]
         backgroundImageView.image = nextUser.profilePic
         backgroundNameLabel.text = nextUser.name
@@ -119,14 +121,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         } else {
             imageIndex = 0
         }
-    }
-    
-    func setupViews() {
-        
-        guard users.count > 2 else { return }
-        let user = users[imageIndex]
-        swipeableView.user = user
-        updateUIElements()
     }
     
     func setUpAndDisplayLoadingScreen() {
@@ -166,17 +160,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             self.loadingLabel.removeFromSuperview()
         }
     }
-    
-    
-    func imageFor(imageView: UIImageView, with imageArray: [TestUser], imageIndex: inout Int) {
-        if imageIndex < imageArray.count - 1 {
-            imageIndex += 1
-        } else {
-            imageIndex = 0
-        }
-        imageView.image = imageArray[imageIndex].profilePic
-    }
-    
 }
 
 // RWKSwipeableViewDelegate

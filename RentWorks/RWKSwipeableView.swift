@@ -42,13 +42,26 @@ class RWKSwipeableView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        hideDropShadow()
         setupPanGestureRecognizer()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        hideDropShadow()
         setupPanGestureRecognizer()
+    }
+    
+    func showDropShadow() {
+        UIView.animate(withDuration: 1) { 
+            self.shadowColor = UIColor.black
+        }
+    }
+    
+    func hideDropShadow() {
+        UIView.animate(withDuration: 1) {
+            self.shadowColor = UIColor.clear
+        }
     }
     
     func beingDragged() {
@@ -62,6 +75,7 @@ class RWKSwipeableView: UIView {
         switch sender.state {
             
         case .began:
+            showDropShadow()
             UIView.animate(withDuration: 0.2, animations: {
                 senderView.center = sender.location(in: superView)
                 }, completion: { (complete) in
@@ -95,6 +109,7 @@ class RWKSwipeableView: UIView {
             }
             count = 0
             rotationAngle = 0.0
+            self.hideDropShadow()
             break
         case .possible:
             break
