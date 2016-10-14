@@ -33,6 +33,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
+    @IBOutlet weak var loadingLabel: UILabel!
     
     
     var imageIndex = 0 {
@@ -132,25 +133,24 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         self.loadingView = UIView(frame: self.view.frame)
         self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
         
-        guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator else { return }
+        guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator, let loadingLabel = self.loadingLabel else { return }
+        loadingLabel.isHidden = false
         loadingView.backgroundColor = UIColor(red: 0.961, green: 0.482, blue: 0.220, alpha: 1.00)
         loadingActivityIndicator.activityIndicatorViewStyle = .whiteLarge
         
-        
         loadingView.addSubview(loadingActivityIndicator)
+        loadingView.addSubview(loadingLabel)
         self.view.addSubview(loadingView)
         
-        self.view.bringSubview(toFront: loadingView)
-        loadingView.bringSubview(toFront: loadingActivityIndicator)
         
         
         let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
         let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
-        let centerXIndicatorConstraint = NSLayoutConstraint(item: loadingActivityIndicator, attribute: .centerX, relatedBy: .equal, toItem: loadingView, attribute: .centerX, multiplier: 1, constant: 0)
-        let centerYIndicatorConstraint = NSLayoutConstraint(item: loadingActivityIndicator, attribute: .centerY, relatedBy: .equal, toItem: loadingView, attribute: .centerY, multiplier: 1, constant: 0)
+        let centerXLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
+        let bottomLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .bottom, relatedBy: .equal, toItem: self.loadingActivityIndicator, attribute: .top, multiplier: 1, constant: -25)
         
-        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint])
-        loadingView.addConstraints([centerXIndicatorConstraint, centerYIndicatorConstraint])
+        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint, centerXLoadingLabelConstraint,
+            bottomLoadingLabelConstraint])
         
         loadingActivityIndicator.startAnimating()
     }
@@ -159,9 +159,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         UIView.animate(withDuration: 0.8, animations: {
             self.loadingActivityIndicator?.alpha = 0
             self.loadingView?.alpha = 0
+            self.loadingLabel.alpha = 0
         }) { (_) in
             self.loadingActivityIndicator?.removeFromSuperview()
             self.loadingView?.removeFromSuperview()
+            self.loadingLabel.removeFromSuperview()
         }
     }
     

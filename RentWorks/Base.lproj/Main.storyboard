@@ -73,7 +73,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="8gT-Xj-dEl" secondAttribute="trailing" constant="8" id="Bq8-er-Xca"/>
-                                    <constraint firstAttribute="bottom" secondItem="ItB-82-QF3" secondAttribute="bottom" constant="163" id="Dpi-Rr-eV9"/>
+                                    <constraint firstAttribute="bottom" secondItem="ItB-82-QF3" secondAttribute="bottom" constant="105" id="Dpi-Rr-eV9"/>
                                     <constraint firstAttribute="trailing" secondItem="9eU-RG-H8p" secondAttribute="trailing" constant="8" id="Ojx-Wr-mtz"/>
                                     <constraint firstAttribute="trailing" secondItem="ItB-82-QF3" secondAttribute="trailing" id="P63-df-fya"/>
                                     <constraint firstItem="9eU-RG-H8p" firstAttribute="top" secondItem="ItB-82-QF3" secondAttribute="bottom" constant="8" id="RlA-kv-3nu"/>
@@ -90,10 +90,10 @@
                             <constraint firstAttribute="trailingMargin" secondItem="uC0-C4-d6N" secondAttribute="trailing" constant="20" id="BQB-VX-ID7"/>
                             <constraint firstItem="fJv-jC-kqc" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="44" id="Io7-iU-Kh3"/>
                             <constraint firstItem="rmH-e8-tKs" firstAttribute="centerX" secondItem="ItB-82-QF3" secondAttribute="centerX" id="KZq-vZ-540"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="uC0-C4-d6N" secondAttribute="bottom" id="asc-Bt-ti6"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="uC0-C4-d6N" secondAttribute="bottom" constant="58" id="asc-Bt-ti6"/>
                             <constraint firstItem="uC0-C4-d6N" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="44" id="cFU-xD-sir"/>
                             <constraint firstItem="fJv-jC-kqc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="lne-BF-Uzm"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fJv-jC-kqc" secondAttribute="bottom" id="sw1-C7-Pud"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="fJv-jC-kqc" secondAttribute="bottom" constant="58" id="sw1-C7-Pud"/>
                             <constraint firstItem="15R-St-VTF" firstAttribute="centerY" secondItem="8gT-Xj-dEl" secondAttribute="centerY" id="tpn-X4-7ys"/>
                             <constraint firstItem="rmH-e8-tKs" firstAttribute="centerY" secondItem="ItB-82-QF3" secondAttribute="centerY" id="vbw-Ib-gu0"/>
                             <constraint firstItem="uC0-C4-d6N" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="xcf-pj-DjK"/>
@@ -108,11 +108,21 @@
                         <outlet property="backgroundNameLabel" destination="iyj-kq-Alc" id="uyU-V5-lch"/>
                         <outlet property="backgroundView" destination="uC0-C4-d6N" id="Vlv-kr-gKJ"/>
                         <outlet property="imageView" destination="ItB-82-QF3" id="Y9h-Xp-eCW"/>
+                        <outlet property="loadingLabel" destination="q8T-ua-ez3" id="QuG-Ya-EoP"/>
                         <outlet property="nameLabel" destination="9eU-RG-H8p" id="i50-QO-PKc"/>
                         <outlet property="swipeableView" destination="fJv-jC-kqc" id="exM-ti-E4q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hang tight, we're grabbing the latest cards for you" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q8T-ua-ez3">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="125.5" id="36s-OZ-GTc"/>
+                        <constraint firstAttribute="width" constant="343" id="mra-6y-YCG"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </objects>
             <point key="canvasLocation" x="-183.19999999999999" y="933.28335832083962"/>
         </scene>
@@ -927,7 +937,7 @@ located?</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="THW-tN-GjF" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="T40-EM-1Oe">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="T40-EM-1Oe">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
