@@ -30,34 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.makeKeyAndVisible()
         }
         AuthenticationController.getCurrentUser()
-        //        AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
-        //            if loggedIn == true {
-        //                let user = TestUser(name: "Spencer", email: "Spencercolecurtis@gmail.com", id: "10209370587853929")
-        //                FirebaseController.downloadProfileImage(forUser: user, completion: { (image) in
-        //                    guard let image = image else { print("Didn't work"); return }
-        //
-        //                    print("worked.")
-        //                })
-        //            }
-        //        }
-        //                FirebaseController.fetchAllFirebaseUsers { (users) in
-        //
-        //
-        //                    guard let users = users else { return }
-        //                    FirebaseController.downloadProfileImage(forUser: users.first!, completion: { (image) in
-        //                        guard let image = image else { print("Could not download image"); return }
-        //                        users.first!.profilePic = image
-        ////                        self.setupViews()
-        //                    })
-        //
-        //
-        ////                    self.users = users
-        //
-        //                }
-        //            } else {
-        //                print("Not logged in")
-        //            }
-        //        }
         
         
         return true

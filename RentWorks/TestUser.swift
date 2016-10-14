@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TestUser {
+class TestUser: Equatable {
     private let kID = "id"
     private let kFirebaseID = "uuid"
     private let kName = "name"
@@ -56,5 +56,9 @@ class TestUser {
     var dictionaryRepresentation: [String: String] {
         return [kName: name, kEmail: email, kAddress: address ?? "No address"]
     }
-    
+}
+
+
+func ==(lhs: TestUser, rhs: TestUser) -> Bool {
+    return lhs.id == rhs.id
 }

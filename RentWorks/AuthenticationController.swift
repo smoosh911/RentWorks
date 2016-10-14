@@ -41,9 +41,18 @@ class AuthenticationController {
         checkFirebaseLoginStatus { (loggedIn) in
             if loggedIn {
                 FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                    guard let dict = dict, let user = TestUser(facebookDictionary: dict) else { return }
-                    self.currentUser = user
+                    guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict) else { return }
+                    FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
+                        FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
+                            if hasPhoto {
+                                MatchController.observeLikesFor(user: currentUser)
+                            }
+                            
+                        })
+                    })
                 })
+            } else {
+                NSLog("Not logged into Firebase. Unable to pull current user's information.")
             }
         }
     }

@@ -10,6 +10,8 @@ import UIKit
 
 class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDelegate {
     
+    // Properties
+    
     @IBOutlet weak var swipeableView: RWKSwipeableView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -33,7 +35,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     var loadingActivityIndicator: UIActivityIndicatorView?
     
     
-    var imageIndex = 0
+    var imageIndex = 0 {
+        didSet {
+            print("imageIndex: \(imageIndex)")
+        }
+    }
     
     var users: [TestUser] = [] {
         didSet {
@@ -42,7 +48,9 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     }
     
     var backgroundimageIndex: Int {
-        return imageIndex + 1 <= users.count - 1 ? imageIndex + 1 : 0
+        let bgIndex = imageIndex + 1 <= users.count - 1 ? imageIndex + 1 : 0
+        print("bgIndex: \(bgIndex)")
+        return bgIndex
     }
     
     override func viewDidLoad() {
@@ -54,7 +62,9 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         MatchController.delegate = self
         swipeableView.delegate = self
         
-        thisIsATerribleFunction()
+        if AuthenticationController.currentUser == nil {
+            AuthenticationController.getCurrentUser()
+        }
         
         FirebaseController.getAllFirebaseUsersAndTheirProfilePictures()
     }
@@ -83,65 +93,44 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             
             alertController.addAction(dismissAction)
-//            self.present(alertController, animated: true, completion: {
+            //            self.present(alertController, animated: true, completion: {
             
-//            })
+            //            })
         })
-    }
-   
-    func thisIsATerribleFunction() {
-        guard FBSDKAccessToken.current() != nil else { return }
-        
-        AuthenticationController.attemptToSignInToFirebase {
-            
-            // TODO: - Please change this function later. Once you have persistence, stop requesting your own information from Facebook each time, and just skip down to like the checkForExisting... or the observeLikesFor.... functions below.
-            
-            FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict as [String : Any]) else { return }
-                FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
-                    FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
-                        MatchController.observeLikesFor(user: currentUser)
-                        // I can't remember why I made this function have a completion closure.
-                    })
-                })
-            })
-        }
     }
     
     
     // UI Related
     
-    func updateLabelsWith(user: TestUser) {
+    func updateUIElements() {
+        let user = users[imageIndex]
+        imageView.image = user.profilePic
         nameLabel.text = user.name
         addressLabel.text = user.address
         
         let nextUser = users[backgroundimageIndex]
+        backgroundImageView.image = nextUser.profilePic
         backgroundNameLabel.text = nextUser.name
         backgroundAddressLabel.text = nextUser.address
-    }
-    
-    func imageFor(imageView: UIImageView, with imageArray: [TestUser], imageIndex: inout Int) {
-        if imageIndex < imageArray.count - 1 {
+        
+        if imageIndex < users.count - 1 {
             imageIndex += 1
         } else {
             imageIndex = 0
         }
-        imageView.image = imageArray[imageIndex].profilePic
     }
     
     func setupViews() {
         
         guard users.count > 2 else { return }
         let user = users[imageIndex]
-        imageView.image = user.profilePic
-        backgroundImageView.image = users[backgroundimageIndex].profilePic
         swipeableView.user = user
-        updateLabelsWith(user: user)
+        updateUIElements()
     }
     
     func setUpAndDisplayLoadingScreen() {
         self.loadingView = UIView(frame: self.view.frame)
-        self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x, y: self.view.center.y, width: 50, height: 50))
+        self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
         
         guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator else { return }
         loadingView.backgroundColor = UIColor(red: 0.961, green: 0.482, blue: 0.220, alpha: 1.00)
@@ -177,7 +166,18 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     }
     
     
+    func imageFor(imageView: UIImageView, with imageArray: [TestUser], imageIndex: inout Int) {
+        if imageIndex < imageArray.count - 1 {
+            imageIndex += 1
+        } else {
+            imageIndex = 0
+        }
+        imageView.image = imageArray[imageIndex].profilePic
+    }
+    
 }
+
+// RWKSwipeableViewDelegate
 
 extension MainViewController: RWKSwipeableViewDelegate {
     
@@ -200,11 +200,10 @@ extension MainViewController: RWKSwipeableViewDelegate {
         }) { (complete) in
             
             self.reset(swipeableView: swipeableView, inSuperview: superview)
-            self.imageFor(imageView: self.imageView, with: self.users, imageIndex: &self.imageIndex)
-            self.backgroundImageView.image = self.users[self.backgroundimageIndex].profilePic
+            self.updateUIElements()
+            
             guard let swipeableView = swipeableView as? RWKSwipeableView, let currentUser = AuthenticationController.currentUser else { return }
             MatchController.add(currentUser: currentUser, toLikelistOf: swipeableView.user!)
-            
         }
     }
     
@@ -216,8 +215,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: -90))
         }) { (complete) in
             self.reset(swipeableView: swipeableView, inSuperview: superview)
-            self.imageFor(imageView: self.imageView, with: self.users, imageIndex: &self.imageIndex)
-            self.backgroundImageView.image = self.users[self.backgroundimageIndex].profilePic
+            self.updateUIElements()
         }
     }
     
@@ -237,10 +235,10 @@ extension MainViewController: RWKSwipeableViewDelegate {
         inSuperview.addConstraints(constraints)
         
         swipeableView.transform = CGAffineTransform(rotationAngle: 0.0)
+        
         guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
         let newUser = users[imageIndex]
         swipeableView.user = newUser
-        updateLabelsWith(user: newUser)
     }
     
     func degreesToRadians(degree: Double) -> CGFloat {

@@ -132,7 +132,7 @@ class FirebaseController {
                     
                     group.notify(queue: DispatchQueue.main, execute: {
                         // Dismiss the alertController here.
-                        self.users = testUsers
+                        self.users = testUsers.filter({$0 != AuthenticationController.currentUser})
                         completion?(users)
                     })
                 }
@@ -189,13 +189,12 @@ class FirebaseController {
     static func handleUserInformationScenariosFor(user: TestUser, hasAccount: Bool, hasPhoto: Bool, completion: @escaping () -> Void) {
         switch (hasAccount, hasPhoto) {
         case (true, true):
-            
-            // Pull information?
             completion()
         case (false, false):
             FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
                 FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
                     guard let image = image else { completion(); return }
+                    user.profilePic = image
                     FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
                         guard error != nil else { print(error?.localizedDescription); completion(); return }
                         completion()
@@ -213,6 +212,7 @@ class FirebaseController {
         case (true, false):
             FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
                 guard let image = image else { return }
+                user.profilePic = image
                 FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
                     guard error != nil else { print(error?.localizedDescription); completion(); return }
                     completion()
