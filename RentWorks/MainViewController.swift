@@ -33,8 +33,10 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
-    @IBOutlet weak var loadingLabel: UILabel!
     
+    var matchingUsersAlertController: UIAlertController?
+    
+    @IBOutlet weak var loadingLabel: UILabel!
     
     var imageIndex = 0 {
         didSet {
@@ -76,6 +78,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     func firebaseUsersWereUpdated() {
         self.users = FirebaseController.users
         dismissLoadingScreen()
+        
+        guard let matchingUsersAlertController = matchingUsersAlertController else { return }
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { (_) in
+            self.present(matchingUsersAlertController, animated: true, completion: nil)
+        }
     }
     
     // UserMatchingDelegate
@@ -96,9 +103,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             
             alertController.addAction(dismissAction)
-            Timer.scheduledTimer(withTimeInterval: 5, repeats: false, block: { (_) in
-                self.present(alertController, animated: true, completion: nil)
-            })
+            
+            self.matchingUsersAlertController = alertController
         })
     }
     

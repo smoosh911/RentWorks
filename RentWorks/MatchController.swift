@@ -8,28 +8,36 @@
 
 import Foundation
 import FirebaseDatabase
+import UIKit
 
 class MatchController {
     
     static weak var delegate: UserMatchingDelegate?
     
+    static var isObservingCurrentUserLikeEndpoint = false
+    
     static func observeLikesFor(user: TestUser) {
-        let userLikesRef = FirebaseController.likesRef.child(user.id)
-        
-        print(userLikesRef.url)
-        userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
-            print("Changes observed")
+        if isObservingCurrentUserLikeEndpoint != nil || isObservingCurrentUserLikeEndpoint == false {
+            let userLikesRef = FirebaseController.likesRef.child(user.id)
             
-            guard let likeDictionary = snapshot.value as? [String: Any] else { return }
+            print(userLikesRef.url)
             
-            print(likeDictionary)
-            checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: likeDictionary, completion: { (matchingIDArray) in
-                delegate?.currentUserDidMatchWith(IDsOf: matchingIDArray)
+            userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
+                print("Changes observed")
                 
-                // Do some stuff... Haha. Get the user information or something.
-                // May have to wipe the like endpoint when the information is retrieved here so that the alert doesn't always pop up saying they have the same matches.
+                guard let likeDictionary = snapshot.value as? [String: Any] else { return }
+                
+                print(likeDictionary)
+                checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: likeDictionary, completion: { (matchingIDArray) in
+                    delegate?.currentUserDidMatchWith(IDsOf: matchingIDArray)
+                    isObservingCurrentUserLikeEndpoint = true
+                    // Do some stuff... Haha. Get the user information or something.
+                    // May have to wipe the like endpoint when the information is retrieved here so that the alert doesn't always pop up saying they have the same matches.
+                })
             })
-        })
+        } else {
+            print("The app is already observing currentUser's endpoint")
+        }
     }
     
     static func add(currentUser: TestUser, toLikelistOf matchedUser: TestUser, completion: (() -> Void)? = nil) {
