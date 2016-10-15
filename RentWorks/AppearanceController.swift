@@ -25,6 +25,8 @@ class AppearanceController {
         
         navigationController?.presentTransparentNavigationBar()
     }
+    
+    static let customOrangeColor = UIColor(red: 0.961, green: 0.482, blue: 0.220, alpha: 1.00)
 }
 
 

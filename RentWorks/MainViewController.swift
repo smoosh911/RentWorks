@@ -21,6 +21,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var backgroundNameLabel: UILabel!
     @IBOutlet weak var backgroundAddressLabel: UILabel!
+    @IBOutlet weak var navigationBarView: UIView!
     
     var rotationAngle: CGFloat = 0.0
     var xFromCenter: CGFloat = 0.0
@@ -60,7 +61,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         super.viewDidLoad()
         
         setUpAndDisplayLoadingScreen()
-        
+        //        AppearanceController.appearanceFor(navigationController: self.navigationController)
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         FirebaseController.delegate = self
         MatchController.delegate = self
         swipeableView.delegate = self
@@ -94,6 +96,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             
             let unwrappedUsersArray = usersArray.flatMap({$0})
             
+            // WARNING: - This will change once the list of all users who have historically matched get a separate endpoint in Firebase.
+            MatchController.allMatches = unwrappedUsersArray
+            
+            
+            
             let usersString = unwrappedUsersArray.flatMap({$0.name}).joined(separator: ", ")
             
             let message = unwrappedUsersArray.count == 1 ? "\(unwrappedUsersArray[0].name) has matched with you!" : "\(usersString) have all matched with you!"
@@ -103,8 +110,10 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             
             alertController.addAction(dismissAction)
+            alertController.view.tintColor = AppearanceController.customOrangeColor
             
             self.matchingUsersAlertController = alertController
+            FirebaseController.downloadAndAddProfileImages(forUsers: unwrappedUsersArray, completion: nil)
         })
     }
     
@@ -137,7 +146,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         
         guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator, let loadingLabel = self.loadingLabel else { return }
         loadingLabel.isHidden = false
-        loadingView.backgroundColor = UIColor(red: 0.961, green: 0.482, blue: 0.220, alpha: 1.00)
+        loadingView.backgroundColor = AppearanceController.customOrangeColor
         loadingActivityIndicator.activityIndicatorViewStyle = .whiteLarge
         
         loadingView.addSubview(loadingActivityIndicator)
@@ -226,7 +235,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
         swipeableView.removeFromSuperview()
         inSuperview.addSubview(swipeableView)
         inSuperview.addConstraints(constraints)
-        
+        self.view.bringSubview(toFront: self.navigationBarView)
         swipeableView.transform = CGAffineTransform(rotationAngle: 0.0)
         
         guard let swipeableView = swipeableView as? RWKSwipeableView else { return }

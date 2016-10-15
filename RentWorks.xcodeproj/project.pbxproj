@@ -32,6 +32,8 @@
 		46600CA41DA2F9C400A7FB4B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600CA11DA2F9C400A7FB4B /* Bolts.framework */; };
 		466E22F51DB0692900E592F0 /* LandlordOrUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466E22F41DB0692900E592F0 /* LandlordOrUserViewController.swift */; };
 		467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */; };
+		467A49D01DB1F0AD001A0A12 /* MatchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A49CF1DB1F0AD001A0A12 /* MatchTableViewCell.swift */; };
+		467A49D21DB1F2E0001A0A12 /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */; };
 		468828CC1DA996730011985F /* MatchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468828CB1DA996730011985F /* MatchController.swift */; };
 		468828CE1DAAFD110011985F /* FacebookRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468828CD1DAAFD110011985F /* FacebookRequestController.swift */; };
 		468828D01DAAFDF00011985F /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468828CF1DAAFDF00011985F /* ImageController.swift */; };
@@ -89,6 +91,8 @@
 		466497D91DA6A7F400BA249A /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		466E22F41DB0692900E592F0 /* LandlordOrUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordOrUserViewController.swift; sourceTree = "<group>"; };
 		467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
+		467A49CF1DB1F0AD001A0A12 /* MatchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchTableViewCell.swift; sourceTree = "<group>"; };
+		467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchesViewController.swift; sourceTree = "<group>"; };
 		468828CB1DA996730011985F /* MatchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchController.swift; sourceTree = "<group>"; };
 		468828CD1DAAFD110011985F /* FacebookRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookRequestController.swift; sourceTree = "<group>"; };
 		468828CF1DAAFDF00011985F /* ImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
@@ -223,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				C73E10881D8E417D008E475F /* MainViewController.swift */,
+				467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */,
 				46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */,
 				468828CF1DAAFDF00011985F /* ImageController.swift */,
 				468828D11DAAFE350011985F /* NetworkController.swift */,
@@ -254,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				4695192C1DAD759500FF5891 /* RWKSwipeableView.swift */,
+				467A49CF1DB1F0AD001A0A12 /* MatchTableViewCell.swift */,
 				4602B09A1DB13CE400908D00 /* UIVIewIBDesignable.swift */,
 				C73E108A1D8E417D008E475F /* Main.storyboard */,
 				C73E10921D8E417D008E475F /* LaunchScreen.storyboard */,
@@ -570,6 +576,7 @@
 				467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */,
 				465E96921DA981E1000B36AF /* FirebaseController.swift in Sources */,
 				4602B09B1DB13CE400908D00 /* UIVIewIBDesignable.swift in Sources */,
+				467A49D21DB1F2E0001A0A12 /* MatchesViewController.swift in Sources */,
 				468828CE1DAAFD110011985F /* FacebookRequestController.swift in Sources */,
 				C73E10891D8E417D008E475F /* MainViewController.swift in Sources */,
 				4698FE231DB030AF00AD65E5 /* AppearanceController.swift in Sources */,
@@ -580,6 +587,7 @@
 				4695192D1DAD759500FF5891 /* RWKSwipeableView.swift in Sources */,
 				465E96901DA980FD000B36AF /* AuthenticationController.swift in Sources */,
 				46600C9E1DA2F91600A7FB4B /* LoginViewController.swift in Sources */,
+				467A49D01DB1F0AD001A0A12 /* MatchTableViewCell.swift in Sources */,
 				466E22F51DB0692900E592F0 /* LandlordOrUserViewController.swift in Sources */,
 				C73E10871D8E417D008E475F /* AppDelegate.swift in Sources */,
 				468828D01DAAFDF00011985F /* ImageController.swift in Sources */,

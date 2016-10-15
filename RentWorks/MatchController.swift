@@ -16,6 +16,8 @@ class MatchController {
     
     static var isObservingCurrentUserLikeEndpoint = false
     
+    static var allMatches: [TestUser] = []
+    
     static func observeLikesFor(user: TestUser) {
         if isObservingCurrentUserLikeEndpoint != nil || isObservingCurrentUserLikeEndpoint == false {
             let userLikesRef = FirebaseController.likesRef.child(user.id)
@@ -69,7 +71,6 @@ class MatchController {
         }
         
         group.notify(queue: DispatchQueue.main) {
-            
             completion(matchingUsersIDArray)
         }
     }

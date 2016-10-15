@@ -84,6 +84,26 @@ class FirebaseController {
         }
     }
     
+    static func downloadAndAddProfileImages(forUsers users: [TestUser], completion: (() -> Void)? = nil) {
+        
+        let group = DispatchGroup()
+        
+        for user in users {
+            group.enter()
+            downloadProfileImage(forUser: user, completion: { (image) in
+                guard let image = image else { group.leave(); return }
+                user.profilePic = image
+                group.leave()
+            })
+        }
+        
+        
+        group.notify(queue: DispatchQueue.main) { 
+            completion?()
+        }
+        
+    }
+    
     //    static func downloadProfileImageFor(id: String, completion: @escaping (UIImage?) -> Void) {
     //
     //        let profileImageRef = profileImagesRef.child("\(id).jpg")
