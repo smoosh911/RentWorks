@@ -38,7 +38,7 @@ class AuthenticationController {
         }
     }
     
-    static func getCurrentUser() {
+    static func getCurrentUser(completion: ((_ success: Bool) -> Void)? = nil) {
         checkFirebaseLoginStatus { (loggedIn) in
             if loggedIn {
                 FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
@@ -48,6 +48,7 @@ class AuthenticationController {
                             if hasPhoto {
                                 self.currentUser = currentUser
                                 MatchController.observeLikesFor(user: currentUser)
+                                completion?(true)
                             }
                             
                         })
@@ -55,6 +56,7 @@ class AuthenticationController {
                 })
             } else {
                 NSLog("Not logged into Firebase. Unable to pull current user's information.")
+                completion?(false)
             }
         }
     }

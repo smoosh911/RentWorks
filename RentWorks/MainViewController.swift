@@ -34,11 +34,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
-    var loadingViewHasBeenDismissed = false {
-        didSet {
-            print("Did set boolean to true")
-        }
-    }
+    var loadingViewHasBeenDismissed = false
     
     var matchingUsersAlertController: UIAlertController?
     
@@ -48,28 +44,19 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     var backgroundimageIndex: Int {
         return imageIndex + 1 <= users.count - 1 ? imageIndex + 1 : 0
     }
+    
     var users: [TestUser] = []
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpAndDisplayLoadingScreen()
-        //        AppearanceController.appearanceFor(navigationController: self.navigationController)
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         FirebaseController.delegate = self
         MatchController.delegate = self
         swipeableView.delegate = self
-        
-        swipeableView.layer.cornerRadius = 15
-        imageView.layer.cornerRadius = 15
-        //        swipeableView.layer.masksToBounds = true
-        
-        backgroundImageView.layer.cornerRadius = 15
-        backgroundView.layer.cornerRadius = 15
-        //        backgroundView.layer.masksToBounds = true
-        
+        setupViews()
+              
         if AuthenticationController.currentUser == nil {
             AuthenticationController.getCurrentUser()
         }
@@ -83,6 +70,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     func firebaseUsersWereUpdated() {
         self.users = FirebaseController.users.reversed()
         dismissLoadingScreen()
+        updateUIElements()
     }
     
     // MARK: - UserMatchingDelegate
@@ -123,9 +111,10 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
                     
                     self.matchingUsersAlertController = alertController
                     FirebaseController.downloadAndAddProfileImages(forUsers: unwrappedUsersArray, completion: nil)
-                    
+                    if !alertController.isBeingPresented {
                     self.present(alertController, animated: true, completion: nil)
                     print("Did present matchAlert")
+                    }
                 })
             }
         } else {
@@ -158,6 +147,15 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         }
     }
     
+    func setupViews() {
+        
+        swipeableView.layer.cornerRadius = 15
+        imageView.layer.cornerRadius = 15
+        
+        backgroundImageView.layer.cornerRadius = 15
+        backgroundView.layer.cornerRadius = 15
+    }
+    
     func setUpAndDisplayLoadingScreen() {
         self.loadingView = UIView(frame: self.view.frame)
         self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
@@ -170,8 +168,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         loadingView.addSubview(loadingActivityIndicator)
         loadingView.addSubview(loadingLabel)
         self.view.addSubview(loadingView)
-        
-        
         
         let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
         let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
@@ -229,7 +225,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
     }
     
     func leftAnimationFor(swipeableView: UIView, inSuperview superview: UIView) {
-        let finishPoint = CGPoint(x: CGFloat(-700), y: superview.center.y - 100)
+        let finishPoint = CGPoint(x: CGFloat(-750), y: superview.center.y - 100)
         UIView.animate(withDuration: 0.7, animations: {
             swipeableView.center = finishPoint
             

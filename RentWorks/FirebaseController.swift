@@ -154,6 +154,7 @@ class FirebaseController {
                         // Dismiss the alertController here.
                         self.users = testUsers.filter({$0 != AuthenticationController.currentUser})
                         completion?(users)
+                        
                     })
                 }
             } else {

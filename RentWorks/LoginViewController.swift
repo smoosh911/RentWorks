@@ -18,7 +18,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     
     let facebookLoginButton = FBSDKLoginButton()
-    let loginManager = FBSDKLoginManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,20 +39,11 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         
-        AuthenticationController.attemptToSignInToFirebase { (success) in
+        AuthenticationController.getCurrentUser { (success) in
             if success {
-                FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (dict) in
-                    guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict as [String : Any]) else { return }
-                    
-                    FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
-                        FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
-                            // Do stuff like segue to the next VC?
-                        })
-                    })
-                })
-            } else {
+                guard let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "mainVC") as? UINavigationController else { return }
                 
-                print("Unsuccessful log in.")
+                self.present(mainVC, animated: true, completion: nil)
             }
         }
     }

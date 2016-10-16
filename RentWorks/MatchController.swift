@@ -19,7 +19,7 @@ class MatchController {
     static var allMatches: [TestUser] = []
     
     static func observeLikesFor(user: TestUser) {
-        if isObservingCurrentUserLikeEndpoint != nil || isObservingCurrentUserLikeEndpoint == false {
+        if isObservingCurrentUserLikeEndpoint == false {
             let userLikesRef = FirebaseController.likesRef.child(user.id)
             
             print(userLikesRef.url)
