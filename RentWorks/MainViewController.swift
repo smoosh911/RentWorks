@@ -10,7 +10,7 @@ import UIKit
 
 class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDelegate {
     
-    // Properties
+    // MARK: - Properties
     
     @IBOutlet weak var swipeableView: RWKSwipeableView!
     @IBOutlet weak var imageView: UIImageView!
@@ -34,28 +34,23 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
+    var loadingViewHasBeenDismissed = false {
+        didSet {
+            print("Did set boolean to true")
+        }
+    }
     
     var matchingUsersAlertController: UIAlertController?
     
     @IBOutlet weak var loadingLabel: UILabel!
     
-    var imageIndex = 0 {
-        didSet {
-            print("imageIndex: \(imageIndex)")
-        }
-    }
-    
-    var users: [TestUser] = [] {
-        didSet {
-            updateUIElements()
-        }
-    }
-    
+    var imageIndex = 0
     var backgroundimageIndex: Int {
-        let bgIndex = imageIndex + 1 <= users.count - 1 ? imageIndex + 1 : 0
-        print("bgIndex: \(bgIndex)")
-        return bgIndex
+        return imageIndex + 1 <= users.count - 1 ? imageIndex + 1 : 0
     }
+    var users: [TestUser] = []
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +62,14 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         MatchController.delegate = self
         swipeableView.delegate = self
         
+        swipeableView.layer.cornerRadius = 15
+        imageView.layer.cornerRadius = 15
+        //        swipeableView.layer.masksToBounds = true
+        
+        backgroundImageView.layer.cornerRadius = 15
+        backgroundView.layer.cornerRadius = 15
+        //        backgroundView.layer.masksToBounds = true
+        
         if AuthenticationController.currentUser == nil {
             AuthenticationController.getCurrentUser()
         }
@@ -75,50 +78,65 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     }
     
     
-    // FirebaseUserDelegate
+    // MARK: - FirebaseUserDelegate
     
     func firebaseUsersWereUpdated() {
-        self.users = FirebaseController.users
+        self.users = FirebaseController.users.reversed()
         dismissLoadingScreen()
-        
-        guard let matchingUsersAlertController = matchingUsersAlertController else { return }
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { (_) in
-            self.present(matchingUsersAlertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - UserMatchingDelegate
+    
+    func currentUserDidMatchWith(IDsOf users: [String]) {
+        presentMatchAlertController(for: users)
+    }
+    
+    func presentMatchAlertController(for userIDs: [String]?) {
+        if loadingViewHasBeenDismissed == true {
+            if let matchingUsersAlertController = self.matchingUsersAlertController {
+                present(matchingUsersAlertController, animated: true, completion: nil)
+            } else {
+                guard let userIDs = userIDs else { return }
+                FirebaseController.fetchUsersFor(userIDs: userIDs, completion: { (usersArray) in
+                    guard usersArray.count > 0 else { return }
+                    
+                    let unwrappedUsersArray = usersArray.flatMap({$0})
+                    
+                    // WARNING: - This will change once the list of all users who have historically matched get a separate endpoint in Firebase.
+                    MatchController.allMatches = unwrappedUsersArray
+                    
+                    let usersString = unwrappedUsersArray.flatMap({$0.name}).joined(separator: ", ")
+                    
+                    let message = unwrappedUsersArray.count == 1 ? "\(unwrappedUsersArray[0].name) has matched with you!" : "\(usersString) have all matched with you!"
+                    let title = unwrappedUsersArray.count == 1 ? "You have a new match!" : "You have new matches!"
+                    
+                    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+                    let showMatchVCAction = UIAlertAction(title: "Take me to my matches", style: .default, handler: { (_) in
+                        self.performSegue(withIdentifier: "toMatchesVC", sender: self)
+                    })
+                    
+                    alertController.addAction(dismissAction)
+                    alertController.addAction(showMatchVCAction)
+                    
+                    alertController.view.tintColor = AppearanceController.customOrangeColor
+                    
+                    self.matchingUsersAlertController = alertController
+                    FirebaseController.downloadAndAddProfileImages(forUsers: unwrappedUsersArray, completion: nil)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                    print("Did present matchAlert")
+                })
+            }
+        } else {
+            Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { (_) in
+                self.presentMatchAlertController(for: userIDs)
+            })
         }
     }
     
-    // UserMatchingDelegate
     
-    func currentUserDidMatchWith(IDsOf users: [String]) {
-        
-        FirebaseController.fetchUsersFor(userIDs: users, completion: { (usersArray) in
-            guard usersArray.count > 0 else { return }
-            
-            let unwrappedUsersArray = usersArray.flatMap({$0})
-            
-            // WARNING: - This will change once the list of all users who have historically matched get a separate endpoint in Firebase.
-            MatchController.allMatches = unwrappedUsersArray
-            
-            
-            
-            let usersString = unwrappedUsersArray.flatMap({$0.name}).joined(separator: ", ")
-            
-            let message = unwrappedUsersArray.count == 1 ? "\(unwrappedUsersArray[0].name) has matched with you!" : "\(usersString) have all matched with you!"
-            let title = unwrappedUsersArray.count == 1 ? "You have a new match!" : "You have new matches!"
-            
-            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-            
-            alertController.addAction(dismissAction)
-            alertController.view.tintColor = AppearanceController.customOrangeColor
-            
-            self.matchingUsersAlertController = alertController
-            FirebaseController.downloadAndAddProfileImages(forUsers: unwrappedUsersArray, completion: nil)
-        })
-    }
-    
-    
-    // UI Related
+    // MARK: - UI Related
     
     func updateUIElements() {
         let user = users[imageIndex]
@@ -175,11 +193,12 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             self.loadingActivityIndicator?.removeFromSuperview()
             self.loadingView?.removeFromSuperview()
             self.loadingLabel.removeFromSuperview()
+            self.loadingViewHasBeenDismissed = true
         }
     }
 }
 
-// RWKSwipeableViewDelegate
+// MARK: - RWKSwipeableViewDelegate
 
 extension MainViewController: RWKSwipeableViewDelegate {
     
@@ -195,7 +214,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
     }
     
     func rightAnimationFor(swipeableView: UIView, inSuperview superview: UIView) {
-        let finishPoint = CGPoint(x: CGFloat(700), y: superview.center.y - 100)
+        let finishPoint = CGPoint(x: CGFloat(750), y: superview.center.y - 100)
         UIView.animate(withDuration: 0.7, animations: {
             swipeableView.center = finishPoint
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: 90))

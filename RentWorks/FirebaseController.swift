@@ -77,7 +77,7 @@ class FirebaseController {
         
         let profileImageRef = profileImagesRef.child(user.id)
         
-        profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
+        profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (data, error) in
             if error != nil { print(error?.localizedDescription) }
             guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
             completion(image)
@@ -279,7 +279,7 @@ class FirebaseController {
     static func storeMock(profileImage: UIImage, forUser userID: String, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
         
         let profileImageRef = profileImagesRef.child(userID)
-        guard let imageData = UIImageJPEGRepresentation(profileImage, 1.0) else { return }
+        guard let imageData = UIImageJPEGRepresentation(profileImage, 0.3) else { return }
         
         let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
         

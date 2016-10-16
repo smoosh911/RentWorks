@@ -17,7 +17,7 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
-        self.navigationController?.popViewController(animated: true)
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     

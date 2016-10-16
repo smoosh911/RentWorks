@@ -12,8 +12,5 @@ class LandlordOrUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        AppearanceController.appearanceFor(navigationController: self.navigationController)
-        FirebaseController.createAddressesForMockUsers()
     }
 }
