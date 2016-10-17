@@ -16,6 +16,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var rentMatchLabel: UILabel!
     
     let facebookLoginButton = FBSDKLoginButton()
     

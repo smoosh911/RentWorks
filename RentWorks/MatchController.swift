@@ -20,6 +20,7 @@ class MatchController {
     
     static func observeLikesFor(user: TestUser) {
         if isObservingCurrentUserLikeEndpoint == false {
+            isObservingCurrentUserLikeEndpoint = true
             let userLikesRef = FirebaseController.likesRef.child(user.id)
             
             print(userLikesRef.url)
@@ -27,12 +28,11 @@ class MatchController {
             userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
                 print("Changes observed")
                 
-                guard let likeDictionary = snapshot.value as? [String: Any] else { return }
+                guard let likeDictionary = snapshot.value as? [String: Any] else { isObservingCurrentUserLikeEndpoint = false; return }
                 
                 print(likeDictionary)
                 checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: likeDictionary, completion: { (matchingIDArray) in
                     delegate?.currentUserDidMatchWith(IDsOf: matchingIDArray)
-                    isObservingCurrentUserLikeEndpoint = true
                     // Do some stuff... Haha. Get the user information or something.
                     // May have to wipe the like endpoint when the information is retrieved here so that the alert doesn't always pop up saying they have the same matches.
                 })
