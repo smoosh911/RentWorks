@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="qb0-tH-hUM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qq3-1I-Axi">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -386,6 +386,9 @@
                             <constraint firstItem="UmN-CQ-izF" firstAttribute="top" secondItem="hpx-l4-dRJ" secondAttribute="bottom" constant="-23" id="qhv-Kz-Rvi"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="UmN-CQ-izF" id="wGM-gm-WrX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Af1-Wl-TQ5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

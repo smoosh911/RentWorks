@@ -14,9 +14,10 @@ import FirebaseStorage
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var rentMatchLabel: UILabel!
+    
+    var loadingView: UIView?
+    var loadingActivityIndicator: UIActivityIndicatorView?
     
     let facebookLoginButton = FBSDKLoginButton()
     
@@ -39,11 +40,11 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
-        
+        setUpAndDisplayLoadingScreen()
         AuthenticationController.getCurrentUser { (success) in
             if success == true {
                 guard let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "mainVC") else { return }
-                
+                self.dismissLoadingScreen()
                 self.present(mainVC, animated: true, completion: nil)
             }
         }
@@ -57,6 +58,39 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         return true
     }
+    
+    func setUpAndDisplayLoadingScreen() {
+        self.loadingView = UIView(frame: self.view.frame)
+        self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
+        
+        guard let loadingView = self.loadingView, let loadingActivityIndicator = self.loadingActivityIndicator else { return }
+        
+        loadingView.backgroundColor = UIColor.gray
+        loadingView.alpha = 0.3
+        loadingActivityIndicator.activityIndicatorViewStyle = .whiteLarge
+        
+        self.view.addSubview(loadingView)
+        self.view.addSubview(loadingActivityIndicator)
+        
+        let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
+        let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
+        
+        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint])
+        
+        loadingActivityIndicator.startAnimating()
+    }
+    
+    func dismissLoadingScreen() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingActivityIndicator?.alpha = 0
+            self.loadingActivityIndicator?.stopAnimating()
+            self.loadingView?.alpha = 0
+        }) { (_) in
+            self.loadingActivityIndicator?.removeFromSuperview()
+            self.loadingView?.removeFromSuperview()
+        }
+    }
+    
     
     func constraintsForFacebookLoginButton() {
         facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false

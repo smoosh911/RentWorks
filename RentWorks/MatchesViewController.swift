@@ -8,12 +8,30 @@
 
 import UIKit
 
-class MatchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MatchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UserMatchingDelegate {
+    
+    @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        MatchController.delegate = self
         // Do any additional setup after loading the view.
+    }
+    
+    func currentUserDidMatchWith(IDsOf users: [String]) {
+        
+        var usersArray: [TestUser] = []
+        
+        for id in users {
+            let user = FirebaseController.users.filter({$0.id == id})
+            guard let unwrappedUser = user.first else { return }
+            usersArray.append(unwrappedUser)
+        }
+        
+        MatchController.allMatches = usersArray
+
+        self.tableView.reloadData()
+        
     }
     
     @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
