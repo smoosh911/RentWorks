@@ -41,8 +41,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         
         AuthenticationController.getCurrentUser { (success) in
-            if success {
-                guard let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "mainVC") as? UINavigationController else { return }
+            if success == true {
+                guard let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "mainVC") else { return }
                 
                 self.present(mainVC, animated: true, completion: nil)
             }

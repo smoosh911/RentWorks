@@ -39,6 +39,7 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 122
     }
+    
     /*
     // MARK: - Navigation
 

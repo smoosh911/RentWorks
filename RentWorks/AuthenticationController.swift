@@ -48,13 +48,21 @@ class AuthenticationController {
                             if hasPhoto {
                                 self.currentUser = currentUser
                                 MatchController.observeLikesFor(user: currentUser)
-                                completion?(true)
+                                if let completion = completion {
+                                    completion(true)
+                                }
+                                
                             }
                             
                         })
                     })
                 })
             } else {
+                AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
+                    if success {
+                        getCurrentUser(completion: completion)
+                    }
+                })
                 NSLog("Not logged into Firebase. Unable to pull current user's information.")
                 completion?(false)
             }

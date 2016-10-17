@@ -56,7 +56,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         MatchController.delegate = self
         swipeableView.delegate = self
         setupViews()
-              
+        
         if AuthenticationController.currentUser == nil {
             AuthenticationController.getCurrentUser()
         }
@@ -85,37 +85,41 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
                 present(matchingUsersAlertController, animated: true, completion: nil)
             } else {
                 guard let userIDs = userIDs else { return }
-                FirebaseController.fetchUsersFor(userIDs: userIDs, completion: { (usersArray) in
-                    guard usersArray.count > 0 else { return }
-                    
-                    let unwrappedUsersArray = usersArray.flatMap({$0})
-                    
-                    // WARNING: - This will change once the list of all users who have historically matched get a separate endpoint in Firebase.
-                    MatchController.allMatches = unwrappedUsersArray
-                    
-                    let usersString = unwrappedUsersArray.flatMap({$0.name}).joined(separator: ", ")
-                    
-                    let message = unwrappedUsersArray.count == 1 ? "\(unwrappedUsersArray[0].name) has matched with you!" : "\(usersString) have all matched with you!"
-                    let title = unwrappedUsersArray.count == 1 ? "You have a new match!" : "You have new matches!"
-                    
-                    let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-                    let showMatchVCAction = UIAlertAction(title: "Take me to my matches", style: .default, handler: { (_) in
-                        self.performSegue(withIdentifier: "toMatchesVC", sender: self)
-                    })
-                    
-                    alertController.addAction(dismissAction)
-                    alertController.addAction(showMatchVCAction)
-                    
-                    alertController.view.tintColor = AppearanceController.customOrangeColor
-                    
-                    self.matchingUsersAlertController = alertController
-                    FirebaseController.downloadAndAddProfileImages(forUsers: unwrappedUsersArray, completion: nil)
-                    if !alertController.isBeingPresented {
+                
+                var usersArray: [TestUser] = []
+                
+                for id in userIDs {
+                    let user = FirebaseController.users.filter({$0.id == id})
+                    guard let unwrappedUser = user.first else { return }
+                    usersArray.append(unwrappedUser)
+                }
+                
+                // WARNING: - This will change once the list of all users who have historically matched get a separate endpoint in Firebase.
+                MatchController.allMatches = usersArray
+                
+                let usersString = usersArray.flatMap({$0.name}).joined(separator: ", ")
+                
+                let message = usersArray.count == 1 ? "\(usersArray[0].name) has matched with you!" : "\(usersString) have all matched with you!"
+                let title = usersArray.count == 1 ? "You have a new match!" : "You have new matches!"
+                
+                let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+                let showMatchVCAction = UIAlertAction(title: "Take me to my matches", style: .default, handler: { (_) in
+                    self.performSegue(withIdentifier: "toMatchesVC", sender: self)
+                })
+                
+                alertController.addAction(dismissAction)
+                alertController.addAction(showMatchVCAction)
+                
+                alertController.view.tintColor = AppearanceController.customOrangeColor
+                
+                self.matchingUsersAlertController = alertController
+                FirebaseController.downloadAndAddProfileImages(forUsers: usersArray, completion: nil)
+                if !alertController.isBeingPresented {
                     self.present(alertController, animated: true, completion: nil)
                     print("Did present matchAlert")
-                    }
-                })
+                }
+                
             }
         } else {
             Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { (_) in
@@ -169,13 +173,17 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         loadingView.addSubview(loadingLabel)
         self.view.addSubview(loadingView)
         
+        loadingLabel.minimumScaleFactor = 0.5
+        
         let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
         let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
         let centerXLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
         let bottomLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .bottom, relatedBy: .equal, toItem: self.loadingActivityIndicator, attribute: .top, multiplier: 1, constant: -25)
+        let leadingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 20)
+        let trailingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -20)
         
-        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint, centerXLoadingLabelConstraint,
-                                  bottomLoadingLabelConstraint])
+        
+        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint, centerXLoadingLabelConstraint, bottomLoadingLabelConstraint, leadingLoadingLabelConstraint, trailingLoadingLabelConstraint])
         
         loadingActivityIndicator.startAnimating()
     }
