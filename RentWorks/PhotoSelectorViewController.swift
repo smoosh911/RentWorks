@@ -13,59 +13,17 @@ class PhotoSelectorViewController: UIViewController, UIImagePickerControllerDele
     
     // MARK: Actions
     
-    @IBOutlet weak var selectPhotoButton: UIButton!
-    @IBOutlet weak var selectedImageView: UIImageView!
+    @IBOutlet var selectPhotoButton: UIButton!
+    @IBOutlet var selectedImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViews()
-        
-    }
-    
-    func setupViews() {
-        self.selectPhotoButton = UIButton(frame: self.view.frame)
-        self.selectedImageView = UIImageView(frame: self.view.frame )
-        guard let selectPhotoButton = self.selectPhotoButton, let selectedImageView = selectedImageView else { return }
-        selectPhotoButton.setTitle("Add Photo", for: .normal)
-        selectPhotoButton.tintColor = .white
-        selectPhotoButton.addTarget(self, action: #selector(selectPhotoButtonTapped), for: .touchUpInside)
-        
-        selectedImageView.contentMode = .scaleAspectFill
         selectedImageView.clipsToBounds = true
-        
-        self.view.addSubview(selectedImageView)
-        self.view.addSubview(selectPhotoButton)
-        self.view.bringSubview(toFront: selectPhotoButton)
-        
+        selectedImageView.layer.cornerRadius = 10
+        self.view.layer.cornerRadius = 10
     }
     
-    func checkPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
-        let status = PHPhotoLibrary.authorizationStatus()
-        switch status {
-        case .authorized:
-            completion(true)
-        case .denied:
-            completion(false)
-        case .restricted :
-            completion(false)
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization() { status in
-                switch status {
-                case .authorized:
-                    completion(true)
-                case .denied, .restricted:
-                    completion(false)
-                default:
-                    completion(false)
-                    break
-                }
-            }
-        }
-    }
-    
-    func selectPhotoButtonTapped() {
-        
-        
+    @IBAction func selectPhotoButtonTapped(_ sender: AnyObject) {
         checkPhotoLibraryPermission { (success) in
             if success {
                 let imagePicker = UIImagePickerController()
@@ -95,6 +53,30 @@ class PhotoSelectorViewController: UIViewController, UIImagePickerControllerDele
                 
                 self.present(alert, animated: true, completion: nil)
                 
+            }
+        }
+    }
+    
+    func checkPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .authorized:
+            completion(true)
+        case .denied:
+            completion(false)
+        case .restricted :
+            completion(false)
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization() { status in
+                switch status {
+                case .authorized:
+                    completion(true)
+                case .denied, .restricted:
+                    completion(false)
+                default:
+                    completion(false)
+                    break
+                }
             }
         }
     }

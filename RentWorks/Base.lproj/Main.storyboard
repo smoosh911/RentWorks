@@ -1819,11 +1819,15 @@ located?</string>
                         <rect key="frame" x="0.0" y="0.0" width="154" height="154"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JpN-5q-Gt1"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JpN-5q-Gt1"/>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bs8-Zu-DmX">
-                                <state key="normal" title="Button">
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                <state key="normal" title="Add Photo">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="selectPhotoButtonTapped:" destination="ROz-cv-0cy" eventType="touchUpInside" id="Yb2-su-JNd"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.96771162749999995" green="0.63326747360000002" blue="0.35092612750000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1859,11 +1863,15 @@ located?</string>
                         <rect key="frame" x="0.0" y="0.0" width="154" height="154"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="G7f-Qh-XKM"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="G7f-Qh-XKM"/>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tsO-Y4-gxY">
-                                <state key="normal" title="Button">
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                <state key="normal" title="Add Photo">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="selectPhotoButtonTapped:" destination="M2b-pJ-PGn" eventType="touchUpInside" id="1Ji-W4-hvm"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.96771162749999995" green="0.63326747360000002" blue="0.35092612750000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1899,11 +1907,15 @@ located?</string>
                         <rect key="frame" x="0.0" y="0.0" width="154" height="154"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qiD-FG-LHQ"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qiD-FG-LHQ"/>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfF-cL-QZV">
-                                <state key="normal" title="Button">
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                <state key="normal" title="Add Photo">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="selectPhotoButtonTapped:" destination="JSC-Xu-8xY" eventType="touchUpInside" id="yLk-Mt-mch"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.96771162749999995" green="0.63326747360000002" blue="0.35092612750000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1935,11 +1947,15 @@ located?</string>
                         <rect key="frame" x="0.0" y="0.0" width="154" height="154"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VUA-FG-aCg"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VUA-FG-aCg"/>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ddf-2q-gAO">
-                                <state key="normal" title="Button">
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                <state key="normal" title="Add Photo">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="selectPhotoButtonTapped:" destination="vNK-8q-yyu" eventType="touchUpInside" id="SFu-Dz-B4p"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.96771162749999995" green="0.63326747360000002" blue="0.35092612750000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
