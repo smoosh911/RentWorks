@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="16A323" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Landlord" parentEntity="User" syncable="YES">
+    <entity name="Landlord" representedClassName="Landlord" parentEntity="User" syncable="YES" codeGenerationType="class">
+        <relationship name="property" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Property" inverseName="landlord" inverseEntity="Property" syncable="YES"/>
+    </entity>
+    <entity name="ProfileImage" representedClassName="ProfileImage" syncable="YES" codeGenerationType="class">
+        <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="property" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="profileImages" inverseEntity="Property" syncable="YES"/>
+        <relationship name="renter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Renter" inverseName="profileImages" inverseEntity="Renter" syncable="YES"/>
+    </entity>
+    <entity name="Property" representedClassName="Property" syncable="YES" codeGenerationType="class">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="availableDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="bathroomCount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="bedroomCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="monthlyPayment" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="petFriendly" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="rentalHistoryRating" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rentalHistoryRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="smokingAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="like" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Like" inverseName="landlord" inverseEntity="Like" syncable="YES"/>
+        <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="landlord" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Landlord" inverseName="property" inverseEntity="Landlord" syncable="YES"/>
+        <relationship name="profileImages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ProfileImage" inverseName="property" inverseEntity="ProfileImage" syncable="YES"/>
     </entity>
-    <entity name="Like" syncable="YES">
-        <attribute name="didLike" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="ratedUUID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="raterUUID" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="landlord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Landlord" inverseName="like" inverseEntity="Landlord" syncable="YES"/>
-        <relationship name="renter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Renter" inverseName="like" inverseEntity="Renter" syncable="YES"/>
-    </entity>
-    <entity name="Renter" parentEntity="User" syncable="YES">
-        <attribute name="adultCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="childrenCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+    <entity name="Renter" representedClassName="Renter" parentEntity="User" syncable="YES" codeGenerationType="class">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creditRating" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="maritalStatus" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="like" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Like" inverseName="renter" inverseEntity="Like" syncable="YES"/>
+        <relationship name="profileImages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ProfileImage" inverseName="renter" inverseEntity="ProfileImage" syncable="YES"/>
     </entity>
-    <entity name="TestUser" syncable="YES">
-        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-    </entity>
-    <entity name="User" syncable="YES">
-        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
         <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="profileImageEndpoint" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Landlord" positionX="270" positionY="162" width="128" height="148"/>
-        <element name="Like" positionX="-0" positionY="171" width="128" height="118"/>
-        <element name="Renter" positionX="-254" positionY="174" width="128" height="118"/>
-        <element name="TestUser" positionX="-54" positionY="-63" width="128" height="75"/>
-        <element name="User" positionX="7" positionY="-204" width="128" height="150"/>
+        <element name="Landlord" positionX="225" positionY="189" width="128" height="58"/>
+        <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="105"/>
+        <element name="Property" positionX="223" positionY="324" width="128" height="28"/>
+        <element name="Renter" positionX="-254" positionY="174" width="128" height="28"/>
+        <element name="User" positionX="-2" positionY="-52" width="128" height="133"/>
     </elements>
 </model>
