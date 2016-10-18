@@ -31,6 +31,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         self.view.addSubview(facebookLoginButton)
         
         AppearanceController.appearanceFor(navigationController: self.navigationController)
+        self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
 
         constraintsForFacebookLoginButton()
     }

@@ -8,14 +8,38 @@
 
 import UIKit
 
-class LandlordAddressViewController: UIViewController {
+class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var zipCodeTextField: UITextField!
     @IBOutlet weak var addressTextField: UITextField!
+    @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        zipCodeTextField.delegate = self
+        addressTextField.delegate = self
+        
         self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
+        AppearanceController.appearanceFor(navigationController: self.navigationController)
     }
+    
+    @IBAction func nextButtonTapped(_ sender: AnyObject) {
+        
+        if zipCodeTextField.text != "" && addressTextField.text != "" {
+            guard let address = addressTextField.text, let zipCode = zipCodeTextField.text else { return }
+            UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kAddress : address])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kZipCode: zipCode])
+            
+            self.performSegue(withIdentifier: "toLandlordBedroomVC", sender: self)
+        } else {
+            let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address please!", preferredStyle: .alert)
+            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+            alert.addAction(dismissAction)
+            self.present(alert, animated: true, completion: nil)
+            
+        }
+    }
+    
 }
