@@ -59,9 +59,9 @@ class RenterBedroomViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kBedroomCount: "\(bedroomStepper.value)"])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kBedroomCount: "\(bedroomStepper.value)"])
         
-        UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kBathroomCount: "\(bathroomStepper.value)"])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kBathroomCount: "\(bathroomStepper.value)"])
         
     }
 }

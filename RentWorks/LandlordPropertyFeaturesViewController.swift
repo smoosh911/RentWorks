@@ -89,7 +89,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
 
         let featureString = features.joined(separator: ", ")
         
-        UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kPropertyFeatures: featureString])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kPropertyFeatures: featureString])
         print(UserController.temporaryUserCreationDictionary)
 
     }

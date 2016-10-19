@@ -22,7 +22,7 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kAvailableDate: availableDatePicker.date])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kAvailableDate: availableDatePicker.date])
         
     }
     

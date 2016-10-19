@@ -29,8 +29,8 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         
         if zipCodeTextField.text != "" && addressTextField.text != "" {
             guard let address = addressTextField.text, let zipCode = zipCodeTextField.text else { return }
-            UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kAddress : address])
-            UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kZipCode: zipCode])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : address])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCode])
             
             self.performSegue(withIdentifier: "toLandlordBedroomVC", sender: self)
         } else {

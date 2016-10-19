@@ -50,8 +50,8 @@ class RenterAllowedViewController: UIViewController {
     }
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
-            UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kPetsAllowed: petsAllowed])
-            UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kSmokingAllowed: smokingAllowed])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
             
             self.performSegue(withIdentifier: "toWantedPropertyFeaturesVC", sender: self)
         } else {

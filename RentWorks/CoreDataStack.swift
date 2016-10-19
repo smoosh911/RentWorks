@@ -13,7 +13,7 @@ class CoreDataStack {
     
     static let container: NSPersistentContainer = {
         
-        let container = NSPersistentContainer(name: "ShoppingList")
+        let container = NSPersistentContainer(name: "RentWorks")
         container.loadPersistentStores() { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
@@ -24,4 +24,3 @@ class CoreDataStack {
     
     static var context: NSManagedObjectContext { return container.viewContext }
 }
-

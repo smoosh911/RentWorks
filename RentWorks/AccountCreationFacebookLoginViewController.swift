@@ -21,12 +21,15 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
-        facebookLoginButton.readPermissions = ["email"]
+        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
         constraintsForFacebookLoginButton()
         
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        
+        
+        
         UserController.createLandlord()
     }
     

@@ -14,51 +14,75 @@ class UserController {
     
     static var userCreationPhotos = [UIImage]()
     
-    static func addAttributeToUserDictionary(attribute: [UserDictionaryKeys: Any]) {
+    static func addAttributeToUserDictionary(attribute: [String: Any]) {
         guard let key = attribute.keys.first, let value = attribute.values.first else { return }
-        temporaryUserCreationDictionary[key.rawValue] = value
+        temporaryUserCreationDictionary[key] = value
     }
     
     
     static func createLandlord(completion: ((_ success: Bool) -> Void) = { _ in }) {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
-            FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (facebookDictionary) in
+            FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
-                print(temporaryUserCreationDictionary)
+                guard let landlord = Landlord(dictionary: temporaryUserCreationDictionary) else { NSLog("Landlord could not be initialized from dictionary"); return }
+                saveToPersistentStore()
+                createLandlordInFirebase(landlord: landlord, completion: { 
+                    
+                })
+                
                 
                 
             })
         }
     }
+    
+    static func createLandlordInFirebase(landlord: Landlord, completion: () -> Void) {
+        guard let id = landlord.id else { return }
+        FirebaseController.allUsersRef.child("landlords").child(id).setValue(landlord.dictionaryRepresentation)
+    }
+    
+    static func saveToPersistentStore() {
+        let moc = CoreDataStack.context
+        
+        do {
+            try moc.save()
+        } catch {
+            NSLog("Error saving to the managed object context \(error.localizedDescription)")
+        }
+        
+    }
+    
+    
 }
 
 
 extension UserController {
     
-    // Renter/property creation enums
-
-    enum UserDictionaryKeys: String {
-        case kAddress = "address"
-        case kZipCode = "zipCode"
-        case kBedroomCount = "bedroomCount"
-        case kBathroomCount = "bathroomCount"
-        case kPetsAllowed = "petsAllowed"
-        case kSmokingAllowed = "smokingAllowed"
-        case kMonthlyPayment = "monthlyPayment"
-        case kAvailableDate = "availableDate"
-        case kPropertyType = "propertyType"
-        case kPropertyFeatures = "propertyFeatures"
-        case kPropertyDescription = "propertyDescription"
-        
-        case kFirstName = "firstName"
-        case kLastName = "lastName"
-        case kCreditRating = "creditRating"
-        case kEmail = "email"
-        case kMaritalStatus = "maritalStatus"
-        case kAdultCount = "adultCount"
-        case kChildCount = "childCount"
-        case kBio = "bio"
-    }
+    // User/property keys
+    
+    
+    static let kAddress = "address"
+    static let kZipCode = "zipCode"
+    static let kBedroomCount = "bedroomCount"
+    static let kBathroomCount = "bathroomCount"
+    static let kPetsAllowed = "petsAllowed"
+    static let kSmokingAllowed = "smokingAllowed"
+    static let kMonthlyPayment = "monthlyPayment"
+    static let kAvailableDate = "availableDate"
+    static let kPropertyType = "propertyType"
+    static let kPropertyFeatures = "propertyFeatures"
+    static let kPropertyDescription = "propertyDescription"
+    static let kStarRating = "starRating"
+    static let kID = "id"
+    
+    static let kFirstName = "first_name"
+    static let kLastName = "last_name"
+    static let kCreditRating = "creditRating"
+    static let kEmail = "email"
+    static let kMaritalStatus = "maritalStatus"
+    static let kAdultCount = "adultCount"
+    static let kChildCount = "childCount"
+    static let kBio = "bio"
     
     
     enum PropertyType: String {

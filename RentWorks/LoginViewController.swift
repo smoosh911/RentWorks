@@ -26,7 +26,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
-        facebookLoginButton.readPermissions = ["email"]
+        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
         
         self.view.addSubview(facebookLoginButton)
         
