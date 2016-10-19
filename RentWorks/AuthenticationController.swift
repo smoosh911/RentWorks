@@ -30,6 +30,11 @@ class AuthenticationController {
         })
     }
     
+    func createNewLandlordAccount() {
+        
+    }
+    
+    
     static func checkFirebaseLoginStatus(completion: @escaping (_ status: Bool) -> Void) {
         if FIRAuth.auth()?.currentUser == nil {
             completion(false)
@@ -68,6 +73,8 @@ class AuthenticationController {
             }
         }
     }
+    
+    
     
     static func signOutOfFirebase() {
         do {

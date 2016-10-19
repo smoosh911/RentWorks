@@ -20,6 +20,7 @@
 		460D723F1DB7470D00853402 /* RenterWantedFeaturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460D723E1DB7470D00853402 /* RenterWantedFeaturesViewController.swift */; };
 		460D72411DB7473400853402 /* RenterAllowedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460D72401DB7473400853402 /* RenterAllowedViewController.swift */; };
 		460D72431DB7484F00853402 /* RenterCreditRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460D72421DB7484F00853402 /* RenterCreditRatingViewController.swift */; };
+		460D72451DB74D5A00853402 /* AccountCreationFacebookLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460D72441DB74D5A00853402 /* AccountCreationFacebookLoginViewController.swift */; };
 		461E5CCF1DB561AF00AD4509 /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461E5CCE1DB561AF00AD4509 /* UserController.swift */; };
 		461E5CD11DB5621E00AD4509 /* Renter + Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461E5CD01DB5621E00AD4509 /* Renter + Convenience.swift */; };
 		461E5CD51DB5774B00AD4509 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461E5CD41DB5774B00AD4509 /* CoreDataStack.swift */; };
@@ -107,6 +108,7 @@
 		460D723E1DB7470D00853402 /* RenterWantedFeaturesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenterWantedFeaturesViewController.swift; sourceTree = "<group>"; };
 		460D72401DB7473400853402 /* RenterAllowedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenterAllowedViewController.swift; sourceTree = "<group>"; };
 		460D72421DB7484F00853402 /* RenterCreditRatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenterCreditRatingViewController.swift; sourceTree = "<group>"; };
+		460D72441DB74D5A00853402 /* AccountCreationFacebookLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreationFacebookLoginViewController.swift; sourceTree = "<group>"; };
 		461E5CCE1DB561AF00AD4509 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
 		461E5CD01DB5621E00AD4509 /* Renter + Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Renter + Convenience.swift"; sourceTree = "<group>"; };
 		461E5CD41DB5774B00AD4509 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 		460D72361DB742E000853402 /* Photo Selector VIew Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C73E10881D8E417D008E475F /* MainViewController.swift */,
 				460D722E1DB6C71400853402 /* PhotoSelectorViewController.swift */,
 				460D72301DB6D84700853402 /* PhotoSelectorTwoViewController.swift */,
 				460D72321DB6D86400853402 /* PhotoSelectorThreeViewController.swift */,
@@ -239,14 +242,14 @@
 		468ABC3A1DB5EA89009B105B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				460D72391DB7448D00853402 /* Renter View Controllers */,
-				468ABC391DB5EA76009B105B /* Landlord View Controllers */,
-				C73E10881D8E417D008E475F /* MainViewController.swift */,
-				460D72361DB742E000853402 /* Photo Selector VIew Controllers */,
 				467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */,
 				46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */,
 				466E22F41DB0692900E592F0 /* LandlordOrUserViewController.swift */,
+				460D72441DB74D5A00853402 /* AccountCreationFacebookLoginViewController.swift */,
 				467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */,
+				460D72391DB7448D00853402 /* Renter View Controllers */,
+				468ABC391DB5EA76009B105B /* Landlord View Controllers */,
+				460D72361DB742E000853402 /* Photo Selector VIew Controllers */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -672,6 +675,7 @@
 				460D72331DB6D86400853402 /* PhotoSelectorThreeViewController.swift in Sources */,
 				468ABC421DB5EE45009B105B /* LandlordAddPhotosViewController.swift in Sources */,
 				461E5CCF1DB561AF00AD4509 /* UserController.swift in Sources */,
+				460D72451DB74D5A00853402 /* AccountCreationFacebookLoginViewController.swift in Sources */,
 				4602B09B1DB13CE400908D00 /* UIVIewIBDesignable.swift in Sources */,
 				460D722F1DB6C71400853402 /* PhotoSelectorViewController.swift in Sources */,
 				468ABC361DB5C5A9009B105B /* Property + Convenience.swift in Sources */,

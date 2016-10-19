@@ -20,7 +20,16 @@ class UserController {
     }
     
     
-    
+    static func createLandlord(completion: ((_ success: Bool) -> Void) = { _ in }) {
+        AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
+            FacebookRequestController.requestCurrentUsers(information: [.name, .email], completion: { (facebookDictionary) in
+                _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
+                print(temporaryUserCreationDictionary)
+                
+                
+            })
+        }
+    }
     
 }
 
