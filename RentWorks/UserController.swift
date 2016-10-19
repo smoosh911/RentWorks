@@ -30,7 +30,6 @@ class UserController {
             })
         }
     }
-    
 }
 
 
@@ -49,6 +48,7 @@ extension UserController {
         case kAvailableDate = "availableDate"
         case kPropertyType = "propertyType"
         case kPropertyFeatures = "propertyFeatures"
+        case kPropertyDescription = "propertyDescription"
         
         case kFirstName = "firstName"
         case kLastName = "lastName"
@@ -57,6 +57,7 @@ extension UserController {
         case kMaritalStatus = "maritalStatus"
         case kAdultCount = "adultCount"
         case kChildCount = "childCount"
+        case kBio = "bio"
     }
     
     

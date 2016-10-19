@@ -698,7 +698,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="QkC-vE-0Lh" kind="show" id="PJy-29-vIQ"/>
+                                    <segue destination="Zzl-Ph-3O6" kind="show" id="N7o-wq-ep5"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="wrQ-hJ-sCD">
@@ -813,7 +813,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sSc-5G-Bdi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8455" y="-16"/>
+            <point key="canvasLocation" x="9111" y="-16"/>
         </scene>
         <!--Landlord Property Features View Controller-->
         <scene sceneID="rIE-Jg-Edg">
@@ -945,6 +945,13 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Zy4-da-Xej" secondAttribute="trailing" constant="15" id="zq1-Kd-tFK"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="dishwasherButton" destination="14t-Ge-pc6" id="sWa-w3-8o7"/>
+                        <outlet property="garageButton" destination="BmP-35-A1F" id="X8Z-cC-PDC"/>
+                        <outlet property="gymButton" destination="Y81-99-ZtT" id="HM9-8U-gVa"/>
+                        <outlet property="laundryButton" destination="ZyD-3b-tAq" id="x0O-I7-e67"/>
+                        <outlet property="poolButton" destination="ede-fL-PNx" id="O7p-wu-LJV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CvR-43-0fI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1202,6 +1209,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="aCreditButton" destination="1Wf-m7-gdv" id="4w5-Ph-qHB"/>
+                        <outlet property="aCreditLabel" destination="Gsw-Hl-E5l" id="SgI-x6-LNl"/>
+                        <outlet property="bCreditButton" destination="eOE-sO-ozL" id="9sA-9b-7T2"/>
+                        <outlet property="bCreditLabel" destination="nCY-oc-pEt" id="Ei0-5S-JUb"/>
+                        <outlet property="cCreditButton" destination="8q9-mH-kEH" id="Jaj-r0-t0u"/>
+                        <outlet property="cCreditLabel" destination="qyR-lu-u2H" id="y7q-R4-BqM"/>
+                        <outlet property="dCreditButton" destination="Ob8-mj-52m" id="ffT-WL-Dif"/>
+                        <outlet property="dCreditLabel" destination="bX6-zl-yEs" id="Kuj-23-q3z"/>
                         <segue destination="QkC-vE-0Lh" kind="show" identifier="toFinalUserCreationVC" id="oLW-rk-g0z"/>
                     </connections>
                 </viewController>
@@ -1240,7 +1255,6 @@
                                 </state>
                                 <connections>
                                     <action selector="nextButtonTapped:" destination="qzd-6h-d1s" eventType="touchUpInside" id="FCN-7b-NcW"/>
-                                    <segue destination="e29-Al-Z01" kind="show" id="8m4-Sq-hW8"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ojf-CP-rZB">
@@ -1325,10 +1339,77 @@
                             <constraint firstItem="Ojf-CP-rZB" firstAttribute="top" secondItem="8lo-9p-cQM" secondAttribute="bottom" constant="325" id="ww4-kc-bai"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="noPetsAllowedButton" destination="rv1-j4-TTr" id="AwE-dN-ybB"/>
+                        <outlet property="noSmokingButton" destination="bB7-rK-7oB" id="eNk-yh-bTq"/>
+                        <outlet property="petsAllowedButton" destination="3vv-cl-VZi" id="vqe-UM-Stb"/>
+                        <outlet property="smokingAllowedButton" destination="1fx-j7-gfl" id="SVh-1r-Obe"/>
+                        <segue destination="e29-Al-Z01" kind="show" identifier="toWantedPropertyFeaturesVC" id="Y1r-Fa-NFZ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B2c-Ej-FM1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5034" y="-443"/>
+        </scene>
+        <!--Landlord Property Available Date View Controller-->
+        <scene sceneID="ncr-bJ-Mj3">
+            <objects>
+                <viewController id="Zzl-Ph-3O6" customClass="LandlordPropertyAvailableDateViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GWU-Vs-YtU"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZY2-Eu-xEz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Mfy-Ig-S5m">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gR7-df-Q07">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="QF1-yr-eMY"/>
+                                    <constraint firstAttribute="width" secondItem="gR7-df-Q07" secondAttribute="height" multiplier="21:37" id="wud-7I-t1E"/>
+                                </constraints>
+                                <state key="normal" image="NextArrow">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="QkC-vE-0Lh" kind="show" id="PTZ-Qu-umn"/>
+                                </connections>
+                            </button>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="BGx-9A-Whx">
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <date key="date" timeIntervalSinceReferenceDate="498582627.99016201">
+                                    <!--2016-10-19 15:10:27 +0000-->
+                                </date>
+                            </datePicker>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When is this property available?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="0Gc-96-jj8">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="314" id="eZK-sg-Afz"/>
+                                    <constraint firstAttribute="height" constant="302" id="nQX-a4-gxH"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="70"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="BGx-9A-Whx" secondAttribute="trailing" id="1jj-vB-sqv"/>
+                            <constraint firstItem="ZY2-Eu-xEz" firstAttribute="top" secondItem="gR7-df-Q07" secondAttribute="bottom" constant="20" id="2cw-DG-NbY"/>
+                            <constraint firstItem="0Gc-96-jj8" firstAttribute="centerX" secondItem="Mfy-Ig-S5m" secondAttribute="centerX" id="2yc-1j-S0J"/>
+                            <constraint firstItem="gR7-df-Q07" firstAttribute="top" secondItem="BGx-9A-Whx" secondAttribute="bottom" constant="7.5" id="EIb-1W-Pql"/>
+                            <constraint firstItem="gR7-df-Q07" firstAttribute="trailing" secondItem="Mfy-Ig-S5m" secondAttribute="trailingMargin" constant="-15" id="KqC-XY-Ohr"/>
+                            <constraint firstItem="BGx-9A-Whx" firstAttribute="leading" secondItem="Mfy-Ig-S5m" secondAttribute="leading" id="cs1-jB-zZd"/>
+                            <constraint firstItem="BGx-9A-Whx" firstAttribute="top" secondItem="0Gc-96-jj8" secondAttribute="bottom" constant="8" id="sc2-Z7-8x8"/>
+                            <constraint firstItem="0Gc-96-jj8" firstAttribute="top" secondItem="GWU-Vs-YtU" secondAttribute="bottom" constant="8" id="wGq-xg-Rrq"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="availableDatePicker" destination="BGx-9A-Whx" id="5p0-Hk-Uyt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vb7-qe-Udg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8324" y="398.95052473763121"/>
         </scene>
         <!--Landlord Payment View Controller-->
         <scene sceneID="gPH-ww-CQJ">
@@ -1458,7 +1539,6 @@
                                 </state>
                                 <connections>
                                     <action selector="nextButtonTapped:" destination="sk6-ck-Wgh" eventType="touchUpInside" id="d4K-Xw-juO"/>
-                                    <segue destination="hoS-Ey-N0m" kind="show" identifier="toRenterBedroomVC" id="AGd-Ji-UC0"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1480,6 +1560,7 @@
                         <outlet property="addressTextField" destination="eKx-Yx-Wp4" id="jWU-Hz-NTh"/>
                         <outlet property="nextButton" destination="b3H-46-3DV" id="qjp-m0-atg"/>
                         <outlet property="zipCodeTextField" destination="Pcu-cm-kMe" id="RJm-99-bpD"/>
+                        <segue destination="hoS-Ey-N0m" kind="show" identifier="toRenterBedroomVC" id="5of-d7-yNP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MRr-TY-ssk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1694,6 +1775,10 @@ located?</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="noPetsAllowedButton" destination="suc-Bf-Mh0" id="l7I-U9-wep"/>
+                        <outlet property="noSmokingButton" destination="IYb-OR-C9p" id="IRs-e9-XQm"/>
+                        <outlet property="petsAllowedButton" destination="OXi-XK-TuN" id="I9a-1K-tBw"/>
+                        <outlet property="smokingAllowedButton" destination="7nX-lG-Kl9" id="Kfw-yi-UfA"/>
                         <segue destination="SG1-8o-S4x" kind="show" identifier="toPropertyFeaturesVC" id="oO6-0U-agb"/>
                     </connections>
                 </viewController>
@@ -1724,7 +1809,7 @@ located?</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Qq3-1I-Axi" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="8G6-qI-0GL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8G6-qI-0GL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1868,6 +1953,13 @@ located?</string>
                             <constraint firstItem="Vct-WD-V39" firstAttribute="leading" secondItem="SvN-hS-x8f" secondAttribute="leadingMargin" constant="60" id="wCt-S5-tI0"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="dishwasherButton" destination="BCe-fS-g4b" id="Tl0-vj-tJd"/>
+                        <outlet property="garageButton" destination="NuQ-KF-9gK" id="LWi-CP-nlo"/>
+                        <outlet property="gymButton" destination="qfc-sR-JXc" id="jfD-zH-nqb"/>
+                        <outlet property="laundryButton" destination="706-iY-1BD" id="SMg-Ka-vgy"/>
+                        <outlet property="poolButton" destination="ioy-s3-yol" id="ioI-0k-kc3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RnV-IU-nXO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2078,6 +2170,10 @@ located?</string>
         <scene sceneID="zuu-0o-OIK">
             <objects>
                 <viewController id="vNK-8q-yyu" customClass="PhotoSelectorThreeViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="NUA-hX-z5M"/>
+                        <viewControllerLayoutGuide type="bottom" id="xXN-m8-wq4"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="b9J-RL-BFq">
                         <rect key="frame" x="0.0" y="0.0" width="154" height="154"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

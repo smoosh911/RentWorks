@@ -12,5 +12,8 @@ class LandlordOrUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
     }
 }

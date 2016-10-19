@@ -11,7 +11,7 @@ import CoreData
 
 extension Renter {
     
-    convenience init?(address: String, birthday: NSDate, firstName: String, lastName: String, starRating: Double, id: String, creditRating: String, maritalStatus: String, profileImages: NSOrderedSet, context: NSManagedObjectContext = CoreDataStack.context) {
+    convenience init?(address: String, birthday: NSDate, firstName: String, lastName: String, starRating: Double, id: String, creditRating: String, maritalStatus: String, bio: String, context: NSManagedObjectContext = CoreDataStack.context) {
         
         self.init(context: context)
         
@@ -23,7 +23,7 @@ extension Renter {
         self.id = id
         self.creditRating = creditRating
         self.maritalStatus = maritalStatus
-        self.profileImages = profileImages
+        self.bio = bio
     }
     
 }

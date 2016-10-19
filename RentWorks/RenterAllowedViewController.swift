@@ -10,6 +10,13 @@
 import UIKit
 
 class RenterAllowedViewController: UIViewController {
+    
+    @IBOutlet weak var petsAllowedButton: UIButton!
+    @IBOutlet weak var noPetsAllowedButton: UIButton!
+    @IBOutlet weak var smokingAllowedButton: UIButton!
+    @IBOutlet weak var noSmokingButton: UIButton!
+    
+    
     var smokingAllowed: Bool?
     var petsAllowed: Bool?
     
@@ -19,26 +26,34 @@ class RenterAllowedViewController: UIViewController {
     }
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
         petsAllowed = true
+        petsAllowedButton.setTitleColor(.green, for: .normal)
+        noPetsAllowedButton.setTitleColor(.white, for: .normal)
     }
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
+        noPetsAllowedButton.setTitleColor(.red, for: .normal)
+        petsAllowedButton.setTitleColor(.white, for: .normal)
         petsAllowed = false
+        
     }
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
+        smokingAllowedButton.setTitleColor(.green, for: .normal)
+        noSmokingButton.setTitleColor(.white, for: .normal)
         smokingAllowed = true
     }
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
+        noSmokingButton.setTitleColor(.red, for: .normal)
+        smokingAllowedButton.setTitleColor(.white, for: .normal)
         smokingAllowed = true
     }
-    
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
             UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kPetsAllowed: petsAllowed])
             UserController.addAttributeToUserDictionary(attribute: [UserController.UserDictionaryKeys.kSmokingAllowed: smokingAllowed])
             
-            self.performSegue(withIdentifier: "toPropertyFeaturesVC", sender: self)
+            self.performSegue(withIdentifier: "toWantedPropertyFeaturesVC", sender: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please select whether you allow pets and smoking on your property before continuing.", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)

@@ -10,6 +10,17 @@ import UIKit
 
 class RenterCreditRatingViewController: UIViewController {
     
+    @IBOutlet weak var aCreditButton: UIButton!
+    @IBOutlet weak var aCreditLabel: UILabel!
+    
+    @IBOutlet weak var bCreditButton: UIButton!
+    @IBOutlet weak var bCreditLabel: UILabel!
+    
+    @IBOutlet weak var cCreditButton: UIButton!
+    @IBOutlet weak var cCreditLabel: UILabel!
+    
+    @IBOutlet weak var dCreditButton: UIButton!
+    @IBOutlet weak var dCreditLabel: UILabel!
     
     var creditRating: String = ""
     
@@ -19,21 +30,43 @@ class RenterCreditRatingViewController: UIViewController {
         
     }
     
-    @IBAction func creditAButtonTapped(_ sender: AnyObject) {
+    @IBAction func creditAButtonTapped(_ sender: UIButton) {
         creditRating = UserController.CreditRating.a.rawValue
+        greenButtonSelectionFor(buttonLabel: aCreditLabel)
     }
     
-    @IBAction func creditBButtonTapped(_ sender: AnyObject) {
+    @IBAction func creditBButtonTapped(_ sender: UIButton) {
         creditRating = UserController.CreditRating.b.rawValue
+        greenButtonSelectionFor(buttonLabel: bCreditLabel)
     }
 
-    @IBAction func creditCButtonTapped(_ sender: AnyObject) {
+    @IBAction func creditCButtonTapped(_ sender: UIButton) {
         creditRating = UserController.CreditRating.c.rawValue
+        greenButtonSelectionFor(buttonLabel: cCreditLabel)
     }
     
-    @IBAction func creditDButtonTapped(_ sender: AnyObject) {
+    @IBAction func creditDButtonTapped(_ sender: UIButton) {
         creditRating = UserController.CreditRating.d.rawValue
+        greenButtonSelectionFor(buttonLabel: dCreditLabel)
     }
+    
+    
+    func greenButtonSelectionFor(buttonLabel: UILabel) {
+        let buttonLabels = [aCreditLabel, bCreditLabel, cCreditLabel, dCreditLabel].filter({$0 != buttonLabel})
+        
+        UIView.transition(with: buttonLabel, duration: 0.3, options: .transitionCrossDissolve, animations: {
+            buttonLabel.textColor = .green
+            }, completion: nil)
+        
+        for label in buttonLabels {
+            guard let label = label else { return }
+            UIView.transition(with: label, duration: 0.3, options: .transitionCrossDissolve, animations: {
+                label.textColor = .white
+                }, completion: nil)
+        }
+        
+    }
+    
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if creditRating != "" {

@@ -10,6 +10,13 @@ import UIKit
 
 class LandlordAllowedViewController: UIViewController {
     
+    @IBOutlet weak var petsAllowedButton: UIButton!
+    @IBOutlet weak var noPetsAllowedButton: UIButton!
+    @IBOutlet weak var smokingAllowedButton: UIButton!
+    @IBOutlet weak var noSmokingButton: UIButton!
+    
+    
+    
     var smokingAllowed: Bool?
     var petsAllowed: Bool?
     
@@ -19,17 +26,26 @@ class LandlordAllowedViewController: UIViewController {
     }
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
         petsAllowed = true
+        petsAllowedButton.setTitleColor(.green, for: .normal)
+        noPetsAllowedButton.setTitleColor(.white, for: .normal)
     }
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
+        noPetsAllowedButton.setTitleColor(.red, for: .normal)
+        petsAllowedButton.setTitleColor(.white, for: .normal)
         petsAllowed = false
+        
     }
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
+        smokingAllowedButton.setTitleColor(.green, for: .normal)
+        noSmokingButton.setTitleColor(.white, for: .normal)
         smokingAllowed = true
     }
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
+        noSmokingButton.setTitleColor(.red, for: .normal)
+        smokingAllowedButton.setTitleColor(.white, for: .normal)
         smokingAllowed = true
     }
     
