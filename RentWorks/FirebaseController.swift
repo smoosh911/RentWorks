@@ -188,21 +188,22 @@ class FirebaseController {
         }
     }
     
-    static func checkForExistingUserInformation(user: TestUser, completion: @escaping (_ hasAccount: Bool, _ hasPhoto: Bool) -> Void) {
+    static func checkForExistingUserInformation(user: User, completion: @escaping (_ hasAccount: Bool, _ hasPhoto: Bool) -> Void) {
         
         var hasAccount = false
         var hasPhoto = false
         
         let group = DispatchGroup()
         group.enter()
-        FirebaseController.allUsersRef.child(user.id).observeSingleEvent(of: .value, with: { (snapshot) in
+        guard let id = user.id else { completion(hasAccount, hasPhoto); return }
+        FirebaseController.allUsersRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
             guard snapshot.value as? [String: Any] != nil else { group.leave(); return }
             hasAccount = true
             group.leave()
         })
         
         group.enter()
-        profileImagesRef.child(user.id).downloadURL { (url, error) in
+        profileImagesRef.child(id).downloadURL { (url, error) in
             
             url != nil && error == nil ? hasPhoto = true : print(error?.localizedDescription)
             group.leave()

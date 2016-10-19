@@ -30,7 +30,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         
         
         
-        UserController.createLandlord()
+        UserController.createLandlordForCurrentUser()
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {

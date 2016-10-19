@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 class UserController {
     
@@ -14,13 +15,41 @@ class UserController {
     
     static var userCreationPhotos = [UIImage]()
     
+    static var currentRenter: Renter?
+    
+    static var currentLandlord: Landlord?
+
+    
     static func addAttributeToUserDictionary(attribute: [String: Any]) {
         guard let key = attribute.keys.first, let value = attribute.values.first else { return }
         temporaryUserCreationDictionary[key] = value
     }
     
+    static func getCurrentRenterFromCoreData() {
+        let request: NSFetchRequest<Renter> = Renter.fetchRequest()
+        
+        guard let renters = try? CoreDataStack.context.fetch(request) else { return }
+        FacebookRequestController.requestCurrentFacebookUserID { (id) in
+            guard let id = id else { return }
+            let currentRenterArray = renters.filter({$0.id == id})
+            guard let currentRenter = currentRenterArray.first else { return }
+            self.currentRenter = currentRenter
+        }
+    }
     
-    static func createLandlord(completion: ((_ success: Bool) -> Void) = { _ in }) {
+    static func getCurrentLandlordFromCoreData() {
+        let request: NSFetchRequest<Landlord> = Landlord.fetchRequest()
+
+        
+        guard let landlords = try? CoreDataStack.context.fetch(request) else { return }
+        FacebookRequestController.requestCurrentFacebookUserID { (id) in
+            guard let id = id else { return }
+            let currentLandlordArray = landlords.filter({$0.id == id})
+            guard let currentLandlord = currentLandlordArray.first else { return }
+            self.currentLandlord = currentLandlord
+        }
+    }
+    static func createLandlordForCurrentUser(completion: ((_ success: Bool) -> Void) = { _ in }) {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
             FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
@@ -29,11 +58,12 @@ class UserController {
                 createLandlordInFirebase(landlord: landlord, completion: { 
                     
                 })
-                
-                
-                
             })
         }
+    }
+    
+    static func createRenterForCurrentUser(completion: ((_ success: Bool) -> Void) = { _ in }) {
+        
     }
     
     static func createLandlordInFirebase(landlord: Landlord, completion: () -> Void) {
@@ -41,6 +71,11 @@ class UserController {
         FirebaseController.allUsersRef.child("landlords").child(id).setValue(landlord.dictionaryRepresentation)
     }
     
+//    static func createRenterInFirebase(renter: Renter, completion: () -> Void) {
+//        guard let id = renter.id else { return }
+//        FirebaseController.allUsersRef.child("renters").child(id).setValue(renter.dictionaryRepresentation)
+//    }
+//    
     static func saveToPersistentStore() {
         let moc = CoreDataStack.context
         

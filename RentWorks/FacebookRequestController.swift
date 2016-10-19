@@ -35,6 +35,16 @@ class FacebookRequestController {
         })
     }
     
+    static func requestCurrentFacebookUserID(completion: @escaping (String?) -> Void) {
+        
+        guard let request = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"], httpMethod: "GET") else { return }
+        
+        request.start(completionHandler: { (connection, result, error) in
+            guard error == nil, let resultDict = result as? [String: Any], let id = resultDict.values.first as? String else { print(error?.localizedDescription); completion(nil); return }
+            completion(id)
+        })
+    }
+    
     enum FacebookPermissions: String {
         
         case id = "id"

@@ -47,20 +47,20 @@ class AuthenticationController {
         checkFirebaseLoginStatus { (loggedIn) in
             if loggedIn {
                 FacebookRequestController.requestCurrentUsers(information: [.name, .email, .user_birthday], completion: { (dict) in
-                    guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict) else { return }
-                    FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
-                        FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
-                            if hasPhoto {
-                                self.currentUser = currentUser
-                                MatchController.observeLikesFor(user: currentUser)
-                                if let completion = completion {
-                                    completion(true)
-                                }
-                                
-                            }
-                            
-                        })
-                    })
+//                    guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict) else { return }
+//                    FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
+//                        FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
+//                            if hasPhoto {
+//                                self.currentUser = currentUser
+//                                MatchController.observeLikesFor(user: currentUser)
+//                                if let completion = completion {
+//                                    completion(true)
+//                                }
+//                                
+//                            }
+//                            
+//                        })
+//                    })
                 })
             } else {
                 AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
