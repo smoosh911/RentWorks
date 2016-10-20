@@ -11,30 +11,7 @@ import CoreData
 
 extension Property {
     
-    enum UserDictionaryKeys: String {
-        case kAddress = "address"
-        case kZipCode = "zipCode"
-        case kBedroomCount = "bedroomCount"
-        case kBathroomCount = "bathroomCount"
-        case kPetsAllowed = "petsAllowed"
-        case kSmokingAllowed = "smokingAllowed"
-        case kMonthlyPayment = "monthlyPayment"
-        case kAvailableDate = "availableDate"
-        case kPropertyType = "propertyType"
-        case kPropertyFeatures = "propertyFeatures"
-        case kPropertyDescription = "propertyDescription"
-        
-        case kFirstName = "firstName"
-        case kLastName = "lastName"
-        case kCreditRating = "creditRating"
-        case kEmail = "email"
-        case kMaritalStatus = "maritalStatus"
-        case kAdultCount = "adultCount"
-        case kChildCount = "childCount"
-    }
-    
-    
-    @discardableResult convenience init?(availableDate: NSDate, bathroomCount: Double, bedroomCount: Int, monthlyPayment: Int, petFriendly: Bool, smokingAllowed: Bool, rentalHistoryRating: Double = 5.0, address: String, zipCode: String, propertyDescription: String, context: NSManagedObjectContext = CoreDataStack.context) {
+    @discardableResult convenience init?(availableDate: NSDate, bathroomCount: Double, bedroomCount: Int, monthlyPayment: Int, petFriendly: Bool, smokingAllowed: Bool, rentalHistoryRating: Double = 5.0, address: String, zipCode: String, propertyDescription: String = "", propertyID: String, landlord: Landlord, context: NSManagedObjectContext = CoreDataStack.context) {
         
         self.init(context: context)
         
@@ -48,22 +25,25 @@ extension Property {
         self.address = address
         self.zipCode = zipCode
         self.propertyDescription = propertyDescription
+        self.landlord = landlord
+        self.propertyID = propertyID
     }
     
     @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext = CoreDataStack.context) {
         
-        guard let availableDate = dictionary[UserDictionaryKeys.kAvailableDate.rawValue] as? Date,
-            let bathroomCount = dictionary[UserDictionaryKeys.kBathroomCount.rawValue] as? Double,
-            let bedroomCount = dictionary[UserDictionaryKeys.kBedroomCount.rawValue] as? Int,
-            let monthlyPayment = dictionary[UserDictionaryKeys.kMonthlyPayment.rawValue] as? Int,
-            let petFriendly = dictionary[UserDictionaryKeys.kPetsAllowed.rawValue] as? Bool,
-            let smokingAllowed = dictionary[UserDictionaryKeys.kSmokingAllowed.rawValue] as? Bool,
-            let address = dictionary[UserDictionaryKeys.kAddress.rawValue] as? String,
-            let zipCode = dictionary[UserDictionaryKeys.kZipCode.rawValue] as? String,
-            let propertyDescription = dictionary[UserDictionaryKeys.kPropertyDescription.rawValue] as? String else { return nil }
+        guard let availableDate = dictionary[UserController.kAvailableDate] as? Date,
+            let bathroomCount = dictionary[UserController.kBathroomCount] as? Double,
+            let bedroomCount = dictionary[UserController.kBedroomCount] as? Int,
+            let monthlyPayment = dictionary[UserController.kMonthlyPayment] as? Int,
+            let petFriendly = dictionary[UserController.kPetsAllowed] as? Bool,
+            let smokingAllowed = dictionary[UserController.kSmokingAllowed] as? Bool,
+            let address = dictionary[UserController.kAddress] as? String,
+            let zipCode = dictionary[UserController.kZipCode] as? String,
+            let propertyDescription = dictionary[UserController.kPropertyDescription] as? String,
+            let propertyID = dictionary[UserController.kPropertyID] as? String else { return nil }
         
         self.init(context: context)
-        
+        // TODO: - Change this to not a static value
         let rentalHistoryRating = 5.0
         
         self.availableDate = availableDate as NSDate?
@@ -76,5 +56,6 @@ extension Property {
         self.address = address
         self.zipCode = zipCode
         self.propertyDescription = propertyDescription
+        self.propertyID = propertyID
     }
 }

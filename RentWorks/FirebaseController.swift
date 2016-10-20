@@ -268,19 +268,26 @@ class FirebaseController {
         }
     }
     
-    static func uploadAndStoreMockPhotos() {
-        
-        for i in 1...15 {
-            guard let image = UIImage(named: "\(i)") else { print("could not find image"); return }
-            storeMock(profileImage: image, forUser: "\(i)", completion: { (_, error) in
-                if error != nil { print(error?.localizedDescription); return }
-            })
-        }
-    }
+//    static func uploadAndStoreMockPhotos() {
+//        
+//        for i in 1...15 {
+//            guard let image = UIImage(named: "\(i)") else { print("could not find image"); return }
+//            storeMock(profileImage: image, forUser: "\(i)", completion: { (_, error) in
+//                if error != nil { print(error?.localizedDescription); return }
+//            })
+//        }
+//    }
     
-    static func storeMock(profileImage: UIImage, forUser userID: String, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
+    static func store(profileImage: UIImage, forUserID userID: String, and property: Property?, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
         
-        let profileImageRef = profileImagesRef.child(userID)
+        var profileImageRef = profileImagesRef.child(userID)
+        var countString: String?
+        
+        if count != nil { countString = "\(count)" }
+        if let property = property, let propertyID = property.propertyID, let countString = countString {
+            profileImageRef = profileImageRef.child(propertyID).child(countString)
+        }
+        
         guard let imageData = UIImageJPEGRepresentation(profileImage, 0.3) else { return }
         
         let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
