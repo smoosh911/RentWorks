@@ -57,9 +57,9 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         swipeableView.delegate = self
         setupViews()
         
-        if AuthenticationController.currentUser == nil {
-            AuthenticationController.getCurrentUser()
-        }
+//        if AuthenticationController.currentUser == nil {
+//            AuthenticationController.getCurrentUser()
+//        }
         
         FirebaseController.getAllFirebaseUsersAndTheirProfilePictures()
     }

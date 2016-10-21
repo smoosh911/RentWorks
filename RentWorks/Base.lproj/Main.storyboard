@@ -397,7 +397,7 @@
         <!--Login View Controller-->
         <scene sceneID="c5i-qi-9kL">
             <objects>
-                <viewController storyboardIdentifier="loginVC" id="9Z4-ai-1st" customClass="LoginViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="9Z4-ai-1st" customClass="LoginViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Uva-PS-c7E"/>
                         <viewControllerLayoutGuide type="bottom" id="UqD-JY-oma"/>
@@ -1807,7 +1807,7 @@ located?</string>
         <!--Navigation Controller-->
         <scene sceneID="Pyw-jd-FXN">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Qq3-1I-Axi" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="loginVC" automaticallyAdjustsScrollViewInsets="NO" id="Qq3-1I-Axi" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8G6-qI-0GL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -2221,6 +2221,6 @@ located?</string>
         <image name="rating" width="1970" height="460"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="oLW-rk-g0z"/>
+        <segue reference="PTZ-Qu-umn"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -33,14 +33,14 @@ extension Property {
         
         guard let availableDate = dictionary[UserController.kAvailableDate] as? Date,
             let bathroomCount = dictionary[UserController.kBathroomCount] as? Double,
-            let bedroomCount = dictionary[UserController.kBedroomCount] as? Int,
+            let bedroomCount = dictionary[UserController.kBedroomCount] as? Double,
             let monthlyPayment = dictionary[UserController.kMonthlyPayment] as? Int,
             let petFriendly = dictionary[UserController.kPetsAllowed] as? Bool,
             let smokingAllowed = dictionary[UserController.kSmokingAllowed] as? Bool,
             let address = dictionary[UserController.kAddress] as? String,
-            let zipCode = dictionary[UserController.kZipCode] as? String,
-            let propertyDescription = dictionary[UserController.kPropertyDescription] as? String,
-            let propertyID = dictionary[UserController.kPropertyID] as? String else { return nil }
+            let zipCode = dictionary[UserController.kZipCode] as? String
+//            let propertyDescription = dictionary[UserController.kPropertyDescription] as? String
+            else { return nil }
         
         self.init(context: context)
         // TODO: - Change this to not a static value
@@ -55,7 +55,8 @@ extension Property {
         self.rentalHistoryRating = rentalHistoryRating
         self.address = address
         self.zipCode = zipCode
-        self.propertyDescription = propertyDescription
+//        self.propertyDescription = propertyDescription
+        guard let propertyID = dictionary[UserController.kPropertyID] as? String else { self.propertyID = UUID().uuidString; return}
         self.propertyID = propertyID
     }
 }

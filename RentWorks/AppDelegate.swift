@@ -21,15 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FIRApp.configure()
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        
         if FBSDKAccessToken.current() == nil {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let loginVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
             
             self.window?.rootViewController = loginVC
             self.window?.makeKeyAndVisible()
+        } else {
+            UserController.getCurrentLandlordFromCoreData()
         }
-        AuthenticationController.getCurrentUser()
         
         
         return true

@@ -42,13 +42,15 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         setUpAndDisplayLoadingScreen()
-        AuthenticationController.getCurrentUser { (success) in
-            if success == true {
-                guard let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "mainVC") else { return }
-                self.dismissLoadingScreen()
-                self.present(mainVC, animated: true, completion: nil)
-            }
-        }
+//        AuthenticationController.getCurrentUser { (success) in
+//            if success == true {
+//                guard let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "mainVC") else { return }
+//                self.dismissLoadingScreen()
+//                self.present(mainVC, animated: true, completion: nil)
+//            } else {
+//                self.dismissLoadingScreen()
+//            }
+//        }
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {

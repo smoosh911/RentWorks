@@ -12,18 +12,19 @@ extension Property {
     
     var dictionaryRepresentation: [String: Any]? {
         
-        guard let address = address, let availableDate = availableDate, let propertyDescription = propertyDescription, let zipCode = zipCode, let propertyID = propertyID else { return nil }
+        guard let address = address, let availableDate = availableDate, let zipCode = zipCode, let propertyID = propertyID else { return nil }
         
         return [UserController.kAddress: address,
                 UserController.kZipCode: zipCode,
                 UserController.kAvailableDate: availableDate.timeIntervalSince1970,
                 UserController.kBathroomCount: bathroomCount,
-                UserController.kBedroomCount: bedroomCount,
-                UserController.kMonthlyPayment: monthlyPayment,
+                UserController.kBedroomCount: Int(bedroomCount),
+                UserController.kMonthlyPayment: Int(monthlyPayment),
                 UserController.kPetsAllowed: petFriendly,
                 UserController.kSmokingAllowed: smokingAllowed,
-                UserController.kPropertyDescription: propertyDescription,
-                UserController.kStarRating: rentalHistoryRating, UserController.kPropertyID: propertyID]
+                UserController.kPropertyDescription: propertyDescription ?? "No description available",
+                UserController.kStarRating: rentalHistoryRating,
+                UserController.kPropertyID: propertyID]
     }
     
     

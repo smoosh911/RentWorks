@@ -28,9 +28,13 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         
+        AuthenticationController.attemptToSignInToFirebase { (success) in
+            
+            UserController.createLandlordAndPropertyForCurrentUser {
+                print("Success?")
+            }
+        }
         
-        
-        UserController.createLandlordForCurrentUser()
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {

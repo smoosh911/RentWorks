@@ -15,6 +15,7 @@ class FirebaseController {
     
     static let ref = FIRDatabase.database().reference()
     static let allUsersRef = ref.child("users")
+    static let landlordsRef = allUsersRef.child("landlords")
     static let likesRef = ref.child("likes")
     
     static let storageRef = FIRStorage.storage().reference()
