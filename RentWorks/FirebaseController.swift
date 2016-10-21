@@ -24,7 +24,7 @@ class FirebaseController {
     static let profileImagesRef = storageRef.child("profileImages")
     
     static weak var delegate: FirebaseUserDelegate?
-
+    
     static var users: [TestUser] = [] {
         didSet {
             delegate?.firebaseUsersWereUpdated()
@@ -101,7 +101,7 @@ class FirebaseController {
         }
         
         
-        group.notify(queue: DispatchQueue.main) { 
+        group.notify(queue: DispatchQueue.main) {
             completion?()
         }
         
@@ -186,7 +186,7 @@ class FirebaseController {
             })
         }
         
-        group.notify(queue: DispatchQueue.main) { 
+        group.notify(queue: DispatchQueue.main) {
             completion(usersArray)
         }
     }
@@ -271,17 +271,17 @@ class FirebaseController {
         }
     }
     
-//    static func uploadAndStoreMockPhotos() {
-//        
-//        for i in 1...15 {
-//            guard let image = UIImage(named: "\(i)") else { print("could not find image"); return }
-//            storeMock(profileImage: image, forUser: "\(i)", completion: { (_, error) in
-//                if error != nil { print(error?.localizedDescription); return }
-//            })
-//        }
-//    }
+    //    static func uploadAndStoreMockPhotos() {
+    //
+    //        for i in 1...15 {
+    //            guard let image = UIImage(named: "\(i)") else { print("could not find image"); return }
+    //            storeMock(profileImage: image, forUser: "\(i)", completion: { (_, error) in
+    //                if error != nil { print(error?.localizedDescription); return }
+    //            })
+    //        }
+    //    }
     
-    static func store(profileImage: UIImage, forUserID userID: String, and property: Property?, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
+    static func store(profileImage: UIImage, forUserID userID: String, and property: Property?, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?, Data?) -> Void) {
         
         var profileImageRef = profileImagesRef.child(userID)
         var countString: String?
@@ -291,49 +291,74 @@ class FirebaseController {
             profileImageRef = profileImageRef.child(propertyID).child(countString)
         }
         
-        guard let imageData = UIImageJPEGRepresentation(profileImage, 0.3) else { return }
-        
-        let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
-        
-        uploadTask.resume()
-        
-        uploadTask.observe(.progress) { (snapshot) in
-            if let progress = snapshot.progress {
-                let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
-                print("Upload percentage: \(percentComplete)%")
+        checkAndResizeImageToBeAMaximumOf(megabytes: 1, image: profileImage, withStartingCompressionQuality: 1.0) { (imageData) in
+            guard let imageData = imageData else { return }
+            
+            
+            let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: { (metaData, error) in
+                completion(metaData, error, imageData)
+            })
+            
+            uploadTask.resume()
+            
+            uploadTask.observe(.progress) { (snapshot) in
+                if let progress = snapshot.progress {
+                    let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
+                    print("Upload percentage: \(percentComplete)%")
+                }
+            }
+            
+            uploadTask.observe(.failure) { (snapshot) in
+                guard let storageError = snapshot.error else { return }
+                print(storageError.localizedDescription)
             }
         }
+    }
+    
+    static func checkAndResizeImageToBeAMaximumOf(megabytes: Int, image: UIImage, withStartingCompressionQuality compressionQuality: CGFloat, completion: ((Data?) -> Void)? = nil) {
         
-        uploadTask.observe(.failure) { (snapshot) in
-            guard let storageError = snapshot.error else { return }
-            print(storageError.localizedDescription)
+        let megabyteCount = megabytes * 1024 * 1024
+        
+        guard let imageData = UIImageJPEGRepresentation(image, compressionQuality) else { completion?(nil); return }
+        
+        if imageData.count > megabyteCount {
+            _ = checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withStartingCompressionQuality: 0.05)
+        } else {
+            if let completion = completion { completion(imageData) }
         }
     }
-    static func store(profileImage: UIImage, forUserID userID: String, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
+    
+    
+    static func store(profileImage: UIImage, forUserID userID: String, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?, Data?) -> Void) {
         
         var countString: String?
         var profileImageRef = profileImagesRef.child(userID)
         if count != nil { countString = "\(count!)" }
         
         if let countString = countString {
-           profileImageRef = profileImageRef.child(countString)
+            profileImageRef = profileImageRef.child(countString)
         }
-        guard let imageData = UIImageJPEGRepresentation(profileImage, 0.3) else { return }
         
-        let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
-        
-        uploadTask.resume()
-        
-        uploadTask.observe(.progress) { (snapshot) in
-            if let progress = snapshot.progress {
-                let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
-                print("Upload percentage: \(percentComplete)%")
+        checkAndResizeImageToBeAMaximumOf(megabytes: 1, image: profileImage, withStartingCompressionQuality: 1.0) { (imageData) in
+            guard let imageData = imageData else { return }
+            
+            let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: { (metadata, error) in
+                completion(metadata, error, imageData)
+            })
+            
+            uploadTask.resume()
+            
+            uploadTask.observe(.progress) { (snapshot) in
+                if let progress = snapshot.progress {
+                    let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
+                    print("Upload percentage: \(percentComplete)%")
+                }
             }
-        }
-        
-        uploadTask.observe(.failure) { (snapshot) in
-            guard let storageError = snapshot.error else { return }
-            print(storageError.localizedDescription)
+            
+            uploadTask.observe(.failure) { (snapshot) in
+                guard let storageError = snapshot.error else { return }
+                print("Error uploading imageData to FirebaseStorage for userID: \(userID)\n \(storageError.localizedDescription)")
+            }
         }
     }
 }

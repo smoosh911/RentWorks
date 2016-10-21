@@ -22,7 +22,7 @@ extension Renter {
             else { return nil }
         
         return [UserController.kEmail: email,
-                UserController.kZipCode: wantedZipCode,
+                UserController.kZipCode: zipCode,
                 UserController.kPropertyFeatures: wantedPropertyFeatures,
                 UserController.kCreditRating: creditRating,
                 UserController.kPetsAllowed: wantsPetFriendly,
@@ -34,7 +34,6 @@ extension Renter {
                 UserController.kBedroomCount: Int(wantedBedroomCount),
                 UserController.kBathroomCount: wantedBathroomCount,
                 UserController.kAddress: address,
-                UserController.kZipCode: zipCode,
                 UserController.kBio: bio ?? "No bio available"]
 
     }

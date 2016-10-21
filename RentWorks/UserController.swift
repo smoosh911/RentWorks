@@ -126,10 +126,10 @@ class UserController {
         guard let landlordID = landlord.id else { return }
         images.forEach { (image) in
             count += 1
-            FirebaseController.store(profileImage: image, forUserID: landlordID, and: property, with: count, completion: { (metadata, error) in
+            FirebaseController.store(profileImage: image, forUserID: landlordID, and: property, with: count, completion: { (metadata, error, imageData) in
                 guard error == nil else { print(error?.localizedDescription); completion(); return }
                 print("Successfully uploaded image")
-                guard let imageData = UIImageJPEGRepresentation(image, 0.3) else { completion(); return }
+                guard let imageData = imageData else { completion(); return }
                 _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
             })
         }
@@ -149,7 +149,19 @@ class UserController {
         }
     }
     
-    static func createRenterForCurrentUser(completion: @escaping ((_ renter: Renter?) -> Void) = { _ in }) {
+    
+    static func createRenterForCurrentUser(completion: @escaping () -> Void) {
+        self.createRenterInCoreDataForCurrentUser { (renter) in
+            guard let renter = renter else { print("Renter returned in completion closure is nil"); return }
+            self.createRenterInFirebase(renter: renter, completion: {
+                self.saveRenterProfileImagesToCoreDataAndFirebase(forRenter: renter, completion: {
+                    completion()
+                })
+            })
+        }
+    }
+    
+    static func createRenterInCoreDataForCurrentUser(completion: @escaping ((_ renter: Renter?) -> Void) = { _ in }) {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
             FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
@@ -175,18 +187,28 @@ class UserController {
         }
     }
     
-    static func saveRenterProfileImagesToCoreDataAndFirebase(images: [UIImage], forRenter renter: Renter, completion: @escaping () -> Void) {
+    static func saveRenterProfileImagesToCoreDataAndFirebase(forRenter renter: Renter, completion: @escaping () -> Void) {
         var count = 0
         
-        guard let renterID = renter.id else { return }
-        images.forEach { (image) in
-            count += 1
-            FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error) in
-                guard error == nil else { print(error?.localizedDescription); completion(); return }
-                print("Successfully uploaded image")
-                guard let imageData = UIImageJPEGRepresentation(image, 0.3) else { completion(); return }
-                _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil)
-            })
+        FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080) { (image) in
+            guard let image = image,let renterID = renter.id else { return }
+            userCreationPhotos.append(image)
+    
+            let group = DispatchGroup()
+            for image in userCreationPhotos {
+                group.enter()
+                count += 1
+                FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error, imageData) in
+                    guard error == nil else { print(error?.localizedDescription); group.leave(); completion(); return }
+                    print("Successfully uploaded image")
+                    guard let imageData = imageData else { completion(); return }
+                    _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil)
+                    group.leave()
+                })
+            }
+            group.notify(queue: DispatchQueue.main) {
+                completion()
+            }
         }
     }
     

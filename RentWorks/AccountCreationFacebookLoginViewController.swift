@@ -15,7 +15,9 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
     
     let facebookLoginButton = FBSDKLoginButton()
     
-    
+    var loadingView: UIView?
+    var loadingActivityIndicator: UIActivityIndicatorView?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,28 +29,63 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
-        
+        setUpAndDisplayLoadingScreen()
         AuthenticationController.attemptToSignInToFirebase { (success) in
-            
+            dismissLoadingScreen()
             if UserController.userCreationType == "landlord" {
                 UserController.createLandlordAndPropertyForCurrentUser {
-                    print("Success?")
+                    print("Successfully created landlord for currentUser")
                 }
             } else if UserController.userCreationType == "renter" {
-                // Create renter here
+                UserController.createRenterForCurrentUser {
+                    print("Successfuly created renter for current user.")
+                }
             }
         }
         
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-        
+        dismissLoadingScreen()
     }
     
     func loginButtonWillLogin(_ loginButton: FBSDKLoginButton!) -> Bool {
         
         return true
     }
+    
+    func setUpAndDisplayLoadingScreen() {
+        self.loadingView = UIView(frame: self.view.frame)
+        self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
+        
+        guard let loadingView = self.loadingView, let loadingActivityIndicator = self.loadingActivityIndicator else { return }
+        
+        loadingView.backgroundColor = UIColor.gray
+        loadingView.alpha = 0.3
+        loadingActivityIndicator.activityIndicatorViewStyle = .whiteLarge
+        
+        self.view.addSubview(loadingView)
+        self.view.addSubview(loadingActivityIndicator)
+        
+        let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
+        let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
+        
+        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint])
+        
+        loadingActivityIndicator.startAnimating()
+    }
+    
+    func dismissLoadingScreen() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.loadingActivityIndicator?.alpha = 0
+            self.loadingActivityIndicator?.stopAnimating()
+            self.loadingView?.alpha = 0
+        }) { (_) in
+            self.loadingActivityIndicator?.removeFromSuperview()
+            self.loadingView?.removeFromSuperview()
+        }
+    }
+    
     func constraintsForFacebookLoginButton() {
         facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(facebookLoginButton)
