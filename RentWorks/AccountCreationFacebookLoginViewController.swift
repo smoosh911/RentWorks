@@ -21,6 +21,22 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        if FBSDKAccessToken.current() != nil {
+            AuthenticationController.attemptToSignInToFirebase { (success) in
+                self.dismissLoadingScreen()
+                if UserController.userCreationType == "landlord" {
+                    UserController.createLandlordAndPropertyForCurrentUser {
+                        print("Successfully created landlord for currentUser")
+                    }
+                } else if UserController.userCreationType == "renter" {
+                    UserController.createRenterForCurrentUser {
+                        print("Successfuly created renter for current user.")
+                    }
+                }
+            }
+        }
+        
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
         facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
@@ -31,7 +47,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         setUpAndDisplayLoadingScreen()
         AuthenticationController.attemptToSignInToFirebase { (success) in
-            dismissLoadingScreen()
+            self.dismissLoadingScreen()
             if UserController.userCreationType == "landlord" {
                 UserController.createLandlordAndPropertyForCurrentUser {
                     print("Successfully created landlord for currentUser")

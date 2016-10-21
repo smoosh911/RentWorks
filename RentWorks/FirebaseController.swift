@@ -291,7 +291,7 @@ class FirebaseController {
             profileImageRef = profileImageRef.child(propertyID).child(countString)
         }
         
-        checkAndResizeImageToBeAMaximumOf(megabytes: 1, image: profileImage, withStartingCompressionQuality: 1.0) { (imageData) in
+        checkAndResizeImageToBeAMaximumOf(megabytes: 1, image: profileImage, withCompressionQuality: 1.0) { (imageData) in
             guard let imageData = imageData else { return }
             
             
@@ -315,17 +315,23 @@ class FirebaseController {
         }
     }
     
-    static func checkAndResizeImageToBeAMaximumOf(megabytes: Int, image: UIImage, withStartingCompressionQuality compressionQuality: CGFloat, completion: ((Data?) -> Void)? = nil) {
+    static func checkAndResizeImageToBeAMaximumOf(megabytes: Int, image: UIImage? = nil, withCompressionQuality compressionQuality: CGFloat, temporaryData: Data? = nil, completion: (Data?) -> Void) {
         
         let megabyteCount = megabytes * 1024 * 1024
-        
-        guard let imageData = UIImageJPEGRepresentation(image, compressionQuality) else { completion?(nil); return }
-        
-        if imageData.count > megabyteCount {
-            _ = checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withStartingCompressionQuality: 0.05)
+        if let temporaryData = temporaryData, let image = image {
+            print(temporaryData.count)
+            if temporaryData.count > megabyteCount {
+                let newTempData = UIImageJPEGRepresentation(image, compressionQuality)
+                checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality - 0.05, temporaryData: newTempData, completion: completion)
+            } else {
+                completion(temporaryData)
+            }
         } else {
-            if let completion = completion { completion(imageData) }
+            guard let image = image, let imageData = UIImageJPEGRepresentation(image, compressionQuality) else { completion(temporaryData); return }
+            
+           checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality, temporaryData: imageData, completion: completion)
         }
+        
     }
     
     
@@ -339,7 +345,7 @@ class FirebaseController {
             profileImageRef = profileImageRef.child(countString)
         }
         
-        checkAndResizeImageToBeAMaximumOf(megabytes: 1, image: profileImage, withStartingCompressionQuality: 1.0) { (imageData) in
+        checkAndResizeImageToBeAMaximumOf(megabytes: 1, image: profileImage, withCompressionQuality: 1.0) { (imageData) in
             guard let imageData = imageData else { return }
             
             let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: { (metadata, error) in
