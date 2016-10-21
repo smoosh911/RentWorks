@@ -12,8 +12,13 @@ class LandlordOrUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toRenterAddressVC" {
+            UserController.userCreationType = "renter"
+        } else if segue.identifier == "toLandlordAddressVC" {
+            UserController.userCreationType = "landlord"
+        }
     }
 }

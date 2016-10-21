@@ -15,7 +15,9 @@ class FirebaseController {
     
     static let ref = FIRDatabase.database().reference()
     static let allUsersRef = ref.child("users")
-    static let landlordsRef = allUsersRef.child("landlords")
+    static let landlordsRef = ref.child("landlords")
+    static let rentersRef = ref.child("renters")
+    static let propertiesRef = ref.child("properties")
     static let likesRef = ref.child("likes")
     
     static let storageRef = FIRStorage.storage().reference()
@@ -284,11 +286,38 @@ class FirebaseController {
         var profileImageRef = profileImagesRef.child(userID)
         var countString: String?
         
-        if count != nil { countString = "\(count)" }
+        if count != nil { countString = "\(count!)" }
         if let property = property, let propertyID = property.propertyID, let countString = countString {
             profileImageRef = profileImageRef.child(propertyID).child(countString)
         }
         
+        guard let imageData = UIImageJPEGRepresentation(profileImage, 0.3) else { return }
+        
+        let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
+        
+        uploadTask.resume()
+        
+        uploadTask.observe(.progress) { (snapshot) in
+            if let progress = snapshot.progress {
+                let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
+                print("Upload percentage: \(percentComplete)%")
+            }
+        }
+        
+        uploadTask.observe(.failure) { (snapshot) in
+            guard let storageError = snapshot.error else { return }
+            print(storageError.localizedDescription)
+        }
+    }
+    static func store(profileImage: UIImage, forUserID userID: String, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
+        
+        var countString: String?
+        var profileImageRef = profileImagesRef.child(userID)
+        if count != nil { countString = "\(count!)" }
+        
+        if let countString = countString {
+           profileImageRef = profileImageRef.child(countString)
+        }
         guard let imageData = UIImageJPEGRepresentation(profileImage, 0.3) else { return }
         
         let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)

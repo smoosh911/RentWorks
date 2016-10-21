@@ -30,8 +30,12 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         
         AuthenticationController.attemptToSignInToFirebase { (success) in
             
-            UserController.createLandlordAndPropertyForCurrentUser {
-                print("Success?")
+            if UserController.userCreationType == "landlord" {
+                UserController.createLandlordAndPropertyForCurrentUser {
+                    print("Success?")
+                }
+            } else if UserController.userCreationType == "renter" {
+                // Create renter here
             }
         }
         

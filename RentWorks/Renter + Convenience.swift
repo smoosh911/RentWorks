@@ -11,7 +11,7 @@ import CoreData
 
 extension Renter {
     
-    convenience init?(address: String, birthday: NSDate = NSDate(), firstName: String, lastName: String, starRating: Double, id: String, creditRating: String, email: String, wantedPropertyFeatures: String, wantsPetFriendly: Bool, wantsSmoking: Bool, wantedBedroomCount: Int64, wantedBathroomCount: Double, wantedPayment: Int64, wantedZipCode: String, maritalStatus: String, bio: String, context: NSManagedObjectContext = CoreDataStack.context) {
+    @discardableResult convenience init?(address: String, birthday: NSDate = NSDate(), firstName: String, lastName: String, starRating: Double, id: String, creditRating: String, email: String, wantedPropertyFeatures: String, wantsPetFriendly: Bool, wantsSmoking: Bool, wantedBedroomCount: Int64, wantedBathroomCount: Double, wantedPayment: Int64, wantedZipCode: String, maritalStatus: String, bio: String, context: NSManagedObjectContext = CoreDataStack.context) {
         
         self.init(context: context)
         
@@ -35,4 +35,38 @@ extension Renter {
         self.bio = bio
     }
     
+    @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext = CoreDataStack.context) {
+
+        guard let email = dictionary[UserController.kEmail] as? String,
+            let address = dictionary[UserController.kAddress] as? String,
+            let zipCode = dictionary[UserController.kZipCode] as? String,
+            let wantedPropertyFeatures = dictionary[UserController.kPropertyFeatures] as? String,
+            let creditRating = dictionary[UserController.kCreditRating] as? String,
+            let firstName = dictionary[UserController.kFirstName] as? String,
+            let lastName = dictionary[UserController.kLastName] as? String,
+            let id = dictionary[UserController.kID] as? String,
+            let wantedPayment = dictionary[UserController.kMonthlyPayment] as? Int,
+            let wantedBedroomCount = dictionary[UserController.kBedroomCount] as? Double,
+            let wantedBathroomCount = dictionary[UserController.kBathroomCount] as? Double,
+            let wantsPetFriendly = dictionary[UserController.kPetsAllowed] as? Bool,
+            let wantsSmoking = dictionary[UserController.kSmokingAllowed] as? Bool
+        else { return nil }
+        
+        
+        self.init(context: context)
+
+        self.email = email
+        self.address = address
+        self.wantedPropertyFeatures = wantedPropertyFeatures
+        self.creditRating = creditRating
+        self.wantedZipCode = zipCode
+        self.firstName = firstName
+        self.lastName = lastName
+        self.id = id
+        self.wantsPetFriendly = wantsPetFriendly
+        self.wantedPayment = Int64(wantedPayment)
+        self.wantedBedroomCount = Int64(wantedBedroomCount)
+        self.wantedBathroomCount = wantedBathroomCount
+        self.wantsSmoking = wantsSmoking
+    }
 }

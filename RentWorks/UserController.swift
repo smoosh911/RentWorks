@@ -17,11 +17,13 @@ class UserController {
     
     static var userCreationPhotos = [UIImage]()
     
+    static var userCreationType = ""
+    
     static var currentRenter: Renter?
     
     static var currentLandlord: Landlord? {
         didSet {
-            print(currentLandlord?.firstName)
+            print((currentLandlord?.property?.array.first as? Property)?.address)
         }
     }
     
@@ -33,17 +35,14 @@ class UserController {
     
     static func createLandlordAndPropertyForCurrentUser(completion: @escaping (() -> Void)) {
         createLandlordForCurrentUser { (landlord) in
-            guard let landlord = landlord else { return }
+            guard let landlord = landlord else { print("Landlord returned from completion closure is nil"); return }
             createLandlordInFirebase(landlord: landlord, completion: {
                 createPropertyInCoreDataFor(landLord: landlord, completion: { (property) in
-                    if let property = property {
-                        createPropertyInFirebase(property: property) {
-                            savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {
-                                completion()
-                            })
-                        }
-                    } else {
-                        print("Error creating landlord/property")
+                    guard let property = property else { print("Error creating property"); return }
+                    createPropertyInFirebase(property: property) {
+                        savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {
+                            completion()
+                        })
                     }
                 })
             })
@@ -66,11 +65,12 @@ class UserController {
             self.currentLandlord = currentLandlord
         }
     }
+    
     static func createLandlordForCurrentUser(completion: @escaping ((_ landlord: Landlord?) -> Void) = { _ in }) {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
             FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
-                guard let id = facebookDictionary?["id"] as? String, let landlord = Landlord(dictionary: temporaryUserCreationDictionary, id: id) else { NSLog("Landlord could not be initialized from dictionary"); completion(nil); return }
+                guard let landlord = Landlord(dictionary: temporaryUserCreationDictionary) else { NSLog("Landlord could not be initialized from dictionary"); completion(nil); return }
                 saveToPersistentStore()
                 completion(landlord)
             })
@@ -107,8 +107,8 @@ class UserController {
     static func createPropertyInFirebase(property: Property, completion: @escaping () -> Void) {
         guard let landlord = property.landlord,
             let landlordID = landlord.id, let propertyID = property.propertyID, let dict = property.dictionaryRepresentation else { completion(); return }
-
-        let propertyRef = FirebaseController.landlordsRef.child(landlordID).child("properties").child(propertyID)
+        
+        let propertyRef = FirebaseController.propertiesRef.child(landlordID).child(propertyID)
         propertyRef.setValue(dict) { (error, reference) in
             if error != nil {
                 print(error?.localizedDescription)
@@ -149,15 +149,45 @@ class UserController {
         }
     }
     
-    static func createRenterForCurrentUser(completion: ((_ success: Bool) -> Void) = { _ in }) {
-        
+    static func createRenterForCurrentUser(completion: @escaping ((_ renter: Renter?) -> Void) = { _ in }) {
+        AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
+            FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
+                _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
+                guard let renter = Renter(dictionary: temporaryUserCreationDictionary) else { NSLog("Renter could not be initialized from dictionary"); completion(nil); return }
+                saveToPersistentStore()
+                completion(renter)
+            })
+        }
     }
     
     
+    static func createRenterInFirebase(renter: Renter, completion: @escaping () -> Void) {
+        guard let dict = renter.dictionaryRepresentation, let renterID = renter.id else { completion(); return }
+        
+        let propertyRef = FirebaseController.rentersRef.child(renterID)
+        propertyRef.setValue(dict) { (error, reference) in
+            if error != nil {
+                print(error?.localizedDescription)
+                completion()
+            } else {
+                completion()
+            }
+        }
+    }
     
-    static func createRenterInFirebase(renter: Renter, completion: () -> Void) {
-        guard let id = renter.id else { return }
-        FirebaseController.allUsersRef.child("renters").child(id).setValue(renter.dictionaryRepresentation)
+    static func saveRenterProfileImagesToCoreDataAndFirebase(images: [UIImage], forRenter renter: Renter, completion: @escaping () -> Void) {
+        var count = 0
+        
+        guard let renterID = renter.id else { return }
+        images.forEach { (image) in
+            count += 1
+            FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error) in
+                guard error == nil else { print(error?.localizedDescription); completion(); return }
+                print("Successfully uploaded image")
+                guard let imageData = UIImageJPEGRepresentation(image, 0.3) else { completion(); return }
+                _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil)
+            })
+        }
     }
     
     
@@ -182,7 +212,7 @@ extension UserController {
     
     // MARK: - User/Property keys and enums
     
-    
+    static let kUserType = "userType"
     static let kAddress = "address"
     static let kZipCode = "zipCode"
     static let kBedroomCount = "bedroomCount"
