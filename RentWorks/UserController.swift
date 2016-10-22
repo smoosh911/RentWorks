@@ -204,6 +204,21 @@ class UserController {
     
     
     
+    static func saveMockPropertyProfileImagesToCoreDataAndFirebase(for propertyID: String,
+        landlord: Landlord, completion: @escaping (String) -> Void) {
+        
+        
+        guard let landlordID = landlord.id, let image = UIImage(named: landlordID), let property = Property(availableDate: NSDate(), bathroomCount: 2.0, bedroomCount: 1, monthlyPayment: 1, petFriendly: true, smokingAllowed: true, address: "1", zipCode: "1", propertyID: propertyID, landlord: landlord) else { return }
+
+        
+        
+        let count = 1
+        FirebaseController.store(profileImage: image, forUserID: landlordID, and: property, with: count, completion: { (metadata, error, imageData) in
+            guard error == nil, let imageURL = metadata?.downloadURL()?.absoluteString else { print(error?.localizedDescription); return }
+            print("Successfully uploaded image")
+            completion(imageURL)
+        })
+    }
     
     static func downloadAndAddImagesFor(property: Property, completion: @escaping (_ success: Bool) -> Void) {
         guard let propertyProfileImages = property.profileImages?.array as? [ProfileImage] else { return }
@@ -239,12 +254,12 @@ class UserController {
         
         guard let renters = try? CoreDataStack.context.fetch(request) else { completion(false); return }
         
-            guard let id = UserController.currentUserID else { completion(false); return }
-            let currentRenterArray = renters.filter({$0.id == id})
-            guard let currentRenter = currentRenterArray.first else { completion(false); return }
-            self.currentRenter = currentRenter
-            self.currentUserType = "renter"
-            completion(true)
+        guard let id = UserController.currentUserID else { completion(false); return }
+        let currentRenterArray = renters.filter({$0.id == id})
+        guard let currentRenter = currentRenterArray.first else { completion(false); return }
+        self.currentRenter = currentRenter
+        self.currentUserType = "renter"
+        completion(true)
         
     }
     
@@ -331,6 +346,19 @@ class UserController {
             }
         }
     }
+    
+    static func saveMockRenterProfileImagesToCoreDataAndFirebase(forRenterID renterID: String, completion: @escaping (String) -> Void) {
+        
+        guard let image = UIImage(named: renterID) else { return }
+        
+        let count = 1
+        FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error, imageData) in
+            guard error == nil, let imageURL = metadata?.downloadURL()?.absoluteString else { print(error?.localizedDescription); return }
+            print("Successfully uploaded image")
+            completion(imageURL)
+        })
+    }
+    
     
     
     // MARK: - Persistence

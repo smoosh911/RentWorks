@@ -341,7 +341,6 @@ class FirebaseController {
                             })
                         }
                     })
-                    
                 } else {
                     print("Error logging into Firebase")
                 }
@@ -349,53 +348,77 @@ class FirebaseController {
         }
     }
     
-    
-    
-    //    static func handleUserInformationScenariosFor(user: TestUser, hasAccount: Bool, hasPhoto: Bool, completion: @escaping () -> Void) {
-    //        switch (hasAccount, hasPhoto) {
-    //        case (true, true):
-    //            completion()
-    //        case (false, false):
-    //            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
-    //                FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-    //                    guard let image = image else { completion(); return }
-    //                    user.profilePic = image
-    //                    FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
-    //                        guard error != nil else { print(error?.localizedDescription); completion(); return }
-    //                        completion()
-    //                    })
-    //                })
-    //            })
-    //
-    //
-    //        case (false, true):
-    //            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
-    //                completion()
-    //            })
-    //
-    //
-    //        case (true, false):
-    //            FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-    //                guard let image = image else { return }
-    //                user.profilePic = image
-    //                FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
-    //                    guard error != nil else { print(error?.localizedDescription); completion(); return }
-    //                    completion()
-    //                })
-    //            })
-    //        }
-    //    }
-    
     // MARK: - Mock data related functions
     
-    static func createMockUsers() {
+    static func createMockRenters() {
         
-        for i in 1...15 {
-            let userRef =  FirebaseController.allUsersRef.child("\(i)")
-            let dict = ["name": "testUser", "email": "testUser@test.com"]
-            userRef.setValue(dict)
+        for i in 1...10 {
+            let userRef =  FirebaseController.rentersRef.child("\(i)")
+            
+            
+            
+            UserController.saveMockRenterProfileImagesToCoreDataAndFirebase(forRenterID: "\(i)", completion: { (imageURL) in
+                let dict: [String: Any] = [UserController.kEmail: "test@testing.com",
+                                           UserController.kZipCode: "84321",
+                                           UserController.kPropertyFeatures: "Gym",
+                                           UserController.kCreditRating: "A",
+                                           UserController.kPetsAllowed: true,
+                                           UserController.kSmokingAllowed: false,
+                                           UserController.kFirstName: "test",
+                                           UserController.kLastName: "account",
+                                           UserController.kMonthlyPayment: 1234,
+                                           UserController.kID: "\(i)",
+                    UserController.kBedroomCount: 2,
+                    UserController.kBathroomCount: 1.5,
+                    UserController.kAddress: "1234 Testing Road, TestTown, UT",
+                    UserController.kBio: "No bio available",
+                    UserController.kImageURLS: [imageURL]]
+                
+                userRef.setValue(dict)
+            })
+            
+            
         }
     }
+    
+    static func createMockLandlordsAndProperties() {
+        
+        for i in 11...20 {
+            let landlordRef = FirebaseController.landlordsRef.child("\(i)")
+            
+            let landlordDict = [UserController.kFirstName: "test", UserController.kLastName: "landlord", UserController.kEmail: "test@rentworks.com"]
+            
+            landlordRef.setValue(landlordDict)
+            
+            let propertyID = UUID().uuidString
+            
+            guard let landlord = Landlord(email: "test@rentworks.com", firstName: "test", lastName: "landlord", id: "\(i)") else { return }
+            
+            UserController.saveMockPropertyProfileImagesToCoreDataAndFirebase(for: propertyID, landlord: landlord, completion: { (imageURL) in
+                
+                
+                
+                let propertyDict: [String: Any] = [UserController.kAddress: "1234 Testing Road, TestTown, UT",
+                                                   UserController.kZipCode: "84321",
+                                                   UserController.kAvailableDate: NSDate().timeIntervalSince1970,
+                                                   UserController.kBathroomCount: 1.0,
+                                                   UserController.kBedroomCount: 1,
+                                                   UserController.kMonthlyPayment: 1,
+                                                   UserController.kPetsAllowed: true,
+                                                   UserController.kSmokingAllowed: false,
+                                                   UserController.kPropertyDescription: "No description available",
+                                                   UserController.kStarRating: 5,
+                                                   UserController.kPropertyID: propertyID,
+                                                   UserController.kImageURLS: [imageURL]]
+                
+                let propertyRef = FirebaseController.propertiesRef.child("\(i)").child(propertyID)
+                propertyRef.setValue(propertyDict)
+                
+            })
+            
+        }
+    }
+    
     
     static func createAddressesForMockUsers() {
         for i in 1...15 {

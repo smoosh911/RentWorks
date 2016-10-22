@@ -28,15 +28,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = loginVC
             self.window?.makeKeyAndVisible()
         } else {
-
-            FirebaseController.handleUserInformationScenarios(completion: { (success) in
-                if success {
-                    // Go to swiping screen.
-                    
-                } else {
-                    // Do nothing, or create account?
-                }
-            })
+//                        FirebaseController.handleUserInformationScenarios(completion: { (success) in
+//                            if success {
+//                                // Go to swiping screen.
+//            
+//                            } else {
+//                                // Do nothing, or create account?
+//                            }
+//                        })
         }
         
         
@@ -77,7 +76,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         AuthenticationController.signOutOfFirebase()
     }
-    
-    // MARK: - Core Data stack
 }
-
