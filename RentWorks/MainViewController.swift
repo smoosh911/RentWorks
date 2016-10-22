@@ -114,7 +114,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
                 alertController.view.tintColor = AppearanceController.customOrangeColor
                 
                 self.matchingUsersAlertController = alertController
-                FirebaseController.downloadAndAddProfileImages(forUsers: usersArray, completion: nil)
+//                FirebaseController.downloadAndAddProfileImages(forUsers: usersArray, completion: nil)
                 if !alertController.isBeingPresented {
                     self.present(alertController, animated: true, completion: nil)
                     print("Did present matchAlert")

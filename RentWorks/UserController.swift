@@ -39,11 +39,11 @@ class UserController {
             createLandlordInFirebase(landlord: landlord, completion: {
                 createPropertyInCoreDataFor(landLord: landlord, completion: { (property) in
                     guard let property = property else { print("Error creating property"); return }
-                    createPropertyInFirebase(property: property) {
-                        savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {
+                    savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {
+                        createPropertyInFirebase(property: property) {
                             completion()
-                        })
-                    }
+                        }
+                    })
                 })
             })
         }
@@ -129,8 +129,10 @@ class UserController {
             FirebaseController.store(profileImage: image, forUserID: landlordID, and: property, with: count, completion: { (metadata, error, imageData) in
                 guard error == nil else { print(error?.localizedDescription); completion(); return }
                 print("Successfully uploaded image")
-                guard let imageData = imageData else { completion(); return }
-                _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
+                
+                guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString else { completion(); return }
+                _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property, imageURL: imageURL)
+                saveToPersistentStore()
             })
         }
     }
@@ -153,8 +155,8 @@ class UserController {
     static func createRenterForCurrentUser(completion: @escaping () -> Void) {
         self.createRenterInCoreDataForCurrentUser { (renter) in
             guard let renter = renter else { print("Renter returned in completion closure is nil"); return }
-            self.createRenterInFirebase(renter: renter, completion: {
-                self.saveRenterProfileImagesToCoreDataAndFirebase(forRenter: renter, completion: {
+            self.saveRenterProfileImagesToCoreDataAndFirebase(forRenter: renter, completion: {
+                self.createRenterInFirebase(renter: renter, completion: {
                     completion()
                 })
             })
@@ -187,22 +189,25 @@ class UserController {
         }
     }
     
+    
+    // TODO: - When you fetch renters/properties, grab their profileImageURLs and get them
+    
     static func saveRenterProfileImagesToCoreDataAndFirebase(forRenter renter: Renter, completion: @escaping () -> Void) {
         var count = 0
         
         FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080) { (image) in
-            guard let image = image,let renterID = renter.id else { return }
+            guard let image = image, let renterID = renter.id else { return }
             userCreationPhotos.append(image)
-    
+            
             let group = DispatchGroup()
+            
             for image in userCreationPhotos {
                 group.enter()
                 count += 1
                 FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error, imageData) in
-                    guard error == nil else { print(error?.localizedDescription); group.leave(); completion(); return }
-                    print("Successfully uploaded image")
-                    guard let imageData = imageData else { completion(); return }
-                    _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil)
+                    guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString, error == nil else { print(error?.localizedDescription); group.leave(); return }
+                     print("Successfully uploaded image")
+                    _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil, imageURL: imageURL)
                     group.leave()
                 })
             }
@@ -249,6 +254,8 @@ extension UserController {
     static let kStarRating = "starRating"
     static let kID = "id"
     static let kPropertyID = "propertyID"
+    
+    static let kImageURLS = "images"
     
     static let kFirstName = "first_name"
     static let kLastName = "last_name"

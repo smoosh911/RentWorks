@@ -5,6 +5,7 @@
     </entity>
     <entity name="ProfileImage" representedClassName="ProfileImage" syncable="YES" codeGenerationType="class">
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="property" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="profileImages" inverseEntity="Property" syncable="YES"/>
         <relationship name="renter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Renter" inverseName="profileImages" inverseEntity="Renter" syncable="YES"/>
@@ -48,7 +49,7 @@
     </entity>
     <elements>
         <element name="Landlord" positionX="225" positionY="189" width="128" height="60"/>
-        <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="105"/>
+        <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="118"/>
         <element name="Property" positionX="223" positionY="324" width="128" height="240"/>
         <element name="Renter" positionX="-254" positionY="174" width="128" height="225"/>
         <element name="User" positionX="-2" positionY="-52" width="128" height="135"/>

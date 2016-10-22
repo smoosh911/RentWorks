@@ -14,6 +14,10 @@ extension Property {
         
         guard let address = address, let availableDate = availableDate, let zipCode = zipCode, let propertyID = propertyID else { return nil }
         
+        guard let profileImageArray = self.profileImages?.array as? [ProfileImage] else { return nil }
+        
+        let imageURLs = profileImageArray.flatMap({$0.imageURL})
+        
         return [UserController.kAddress: address,
                 UserController.kZipCode: zipCode,
                 UserController.kAvailableDate: availableDate.timeIntervalSince1970,
@@ -24,7 +28,8 @@ extension Property {
                 UserController.kSmokingAllowed: smokingAllowed,
                 UserController.kPropertyDescription: propertyDescription ?? "No description available",
                 UserController.kStarRating: rentalHistoryRating,
-                UserController.kPropertyID: propertyID]
+                UserController.kPropertyID: propertyID,
+                UserController.kImageURLS: imageURLs]
     }
     
     

@@ -21,7 +21,8 @@ extension Renter {
             let id = id
             else { return nil }
         
-        return [UserController.kEmail: email,
+        
+        var dictionaryRepresentation: [String: Any] = [UserController.kEmail: email,
                 UserController.kZipCode: zipCode,
                 UserController.kPropertyFeatures: wantedPropertyFeatures,
                 UserController.kCreditRating: creditRating,
@@ -35,7 +36,14 @@ extension Renter {
                 UserController.kBathroomCount: wantedBathroomCount,
                 UserController.kAddress: address,
                 UserController.kBio: bio ?? "No bio available"]
+        
+        guard let profileImageArray = self.profileImages?.array as? [ProfileImage] else { return dictionaryRepresentation }
+        
+        let imageURLs = profileImageArray.flatMap({$0.imageURL})
 
+        dictionaryRepresentation[UserController.kImageURLS] = imageURLs
+        
+        return dictionaryRepresentation
     }
     
 }

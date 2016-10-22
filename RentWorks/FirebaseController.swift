@@ -31,27 +31,6 @@ class FirebaseController {
         }
     }
     
-    // MARK: - User Creation
-    
-    static func createFirebaseUserFor(currentUser: TestUser, completion: (() -> Void)? = nil) {
-        let userRef =  FirebaseController.allUsersRef.child(currentUser.id)
-        userRef.setValue(currentUser.dictionaryRepresentation)
-        
-        FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-            guard let image = image else { return }
-            FirebaseController.store(profileImage: image, forUser: currentUser, completion: { (metadata, error) in
-                guard error != nil else { print(error?.localizedDescription); completion?(); return }
-                completion?()
-            })
-        })
-        
-        MatchController.observeLikesFor(user: currentUser)
-        // May need to change the endpoint and/or the key for the dictionaryRepresentation.
-    }
-    
-    
-    
-    
     // MARK: - Image storage/downloading
     
     static func store(profileImage: UIImage, forUser user: TestUser, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
@@ -76,26 +55,40 @@ class FirebaseController {
         }
     }
     
-    static func downloadProfileImage(forUser user: TestUser, completion: @escaping (UIImage?) -> Void) {
+    static func downloadProfileImage(forUser user: User, and property: Property?, completion: @escaping (_ success: Bool) -> Void) {
         
-        let profileImageRef = profileImagesRef.child(user.id)
+        var profileImageRef = profileImagesRef
         
-        profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (data, error) in
-            if error != nil { print(error?.localizedDescription) }
-            guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
-            completion(image)
+        
+        if let renter = user as? Renter {
+            guard let userID = user.id else { completion(false); return }
+            profileImageRef = profileImageRef.child(userID)
+            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
+                
+                guard let imageData = imageData, error == nil else { completion(false); return }
+                let renterProfileImage = ProfileImage(userID: userID, imageData: imageData as NSData, renter: renter, property: nil)
+            }
+        } else if let propertyID = property?.propertyID, let landlordID = property?.landlord?.id, user as? Renter == nil {
+            profileImageRef = profileImageRef.child(landlordID).child(propertyID)
+            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (data, error) in
+                guard let data = data, let image = UIImage(data: data), let imageData = UIImageJPEGRepresentation(image, 1.0), error == nil else { completion(false); return }
+                
+                let propertyProfileImage = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
+            }
+            completion(true)
         }
     }
     
-    static func downloadAndAddProfileImages(forUsers users: [TestUser], completion: (() -> Void)? = nil) {
+    static func downloadAndAddProfileImages(forUsers users: [User], andProperties properties: [Property]?, completion: (() -> Void)? = nil) {
         
         let group = DispatchGroup()
         
         for user in users {
             group.enter()
-            downloadProfileImage(forUser: user, completion: { (image) in
-                guard let image = image else { group.leave(); return }
-                user.profilePic = image
+            downloadProfileImage(forUser: user, and: nil, completion: { (success) in
+//                guard let image = image else { group.leave(); return }
+                
+//                user.profilePic = image
                 group.leave()
             })
         }
@@ -107,18 +100,18 @@ class FirebaseController {
         
     }
     
-    //    static func downloadProfileImageFor(id: String, completion: @escaping (UIImage?) -> Void) {
-    //
-    //        let profileImageRef = profileImagesRef.child("\(id).jpg")
-    //
-    //        profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
-    //            if error != nil { print(error?.localizedDescription) }
-    //            guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
-    //            completion(image)
-    //        }
-    //    }
+        static func downloadProfileImageFor(id: String, completion: @escaping (UIImage?) -> Void) {
     
-    // MARK: - User Fetching
+            let profileImageRef = profileImagesRef.child("\(id).jpg")
+    
+            profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
+                if error != nil { print(error?.localizedDescription) }
+                guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
+                completion(image)
+            }
+        }
+    
+//     MARK: - User Fetching
     
     
     // WARNING: - At its current state, this function will pull ALL the users from Firebase. This is not a final function, but only to test.
@@ -146,11 +139,11 @@ class FirebaseController {
                     let group = DispatchGroup()
                     for user in testUsers {
                         group.enter()
-                        FirebaseController.downloadProfileImage(forUser: user, completion: { (image) in
-                            guard let image = image else { group.leave(); return }
-                            user.profilePic = image
-                            group.leave()
-                        })
+//                        FirebaseController.downloadProfileImage(forUser: user, and: nil, completion: { (image) in
+//                            guard let image = image else { group.leave(); return }
+//                            user.profilePic = image
+//                            group.leave()
+//                        })
                     }
                     
                     group.notify(queue: DispatchQueue.main, execute: {
@@ -218,40 +211,40 @@ class FirebaseController {
     }
     
     
-    static func handleUserInformationScenariosFor(user: TestUser, hasAccount: Bool, hasPhoto: Bool, completion: @escaping () -> Void) {
-        switch (hasAccount, hasPhoto) {
-        case (true, true):
-            completion()
-        case (false, false):
-            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
-                FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-                    guard let image = image else { completion(); return }
-                    user.profilePic = image
-                    FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
-                        guard error != nil else { print(error?.localizedDescription); completion(); return }
-                        completion()
-                    })
-                })
-            })
-            
-            
-        case (false, true):
-            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
-                completion()
-            })
-            
-            
-        case (true, false):
-            FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-                guard let image = image else { return }
-                user.profilePic = image
-                FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
-                    guard error != nil else { print(error?.localizedDescription); completion(); return }
-                    completion()
-                })
-            })
-        }
-    }
+//    static func handleUserInformationScenariosFor(user: TestUser, hasAccount: Bool, hasPhoto: Bool, completion: @escaping () -> Void) {
+//        switch (hasAccount, hasPhoto) {
+//        case (true, true):
+//            completion()
+//        case (false, false):
+//            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
+//                FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
+//                    guard let image = image else { completion(); return }
+//                    user.profilePic = image
+//                    FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
+//                        guard error != nil else { print(error?.localizedDescription); completion(); return }
+//                        completion()
+//                    })
+//                })
+//            })
+//            
+//            
+//        case (false, true):
+//            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
+//                completion()
+//            })
+//            
+//            
+//        case (true, false):
+//            FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
+//                guard let image = image else { return }
+//                user.profilePic = image
+//                FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
+//                    guard error != nil else { print(error?.localizedDescription); completion(); return }
+//                    completion()
+//                })
+//            })
+//        }
+//    }
     
     // MARK: - Mock data related functions
     
@@ -294,8 +287,9 @@ class FirebaseController {
         checkAndResizeImageToBeAMaximumOf(megabytes: 1, image: profileImage, withCompressionQuality: 1.0) { (imageData) in
             guard let imageData = imageData else { return }
             
+            let metadata = FIRStorageMetadata()
             
-            let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: { (metaData, error) in
+            let uploadTask = profileImageRef.put(imageData, metadata: metadata, completion: { (metaData, error) in
                 completion(metaData, error, imageData)
             })
             
@@ -315,11 +309,13 @@ class FirebaseController {
         }
     }
     
-    static func checkAndResizeImageToBeAMaximumOf(megabytes: Int, image: UIImage? = nil, withCompressionQuality compressionQuality: CGFloat, temporaryData: Data? = nil, completion: (Data?) -> Void) {
+    static func checkAndResizeImageToBeAMaximumOf(megabytes: Int, image: UIImage?, withCompressionQuality compressionQuality: CGFloat, temporaryData: Data? = nil, completion: (Data?) -> Void) {
         
         let megabyteCount = megabytes * 1024 * 1024
         if let temporaryData = temporaryData, let image = image {
+            
             print(temporaryData.count)
+            
             if temporaryData.count > megabyteCount {
                 let newTempData = UIImageJPEGRepresentation(image, compressionQuality)
                 checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality - 0.05, temporaryData: newTempData, completion: completion)
@@ -329,9 +325,8 @@ class FirebaseController {
         } else {
             guard let image = image, let imageData = UIImageJPEGRepresentation(image, compressionQuality) else { completion(temporaryData); return }
             
-           checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality, temporaryData: imageData, completion: completion)
+            checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality, temporaryData: imageData, completion: completion)
         }
-        
     }
     
     
@@ -363,7 +358,7 @@ class FirebaseController {
             
             uploadTask.observe(.failure) { (snapshot) in
                 guard let storageError = snapshot.error else { return }
-                print("Error uploading imageData to FirebaseStorage for userID: \(userID)\n \(storageError.localizedDescription)")
+                print("Error uploading imageData to FirebaseStorage for userID: \(userID)\n\(storageError.localizedDescription)")
             }
         }
     }
