@@ -18,7 +18,7 @@ extension Property {
         
         let imageURLs = profileImageArray.flatMap({$0.imageURL})
         
-        return [UserController.kAddress: address,
+        var dictionaryRepresentation: [String: Any] = [UserController.kAddress: address,
                 UserController.kZipCode: zipCode,
                 UserController.kAvailableDate: availableDate.timeIntervalSince1970,
                 UserController.kBathroomCount: bathroomCount,
@@ -30,7 +30,16 @@ extension Property {
                 UserController.kStarRating: rentalHistoryRating,
                 UserController.kPropertyID: propertyID,
                 UserController.kImageURLS: imageURLs]
+        
+        guard let landlordID = landlord?.id else { return dictionaryRepresentation }
+        
+        dictionaryRepresentation[UserController.kLandlordID] = landlordID
+        
+        return dictionaryRepresentation
+        
+        
     }
+
     
     
 }

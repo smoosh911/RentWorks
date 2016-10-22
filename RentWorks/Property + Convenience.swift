@@ -35,7 +35,7 @@ extension Property {
     
     @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext? = CoreDataStack.context) {
         
-        guard let availableDate = dictionary[UserController.kAvailableDate] as? Date,
+        guard let availableDate = dictionary[UserController.kAvailableDate] as? Double,
             let bathroomCount = dictionary[UserController.kBathroomCount] as? Double,
             let bedroomCount = dictionary[UserController.kBedroomCount] as? Double,
             let monthlyPayment = dictionary[UserController.kMonthlyPayment] as? Int,
@@ -54,7 +54,7 @@ extension Property {
         // TODO: - Change this to not a static value
         let rentalHistoryRating = 5.0
         
-        self.availableDate = availableDate as NSDate?
+        self.availableDate = NSDate(timeIntervalSince1970: availableDate)
         self.bathroomCount = bathroomCount
         self.bedroomCount = Int64(bedroomCount)
         self.monthlyPayment = Int64(monthlyPayment)

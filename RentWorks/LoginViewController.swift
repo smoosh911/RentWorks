@@ -45,7 +45,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         FirebaseController.handleUserInformationScenarios { (success) in
             self.dismissLoadingScreen()
             if success {
-                // Go to swiping view
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                
+                self.present(mainVC, animated: true, completion: nil)
             } else {
                 self.displayNoAccountCreatedAlert()
             }

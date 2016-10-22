@@ -23,9 +23,9 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         var usersArray: [TestUser] = []
         
         for id in users {
-            let user = FirebaseController.users.filter({$0.id == id})
-            guard let unwrappedUser = user.first else { return }
-            usersArray.append(unwrappedUser)
+//            let user = FirebaseController.users.filter({$0.id == id})
+//            guard let unwrappedUser = user.first else { return }
+//            usersArray.append(unwrappedUser)
         }
         
         MatchController.allMatches = usersArray

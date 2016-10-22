@@ -36,16 +36,20 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     var loadingActivityIndicator: UIActivityIndicatorView?
     var loadingViewHasBeenDismissed = false
     
+    var users: [Any] = []
+    
+    
     var matchingUsersAlertController: UIAlertController?
     
+    
+    
     @IBOutlet weak var loadingLabel: UILabel!
+    
     
     var imageIndex = 0
     var backgroundimageIndex: Int {
         return imageIndex + 1 <= users.count - 1 ? imageIndex + 1 : 0
     }
-    
-    var users: [TestUser] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,20 +61,21 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         swipeableView.delegate = self
         setupViews()
         
-//        if AuthenticationController.currentUser == nil {
-//            AuthenticationController.getCurrentUser()
-//        }
-        
-        FirebaseController.getAllFirebaseUsersAndTheirProfilePictures()
+        if UserController.currentUserType == "renter" {
+//            UserController.fetchAllProperties()
+            
+            users = FirebaseController.properties
+        } else if UserController.currentUserType == "landlord" {
+            // Get renters here
+        }
     }
     
     
     // MARK: - FirebaseUserDelegate
     
-    func firebaseUsersWereUpdated() {
-        self.users = FirebaseController.users.reversed()
+    func propertiesWereUpdated() {
         dismissLoadingScreen()
-        updateUIElements()
+        updateUIElementsForPropertyCards()
     }
     
     // MARK: - UserMatchingDelegate
@@ -89,9 +94,9 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
                 var usersArray: [TestUser] = []
                 
                 for id in userIDs {
-                    let user = FirebaseController.users.filter({$0.id == id})
-                    guard let unwrappedUser = user.first else { return }
-                    usersArray.append(unwrappedUser)
+                    //                    let user = users.filter({$0.id == id})
+                    //                    guard let unwrappedUser = user.first else { return }
+                    //                    usersArray.append(unwrappedUser)
                 }
                 
                 // WARNING: - This will change once the list of all users who have historically matched get a separate endpoint in Firebase.
@@ -114,7 +119,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
                 alertController.view.tintColor = AppearanceController.customOrangeColor
                 
                 self.matchingUsersAlertController = alertController
-//                FirebaseController.downloadAndAddProfileImages(forUsers: usersArray, completion: nil)
+                //                FirebaseController.downloadAndAddProfileImages(forUsers: usersArray, completion: nil)
                 if !alertController.isBeingPresented {
                     self.present(alertController, animated: true, completion: nil)
                     print("Did present matchAlert")
@@ -131,24 +136,28 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     // MARK: - UI Related
     
-    func updateUIElements() {
-        let user = users[imageIndex]
-        imageView.image = user.profilePic
-        nameLabel.text = user.name
-        addressLabel.text = user.address
+    func updateUIElementsForPropertyCards() {
+        let property = FirebaseController.properties[imageIndex]
+        guard let firstProfileImage = FirebaseController.properties[imageIndex].profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
         
-        swipeableView.user = user
         
-        let nextUser = users[backgroundimageIndex]
-        backgroundImageView.image = nextUser.profilePic
-        backgroundNameLabel.text = nextUser.name
-        backgroundAddressLabel.text = nextUser.address
+        imageView.image = profilePicture
+        nameLabel.text = description
+        addressLabel.text = address
+        
+        let nextProperty = FirebaseController.properties[backgroundimageIndex]
+        
+        guard  let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data), let backgroundPropertyAddress = nextProperty.address else { return }
+        backgroundImageView.image = backgroundProfilePicture
+        backgroundNameLabel.text = nextProperty.description
+        backgroundAddressLabel.text = backgroundPropertyAddress
         
         if imageIndex < users.count - 1 {
             imageIndex += 1
         } else {
             imageIndex = 0
         }
+        
     }
     
     func setupViews() {
@@ -225,10 +234,9 @@ extension MainViewController: RWKSwipeableViewDelegate {
         }) { (complete) in
             
             self.reset(swipeableView: swipeableView, inSuperview: superview)
-            self.updateUIElements()
-            
+            self.updateUIElementsForPropertyCards()
             guard let swipeableView = swipeableView as? RWKSwipeableView, let currentUser = AuthenticationController.currentUser else { return }
-            MatchController.add(currentUser: currentUser, toLikelistOf: swipeableView.user!)
+            //            MatchController.add(currentUser: currentUser, toLikelistOf: swipeableView.user!)
         }
     }
     
@@ -240,7 +248,6 @@ extension MainViewController: RWKSwipeableViewDelegate {
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: -90))
         }) { (complete) in
             self.reset(swipeableView: swipeableView, inSuperview: superview)
-            self.updateUIElements()
         }
     }
     
@@ -262,8 +269,8 @@ extension MainViewController: RWKSwipeableViewDelegate {
         swipeableView.transform = CGAffineTransform(rotationAngle: 0.0)
         
         guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
-        let newUser = users[imageIndex]
-        swipeableView.user = newUser
+        let property = FirebaseController.properties[imageIndex]
+                swipeableView.property = property
         
     }
     

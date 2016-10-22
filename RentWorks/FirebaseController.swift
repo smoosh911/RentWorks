@@ -26,9 +26,11 @@ class FirebaseController {
     
     static weak var delegate: FirebaseUserDelegate?
     
-    static var users: [TestUser] = [] {
+    static var properties: [Property] = [] {
         didSet {
-            delegate?.firebaseUsersWereUpdated()
+            if properties.count > 2 {
+                delegate?.propertiesWereUpdated()
+            }
         }
     }
     
@@ -189,41 +191,41 @@ class FirebaseController {
     
     // WARNING: - At its current state, this function will pull ALL the users, INCLUDING their profile pictures from Firebase. This is not a final function, but only to test.
     
-    static func getAllFirebaseUsersAndTheirProfilePictures(completion: (([TestUser]?) -> Void)? = nil) {
-        
-        // TODO: - Make an alertController that will tell the user that the cards (users) are loading so that all this stuff below can run.
-        AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
-            if loggedIn {
-                
-                FirebaseController.fetchAllFirebaseUsers { (testUsers) in
-                    guard let testUsers = testUsers else { return }
-                    let group = DispatchGroup()
-                    for user in testUsers {
-                        group.enter()
-                        //                        FirebaseController.downloadProfileImage(forUser: user, and: nil, completion: { (image) in
-                        //                            guard let image = image else { group.leave(); return }
-                        //                            user.profilePic = image
-                        //                            group.leave()
-                        //                        })
-                    }
-                    
-                    group.notify(queue: DispatchQueue.main, execute: {
-                        // Dismiss the alertController here.
-                        self.users = testUsers.filter({$0 != AuthenticationController.currentUser})
-                        completion?(users)
-                        
-                    })
-                }
-            } else {
-                AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
-                    if success {
-                        getAllFirebaseUsersAndTheirProfilePictures(completion: nil)
-                    }
-                })
-                print("Not logged in")
-            }
-        }
-    }
+    //    static func getAllFirebaseUsersAndTheirProfilePictures(completion: (([TestUser]?) -> Void)? = nil) {
+    //
+    //        // TODO: - Make an alertController that will tell the user that the cards (users) are loading so that all this stuff below can run.
+    //        AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
+    //            if loggedIn {
+    //
+    //                FirebaseController.fetchAllFirebaseUsers { (testUsers) in
+    //                    guard let testUsers = testUsers else { return }
+    //                    let group = DispatchGroup()
+    //                    for user in testUsers {
+    //                        group.enter()
+    //                        //                        FirebaseController.downloadProfileImage(forUser: user, and: nil, completion: { (image) in
+    //                        //                            guard let image = image else { group.leave(); return }
+    //                        //                            user.profilePic = image
+    //                        //                            group.leave()
+    //                        //                        })
+    //                    }
+    //
+    //                    group.notify(queue: DispatchQueue.main, execute: {
+    //                        // Dismiss the alertController here.
+    //                        self.users = testUsers.filter({$0 != AuthenticationController.currentUser})
+    //                        completion?(users)
+    //
+    //                    })
+    //                }
+    //            } else {
+    //                AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
+    //                    if success {
+    //                        getAllFirebaseUsersAndTheirProfilePictures(completion: nil)
+    //                    }
+    //                })
+    //                print("Not logged in")
+    //            }
+    //        }
+    //    }
     
     static func fetchUsersFor(userIDs: [String], completion: @escaping ([TestUser?]) -> Void) {
         let group = DispatchGroup()
@@ -309,7 +311,6 @@ class FirebaseController {
                     UserController.getCurrentRenterFromCoreData(completion: { (renterExists) in
                         
                         if renterExists {
-                            // Go to swiping screen?
                             success = true
                             group.leave()
                         } else {
@@ -320,7 +321,6 @@ class FirebaseController {
                     group.enter()
                     UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
                         if landlordExists {
-                            // Go to swiping screen?
                             success = true
                             group.leave()
                         } else {
@@ -409,9 +409,11 @@ class FirebaseController {
                                                    UserController.kPropertyDescription: "No description available",
                                                    UserController.kStarRating: 5,
                                                    UserController.kPropertyID: propertyID,
-                                                   UserController.kImageURLS: [imageURL]]
+                                                   UserController.kImageURLS: [imageURL],
+                                                   UserController.kLandlordID: "\(i)"]
                 
-                let propertyRef = FirebaseController.propertiesRef.child("\(i)").child(propertyID)
+                let propertyRef = FirebaseController.propertiesRef.child(propertyID)
+                FirebaseController.likesRef.child(propertyID).child("0").setValue(true)
                 propertyRef.setValue(propertyDict)
                 
             })
@@ -528,5 +530,5 @@ class FirebaseController {
 }
 
 protocol FirebaseUserDelegate: class {
-    func firebaseUsersWereUpdated()
+    func propertiesWereUpdated()
 }

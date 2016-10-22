@@ -28,6 +28,12 @@ class UserController {
     
     static var currentUserType: String?
     
+    static var propertyCount: Int = 0
+    
+    static var fetchCount = 0
+    
+    
+    
     static func addAttributeToUserDictionary(attribute: [String: Any]) {
         guard let key = attribute.keys.first, let value = attribute.values.first else { return }
         temporaryUserCreationDictionary[key] = value
@@ -105,72 +111,6 @@ class UserController {
         }
     }
     
-    static func createLandlordInFirebase(landlord: Landlord, completion: @escaping () -> Void) {
-        guard let id = landlord.id, let dict = landlord.dictionaryRepresentation else { completion(); return }
-        
-        let landlordRef = FirebaseController.landlordsRef.child(id)
-        landlordRef.setValue(dict) { (error, reference) in
-            if error != nil {
-                print(error?.localizedDescription)
-                completion()
-            } else {
-                completion()
-            }
-        }
-    }
-    static func createLandlordMockInFirebase(id: String, dictionary: [String: Any]) {
-        FirebaseController.landlordsRef.child(id).setValue(dictionary)
-    }
-    
-    // MARK: - Property Functions
-    
-    static func createPropertyInCoreDataFor(landLord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
-        let prop = Property(dictionary: temporaryUserCreationDictionary)
-        guard let property = prop else { NSLog("Property could not be initialized from dictionary"); completion(nil); return }
-        property.landlord = landLord
-        saveToPersistentStore()
-        completion(property)
-    }
-    
-    static func createPropertyInFirebase(property: Property, completion: @escaping () -> Void) {
-        guard let landlord = property.landlord,
-            let landlordID = landlord.id, let propertyID = property.propertyID, let dict = property.dictionaryRepresentation else { completion(); return }
-        
-        let propertyRef = FirebaseController.propertiesRef.child(landlordID).child(propertyID)
-        propertyRef.setValue(dict) { (error, reference) in
-            if error != nil {
-                print(error?.localizedDescription)
-                completion()
-            } else {
-                completion()
-            }
-        }
-    }
-    
-    static func savePropertyImagesToCoreDataAndFirebase(images: [UIImage], landlord: Landlord, forProperty property: Property, completion: @escaping () -> Void) {
-        var count = 0
-        
-        guard let landlordID = landlord.id else { return }
-        let group = DispatchGroup()
-        for image in images {
-            count += 1
-            group.enter()
-            FirebaseController.store(profileImage: image, forUserID: landlordID, and: property, with: count, completion: { (metadata, error, imageData) in
-                guard error == nil else { print(error?.localizedDescription); completion(); return }
-                print("Successfully uploaded image")
-                
-                guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString else { completion(); return }
-                // Print imageURL in console
-                
-                _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property, imageURL: imageURL)
-                saveToPersistentStore()
-                group.leave()
-            })
-        }
-        group.notify(queue: DispatchQueue.main) {
-            completion()
-        }
-    }
     
     static func fetchLandlordFromFirebaseFor(landlordID: String, insertInto context: NSManagedObjectContext? = CoreDataStack.context, completion: @escaping (Landlord?) -> Void) {
         
@@ -201,15 +141,122 @@ class UserController {
         })
     }
     
+//    static func fetchAllProperties() {
+//        FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+//            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
+//            
+//            let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+//            
+//            FirebaseController.properties = landlordProperties
+//            
+//            for property in 
+//            
+//            print(FirebaseController.properties.count)
+//        })
+//    }
+    
+    static func getPropertyCount() {
+        
+        FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allPropertiesDict = snapshot.value as? [String: [String: [String: Any]]] else { return }
+            
+            let landlordProperties = allPropertiesDict.flatMap({$0.value})
+            
+            propertyCount = landlordProperties.count
+        })
+    }
+    
+    static func fetchThreeProperties() {
+        
+        FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let dict = snapshot.value as? [String: Any] else { return }
+            print("success: \(dict)")
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+        
+    }
+    
+    static func createLandlordInFirebase(landlord: Landlord, completion: @escaping () -> Void) {
+        guard let id = landlord.id, let dict = landlord.dictionaryRepresentation else { completion(); return }
+        
+        let landlordRef = FirebaseController.landlordsRef.child(id)
+        landlordRef.setValue(dict) { (error, reference) in
+            if error != nil {
+                print(error?.localizedDescription)
+                completion()
+            } else {
+                completion()
+            }
+        }
+    }
+    static func createLandlordMockInFirebase(id: String, dictionary: [String: Any]) {
+        FirebaseController.landlordsRef.child(id).setValue(dictionary)
+    }
+    
+    // MARK: - Property Functions
+    
+    static func createPropertyInCoreDataFor(landLord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
+        let prop = Property(dictionary: temporaryUserCreationDictionary)
+        guard let property = prop else { NSLog("Property could not be initialized from dictionary"); completion(nil); return }
+        property.landlord = landLord
+        saveToPersistentStore()
+        completion(property)
+    }
+    
+    static func createPropertyInFirebase(property: Property, completion: @escaping () -> Void) {
+        guard let propertyID = property.propertyID, let dict = property.dictionaryRepresentation else { completion(); return }
+        
+        let propertyRef = FirebaseController.propertiesRef.child(propertyID)
+        propertyRef.setValue(dict) { (error, reference) in
+            if error != nil {
+                print(error?.localizedDescription)
+                completion()
+            } else {
+                completion()
+            }
+        }
+        
+        FirebaseController.likesRef.child(propertyID).child("0").setValue(true)
+        
+    }
+    
+    static func savePropertyImagesToCoreDataAndFirebase(images: [UIImage], landlord: Landlord, forProperty property: Property, completion: @escaping () -> Void) {
+        var count = 0
+        
+        guard let landlordID = landlord.id else { return }
+        let group = DispatchGroup()
+        for image in images {
+            count += 1
+            group.enter()
+            FirebaseController.store(profileImage: image, forUserID: landlordID, and: property, with: count, completion: { (metadata, error, imageData) in
+                guard error == nil else { print(error?.localizedDescription); completion(); return }
+                print("Successfully uploaded image")
+                
+                guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString else { completion(); return }
+                // Print imageURL in console
+                
+                _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property, imageURL: imageURL)
+                saveToPersistentStore()
+                group.leave()
+            })
+        }
+        group.notify(queue: DispatchQueue.main) {
+            completion()
+        }
+    }
+    
+    
+    
     
     
     
     static func saveMockPropertyProfileImagesToCoreDataAndFirebase(for propertyID: String,
-        landlord: Landlord, completion: @escaping (String) -> Void) {
+                                                                   landlord: Landlord, completion: @escaping (String) -> Void) {
         
         
         guard let landlordID = landlord.id, let image = UIImage(named: landlordID), let property = Property(availableDate: NSDate(), bathroomCount: 2.0, bedroomCount: 1, monthlyPayment: 1, petFriendly: true, smokingAllowed: true, address: "1", zipCode: "1", propertyID: propertyID, landlord: landlord) else { return }
-
+        
         
         
         let count = 1
@@ -354,6 +401,7 @@ class UserController {
         let count = 1
         FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error, imageData) in
             guard error == nil, let imageURL = metadata?.downloadURL()?.absoluteString else { print(error?.localizedDescription); return }
+            FirebaseController.likesRef.child(renterID).child("0").setValue(true)
             print("Successfully uploaded image")
             completion(imageURL)
         })
@@ -396,6 +444,7 @@ extension UserController {
     static let kPropertyDescription = "propertyDescription"
     static let kStarRating = "starRating"
     static let kID = "id"
+    static let kLandlordID = "landlordID"
     static let kPropertyID = "propertyID"
     
     static let kImageURLS = "images"

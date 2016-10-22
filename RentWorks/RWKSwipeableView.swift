@@ -11,7 +11,7 @@ import UIKit
 class RWKSwipeableView: UIView {
     
     weak var delegate: RWKSwipeableViewDelegate?
-    var user: TestUser?
+    var property: Property? 
     
     var dragCount = 0
     

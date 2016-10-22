@@ -18,19 +18,20 @@ class MatchController {
     
     static var allMatches: [TestUser] = []
     
-    static func observeLikesFor(user: TestUser) {
+    static func observeLikesFor(renter: Renter) {
         if isObservingCurrentUserLikeEndpoint == false {
             isObservingCurrentUserLikeEndpoint = true
-            let userLikesRef = FirebaseController.likesRef.child(user.id)
             
-            print(userLikesRef.url)
+            guard let renterID = renter.id else { return }
+            
+            let userLikesRef = FirebaseController.likesRef.child(renterID)
             
             userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
                 print("Changes observed")
                 
                 guard let likeDictionary = snapshot.value as? [String: Any] else { isObservingCurrentUserLikeEndpoint = false; return }
                 
-                print(likeDictionary)
+                
                 checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: likeDictionary, completion: { (matchingIDArray) in
                     delegate?.currentUserDidMatchWith(IDsOf: matchingIDArray)
                     // Do some stuff... Haha. Get the user information or something.
@@ -42,32 +43,54 @@ class MatchController {
         }
     }
     
-    static func add(currentUser: TestUser, toLikelistOf matchedUser: TestUser, completion: (() -> Void)? = nil) {
-        let matchedUserRef = FirebaseController.likesRef.child(matchedUser.id)
+    
+    // TODO: - For observing like endpoints, take landlord's propertyIDs and observe each one.
+    
+    static func addCurrentRenter(toLikelistOf likedProperty: Property, completion: (() -> Void)? = nil) {
+        guard let propertyID = likedProperty.propertyID, let currentRenterID = UserController.currentRenter?.id else { completion?(); return }
         
-        matchedUserRef.child(currentUser.id).setValue(true)
+        let matchedUserRef = FirebaseController.likesRef.child(propertyID)
+        
+        matchedUserRef.child(currentRenterID).setValue(true)
         
         completion?()
     }
     
     static func checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: [String: Any], completion: @escaping (_ matchingIDs: [String]) -> Void) {
-        
-        let group = DispatchGroup()
         var matchingUsersIDArray: [String] = []
-        for id in otherUserDictionary.keys {
-            group.enter()
-            FirebaseController.likesRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
-                print("Snapshot: \(snapshot.value)")
-                guard let matchDictionary = snapshot.value as? [String: Any], let currentUser = AuthenticationController.currentUser else { group.leave(); return }
-                if matchDictionary.keys.contains(currentUser.id) {
-                    print("Both have matched")
-                    matchingUsersIDArray.append(id)
-                    group.leave()
-                } else {
-                    print("Not matched")
-                    group.leave()
-                }
-            })
+        let group = DispatchGroup()
+
+        if UserController.currentUserType == "renter" {
+
+            for id in otherUserDictionary.keys {
+                group.enter()
+                FirebaseController.likesRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+                    print("Snapshot: \(snapshot.value)")
+                    guard let matchDictionary = snapshot.value as? [String: Any], let currentRenter = UserController.currentRenter, let renterID = currentRenter.id else { group.leave(); return }
+                    if matchDictionary.keys.contains(renterID) {
+                        matchingUsersIDArray.append(id)
+                        group.leave()
+                    } else {
+                        group.leave()
+                    }
+                })
+            }
+        } else if UserController.currentUserType == "landlord" {
+            for id in otherUserDictionary.keys {
+                group.enter()
+                FirebaseController.likesRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+                    print("Snapshot: \(snapshot.value)")
+                    guard let matchDictionary = snapshot.value as? [String: Any], let currentRenter = UserController.currentRenter, let renterID = currentRenter.id else { group.leave(); return }
+                    if matchDictionary.keys.contains(renterID) {
+                        matchingUsersIDArray.append(id)
+                        group.leave()
+                    } else {
+                        group.leave()
+                    }
+                })
+            }
+            
+            
         }
         
         group.notify(queue: DispatchQueue.main) {
