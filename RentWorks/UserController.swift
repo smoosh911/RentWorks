@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreData
+import FirebaseStorage
 
 class UserController {
     
@@ -21,17 +22,17 @@ class UserController {
     
     static var currentRenter: Renter?
     
-    static var currentLandlord: Landlord? {
-        didSet {
-            print((currentLandlord?.property?.array.first as? Property)?.address)
-        }
-    }
+    static var currentLandlord: Landlord?
     
     
     static func addAttributeToUserDictionary(attribute: [String: Any]) {
         guard let key = attribute.keys.first, let value = attribute.values.first else { return }
         temporaryUserCreationDictionary[key] = value
     }
+    
+    
+    
+    // MARK: - Landlord functions
     
     static func createLandlordAndPropertyForCurrentUser(completion: @escaping (() -> Void)) {
         createLandlordForCurrentUser { (landlord) in
@@ -48,10 +49,6 @@ class UserController {
             })
         }
     }
-    
-    
-    
-    // MARK: - Landlord functions
     
     static func getCurrentLandlordFromCoreData() {
         let request: NSFetchRequest<Landlord> = Landlord.fetchRequest()
@@ -119,23 +116,57 @@ class UserController {
         }
     }
     
-    
     static func savePropertyImagesToCoreDataAndFirebase(images: [UIImage], landlord: Landlord, forProperty property: Property, completion: @escaping () -> Void) {
         var count = 0
         
         guard let landlordID = landlord.id else { return }
-        images.forEach { (image) in
+        let group = DispatchGroup()
+        for image in images {
             count += 1
+            group.enter()
             FirebaseController.store(profileImage: image, forUserID: landlordID, and: property, with: count, completion: { (metadata, error, imageData) in
                 guard error == nil else { print(error?.localizedDescription); completion(); return }
                 print("Successfully uploaded image")
                 
                 guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString else { completion(); return }
+                // Print imageURL in console
+                
                 _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property, imageURL: imageURL)
                 saveToPersistentStore()
+                group.leave()
             })
         }
+        group.notify(queue: DispatchQueue.main) { 
+            completion()
+        }
     }
+    
+    static func downloadAndAddImagesFor(property: Property, completion: @escaping (_ success: Bool) -> Void) {
+        guard let propertyProfileImages = property.profileImages?.array as? [ProfileImage] else { return }
+        let profileImageURLs = propertyProfileImages.flatMap({$0.imageURL})
+        
+        let group = DispatchGroup()
+        
+        for imageURL in profileImageURLs {
+            group.enter()
+            let imageRef = FIRStorage.storage().reference(forURL: imageURL)
+            
+            imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
+                guard let imageData = imageData, error == nil, let propertyID = property.propertyID else { group.leave(); completion(false); return }
+                
+                _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property)
+                
+                UserController.saveToPersistentStore()
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            completion(true)
+        }
+    }
+    
+    
     
     // MARK: - Renter functions
     

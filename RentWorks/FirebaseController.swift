@@ -55,6 +55,32 @@ class FirebaseController {
         }
     }
     
+    static func downloadAndAddImagesFor(property: Property, completion: @escaping (_ success: Bool) -> Void) {
+        guard let propertyProfileImages = property.profileImages?.array as? [ProfileImage] else { return }
+        let profileImageURLs = propertyProfileImages.flatMap({$0.imageURL})
+        
+        let group = DispatchGroup()
+        
+        for imageURL in profileImageURLs {
+            group.enter()
+            let imageRef = FIRStorage.storage().reference(forURL: imageURL)
+            
+                imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
+                    guard let imageData = imageData, error == nil, let propertyID = property.propertyID else { group.leave(); completion(false); return }
+                    
+                    _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property)
+                    
+                    UserController.saveToPersistentStore()
+                    group.leave()
+            }
+        }
+        
+        group.notify(queue: DispatchQueue.main) { 
+            completion(true)
+        }
+    }
+    
+    
     static func downloadProfileImage(forUser user: User, and property: Property?, completion: @escaping (_ success: Bool) -> Void) {
         
         var profileImageRef = profileImagesRef
@@ -66,14 +92,20 @@ class FirebaseController {
             profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
                 
                 guard let imageData = imageData, error == nil else { completion(false); return }
-                let renterProfileImage = ProfileImage(userID: userID, imageData: imageData as NSData, renter: renter, property: nil)
+                
+                _ = ProfileImage(userID: userID, imageData: imageData as NSData, renter: renter, property: nil)
+                UserController.saveToPersistentStore()
             }
         } else if let propertyID = property?.propertyID, let landlordID = property?.landlord?.id, user as? Renter == nil {
+            
             profileImageRef = profileImageRef.child(landlordID).child(propertyID)
-            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (data, error) in
-                guard let data = data, let image = UIImage(data: data), let imageData = UIImageJPEGRepresentation(image, 1.0), error == nil else { completion(false); return }
+            
+            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
                 
-                let propertyProfileImage = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
+                guard let imageData = imageData, error == nil else { completion(false); return }
+                
+                _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
+                UserController.saveToPersistentStore()
             }
             completion(true)
         }
@@ -86,7 +118,7 @@ class FirebaseController {
         for user in users {
             group.enter()
             downloadProfileImage(forUser: user, and: nil, completion: { (success) in
-//                guard let image = image else { group.leave(); return }
+
                 
 //                user.profilePic = image
                 group.leave()

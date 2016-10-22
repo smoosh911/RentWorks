@@ -11,7 +11,7 @@ import CoreData
 
 extension ProfileImage {
     
-    @discardableResult convenience init?(userID: String, imageData: NSData, renter: Renter?, property: Property?, imageURL: String, context: NSManagedObjectContext = CoreDataStack.context) {
+    @discardableResult convenience init?(userID: String, imageData: NSData, renter: Renter?, property: Property?, imageURL: String? = nil, context: NSManagedObjectContext = CoreDataStack.context) {
         self.init(context: context)
         
         self.userID = userID
