@@ -275,7 +275,7 @@ class FirebaseController {
                 group.leave()
             })
             
-            group.notify(queue: DispatchQueue.main, execute: { 
+            group.notify(queue: DispatchQueue.main, execute: {
                 completion(scenarios.0, scenarios.1)
             })
         }
@@ -295,32 +295,53 @@ class FirebaseController {
     static func handleUserInformationScenarios(completion: @escaping (_ success: Bool) -> Void) {
         
         FacebookRequestController.requestCurrentFacebookUserID { (userID) in
+            
+            UserController.currentUserID = userID
+            
             AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
                 if success {
                     
-                    UserController.currentUserID = userID
                     
+                    let group = DispatchGroup()
+                    var success = false
+                    
+                    group.enter()
                     UserController.getCurrentRenterFromCoreData(completion: { (renterExists) in
                         
                         if renterExists {
                             // Go to swiping screen?
+                            success = true
+                            group.leave()
+                        } else {
+                            group.leave()
+                        }
+                    })
+                    
+                    group.enter()
+                    UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
+                        if landlordExists {
+                            // Go to swiping screen?
+                            success = true
+                            group.leave()
+                        } else {
+                            group.leave()
+                        }
+                        
+                    })
+                    
+                    group.notify(queue: DispatchQueue.main, execute: {
+                        if success == true {
                             completion(true)
                         } else {
-                            UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
-                                if landlordExists {
-                                    // Go to swiping screen?
-                                    completion(true)
-                                } else {
-                                    UserController.fetchLoggedInUserFromFirebase(completion: { (user) in
-                                        guard user != nil else { completion(false); return }
-                                        
-                                        completion(true)
-                                        
-                                    })
-                                }
+                            
+                            UserController.fetchLoggedInUserFromFirebase(completion: { (user) in
+                                guard user != nil else { completion(false); return }
+                                
+                                completion(true)
                             })
                         }
                     })
+                    
                 } else {
                     print("Error logging into Firebase")
                 }

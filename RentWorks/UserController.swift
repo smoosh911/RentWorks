@@ -45,15 +45,12 @@ class UserController {
                     self.currentRenter = renter
                     self.currentUserType = "renter"
                     completion(renter)
-                    // Go to swiping screen?
                 })
             } else if userType == "landlord" {
                 self.fetchLandlordFromFirebaseFor(landlordID: currentUserID, completion: { (landlord) in
                     self.currentLandlord = landlord
                     self.currentUserType = "landlord"
                     completion(landlord)
-                    
-                    // Go to swiping screen?
                 })
             } else {
                 completion(nil)
