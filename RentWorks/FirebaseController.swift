@@ -10,6 +10,7 @@ import Foundation
 import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
+import CoreData
 
 class FirebaseController {
     
@@ -65,20 +66,48 @@ class FirebaseController {
             group.enter()
             let imageRef = FIRStorage.storage().reference(forURL: imageURL)
             
-                imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
-                    guard let imageData = imageData, error == nil, let propertyID = property.propertyID else { group.leave(); completion(false); return }
-                    
-                    _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property)
-                    
+            imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
+                guard let imageData = imageData, error == nil, let propertyID = property.propertyID else { group.leave(); completion(false); return }
+                
+                _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property, context: property.managedObjectContext)
+                
+                if property.managedObjectContext != nil {
                     UserController.saveToPersistentStore()
-                    group.leave()
+                }
+                group.leave()
             }
         }
         
-        group.notify(queue: DispatchQueue.main) { 
+        group.notify(queue: DispatchQueue.main) {
             completion(true)
         }
     }
+    
+    static func downloadAndAddImagesFor(renter: Renter, insertInto context: NSManagedObjectContext?, profileImageURLs: [String], completion: @escaping (_ success: Bool) -> Void) {
+        
+        let group = DispatchGroup()
+        
+        for imageURL in profileImageURLs {
+            group.enter()
+            let imageRef = FIRStorage.storage().reference(forURL: imageURL)
+            
+            imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
+                guard let imageData = imageData, error == nil, let renterID = renter.id else { group.leave(); completion(false); return }
+                
+                _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil)
+                
+                if context != nil {
+                    UserController.saveToPersistentStore()
+                }
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            completion(true)
+        }
+    }
+    
     
     
     static func downloadProfileImage(forUser user: User, and property: Property?, completion: @escaping (_ success: Bool) -> Void) {
@@ -118,9 +147,9 @@ class FirebaseController {
         for user in users {
             group.enter()
             downloadProfileImage(forUser: user, and: nil, completion: { (success) in
-
                 
-//                user.profilePic = image
+                
+                //                user.profilePic = image
                 group.leave()
             })
         }
@@ -132,18 +161,18 @@ class FirebaseController {
         
     }
     
-        static func downloadProfileImageFor(id: String, completion: @escaping (UIImage?) -> Void) {
-    
-            let profileImageRef = profileImagesRef.child("\(id).jpg")
-    
-            profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
-                if error != nil { print(error?.localizedDescription) }
-                guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
-                completion(image)
-            }
+    static func downloadProfileImageFor(id: String, completion: @escaping (UIImage?) -> Void) {
+        
+        let profileImageRef = profileImagesRef.child("\(id).jpg")
+        
+        profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
+            if error != nil { print(error?.localizedDescription) }
+            guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
+            completion(image)
         }
+    }
     
-//     MARK: - User Fetching
+    //     MARK: - User Fetching
     
     
     // WARNING: - At its current state, this function will pull ALL the users from Firebase. This is not a final function, but only to test.
@@ -171,11 +200,11 @@ class FirebaseController {
                     let group = DispatchGroup()
                     for user in testUsers {
                         group.enter()
-//                        FirebaseController.downloadProfileImage(forUser: user, and: nil, completion: { (image) in
-//                            guard let image = image else { group.leave(); return }
-//                            user.profilePic = image
-//                            group.leave()
-//                        })
+                        //                        FirebaseController.downloadProfileImage(forUser: user, and: nil, completion: { (image) in
+                        //                            guard let image = image else { group.leave(); return }
+                        //                            user.profilePic = image
+                        //                            group.leave()
+                        //                        })
                     }
                     
                     group.notify(queue: DispatchQueue.main, execute: {
@@ -216,67 +245,102 @@ class FirebaseController {
         }
     }
     
-    static func checkForExistingUserInformation(user: User, completion: @escaping (_ hasAccount: Bool, _ hasPhoto: Bool) -> Void) {
+    static func checkForExistingUserInformation(completion: @escaping (_ hasAccount: Bool, _ ofType: String) -> Void) {
         
-        var hasAccount = false
-        var hasPhoto = false
+        guard FBSDKAccessToken.current() != nil else { completion(false, "not logged into Facebook"); return }
         
-        let group = DispatchGroup()
-        group.enter()
-        guard let id = user.id else { completion(hasAccount, hasPhoto); return }
-        FirebaseController.allUsersRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard snapshot.value as? [String: Any] != nil else { group.leave(); return }
-            hasAccount = true
-            group.leave()
-        })
-        
-        group.enter()
-        profileImagesRef.child(id).downloadURL { (url, error) in
+        FacebookRequestController.requestCurrentUsers(information: [.id]) { (dictionary) in
+            guard let dictionary = dictionary, let id = dictionary[UserController.kID] as? String else { completion(false, "no Facebook ID returned"); return }
             
-            url != nil && error == nil ? hasPhoto = true : print(error?.localizedDescription)
-            group.leave()
-        }
-        
-        group.notify(queue: DispatchQueue.main) {
-            completion(hasAccount, hasPhoto)
+            FirebaseController.landlordsRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard snapshot.value as? [String: Any] != nil else { return }
+                
+                completion(true, "landlord")
+                
+                
+            })
+            
+            FirebaseController.rentersRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard snapshot.value as? [String: Any] != nil else { return }
+                
+                completion(true, "renter")
+            })
+            
         }
     }
     
+    static func handleUserInformationScenarios(completion: @escaping (_ success: Bool) -> Void) {
+        
+        let group = DispatchGroup()
+        group.enter()
+        UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
+            if landlordExists {
+                // Go to swiping screen?
+                group.leave()
+                completion(true)
+            }
+        })
+        
+        group.enter()
+        UserController.getCurrentRenterFromCoreData(completion: { (renterExists) in
+            if renterExists {
+                group.leave()
+                completion(true)
+                // Go to swiping screen?
+            }
+        })
+        
+        group.notify(queue: DispatchQueue.main) { 
+            
+            UserController.fetchLoggedInUserFromFirebase(completion: { (user) in
+                guard user != nil else { completion(false); return }
+                
+                completion(true)
+                
+            })
+            
+        }
+        
+    }
     
-//    static func handleUserInformationScenariosFor(user: TestUser, hasAccount: Bool, hasPhoto: Bool, completion: @escaping () -> Void) {
-//        switch (hasAccount, hasPhoto) {
-//        case (true, true):
-//            completion()
-//        case (false, false):
-//            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
-//                FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-//                    guard let image = image else { completion(); return }
-//                    user.profilePic = image
-//                    FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
-//                        guard error != nil else { print(error?.localizedDescription); completion(); return }
-//                        completion()
-//                    })
-//                })
-//            })
-//            
-//            
-//        case (false, true):
-//            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
-//                completion()
-//            })
-//            
-//            
-//        case (true, false):
-//            FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
-//                guard let image = image else { return }
-//                user.profilePic = image
-//                FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
-//                    guard error != nil else { print(error?.localizedDescription); completion(); return }
-//                    completion()
-//                })
-//            })
-//        }
-//    }
+    
+    
+    //    static func handleUserInformationScenariosFor(user: TestUser, hasAccount: Bool, hasPhoto: Bool, completion: @escaping () -> Void) {
+    //        switch (hasAccount, hasPhoto) {
+    //        case (true, true):
+    //            completion()
+    //        case (false, false):
+    //            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
+    //                FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
+    //                    guard let image = image else { completion(); return }
+    //                    user.profilePic = image
+    //                    FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
+    //                        guard error != nil else { print(error?.localizedDescription); completion(); return }
+    //                        completion()
+    //                    })
+    //                })
+    //            })
+    //
+    //
+    //        case (false, true):
+    //            FirebaseController.createFirebaseUserFor(currentUser: user, completion: {
+    //                completion()
+    //            })
+    //
+    //
+    //        case (true, false):
+    //            FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080, completion: { (image) in
+    //                guard let image = image else { return }
+    //                user.profilePic = image
+    //                FirebaseController.store(profileImage: image, forUser: user, completion: { (metadata, error) in
+    //                    guard error != nil else { print(error?.localizedDescription); completion(); return }
+    //                    completion()
+    //                })
+    //            })
+    //        }
+    //    }
     
     // MARK: - Mock data related functions
     

@@ -21,6 +21,8 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
         
+        hideKeyboardWhenViewIsTapped()
+        
         self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
         AppearanceController.appearanceFor(navigationController: self.navigationController)
@@ -41,5 +43,23 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
             self.present(alert, animated: true, completion: nil)
             
         }
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
+
+extension UIViewController {
+    func hideKeyboardWhenViewIsTapped() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

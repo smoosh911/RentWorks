@@ -28,7 +28,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = loginVC
             self.window?.makeKeyAndVisible()
         } else {
-            UserController.getCurrentLandlordFromCoreData()
+            FirebaseController.handleUserInformationScenarios(completion: { (success) in
+                if success {
+                    // Go to swiping screen.
+                    
+                } else {
+                    // Do nothing, or create account?
+                }
+            })
+            
+            
+            
         }
         
         

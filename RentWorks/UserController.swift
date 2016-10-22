@@ -24,10 +24,38 @@ class UserController {
     
     static var currentLandlord: Landlord?
     
+    static var currentUserID: String?
+    
+    static var currentUserType: String?
     
     static func addAttributeToUserDictionary(attribute: [String: Any]) {
         guard let key = attribute.keys.first, let value = attribute.values.first else { return }
         temporaryUserCreationDictionary[key] = value
+    }
+    
+    
+    // This function should be used when there is not a managed object matching their Facebook ID to see if they have already created an account. If so, it will pull their information and save it into Core Data so this doesn't have to be done every launch.
+    
+    static func fetchLoggedInUserFromFirebase(completion: (User?) -> Void) {
+        
+        FirebaseController.checkForExistingUserInformation { (hasAccount, userType) in
+            guard let currentUserID = currentUserID else { return }
+            if userType == "renter" {
+                self.fetchRenterFromFirebaseFor(renterID: currentUserID, completion: { (renter) in
+                    self.currentRenter = renter
+                    self.currentUserType = "renter"
+                    // Go to swiping screen?
+                })
+            } else if userType == "landlord" {
+                self.fetchLandlordFromFirebaseFor(landlordID: currentUserID, completion: { (landlord) in
+                    self.currentLandlord = landlord
+                    self.currentUserType = "landlord"
+                    // Go to swiping screen?
+                })
+            } else {
+                print("Error: \(userType)")
+            }
+        }
     }
     
     
@@ -50,17 +78,19 @@ class UserController {
         }
     }
     
-    static func getCurrentLandlordFromCoreData() {
+    static func getCurrentLandlordFromCoreData(completion: @escaping (_ landlordExists: Bool) -> Void) {
         let request: NSFetchRequest<Landlord> = Landlord.fetchRequest()
         
         
-        guard let landlords = try? CoreDataStack.context.fetch(request) else { return }
-        FacebookRequestController.requestCurrentFacebookUserID { (id) in
-            guard let id = id else { return }
-            let currentLandlordArray = landlords.filter({$0.id == id})
-            guard let currentLandlord = currentLandlordArray.first else { return }
-            self.currentLandlord = currentLandlord
-        }
+        guard let landlords = try? CoreDataStack.context.fetch(request) else { completion(false); return }
+        
+        guard let id = UserController.currentUserID else { return }
+        let currentLandlordArray = landlords.filter({$0.id == id})
+        guard let currentLandlord = currentLandlordArray.first else { completion(false); return }
+        self.currentLandlord = currentLandlord
+        self.currentUserType = "landlord"
+        completion(true)
+        
     }
     
     static func createLandlordForCurrentUser(completion: @escaping ((_ landlord: Landlord?) -> Void) = { _ in }) {
@@ -136,10 +166,44 @@ class UserController {
                 group.leave()
             })
         }
-        group.notify(queue: DispatchQueue.main) { 
+        group.notify(queue: DispatchQueue.main) {
             completion()
         }
     }
+    
+    
+    static func fetchLandlordFromFirebaseFor(landlordID: String, insertInto context: NSManagedObjectContext? = CoreDataStack.context, completion: @escaping (Landlord?) -> Void) {
+        
+        FirebaseController.landlordsRef.child(landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard let landlordDictionary = snapshot.value as? [String: Any], let landlord = Landlord(dictionary: landlordDictionary, context: context) else { completion(nil); return }
+            
+            FirebaseController.propertiesRef.child(landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                guard let propertyDictionary = snapshot.value as? [String: [String: Any]] else { return }
+                
+                let properties = propertyDictionary.flatMap({Property(dictionary: $0.value, context: context)})
+                let group = DispatchGroup()
+                
+                for property in properties {
+                    group.enter()
+                    downloadAndAddImagesFor(property: property, completion: { (_) in
+                        group.leave()
+                    })
+                    
+                }
+                group.notify(queue: DispatchQueue.main, execute: {
+                    for property in properties { property.landlord = landlord }
+                    
+                    completion(landlord)
+                })
+            })
+        })
+    }
+    
+    
+    
+    
     
     static func downloadAndAddImagesFor(property: Property, completion: @escaping (_ success: Bool) -> Void) {
         guard let propertyProfileImages = property.profileImages?.array as? [ProfileImage] else { return }
@@ -170,16 +234,18 @@ class UserController {
     
     // MARK: - Renter functions
     
-    static func getCurrentRenterFromCoreData() {
+    static func getCurrentRenterFromCoreData(completion: @escaping (_ renterExists: Bool) -> Void) {
         let request: NSFetchRequest<Renter> = Renter.fetchRequest()
         
-        guard let renters = try? CoreDataStack.context.fetch(request) else { return }
-        FacebookRequestController.requestCurrentFacebookUserID { (id) in
-            guard let id = id else { return }
+        guard let renters = try? CoreDataStack.context.fetch(request) else { completion(false); return }
+        
+            guard let id = UserController.currentUserID else { completion(false); return }
             let currentRenterArray = renters.filter({$0.id == id})
-            guard let currentRenter = currentRenterArray.first else { return }
+            guard let currentRenter = currentRenterArray.first else { completion(false); return }
             self.currentRenter = currentRenter
-        }
+            self.currentUserType = "renter"
+            completion(true)
+        
     }
     
     
@@ -220,8 +286,26 @@ class UserController {
         }
     }
     
+    static func fetchRenterFromFirebaseFor(renterID: String, andInsertInto context: NSManagedObjectContext? = CoreDataStack.context, completion: @escaping (Renter?) -> Void) {
+        
+        FirebaseController.rentersRef.child(renterID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard let renterDictionary = snapshot.value as? [String: Any], let renter = Renter(dictionary: renterDictionary, context: context), let imageURLs = renterDictionary[UserController.kImageURLS] as? [String] else { completion(nil); return }
+            
+            
+            FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: context, profileImageURLs: imageURLs, completion: { (success) in
+                if success {
+                    completion(renter)
+                } else {
+                    completion(renter)
+                }
+            })
+        })
+        
+    }
     
-    // TODO: - When you fetch renters/properties, grab their profileImageURLs and get them
+    
+    
     
     static func saveRenterProfileImagesToCoreDataAndFirebase(forRenter renter: Renter, completion: @escaping () -> Void) {
         var count = 0
@@ -237,7 +321,7 @@ class UserController {
                 count += 1
                 FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error, imageData) in
                     guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString, error == nil else { print(error?.localizedDescription); group.leave(); return }
-                     print("Successfully uploaded image")
+                    print("Successfully uploaded image")
                     _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil, imageURL: imageURL)
                     group.leave()
                 })

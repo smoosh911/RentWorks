@@ -11,12 +11,13 @@ import CoreData
 
 extension Landlord {
     
-    @discardableResult convenience init?(email: String, firstName: String, lastName: String, id: String, starRating: Double = 5.0, context: NSManagedObjectContext = CoreDataStack.context) {
+    @discardableResult convenience init?(email: String, firstName: String, lastName: String, id: String, starRating: Double = 5.0, context: NSManagedObjectContext? = CoreDataStack.context) {
         
-        
-        guard let entity = NSEntityDescription.entity(forEntityName: "Landlord", in: context) else { return nil }
-        
-        self.init(entity: entity, insertInto: context)
+        if let context = context {
+            self.init(context: context)
+        } else {
+            self.init(entity: Landlord.entity(), insertInto: nil)
+        }
         
         
         self.birthday = birthday
@@ -27,14 +28,18 @@ extension Landlord {
         self.starRating = starRating
     }
     
-    @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext = CoreDataStack.context) {
+    @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext? = CoreDataStack.context) {
         guard let email = dictionary[UserController.kEmail] as? String,
             let firstName = dictionary[UserController.kFirstName] as? String,
             let lastName = dictionary[UserController.kLastName] as? String,
             let id = dictionary[UserController.kID] as? String else { return nil }
 
         
-        self.init(context: context)
+        if let context = context {
+            self.init(context: context)
+        } else {
+            self.init(entity: Landlord.entity(), insertInto: nil)
+        }
         
         self.email = email
         self.firstName = firstName

@@ -19,6 +19,7 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
+        hideKeyboardWhenViewIsTapped()
         
         self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])

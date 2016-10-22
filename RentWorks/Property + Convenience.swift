@@ -11,9 +11,13 @@ import CoreData
 
 extension Property {
     
-    @discardableResult convenience init?(availableDate: NSDate, bathroomCount: Double, bedroomCount: Int, monthlyPayment: Int, petFriendly: Bool, smokingAllowed: Bool, rentalHistoryRating: Double = 5.0, address: String, zipCode: String, propertyDescription: String = "", propertyID: String, landlord: Landlord, context: NSManagedObjectContext = CoreDataStack.context) {
+    @discardableResult convenience init?(availableDate: NSDate, bathroomCount: Double, bedroomCount: Int, monthlyPayment: Int, petFriendly: Bool, smokingAllowed: Bool, rentalHistoryRating: Double = 5.0, address: String, zipCode: String, propertyDescription: String = "", propertyID: String, landlord: Landlord, context: NSManagedObjectContext? = CoreDataStack.context) {
         
-        self.init(context: context)
+        if let context = context {
+            self.init(context: context)
+        } else {
+            self.init(entity: Property.entity(), insertInto: nil)
+        }
         
         self.availableDate = availableDate
         self.bathroomCount = bathroomCount
@@ -29,7 +33,7 @@ extension Property {
         self.propertyID = propertyID
     }
     
-    @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext = CoreDataStack.context) {
+    @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext? = CoreDataStack.context) {
         
         guard let availableDate = dictionary[UserController.kAvailableDate] as? Date,
             let bathroomCount = dictionary[UserController.kBathroomCount] as? Double,
@@ -42,7 +46,11 @@ extension Property {
 //            let propertyDescription = dictionary[UserController.kPropertyDescription] as? String
             else { return nil }
         
-        self.init(context: context)
+        if let context = context {
+            self.init(context: context)
+        } else {
+            self.init(entity: Property.entity(), insertInto: nil)
+        }
         // TODO: - Change this to not a static value
         let rentalHistoryRating = 5.0
         

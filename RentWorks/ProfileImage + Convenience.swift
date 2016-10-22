@@ -11,8 +11,13 @@ import CoreData
 
 extension ProfileImage {
     
-    @discardableResult convenience init?(userID: String, imageData: NSData, renter: Renter?, property: Property?, imageURL: String? = nil, context: NSManagedObjectContext = CoreDataStack.context) {
-        self.init(context: context)
+    @discardableResult convenience init?(userID: String, imageData: NSData, renter: Renter?, property: Property?, imageURL: String? = nil, context: NSManagedObjectContext? = CoreDataStack.context) {
+    
+        if let context = context {
+            self.init(context: context)
+        } else {
+            self.init(entity: ProfileImage.entity(), insertInto: nil)
+        }
         
         self.userID = userID
         self.imageData = imageData
