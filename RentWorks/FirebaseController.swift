@@ -251,58 +251,81 @@ class FirebaseController {
         
         FacebookRequestController.requestCurrentUsers(information: [.id]) { (dictionary) in
             guard let dictionary = dictionary, let id = dictionary[UserController.kID] as? String else { completion(false, "no Facebook ID returned"); return }
+            let group = DispatchGroup()
             
+            group.enter()
+            
+            var scenarios = (false, "noAccount")
             FirebaseController.landlordsRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+                print(snapshot)
+                guard snapshot.value as? [String: Any] != nil else { group.leave(); return }
                 
-                guard snapshot.value as? [String: Any] != nil else { return }
-                
-                completion(true, "landlord")
-                
+                scenarios = (true, "landlord")
+                group.leave()
                 
             })
             
+            
+            group.enter()
             FirebaseController.rentersRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
+                print(snapshot)
+                guard snapshot.value as? [String: Any] != nil else { group.leave(); return }
                 
-                guard snapshot.value as? [String: Any] != nil else { return }
-                
-                completion(true, "renter")
+                scenarios = (true, "renter")
+                group.leave()
             })
+            
+            group.notify(queue: DispatchQueue.main, execute: { 
+                completion(scenarios.0, scenarios.1)
+            })
+        }
+    }
+    
+    static func isFirebaseWorking() {
+        
+        FIRDatabase.database().reference().observeSingleEvent(of: .value, with: { (snapshot) in
+            print(snapshot.value as! [String: Any])
+        }) { (error) in
+            
+            print(error.localizedDescription)
             
         }
     }
     
     static func handleUserInformationScenarios(completion: @escaping (_ success: Bool) -> Void) {
         
-        let group = DispatchGroup()
-        group.enter()
-        UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
-            if landlordExists {
-                // Go to swiping screen?
-                group.leave()
-                completion(true)
-            }
-        })
-        
-        group.enter()
-        UserController.getCurrentRenterFromCoreData(completion: { (renterExists) in
-            if renterExists {
-                group.leave()
-                completion(true)
-                // Go to swiping screen?
-            }
-        })
-        
-        group.notify(queue: DispatchQueue.main) { 
-            
-            UserController.fetchLoggedInUserFromFirebase(completion: { (user) in
-                guard user != nil else { completion(false); return }
-                
-                completion(true)
-                
+        FacebookRequestController.requestCurrentFacebookUserID { (userID) in
+            AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
+                if success {
+                    
+                    UserController.currentUserID = userID
+                    
+                    UserController.getCurrentRenterFromCoreData(completion: { (renterExists) in
+                        
+                        if renterExists {
+                            // Go to swiping screen?
+                            completion(true)
+                        } else {
+                            UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
+                                if landlordExists {
+                                    // Go to swiping screen?
+                                    completion(true)
+                                } else {
+                                    UserController.fetchLoggedInUserFromFirebase(completion: { (user) in
+                                        guard user != nil else { completion(false); return }
+                                        
+                                        completion(true)
+                                        
+                                    })
+                                }
+                            })
+                        }
+                    })
+                } else {
+                    print("Error logging into Firebase")
+                }
             })
-            
         }
-        
     }
     
     

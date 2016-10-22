@@ -28,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window?.rootViewController = loginVC
             self.window?.makeKeyAndVisible()
         } else {
+
             FirebaseController.handleUserInformationScenarios(completion: { (success) in
                 if success {
                     // Go to swiping screen.
@@ -36,9 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     // Do nothing, or create account?
                 }
             })
-            
-            
-            
         }
         
         

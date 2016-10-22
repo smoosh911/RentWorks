@@ -36,23 +36,27 @@ class UserController {
     
     // This function should be used when there is not a managed object matching their Facebook ID to see if they have already created an account. If so, it will pull their information and save it into Core Data so this doesn't have to be done every launch.
     
-    static func fetchLoggedInUserFromFirebase(completion: (User?) -> Void) {
+    static func fetchLoggedInUserFromFirebase(completion: @escaping (User?) -> Void) {
         
         FirebaseController.checkForExistingUserInformation { (hasAccount, userType) in
-            guard let currentUserID = currentUserID else { return }
+            guard let currentUserID = currentUserID else { completion(nil); return }
             if userType == "renter" {
                 self.fetchRenterFromFirebaseFor(renterID: currentUserID, completion: { (renter) in
                     self.currentRenter = renter
                     self.currentUserType = "renter"
+                    completion(renter)
                     // Go to swiping screen?
                 })
             } else if userType == "landlord" {
                 self.fetchLandlordFromFirebaseFor(landlordID: currentUserID, completion: { (landlord) in
                     self.currentLandlord = landlord
                     self.currentUserType = "landlord"
+                    completion(landlord)
+                    
                     // Go to swiping screen?
                 })
             } else {
+                completion(nil)
                 print("Error: \(userType)")
             }
         }
@@ -84,7 +88,7 @@ class UserController {
         
         guard let landlords = try? CoreDataStack.context.fetch(request) else { completion(false); return }
         
-        guard let id = UserController.currentUserID else { return }
+        guard let id = UserController.currentUserID else { completion(false); return }
         let currentLandlordArray = landlords.filter({$0.id == id})
         guard let currentLandlord = currentLandlordArray.first else { completion(false); return }
         self.currentLandlord = currentLandlord
@@ -170,7 +174,6 @@ class UserController {
             completion()
         }
     }
-    
     
     static func fetchLandlordFromFirebaseFor(landlordID: String, insertInto context: NSManagedObjectContext? = CoreDataStack.context, completion: @escaping (Landlord?) -> Void) {
         

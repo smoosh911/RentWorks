@@ -32,7 +32,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         AppearanceController.appearanceFor(navigationController: self.navigationController)
         self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
-
+        
         constraintsForFacebookLoginButton()
     }
     
@@ -42,15 +42,14 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         setUpAndDisplayLoadingScreen()
-//        AuthenticationController.getCurrentUser { (success) in
-//            if success == true {
-//                guard let mainVC = self.storyboard?.instantiateViewController(withIdentifier: "mainVC") else { return }
-//                self.dismissLoadingScreen()
-//                self.present(mainVC, animated: true, completion: nil)
-//            } else {
-//                self.dismissLoadingScreen()
-//            }
-//        }
+        FirebaseController.handleUserInformationScenarios { (success) in
+            self.dismissLoadingScreen()
+            if success {
+                // Go to swiping view
+            } else {
+                self.displayNoAccountCreatedAlert()
+            }
+        }
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
@@ -94,14 +93,31 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
     }
     
+    func displayNoAccountCreatedAlert() {
+        let alert = UIAlertController(title: "Hold on a second!", message: "Thanks for logging into Facebook, but you haven't created an account yet. Please tap the 'Create account' button below to begin creating your RentMatch account!", preferredStyle: .alert)
+        
+        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        
+        let createAccountAction = UIAlertAction(title: "Create account", style: .default) { (_) in
+            self.performSegue(withIdentifier: "toAccountTypeVC", sender: nil)
+        }
+        
+        alert.addAction(dismissAction)
+        alert.addAction(createAccountAction)
+        
+        alert.view.tintColor = AppearanceController.customOrangeColor
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     
     func constraintsForFacebookLoginButton() {
         facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false
         
         let centerXConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
         let centerYConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
-//        let widthConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal, toItem: self.passwordTextField, attribute: .width, multiplier: 1, constant: 0)
-//        let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 30)
+        //        let widthConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal, toItem: self.passwordTextField, attribute: .width, multiplier: 1, constant: 0)
+        //        let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 30)
         self.view.addConstraints([centerXConstraint, centerYConstraint])
     }
 }

@@ -55,10 +55,20 @@ class RenterAllowedViewController: UIViewController {
             
             self.performSegue(withIdentifier: "toWantedPropertyFeaturesVC", sender: self)
         } else {
-            let alert = UIAlertController(title: "Hold on a second!", message: "Please select whether you allow pets and smoking on your property before continuing.", preferredStyle: .alert)
-            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-            alert.addAction(dismissAction)
-            self.present(alert, animated: true, completion: nil)
+            
         }
     }
+    
+    func presentAllowedAlert() {
+        let alert = UIAlertController(title: "Hold on a second!", message: "Please select whether you want to have pets and be able to smoke in the house before continuing.", preferredStyle: .alert)
+        
+        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        
+        alert.addAction(dismissAction)
+        
+        alert.view.tintColor = AppearanceController.customOrangeColor
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+
 }

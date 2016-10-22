@@ -15,6 +15,7 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         availableDatePicker.minimumDate = Date()
+        availableDatePicker.tintColor = .white
     }
     
     

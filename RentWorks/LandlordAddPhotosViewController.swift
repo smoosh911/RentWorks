@@ -21,6 +21,25 @@ class LandlordAddPhotosViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    @IBAction func nextButtonTapped(_ sender: AnyObject) {
+        if UserController.userCreationPhotos.count > 0 {
+            self.performSegue(withIdentifier: "toPropertyAvailableVC", sender: nil)
+        } else {
+            presentAddPhotoAlert()
+        }
+    }
+    
+    
+    func presentAddPhotoAlert() {
+        let alert = UIAlertController(title: "Hold on a second!", message: "Please add at least one photo of your property!", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alert.addAction(dismissAction)
+        alert.view.tintColor = AppearanceController.customOrangeColor
+        self.present(alert, animated: true, completion: nil)
+
+    }
+    
 
     /*
     // MARK: - Navigation
