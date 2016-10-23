@@ -48,7 +48,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var imageIndex = 0
     var backgroundimageIndex: Int {
-        return imageIndex + 1 <= users.count - 1 ? imageIndex + 1 : 0
+        return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
     }
     
     override func viewDidLoad() {
@@ -141,7 +141,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         
         print(property.propertyID)
         
-        guard let firstProfileImage = FirebaseController.properties[imageIndex].profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
+        guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
         
         
         imageView.image = profilePicture
@@ -239,6 +239,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
             self.reset(swipeableView: swipeableView, inSuperview: superview)
             self.updateUIElementsForPropertyCards()
             guard let swipeableView = swipeableView as? RWKSwipeableView, let currentUser = AuthenticationController.currentUser else { return }
+            self.updateUIElementsForPropertyCards()
             //            MatchController.add(currentUser: currentUser, toLikelistOf: swipeableView.user!)
         }
     }
@@ -251,6 +252,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: -90))
         }) { (complete) in
             self.reset(swipeableView: swipeableView, inSuperview: superview)
+            self.updateUIElementsForPropertyCards()
         }
     }
     
