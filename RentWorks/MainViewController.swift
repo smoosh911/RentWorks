@@ -62,7 +62,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         setupViews()
         
         if UserController.currentUserType == "renter" {
-//            UserController.fetchAllProperties()
+            UserController.fetchAllProperties()
             
             users = FirebaseController.properties
         } else if UserController.currentUserType == "landlord" {
@@ -138,21 +138,24 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     func updateUIElementsForPropertyCards() {
         let property = FirebaseController.properties[imageIndex]
+        
+        print(property.propertyID)
+        
         guard let firstProfileImage = FirebaseController.properties[imageIndex].profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
         
         
         imageView.image = profilePicture
-        nameLabel.text = description
+        nameLabel.text = property.propertyDescription ?? "No description available"
         addressLabel.text = address
         
         let nextProperty = FirebaseController.properties[backgroundimageIndex]
         
         guard  let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data), let backgroundPropertyAddress = nextProperty.address else { return }
         backgroundImageView.image = backgroundProfilePicture
-        backgroundNameLabel.text = nextProperty.description
+        backgroundNameLabel.text = nextProperty.propertyDescription ?? "No description available"
         backgroundAddressLabel.text = backgroundPropertyAddress
         
-        if imageIndex < users.count - 1 {
+        if imageIndex < FirebaseController.properties.count - 1 {
             imageIndex += 1
         } else {
             imageIndex = 0

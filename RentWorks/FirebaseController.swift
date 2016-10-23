@@ -174,6 +174,18 @@ class FirebaseController {
         }
     }
     
+    static func downloadProfileImageFor(property: Property, withURL url: String, completion: @escaping () -> Void) {
+        
+        let profileImageRef = FIRStorage.storage().reference(forURL: url)
+        
+        profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
+            if error != nil { print(error?.localizedDescription) }
+            guard let data = data, let propertyID = property.propertyID else { return }
+            let _ = ProfileImage(userID: propertyID, imageData: data as NSData, renter: nil, property: property)
+            completion()
+        }
+    }
+    
     //     MARK: - User Fetching
     
     
