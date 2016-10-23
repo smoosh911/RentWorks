@@ -42,7 +42,8 @@ extension Property {
             let petFriendly = dictionary[UserController.kPetsAllowed] as? Bool,
             let smokingAllowed = dictionary[UserController.kSmokingAllowed] as? Bool,
             let address = dictionary[UserController.kAddress] as? String,
-            let zipCode = dictionary[UserController.kZipCode] as? String
+            let zipCode = dictionary[UserController.kZipCode] as? String,
+            let landlordID = dictionary[UserController.kLandlordID] as? String
 //            let propertyDescription = dictionary[UserController.kPropertyDescription] as? String
             else { return nil }
         
@@ -63,6 +64,7 @@ extension Property {
         self.rentalHistoryRating = rentalHistoryRating
         self.address = address
         self.zipCode = zipCode
+        self.landlordID = landlordID
 //        self.propertyDescription = propertyDescription
         guard let propertyID = dictionary[UserController.kPropertyID] as? String else { self.propertyID = UUID().uuidString; return}
         self.propertyID = propertyID

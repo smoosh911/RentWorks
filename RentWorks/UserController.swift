@@ -104,6 +104,9 @@ class UserController {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
             FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
+                
+                temporaryUserCreationDictionary[kLandlordID] = facebookDictionary?[kID] as? String
+                
                 guard let landlord = Landlord(dictionary: temporaryUserCreationDictionary) else { NSLog("Landlord could not be initialized from dictionary"); completion(nil); return }
                 saveToPersistentStore()
                 completion(landlord)
@@ -147,7 +150,7 @@ class UserController {
             
             let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
             
-//            FirebaseController.properties = landlordProperties
+            //            FirebaseController.properties = landlordProperties
             
             let group = DispatchGroup()
             
@@ -161,18 +164,18 @@ class UserController {
                 
                 for imageURL in imageURLArray {
                     subGroup.enter()
-                    FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: { 
+                    FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
                         subGroup.leave()
                     })
                 }
                 
-                subGroup.notify(queue: DispatchQueue.main, execute: { 
+                subGroup.notify(queue: DispatchQueue.main, execute: {
                     group.leave()
                 })
                 
             }
             
-            group.notify(queue: DispatchQueue.main, execute: { 
+            group.notify(queue: DispatchQueue.main, execute: {
                 FirebaseController.properties = landlordProperties
             })
         })
@@ -387,6 +390,34 @@ class UserController {
             })
         })
         
+    }
+    
+    
+    static func fetchAllRenters() {
+        FirebaseController.rentersRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allRentersDict = snapshot.value as? [String: [String: Any]] else { return }
+            
+            let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
+            
+            let group = DispatchGroup()
+            
+            
+            for propertyDict in allRentersDict {
+                group.enter()
+                let dict = propertyDict.value
+                guard let renterID = dict[UserController.kID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let renter = rentersArray.filter({$0.id == renterID}).first else { group.leave(); return }
+                
+                FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
+                    group.leave()
+                })
+            }
+            
+            
+            
+            group.notify(queue: DispatchQueue.main, execute: {
+                FirebaseController.renters = rentersArray
+            })
+        })
     }
     
     

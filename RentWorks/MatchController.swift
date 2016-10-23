@@ -47,11 +47,23 @@ class MatchController {
     // TODO: - For observing like endpoints, take landlord's propertyIDs and observe each one.
     
     static func addCurrentRenter(toLikelistOf likedProperty: Property, completion: (() -> Void)? = nil) {
-        guard let propertyID = likedProperty.propertyID, let currentRenterID = UserController.currentRenter?.id else { completion?(); return }
+        guard let landlordID = likedProperty.landlordID, let propertyID = likedProperty.propertyID, let currentRenterID = UserController.currentRenter?.id else { completion?(); return }
         
-        let matchedUserRef = FirebaseController.likesRef.child(propertyID)
+        let matchedUserRef = FirebaseController.likesRef.child(landlordID).child(propertyID)
         
         matchedUserRef.child(currentRenterID).setValue(true)
+        
+        completion?()
+    }
+    
+    
+    // Change this function/Firebase endpoints later to support adding a specific property?
+    static func addCurrentLandlord(toLikelistOf likedRenter: Renter, completion: (() -> Void)? = nil) {
+        guard let renterID = likedRenter.id, let firstProperty = UserController.currentLandlord?.property?.firstObject as? Property, let firstPropertyID = firstProperty.propertyID else { completion?(); return }
+        
+        let matchedUserRef = FirebaseController.likesRef.child(renterID)
+        
+        matchedUserRef.child(renterID).setValue(true)
         
         completion?()
     }

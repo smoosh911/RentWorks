@@ -72,7 +72,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             
             users = FirebaseController.properties
         } else if UserController.currentUserType == "landlord" {
-            // Get renters here
+            UserController.fetchAllRenters()
         }
     }
     
@@ -275,10 +275,23 @@ extension MainViewController: RWKSwipeableViewDelegate {
         }) { (complete) in
             
             self.reset(swipeableView: swipeableView, inSuperview: superview)
-            self.updateUIElementsForPropertyCards()
-            guard let swipeableView = swipeableView as? RWKSwipeableView, let currentUser = AuthenticationController.currentUser else { return }
-            self.updateUIElementsForPropertyCards()
-            //            MatchController.add(currentUser: currentUser, toLikelistOf: swipeableView.user!)
+            
+            if UserController.currentUserType == "renter" {
+                self.updateUIElementsForPropertyCards()
+            } else if UserController.currentUserType == "landlord" {
+                self.updateUIElementsForRenterCards()
+            }
+            
+            guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
+
+            if UserController.currentUserType == "renter" {
+                guard let property = swipeableView.property else { return }
+                MatchController.addCurrentRenter(toLikelistOf: property)
+            } else if UserController.currentUserType == "landlord" {
+                guard let renter = swipeableView.renter else { return }
+                MatchController.addCurrentLandlord(toLikelistOf: renter)
+            }
+            
         }
     }
     
@@ -290,7 +303,12 @@ extension MainViewController: RWKSwipeableViewDelegate {
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: -90))
         }) { (complete) in
             self.reset(swipeableView: swipeableView, inSuperview: superview)
-            self.updateUIElementsForPropertyCards()
+            
+            if UserController.currentUserType == "renter" {
+                self.updateUIElementsForPropertyCards()
+            } else if UserController.currentUserType == "landlord" {
+                self.updateUIElementsForRenterCards()
+            }
         }
     }
     
@@ -312,8 +330,17 @@ extension MainViewController: RWKSwipeableViewDelegate {
         swipeableView.transform = CGAffineTransform(rotationAngle: 0.0)
         
         guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
-        let property = FirebaseController.properties[imageIndex]
-                swipeableView.property = property
+        
+        if UserController.currentUserType == "renter" {
+            let property = FirebaseController.properties[imageIndex]
+            swipeableView.property = property
+            swipeableView.renter = nil
+        } else if UserController.currentUserType == "landlord" {
+            let renter = FirebaseController.renters[imageIndex]
+            swipeableView.renter = renter
+            swipeableView.property = nil
+        }
+        
         
     }
     

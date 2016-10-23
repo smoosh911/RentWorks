@@ -28,16 +28,13 @@ class FirebaseController {
     
     static var properties: [Property] = [] {
         didSet {
-            if properties.count > 2 {
-                delegate?.propertiesWereUpdated()
-            }
+            delegate?.propertiesWereUpdated()
         }
     }
+    
     static var renters: [Renter] = [] {
         didSet {
-            if properties.count > 2 {
-                delegate?.rentersWereUpdated()
-            }
+            delegate?.rentersWereUpdated()
         }
     }
     
