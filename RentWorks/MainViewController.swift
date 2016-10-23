@@ -53,10 +53,12 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     @IBOutlet weak var backgroundStarImageView4: UIImageView!
     @IBOutlet weak var backgroundStarImageView5: UIImageView!
     
+    @IBOutlet weak var matchesButton: UIButton!
     
     
     @IBOutlet weak var navigationBarView: UIView!
     
+    @IBOutlet weak var loadingLabel: UILabel!
     // MARK: - Properties
 
     var rotationAngle: CGFloat = 0.0
@@ -74,12 +76,21 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var users: [Any] = []
     
+    override func viewWillAppear(_ animated: Bool) {
+        setMatchesButtonImage()
+    }
     
     var matchingUsersAlertController: UIAlertController?
+    func currentUserHasMatches() {
+        
+        setMatchesButtonImage()
+    }
     
+    func setMatchesButtonImage() {
+        MatchController.currentUserHasNewMatches ? matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : matchesButton.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
+
+    }
     
-    
-    @IBOutlet weak var loadingLabel: UILabel!
     
     
     var imageIndex = 0
@@ -105,10 +116,10 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         
         if UserController.currentUserType == "renter" {
             UserController.fetchAllProperties()
-            
             users = FirebaseController.properties
         } else if UserController.currentUserType == "landlord" {
             UserController.fetchAllRenters()
+            
         }
     }
     
@@ -116,6 +127,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     // MARK: - FirebaseUserDelegate
     
     func propertiesWereUpdated() {
+        MatchController.observeLikesForCurrentRenter()
         dismissLoadingScreen()
         updateUIElementsForPropertyCards()
     }
@@ -123,62 +135,63 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     func rentersWereUpdated() {
         dismissLoadingScreen()
         updateUIElementsForRenterCards()
+        MatchController.observeLikesForCurrentLandlord()
+
     }
     
     // MARK: - UserMatchingDelegate
     
-    func currentUserDidMatchWith(IDsOf users: [String]) {
-        presentMatchAlertController(for: users)
-    }
+//    func currentUserDidMatchWith(IDsOf users: [String]) {
+//        presentMatchAlertController(for: users)
+//    }
     
-    func presentMatchAlertController(for userIDs: [String]?) {
-        if loadingViewHasBeenDismissed == true {
-            if let matchingUsersAlertController = self.matchingUsersAlertController {
-                present(matchingUsersAlertController, animated: true, completion: nil)
-            } else {
-                guard let userIDs = userIDs else { return }
-                
-                var usersArray: [TestUser] = []
-                
-                for id in userIDs {
-                    //                    let user = users.filter({$0.id == id})
-                    //                    guard let unwrappedUser = user.first else { return }
-                    //                    usersArray.append(unwrappedUser)
-                }
-                
-                // WARNING: - This will change once the list of all users who have historically matched get a separate endpoint in Firebase.
-                MatchController.allMatches = usersArray
-                
-                let usersString = usersArray.flatMap({$0.name}).joined(separator: ", ")
-                
-                let message = usersArray.count == 1 ? "\(usersArray[0].name) has matched with you!" : "\(usersString) have all matched with you!"
-                let title = usersArray.count == 1 ? "You have a new match!" : "You have new matches!"
-                
-                let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-                let showMatchVCAction = UIAlertAction(title: "Take me to my matches", style: .default, handler: { (_) in
-                    self.performSegue(withIdentifier: "toMatchesVC", sender: self)
-                })
-                
-                alertController.addAction(dismissAction)
-                alertController.addAction(showMatchVCAction)
-                
-                alertController.view.tintColor = AppearanceController.customOrangeColor
-                
-                self.matchingUsersAlertController = alertController
-                //                FirebaseController.downloadAndAddProfileImages(forUsers: usersArray, completion: nil)
-                if !alertController.isBeingPresented {
-                    self.present(alertController, animated: true, completion: nil)
-                    print("Did present matchAlert")
-                }
-                
-            }
-        } else {
-            Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { (_) in
-                self.presentMatchAlertController(for: userIDs)
-            })
-        }
-    }
+//    func presentMatchAlertController(for userIDs: [String]?) {
+//        if loadingViewHasBeenDismissed == true {
+//            if let matchingUsersAlertController = self.matchingUsersAlertController {
+//                present(matchingUsersAlertController, animated: true, completion: nil)
+//            } else {
+//                guard let userIDs = userIDs else { return }
+//                
+//                var usersArray: [TestUser] = []
+//                
+//                for id in userIDs {
+//                    //                    let user = users.filter({$0.id == id})
+//                    //                    guard let unwrappedUser = user.first else { return }
+//                    //                    usersArray.append(unwrappedUser)
+//                }
+//                
+//                // WARNING: - This will change once the list of all users who have historically matched get a separate endpoint in Firebase.
+//                
+//                let usersString = usersArray.flatMap({$0.name}).joined(separator: ", ")
+//                
+//                let message = usersArray.count == 1 ? "\(usersArray[0].name) has matched with you!" : "\(usersString) have all matched with you!"
+//                let title = usersArray.count == 1 ? "You have a new match!" : "You have new matches!"
+//                
+//                let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//                let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+//                let showMatchVCAction = UIAlertAction(title: "Take me to my matches", style: .default, handler: { (_) in
+//                    self.performSegue(withIdentifier: "toMatchesVC", sender: self)
+//                })
+//                
+//                alertController.addAction(dismissAction)
+//                alertController.addAction(showMatchVCAction)
+//                
+//                alertController.view.tintColor = AppearanceController.customOrangeColor
+//                
+//                self.matchingUsersAlertController = alertController
+//                //                FirebaseController.downloadAndAddProfileImages(forUsers: usersArray, completion: nil)
+//                if !alertController.isBeingPresented {
+//                    self.present(alertController, animated: true, completion: nil)
+//                    print("Did present matchAlert")
+//                }
+//                
+//            }
+//        } else {
+//            Timer.scheduledTimer(withTimeInterval: 3, repeats: false, block: { (_) in
+//                self.presentMatchAlertController(for: userIDs)
+//            })
+//        }
+//    }
     
     
     // MARK: - UI Related
@@ -269,6 +282,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     func updateUIElementsForRenterCards() {
         let renter = FirebaseController.renters[imageIndex]
         
+        print(renter.id)
+        
         guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
         
         
@@ -282,12 +297,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         backgroundImageView.image = backgroundProfilePicture
         backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
         backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
-        
-        if imageIndex < FirebaseController.renters.count - 1 {
-            imageIndex += 1
-        } else {
-            imageIndex = 0
-        }
         
     }
 
@@ -367,13 +376,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: 90))
         }) { (complete) in
             
-            self.reset(swipeableView: swipeableView, inSuperview: superview)
             
-            if UserController.currentUserType == "renter" {
-                self.updateUIElementsForPropertyCards()
-            } else if UserController.currentUserType == "landlord" {
-                self.updateUIElementsForRenterCards()
-            }
             
             guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
 
@@ -384,6 +387,13 @@ extension MainViewController: RWKSwipeableViewDelegate {
                 guard let renter = swipeableView.renter else { return }
                 MatchController.addCurrentLandlord(toLikelistOf: renter)
             }
+            self.reset(swipeableView: swipeableView, inSuperview: superview)
+            
+            if UserController.currentUserType == "renter" {
+                self.updateUIElementsForPropertyCards()
+            } else if UserController.currentUserType == "landlord" {
+                self.updateUIElementsForRenterCards()
+            }
             
         }
     }
@@ -393,19 +403,17 @@ extension MainViewController: RWKSwipeableViewDelegate {
     
         UIView.animate(withDuration: 0.7, animations: {
             swipeableView.center = finishPoint
-            
-            
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: -90))
         }) { (complete) in
             
-            
+            self.reset(swipeableView: swipeableView, inSuperview: superview)
+
             
             if UserController.currentUserType == "renter" {
                 self.updateUIElementsForPropertyCards()
             } else if UserController.currentUserType == "landlord" {
                 self.updateUIElementsForRenterCards()
             }
-            self.reset(swipeableView: swipeableView, inSuperview: superview)
         }
     }
     
@@ -438,7 +446,11 @@ extension MainViewController: RWKSwipeableViewDelegate {
             swipeableView.property = nil
         }
         
-        
+        if imageIndex < FirebaseController.renters.count - 1 {
+            imageIndex += 1
+        } else {
+            imageIndex = 0
+        }
     }
     
     func degreesToRadians(degree: Double) -> CGFloat {

@@ -18,11 +18,7 @@ class UserController {
     static var userCreationPhotos = [UIImage]()
     
     static var userCreationType = ""
-    
-    static var currentRenter: Renter?
-    
-    static var currentLandlord: Landlord?
-    
+
     static var currentUserID: String?
     
     static var currentUserType: String?
@@ -30,6 +26,10 @@ class UserController {
     static var propertyCount: Int = 0
     
     static var fetchCount = 0
+    
+    static var currentRenter: Renter?
+    
+    static var currentLandlord: Landlord?
     
     
     
@@ -142,6 +142,28 @@ class UserController {
         })
     }
     
+    
+    static func createLandlordInFirebase(landlord: Landlord, completion: @escaping () -> Void) {
+        guard let id = landlord.id, let dict = landlord.dictionaryRepresentation else { completion(); return }
+        
+        let landlordRef = FirebaseController.landlordsRef.child(id)
+        landlordRef.setValue(dict) { (error, reference) in
+            if error != nil {
+                print(error?.localizedDescription)
+                completion()
+            } else {
+                completion()
+            }
+        }
+    }
+    static func createLandlordMockInFirebase(id: String, dictionary: [String: Any]) {
+        FirebaseController.landlordsRef.child(id).setValue(dictionary)
+    }
+    
+    // MARK: - Property Functions
+
+    
+    
     static func fetchAllProperties() {
         FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
@@ -201,24 +223,8 @@ class UserController {
         
     }
     
-    static func createLandlordInFirebase(landlord: Landlord, completion: @escaping () -> Void) {
-        guard let id = landlord.id, let dict = landlord.dictionaryRepresentation else { completion(); return }
-        
-        let landlordRef = FirebaseController.landlordsRef.child(id)
-        landlordRef.setValue(dict) { (error, reference) in
-            if error != nil {
-                print(error?.localizedDescription)
-                completion()
-            } else {
-                completion()
-            }
-        }
-    }
-    static func createLandlordMockInFirebase(id: String, dictionary: [String: Any]) {
-        FirebaseController.landlordsRef.child(id).setValue(dictionary)
-    }
+   
     
-    // MARK: - Property Functions
     
     static func createPropertyInCoreDataFor(landLord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
         let prop = Property(dictionary: temporaryUserCreationDictionary)

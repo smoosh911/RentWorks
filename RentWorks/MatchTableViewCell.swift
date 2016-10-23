@@ -18,18 +18,33 @@ class MatchTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
     
-    var user: TestUser?
+    var renter: Renter?
+    var property: Property?
     
     
-    func updateWith(user: TestUser) {
-        self.user = user
+    func updateWith(renter: Renter) {
+        self.renter = renter
         
-        self.nameLabel.text = user.name
-        self.addressLabel.text = user.address
-        self.profileImageView.image = user.profilePic
+        
+        self.nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
+        self.addressLabel.text = renter.bio ?? "No bio yet!"
+        
+        guard let imageData = (renter.profileImages?.firstObject as? ProfileImage)?.imageData else { return }
+        self.profileImageView.image = UIImage(data: imageData as Data)
+        
+        setupCell()
+    }
+    
+    func updateWith(property: Property) {
+        self.property = property
+        
+        self.nameLabel.text = property.propertyDescription ?? "No description available"
+        self.addressLabel.text = renter?.address ?? "No address available."
+        
+        guard let imageData = (property.profileImages?.firstObject as? ProfileImage)?.imageData else { return }
+        self.profileImageView.image = UIImage(data: imageData as Data)
         
         setupCell()
     }

@@ -11,27 +11,16 @@ import UIKit
 class MatchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UserMatchingDelegate {
     
     @IBOutlet weak var tableView: UITableView!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         MatchController.delegate = self
-        // Do any additional setup after loading the view.
+        MatchController.currentUserHasNewMatches = false
     }
     
-    func currentUserDidMatchWith(IDsOf users: [String]) {
-        
-        var usersArray: [TestUser] = []
-        
-        for id in users {
-//            let user = FirebaseController.users.filter({$0.id == id})
-//            guard let unwrappedUser = user.first else { return }
-//            usersArray.append(unwrappedUser)
-        }
-        
-        MatchController.allMatches = usersArray
-
+    
+    func currentUserHasMatches() {
         self.tableView.reloadData()
-        
     }
     
     @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
@@ -41,15 +30,26 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return MatchController.allMatches.count
+        if UserController.currentUserType == "landlord" {
+            return MatchController.matchedRenters.count
+        } else if UserController.currentUserType == "renter" {
+            return MatchController.matchedProperties.count
+        } else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "matchCell", for: indexPath) as? MatchTableViewCell else { return UITableViewCell() }
         
-        let matchingUser = MatchController.allMatches[indexPath.row]
         
-        cell.updateWith(user: matchingUser)
+        if UserController.currentUserType == "landlord" {
+            let matchingRenter = MatchController.matchedRenters[indexPath.row]
+            cell.updateWith(renter: matchingRenter)
+        } else if UserController.currentUserType == "renter" {
+            let matchingProperty = MatchController.matchedProperties[indexPath.row]
+            cell.updateWith(property: matchingProperty)
+        }
         
         return cell
     }
@@ -59,13 +59,13 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
