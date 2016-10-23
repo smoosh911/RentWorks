@@ -71,7 +71,7 @@ class RenterCreditRatingViewController: UIViewController {
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if creditRating != "" {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kCreditRating : creditRating])
-            self.performSegue(withIdentifier: "toFinalUserCreationVC", sender: self)
+            self.performSegue(withIdentifier: "toFinalUserCreationVCFromRenter", sender: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please select your current credit score.", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)

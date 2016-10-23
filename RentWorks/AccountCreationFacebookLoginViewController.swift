@@ -17,9 +17,15 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if UserController.userCreationType == "renter" {
+            findLabel.text = "Now find your new home!"
+        } else {
+            findLabel.text = "Now find your new renter!"
+        }
         
         
         if FBSDKAccessToken.current() != nil {
