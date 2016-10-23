@@ -21,32 +21,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FIRApp.configure()
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
+        
         if FBSDKAccessToken.current() == nil {
             let loginVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
             
             self.window?.rootViewController = loginVC
             self.window?.makeKeyAndVisible()
         } else {
-                
-//            AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
             
-//                UserController.fetchThreeProperties()
-//                if success {
-//                    UserController.getPropertyCount()
-//                }
-//            })
-                        FirebaseController.handleUserInformationScenarios(completion: { (success) in
-                            if success {
-                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
-                                
-                                self.window?.rootViewController = mainVC
-                                self.window?.makeKeyAndVisible()
-            
-                            } else {
-                                // Do nothing, or create account?
-                            }
-                        })
+            let launchScreenCopy = storyboard.instantiateViewController(withIdentifier: "launchScreenCopy")
+            self.window?.rootViewController = launchScreenCopy
+            self.window?.makeKeyAndVisible()
+            FirebaseController.handleUserInformationScenarios(completion: { (success) in
+                if success {
+                    
+                    
+                    let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                    
+                    self.window?.rootViewController = mainVC
+                    self.window?.makeKeyAndVisible()
+                    
+                } else {
+                    // Do nothing, or create account?
+                }
+            })
         }
         
         

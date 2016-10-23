@@ -33,6 +33,13 @@ class FirebaseController {
             }
         }
     }
+    static var renters: [Renter] = [] {
+        didSet {
+            if properties.count > 2 {
+                delegate?.rentersWereUpdated()
+            }
+        }
+    }
     
     // MARK: - Image storage/downloading
     
@@ -543,4 +550,5 @@ class FirebaseController {
 
 protocol FirebaseUserDelegate: class {
     func propertiesWereUpdated()
+    func rentersWereUpdated()
 }

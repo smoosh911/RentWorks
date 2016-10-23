@@ -48,7 +48,13 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var imageIndex = 0
     var backgroundimageIndex: Int {
+        if UserController.currentUserType == "renter"{
         return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
+        } else if UserController.currentUserType == "landlord" {
+            return imageIndex + 1 <= FirebaseController.renters.count - 1 ? imageIndex + 1 : 0
+        } else {
+            return 0
+        }
     }
     
     override func viewDidLoad() {
@@ -76,6 +82,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     func propertiesWereUpdated() {
         dismissLoadingScreen()
         updateUIElementsForPropertyCards()
+    }
+    
+    func rentersWereUpdated() {
+        dismissLoadingScreen()
+        updateUIElementsForRenterCards()
     }
     
     // MARK: - UserMatchingDelegate
@@ -162,6 +173,33 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         }
         
     }
+    
+    
+    func updateUIElementsForRenterCards() {
+        let renter = FirebaseController.renters[imageIndex]
+        
+        guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
+        
+        
+        imageView.image = profilePicture
+        nameLabel.text = "\(renter.firstName) \(renter.lastName)"
+        addressLabel.text = renter.bio ?? "No bio yet!"
+        
+        let nextRenter = FirebaseController.renters[backgroundimageIndex]
+        
+        guard  let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
+        backgroundImageView.image = backgroundProfilePicture
+        backgroundNameLabel.text = "\(nextRenter.firstName) \(nextRenter.lastName)"
+        backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
+        
+        if imageIndex < FirebaseController.renters.count - 1 {
+            imageIndex += 1
+        } else {
+            imageIndex = 0
+        }
+        
+    }
+
     
     func setupViews() {
         
