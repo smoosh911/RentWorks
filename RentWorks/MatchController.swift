@@ -73,30 +73,44 @@ class MatchController {
             
             isObservingCurrentUserLikeEndpoint = true
             
-            guard let currentLandlord = UserController.currentLandlord, let landlordID = currentLandlord.id, let properties = currentLandlord.property?.array as? [Property] else { return }
+            guard let currentLandlord = UserController.currentLandlord, let properties = currentLandlord.property?.array as? [Property] else { return }
+            var matches: [Renter] = []
+            
+            // TODO: - Save these matched users to CoreData and perhaps a more permanent endpoint in Firebase.
+            
+            let group = DispatchGroup()
             
             for property in properties {
-                guard let propertyID = property.propertyID else { return }
+                group.enter()
+                guard let propertyID = property.propertyID else { group.leave(); return }
                 let userLikesRef = FirebaseController.likesRef.child(propertyID)
                 
                 userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
                     
-                    guard let likeDictionary = snapshot.value as? [String: Any] else { isObservingCurrentUserLikeEndpoint = false; return }
+                    guard let likeDictionary = snapshot.value as? [String: Any] else { group.leave(); isObservingCurrentUserLikeEndpoint = false; return }
                     print(likeDictionary)
                     
                     self.checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: likeDictionary, completion: { (matchingIDArray) in
                         
-                        var matches: [Renter] = []
-                        for id in matchingIDArray {
-                            let matchedRenter = FirebaseController.renters.filter({$0.id == id}).first
-                            guard let match = matchedRenter else { return }
-                            matches.append(match)
-                        }
+                        let subgroup = DispatchGroup()
                         
-                        matchedRenters = matches
+                        for id in matchingIDArray {
+                            subgroup.enter()
+                            guard let matchedRenter = FirebaseController.renters.filter({$0.id == id}).first else { subgroup.leave(); return }
+                            matches.append(matchedRenter)
+                            subgroup.leave()
+                        }
+                        subgroup.notify(queue: DispatchQueue.main, execute: {
+                            group.leave()
+                        })
                     })
                 })
             }
+            
+            group.notify(queue: DispatchQueue.main, execute: { 
+                self.matchedRenters = matches
+                if matches.count > 0 { currentUserHasNewMatches = true; delegate?.currentUserHasMatches() }
+            })
         } else {
             print("The app is already observing currentUser's endpoint")
         }
@@ -158,7 +172,7 @@ class MatchController {
                 for id in otherUserDictionary.keys {
                     subgroup.enter()
                     guard let propertyID = property.propertyID else { print("No propertyID to observe for"); return }
-                    FirebaseController.likesRef.child(propertyID).observeSingleEvent(of: .value, with: { (snapshot) in
+                    FirebaseController.likesRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
                         print("Snapshot: \(snapshot.value)")
                         guard let matchDictionary = snapshot.value as? [String: Any] else { subgroup.leave(); return }
                         if matchDictionary.keys.contains(propertyID) {
