@@ -1,4 +1,3 @@
-//
 //  UserController.swift
 //  RentWorks
 //
@@ -64,7 +63,6 @@ class UserController {
             }
         }
     }
-    
     
     
     // MARK: - Landlord functions

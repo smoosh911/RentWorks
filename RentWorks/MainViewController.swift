@@ -10,19 +10,55 @@ import UIKit
 
 class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDelegate {
     
-    // MARK: - Properties
+    
+    // MARK: - Front swipeableView outlets
     
     @IBOutlet weak var swipeableView: RWKSwipeableView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     
+    @IBOutlet weak var bedroomCountLabel: UILabel!
+    @IBOutlet weak var bedroomImageView: UIImageView!
+    @IBOutlet weak var bathroomCountLabel: UILabel!
+    @IBOutlet weak var bathroomImageView: UIImageView!
+    @IBOutlet weak var petFriendlyImageView: UIImageView!
+    @IBOutlet weak var smokingAllowedImageView: UIImageView!
+    
+    @IBOutlet weak var starImageView1: UIImageView!
+    @IBOutlet weak var starImageView2: UIImageView!
+    @IBOutlet weak var starImageView3: UIImageView!
+    @IBOutlet weak var starImageView4: UIImageView!
+    @IBOutlet weak var starImageView5: UIImageView!
+    
+    
+    // MARK: - Outlets for backgroundView that acts as a faux swipeableView
+    
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var backgroundNameLabel: UILabel!
     @IBOutlet weak var backgroundAddressLabel: UILabel!
+    
+    
+    @IBOutlet weak var backgroundBedroomCountLabel: UILabel!
+    @IBOutlet weak var backgroundBedroomImageView: UIImageView!
+    @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
+    @IBOutlet weak var backgroundBathroomImageView: UIImageView!
+    @IBOutlet weak var backgroundPetFriendlyImageview: UIImageView!
+    @IBOutlet weak var backgroundSmokingAllowedImageView: UIImageView!
+    
+    @IBOutlet weak var backgroundStarImageView1: UIImageView!
+    @IBOutlet weak var backgroundStarImageView2: UIImageView!
+    @IBOutlet weak var backgroundStarImageView3: UIImageView!
+    @IBOutlet weak var backgroundStarImageView4: UIImageView!
+    @IBOutlet weak var backgroundStarImageView5: UIImageView!
+    
+    
+    
     @IBOutlet weak var navigationBarView: UIView!
     
+    // MARK: - Properties
+
     var rotationAngle: CGFloat = 0.0
     var xFromCenter: CGFloat = 0.0
     var yFromCenter: CGFloat = 0.0
@@ -159,6 +195,14 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         nameLabel.text = property.propertyDescription ?? "No description available"
         addressLabel.text = address
         
+        bedroomCountLabel.text = "\(property.bedroomCount)"
+        bathroomCountLabel.text = property.bathroomCount.isInteger ? "\(Int(property.bathroomCount))" : "\(property.bathroomCount)"
+        
+        petFriendlyImageView.image = property.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
+        smokingAllowedImageView.image = property.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
+        
+        update(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
+        
         let nextProperty = FirebaseController.properties[backgroundimageIndex]
         
         guard  let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data), let backgroundPropertyAddress = nextProperty.address else { return }
@@ -166,11 +210,58 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         backgroundNameLabel.text = nextProperty.propertyDescription ?? "No description available"
         backgroundAddressLabel.text = backgroundPropertyAddress
         
+        backgroundBedroomCountLabel.text = "\(nextProperty.bedroomCount)"
+        backgroundBathroomCountLabel.text = nextProperty.bathroomCount.isInteger ? "\(Int(nextProperty.bathroomCount))" : "\(nextProperty.bathroomCount)"
+        
+        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
+        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
+
+        update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
         if imageIndex < FirebaseController.properties.count - 1 {
             imageIndex += 1
         } else {
             imageIndex = 0
         }
+        
+    }
+    
+    func update(starImageViews: [UIImageView], for rating: Double) {
+        
+            switch rating {
+            case 1:
+                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[1].image = #imageLiteral(resourceName: "Star")
+                starImageViews[2].image = #imageLiteral(resourceName: "Star")
+                starImageViews[3].image = #imageLiteral(resourceName: "Star")
+                starImageViews[4].image = #imageLiteral(resourceName: "Star")
+                
+            case 2:
+                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[2].image = #imageLiteral(resourceName: "Star")
+                starImageViews[3].image = #imageLiteral(resourceName: "Star")
+                starImageViews[4].image = #imageLiteral(resourceName: "Star")
+            case 3:
+                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[3].image = #imageLiteral(resourceName: "Star")
+                starImageViews[4].image = #imageLiteral(resourceName: "Star")
+            case 4:
+                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[4].image = #imageLiteral(resourceName: "Star")
+            case 5:
+                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
+                starImageViews[4].image = #imageLiteral(resourceName: "StarFilled")
+            default:
+                _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
+            }
         
     }
     
@@ -261,6 +352,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
             rightAnimationFor(swipeableView: swipeableView, inSuperview: superview)
         } else if swipeableView.center.x < superview.center.x - 45 {
             leftAnimationFor(swipeableView: swipeableView, inSuperview: superview)
+            
         } else {
             put(swipeableView: swipeableView, inCenterOf: superview)
             reset(swipeableView: swipeableView, inSuperview: superview)
@@ -269,6 +361,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
     
     func rightAnimationFor(swipeableView: UIView, inSuperview superview: UIView) {
         let finishPoint = CGPoint(x: CGFloat(750), y: superview.center.y - 100)
+
         UIView.animate(withDuration: 0.7, animations: {
             swipeableView.center = finishPoint
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: 90))
@@ -297,18 +390,22 @@ extension MainViewController: RWKSwipeableViewDelegate {
     
     func leftAnimationFor(swipeableView: UIView, inSuperview superview: UIView) {
         let finishPoint = CGPoint(x: CGFloat(-750), y: superview.center.y - 100)
+    
         UIView.animate(withDuration: 0.7, animations: {
             swipeableView.center = finishPoint
             
+            
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: -90))
         }) { (complete) in
-            self.reset(swipeableView: swipeableView, inSuperview: superview)
+            
+            
             
             if UserController.currentUserType == "renter" {
                 self.updateUIElementsForPropertyCards()
             } else if UserController.currentUserType == "landlord" {
                 self.updateUIElementsForRenterCards()
             }
+            self.reset(swipeableView: swipeableView, inSuperview: superview)
         }
     }
     

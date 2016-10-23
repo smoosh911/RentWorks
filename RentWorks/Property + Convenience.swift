@@ -43,8 +43,9 @@ extension Property {
             let smokingAllowed = dictionary[UserController.kSmokingAllowed] as? Bool,
             let address = dictionary[UserController.kAddress] as? String,
             let zipCode = dictionary[UserController.kZipCode] as? String,
-            let landlordID = dictionary[UserController.kLandlordID] as? String
-//            let propertyDescription = dictionary[UserController.kPropertyDescription] as? String
+            let landlordID = dictionary[UserController.kLandlordID] as? String,
+            let rentalHistoryRating = dictionary[UserController.kStarRating] as? Double,
+            let propertyDescription = dictionary[UserController.kPropertyDescription] as? String
             else { return nil }
         
         if let context = context {
@@ -53,7 +54,6 @@ extension Property {
             self.init(entity: Property.entity(), insertInto: nil)
         }
         // TODO: - Change this to not a static value
-        let rentalHistoryRating = 5.0
         
         self.availableDate = NSDate(timeIntervalSince1970: availableDate)
         self.bathroomCount = bathroomCount
@@ -65,7 +65,7 @@ extension Property {
         self.address = address
         self.zipCode = zipCode
         self.landlordID = landlordID
-//        self.propertyDescription = propertyDescription
+        self.propertyDescription = propertyDescription
         guard let propertyID = dictionary[UserController.kPropertyID] as? String else { self.propertyID = UUID().uuidString; return}
         self.propertyID = propertyID
     }
