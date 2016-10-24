@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MessageUI
 
 class MatchTableViewCell: UITableViewCell {
     
@@ -14,6 +15,7 @@ class MatchTableViewCell: UITableViewCell {
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var lastMessageLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var contactButton: UIButton!
     
     
     override func awakeFromNib() {
@@ -23,6 +25,42 @@ class MatchTableViewCell: UITableViewCell {
     var renter: Renter?
     var property: Property?
     
+    weak var delegate: ContactEmailDelegate?
+    
+    @IBAction func contactButtonTapped(_ sender: AnyObject) {
+        let mailComposeVC = MFMailComposeViewController()
+        mailComposeVC.view.tintColor = AppearanceController.customOrangeColor
+        //        mailComposeVC.navigationBar.barTintColor = UIColor.orange
+        guard MFMailComposeViewController.canSendMail() else { /* present alert to say they can't send email */ return }
+        if let renter = renter {
+            guard let email = renter.email else { return }
+            mailComposeVC.setToRecipients([email])
+            mailComposeVC.setSubject("We matched on RentMatch!")
+            delegate?.present(emailComposeVC: mailComposeVC)
+        } else if let property = property {
+            // Fix this fetching later to pull the landlord from CoreData when they actually have that relationship.
+            if let email = property.landlord?.email {
+                mailComposeVC.setToRecipients([email])
+                mailComposeVC.setSubject("We matched on RentMatch!")
+                delegate?.present(emailComposeVC: mailComposeVC)
+            } else {
+                FirebaseController.getLandlordFor(property: property, completion: { (landlord) in
+                    guard let landlord = landlord, let email = landlord.email else { return }
+                    mailComposeVC.setToRecipients([email])
+                    mailComposeVC.setSubject("We matched on RentMatch!")
+                    self.delegate?.present(emailComposeVC: mailComposeVC)
+                })
+            }
+        }
+    }
+    
+    func createEmailErrorAlert() {
+        let sendMailErrorAlert = UIAlertController(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        sendMailErrorAlert.addAction(dismissAction)
+        
+        delegate?.present(emailErrorAlert: sendMailErrorAlert)
+    }
     
     func updateWith(renter: Renter) {
         self.renter = renter
@@ -41,7 +79,7 @@ class MatchTableViewCell: UITableViewCell {
         self.property = property
         
         self.nameLabel.text = property.propertyDescription ?? "No description available"
-        self.addressLabel.text = renter?.address ?? "No address available."
+        self.addressLabel.text = property.address ?? "No address available."
         
         guard let imageData = (property.profileImages?.firstObject as? ProfileImage)?.imageData else { return }
         self.profileImageView.image = UIImage(data: imageData as Data)
@@ -52,7 +90,14 @@ class MatchTableViewCell: UITableViewCell {
     func setupCell() {
         profileImageView.layer.cornerRadius = 36.5
         profileImageView.clipsToBounds = true
+        
+        contactButton.layer.borderColor = AppearanceController.customOrangeColor.cgColor
+        contactButton.layer.cornerRadius = 4
+        contactButton.layer.borderWidth = 0.4
     }
-    
-    
+}
+
+protocol ContactEmailDelegate: class {
+    func present(emailComposeVC: MFMailComposeViewController)
+    func present(emailErrorAlert: UIAlertController)
 }

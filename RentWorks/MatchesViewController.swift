@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-class MatchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UserMatchingDelegate {
+class MatchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UserMatchingDelegate, ContactEmailDelegate, MFMailComposeViewControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -27,6 +28,19 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         _ = self.navigationController?.popViewController(animated: true)
     }
     
+    func present(emailComposeVC: MFMailComposeViewController) {
+        emailComposeVC.mailComposeDelegate = self
+        self.present(emailComposeVC, animated: true, completion: nil)
+    }
+    
+    
+    func present(emailErrorAlert: UIAlertController) {
+        self.present(emailErrorAlert, animated: true, completion: nil)
+    }
+
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -50,7 +64,7 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
             let matchingProperty = MatchController.matchedProperties[indexPath.row]
             cell.updateWith(property: matchingProperty)
         }
-        
+        cell.delegate = self
         return cell
     }
     

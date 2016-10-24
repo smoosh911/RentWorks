@@ -364,6 +364,15 @@ class FirebaseController {
         }
     }
     
+    static func getLandlordFor(property: Property, completion: @escaping (Landlord?) -> Void) {
+        landlordsRef.child(property.landlordID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let landlordDict = snapshot.value as? [String: Any] else { completion(nil); return }
+            
+            let landlord = Landlord(dictionary: landlordDict, id: property.landlordID, context: nil)
+            completion(landlord)
+        })
+    }
+    
     // MARK: - Mock data related functions
     
     static func createMockRenters() {
@@ -543,6 +552,7 @@ class FirebaseController {
             }
         }
     }
+    
 }
 
 protocol FirebaseUserDelegate: class {
