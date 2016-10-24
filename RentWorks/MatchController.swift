@@ -18,12 +18,9 @@ class MatchController {
     
     static var matchedRenters: [Renter] = []
     
-    static var matchedProperties: [Property] = [] {
-        didSet {
-            print("Matched properties has been set")
-            delegate?.currentUserHasMatches()
-        }
-    }
+    static var matchedProperties: [Property] = []
+    
+    static var firstMatch = false
     
     static var currentUserHasNewMatches = false
     
@@ -55,9 +52,30 @@ class MatchController {
                         group.leave()
                     }
                     group.notify(queue: DispatchQueue.main, execute: {
+                        var newMatches: [Property] = []
                         
-                        matchedProperties = matches
-                        if matches.count > 0 { currentUserHasNewMatches = true; delegate?.currentUserHasMatches() }
+                        let matchFilterGroup = DispatchGroup()
+                        if matchedProperties.count > 0 {
+                            for match in matches {
+                                matchFilterGroup.enter()
+                                guard let match = matchedProperties.filter({match != $0}).first else { matchFilterGroup.leave(); return }
+                                
+                                newMatches.append(match)
+                                matchFilterGroup.leave()
+                            }
+                        } else {
+                            if matchedProperties.count > 0 { currentUserHasNewMatches = true
+                                delegate?.currentUserHasMatches()
+                            }
+                        }
+                        matchFilterGroup.notify(queue: DispatchQueue.main, execute: {
+                            for newMatch in newMatches {
+                                matchedProperties.append(newMatch)
+                            }
+                            if newMatches.count > 0 { currentUserHasNewMatches = true
+                                delegate?.currentUserHasMatches()
+                            }
+                        })
                     })
                     
                 })
@@ -75,19 +93,19 @@ class MatchController {
             
             guard let currentLandlord = UserController.currentLandlord, let properties = currentLandlord.property?.array as? [Property] else { return }
             var matches: [Renter] = []
+            defer { matches = [] }
             
             // TODO: - Save these matched users to CoreData and perhaps a more permanent endpoint in Firebase.
             
-            let group = DispatchGroup()
             
             for property in properties {
-                group.enter()
-                guard let propertyID = property.propertyID else { group.leave(); return }
+                
+                guard let propertyID = property.propertyID else { return }
                 let userLikesRef = FirebaseController.likesRef.child(propertyID)
                 
                 userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
                     
-                    guard let likeDictionary = snapshot.value as? [String: Any] else { group.leave(); isObservingCurrentUserLikeEndpoint = false; return }
+                    guard let likeDictionary = snapshot.value as? [String: Any] else { isObservingCurrentUserLikeEndpoint = false; return }
                     print(likeDictionary)
                     
                     self.checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: likeDictionary, completion: { (matchingIDArray) in
@@ -101,21 +119,33 @@ class MatchController {
                             subgroup.leave()
                         }
                         subgroup.notify(queue: DispatchQueue.main, execute: {
-                            group.leave()
+                            
+                            
+                            if matchedRenters.count > 0 {
+                                for match in matches {
+                                    if !matchedRenters.contains(match) {
+                                        matchedRenters.append(match)
+                                        delegate?.currentUserHasMatches()
+
+                                    }
+                                }
+                            } else {
+                                matchedRenters = matches
+                                matches = []
+                                if matchedRenters.count > 0 { currentUserHasNewMatches = true
+                                    delegate?.currentUserHasMatches()
+                                }
+                                
+                            }
                         })
                     })
                 })
             }
-            
-            group.notify(queue: DispatchQueue.main, execute: { 
-                self.matchedRenters = matches
-                if matches.count > 0 { currentUserHasNewMatches = true; delegate?.currentUserHasMatches() }
-            })
         } else {
             print("The app is already observing currentUser's endpoint")
         }
-        
     }
+    
     
     
     
