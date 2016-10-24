@@ -51,6 +51,8 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        
+        guard result.isCancelled != true else { return }
         setUpAndDisplayLoadingScreen()
         AuthenticationController.attemptToSignInToFirebase { (success) in
             self.dismissLoadingScreen()
@@ -64,6 +66,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                 }
             }
         }
+        
         
     }
     

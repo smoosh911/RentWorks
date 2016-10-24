@@ -41,7 +41,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        guard result.isCancelled != true else { return }
+
         setUpAndDisplayLoadingScreen()
+        
         FirebaseController.handleUserInformationScenarios { (success) in
             self.dismissLoadingScreen()
             if success {

@@ -251,6 +251,12 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
         backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
         
+        if imageIndex < FirebaseController.renters.count - 1 {
+            imageIndex += 1
+        } else {
+            imageIndex = 0
+        }
+        
     }
 
     
