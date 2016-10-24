@@ -34,9 +34,7 @@ class MatchController {
             let userLikesRef = FirebaseController.likesRef.child(renterID)
             
             userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
-                currentUserHasNewMatches = true
-                delegate?.currentUserHasMatches()
-                
+
                 guard let likeDictionary = snapshot.value as? [String: Any] else { isObservingCurrentUserLikeEndpoint = false; return }
                 
                 
@@ -52,30 +50,25 @@ class MatchController {
                         group.leave()
                     }
                     group.notify(queue: DispatchQueue.main, execute: {
-                        var newMatches: [Property] = []
                         
-                        let matchFilterGroup = DispatchGroup()
                         if matchedProperties.count > 0 {
                             for match in matches {
-                                matchFilterGroup.enter()
-                                guard let match = matchedProperties.filter({match != $0}).first else { matchFilterGroup.leave(); return }
-                                
-                                newMatches.append(match)
-                                matchFilterGroup.leave()
+                                if !matchedProperties.contains(match) {
+                                    matchedProperties.append(match)
+                                    currentUserHasNewMatches = true
+                                    delegate?.currentUserHasMatches()
+                                }
                             }
                         } else {
-                            if matchedProperties.count > 0 { currentUserHasNewMatches = true
+                            matchedProperties = matches
+                            matches = []
+                            if matchedProperties.count > 0 {
+                                currentUserHasNewMatches = true
                                 delegate?.currentUserHasMatches()
                             }
+                            
                         }
-                        matchFilterGroup.notify(queue: DispatchQueue.main, execute: {
-                            for newMatch in newMatches {
-                                matchedProperties.append(newMatch)
-                            }
-                            if newMatches.count > 0 { currentUserHasNewMatches = true
-                                delegate?.currentUserHasMatches()
-                            }
-                        })
+
                     })
                     
                 })
@@ -125,14 +118,15 @@ class MatchController {
                                 for match in matches {
                                     if !matchedRenters.contains(match) {
                                         matchedRenters.append(match)
+                                        currentUserHasNewMatches = true
                                         delegate?.currentUserHasMatches()
-
                                     }
                                 }
                             } else {
                                 matchedRenters = matches
                                 matches = []
-                                if matchedRenters.count > 0 { currentUserHasNewMatches = true
+                                if matchedRenters.count > 0 {
+                                    currentUserHasNewMatches = true
                                     delegate?.currentUserHasMatches()
                                 }
                                 
