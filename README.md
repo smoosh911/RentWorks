@@ -22,8 +22,12 @@ Firebase SDK (version 3.8.0)
 
 ### Maintenance Notes
 
-
-
 #### Custom Extensions
+
+  - Double: `var isInteger: Bool` returns a boolean whether or not the double can be made into an Int without changing its value.
+
+  - UIView:
+      - Various `@IBDesignable` variables to give the 'Tinderesque' swiping cards a drop shadow to add depth.
+      - A few normal variables to round corners.
 
 #### Warnings
