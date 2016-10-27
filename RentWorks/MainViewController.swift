@@ -190,48 +190,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         }
         
     }
-    
-    func update(starImageViews: [UIImageView], for rating: Double) {
-        
-            switch rating {
-            case 1:
-                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[1].image = #imageLiteral(resourceName: "Star")
-                starImageViews[2].image = #imageLiteral(resourceName: "Star")
-                starImageViews[3].image = #imageLiteral(resourceName: "Star")
-                starImageViews[4].image = #imageLiteral(resourceName: "Star")
-                
-            case 2:
-                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[2].image = #imageLiteral(resourceName: "Star")
-                starImageViews[3].image = #imageLiteral(resourceName: "Star")
-                starImageViews[4].image = #imageLiteral(resourceName: "Star")
-            case 3:
-                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[3].image = #imageLiteral(resourceName: "Star")
-                starImageViews[4].image = #imageLiteral(resourceName: "Star")
-            case 4:
-                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[4].image = #imageLiteral(resourceName: "Star")
-            case 5:
-                starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
-                starImageViews[4].image = #imageLiteral(resourceName: "StarFilled")
-            default:
-                _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
-            }
-        
-    }
-    
-    
+
     func updateUIElementsForRenterCards() {
         let renter = FirebaseController.renters[imageIndex]
         
@@ -259,6 +218,45 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         
     }
 
+    func update(starImageViews: [UIImageView], for rating: Double) {
+        
+        switch rating {
+        case 1:
+            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[1].image = #imageLiteral(resourceName: "Star")
+            starImageViews[2].image = #imageLiteral(resourceName: "Star")
+            starImageViews[3].image = #imageLiteral(resourceName: "Star")
+            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+            
+        case 2:
+            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[2].image = #imageLiteral(resourceName: "Star")
+            starImageViews[3].image = #imageLiteral(resourceName: "Star")
+            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+        case 3:
+            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[3].image = #imageLiteral(resourceName: "Star")
+            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+        case 4:
+            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+        case 5:
+            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
+            starImageViews[4].image = #imageLiteral(resourceName: "StarFilled")
+        default:
+            _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
+        }
+        
+    }
     
     func setupViews() {
         

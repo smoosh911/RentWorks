@@ -14,8 +14,9 @@ class FacebookRequestController {
         
         guard let imageReqest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "picture.width(\(width)).height(\(height))"], httpMethod: "GET") else { return }
         imageReqest.start(completionHandler: { (connection, result, error) in
-            print(result)
-            print(error?.localizedDescription)
+            
+            if let error = error { print(error.localizedDescription) }
+            
             guard let resultDictionary = result as? [String: Any], let pictureDict = resultDictionary["picture"] as? [String: Any], let dataDict = pictureDict["data"] as? [String: Any], let urlString = dataDict["url"] as? String else { return }
             
             ImageController.imageFor(url: urlString, completion: completion)

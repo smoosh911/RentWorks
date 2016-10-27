@@ -16,7 +16,6 @@ class RenterAllowedViewController: UIViewController {
     @IBOutlet weak var smokingAllowedButton: UIButton!
     @IBOutlet weak var noSmokingButton: UIButton!
     
-    
     var smokingAllowed: Bool?
     var petsAllowed: Bool?
     
@@ -24,6 +23,7 @@ class RenterAllowedViewController: UIViewController {
         super.viewDidLoad()
         
     }
+    
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
         petsAllowed = true
         petsAllowedButton.setTitleColor(.green, for: .normal)
@@ -48,6 +48,7 @@ class RenterAllowedViewController: UIViewController {
         smokingAllowedButton.setTitleColor(.white, for: .normal)
         smokingAllowed = true
     }
+    
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])

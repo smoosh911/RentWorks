@@ -24,7 +24,6 @@ class RenterCreditRatingViewController: UIViewController {
     
     var creditRating: String = ""
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

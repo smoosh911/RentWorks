@@ -14,8 +14,8 @@ class RenterPaymentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
-        // Do any additional setup after loading the view.
     }
     
     @IBAction func paymentSliderValueChanged(_ sender: UISlider) {
@@ -29,10 +29,7 @@ class RenterPaymentViewController: UIViewController {
     
     // MARK: - Navigation
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         UserController.addAttributeToUserDictionary(attribute: [UserController .kMonthlyPayment: Int(paymentSlider.value)])
     }
-    
-    
 }

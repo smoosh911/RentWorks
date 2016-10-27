@@ -15,7 +15,6 @@ class LandlordBedroomViewController: UIViewController {
     @IBOutlet weak var bedroomStepper: UIStepper!
     @IBOutlet weak var bathroomStepper: UIStepper!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -65,8 +64,6 @@ class LandlordBedroomViewController: UIViewController {
         
     }
 }
-
-
 
 extension Double {
     var isInteger: Bool { return rint(self) == self }

@@ -36,10 +36,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         constraintsForFacebookLoginButton()
     }
     
-    
-    // TODO: - Run a check to see if the user has already created a RW account with Facebook. (Using the FBSDKAccessToken.current().userID)
-    
-    
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         guard result.isCancelled != true else { return }
 

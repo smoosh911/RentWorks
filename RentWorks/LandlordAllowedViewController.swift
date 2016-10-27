@@ -15,8 +15,6 @@ class LandlordAllowedViewController: UIViewController {
     @IBOutlet weak var smokingAllowedButton: UIButton!
     @IBOutlet weak var noSmokingButton: UIButton!
     
-    
-    
     var smokingAllowed: Bool?
     var petsAllowed: Bool?
     

@@ -19,7 +19,6 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         MatchController.currentUserHasNewMatches = false
     }
     
-    
     func currentUserHasMatches() {
         self.tableView.reloadData()
     }
@@ -71,15 +70,4 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 122
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
