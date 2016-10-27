@@ -11,7 +11,7 @@ import CoreData
 
 extension Property {
     
-    @discardableResult convenience init?(availableDate: NSDate, bathroomCount: Double, bedroomCount: Int, monthlyPayment: Int, petFriendly: Bool, smokingAllowed: Bool, rentalHistoryRating: Double = 5.0, address: String, zipCode: String, propertyDescription: String = "", propertyID: String, landlord: Landlord, context: NSManagedObjectContext? = CoreDataStack.context) {
+    @discardableResult convenience init?(availableDate: NSDate, bathroomCount: Double, bedroomCount: Int, monthlyPayment: Int, petFriendly: Bool, smokingAllowed: Bool, rentalHistoryRating: Double = 5.0, address: String, zipCode: String, propertyDescription: String = "No description yet!", propertyID: String, landlord: Landlord, context: NSManagedObjectContext? = CoreDataStack.context) {
         
         if let context = context {
             self.init(context: context)
@@ -33,7 +33,7 @@ extension Property {
         self.propertyID = propertyID
     }
     
-    @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext? = CoreDataStack.context) {
+    @discardableResult convenience init?(dictionary: [String: Any], landlordID: String? = nil, context: NSManagedObjectContext? = CoreDataStack.context) {
         
         guard let availableDate = dictionary[UserController.kAvailableDate] as? Double,
             let bathroomCount = dictionary[UserController.kBathroomCount] as? Double,
@@ -42,10 +42,7 @@ extension Property {
             let petFriendly = dictionary[UserController.kPetsAllowed] as? Bool,
             let smokingAllowed = dictionary[UserController.kSmokingAllowed] as? Bool,
             let address = dictionary[UserController.kAddress] as? String,
-            let zipCode = dictionary[UserController.kZipCode] as? String,
-            let landlordID = dictionary[UserController.kLandlordID] as? String,
-            let rentalHistoryRating = dictionary[UserController.kStarRating] as? Double,
-            let propertyDescription = dictionary[UserController.kPropertyDescription] as? String
+            let zipCode = dictionary[UserController.kZipCode] as? String
             else { return nil }
         
         if let context = context {
@@ -61,11 +58,11 @@ extension Property {
         self.monthlyPayment = Int64(monthlyPayment)
         self.petFriendly = petFriendly
         self.smokingAllowed = smokingAllowed
-        self.rentalHistoryRating = rentalHistoryRating
+        self.rentalHistoryRating = dictionary[UserController.kStarRating] as? Double ?? 5.0
         self.address = address
         self.zipCode = zipCode
-        self.landlordID = landlordID
-        self.propertyDescription = propertyDescription
+        self.landlordID = dictionary[UserController.kLandlordID] as? String ?? landlordID
+        self.propertyDescription = dictionary[UserController.kPropertyDescription] as? String ?? "No description yet!"
         guard let propertyID = dictionary[UserController.kPropertyID] as? String else { self.propertyID = UUID().uuidString; return}
         self.propertyID = propertyID
     }

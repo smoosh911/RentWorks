@@ -71,7 +71,7 @@ class UserController {
         createLandlordForCurrentUser { (landlord) in
             guard let landlord = landlord else { print("Landlord returned from completion closure is nil"); return }
             createLandlordInFirebase(landlord: landlord, completion: {
-                createPropertyInCoreDataFor(landLord: landlord, completion: { (property) in
+                createPropertyInCoreDataFor(landlord: landlord, completion: { (property) in
                     guard let property = property else { print("Error creating property"); return }
                     savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {
                         createPropertyInFirebase(property: property) {
@@ -103,9 +103,9 @@ class UserController {
             FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
                 
-                temporaryUserCreationDictionary[kLandlordID] = facebookDictionary?[kID] as? String
+                let id = facebookDictionary?[kID] as? String
                 
-                guard let landlord = Landlord(dictionary: temporaryUserCreationDictionary) else { NSLog("Landlord could not be initialized from dictionary"); completion(nil); return }
+                guard let landlord = Landlord(dictionary: temporaryUserCreationDictionary, id: id) else { NSLog("Landlord could not be initialized from dictionary"); completion(nil); return }
                 saveToPersistentStore()
                 completion(landlord)
             })
@@ -226,10 +226,11 @@ class UserController {
    
     
     
-    static func createPropertyInCoreDataFor(landLord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
-        let prop = Property(dictionary: temporaryUserCreationDictionary)
+    static func createPropertyInCoreDataFor(landlord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
+        guard let landlordID = landlord.id else { completion(nil); return }
+        let prop = Property(dictionary: temporaryUserCreationDictionary, landlordID: landlordID)
         guard let property = prop else { NSLog("Property could not be initialized from dictionary"); completion(nil); return }
-        property.landlord = landLord
+        property.landlord = landlord
         saveToPersistentStore()
         completion(property)
     }

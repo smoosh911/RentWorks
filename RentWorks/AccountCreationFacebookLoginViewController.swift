@@ -31,12 +31,18 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         if FBSDKAccessToken.current() != nil {
             AuthenticationController.attemptToSignInToFirebase { (success) in
                 self.dismissLoadingScreen()
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
                 if UserController.userCreationType == "landlord" {
                     UserController.createLandlordAndPropertyForCurrentUser {
+                        let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                        self.present(mainVC, animated: true, completion: nil)
                         print("Successfully created landlord for currentUser")
                     }
                 } else if UserController.userCreationType == "renter" {
                     UserController.createRenterForCurrentUser {
+                        let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                        self.present(mainVC, animated: true, completion: nil)
                         print("Successfuly created renter for current user.")
                     }
                 }
@@ -55,13 +61,25 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         guard result.isCancelled != true else { return }
         setUpAndDisplayLoadingScreen()
         AuthenticationController.attemptToSignInToFirebase { (success) in
-            self.dismissLoadingScreen()
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
             if UserController.userCreationType == "landlord" {
                 UserController.createLandlordAndPropertyForCurrentUser {
+                    self.dismissLoadingScreen()
+
+                    let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                    UserController.currentUserType = "landlord"
+                    self.present(mainVC, animated: true, completion: nil)
                     print("Successfully created landlord for currentUser")
                 }
             } else if UserController.userCreationType == "renter" {
                 UserController.createRenterForCurrentUser {
+                    self.dismissLoadingScreen()
+                    
+                    UserController.currentUserType = "renter"
+                    
+                    let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                    self.present(mainVC, animated: true, completion: nil)
                     print("Successfuly created renter for current user.")
                 }
             }
