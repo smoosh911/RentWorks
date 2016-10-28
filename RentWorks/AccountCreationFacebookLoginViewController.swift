@@ -27,6 +27,10 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
             findLabel.text = "Now find your new renter!"
         }
         
+        facebookLoginButton.delegate = self
+        facebookLoginButton.loginBehavior = .systemAccount
+        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
+        constraintsForFacebookLoginButton()
         
         if FBSDKAccessToken.current() != nil {
             AuthenticationController.attemptToSignInToFirebase { (success) in
@@ -49,10 +53,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
             }
         }
         
-        facebookLoginButton.delegate = self
-        facebookLoginButton.loginBehavior = .systemAccount
-        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
-        constraintsForFacebookLoginButton()
+      
         
     }
     

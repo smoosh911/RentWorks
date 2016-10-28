@@ -25,7 +25,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         super.viewDidLoad()
         
         facebookLoginButton.delegate = self
-        facebookLoginButton.loginBehavior = .systemAccount
+        facebookLoginButton.loginBehavior = .web
         facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
         
         self.view.addSubview(facebookLoginButton)
@@ -40,7 +40,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         guard result.isCancelled != true else { return }
 
         setUpAndDisplayLoadingScreen()
-        
+        if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
         FirebaseController.handleUserInformationScenarios { (success) in
             self.dismissLoadingScreen()
             if success {

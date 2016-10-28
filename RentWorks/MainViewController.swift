@@ -78,6 +78,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     override func viewWillAppear(_ animated: Bool) {
         setMatchesButtonImage()
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+
     }
     
     var matchingUsersAlertController: UIAlertController?
@@ -98,6 +100,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
         
         setUpAndDisplayLoadingScreen()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
