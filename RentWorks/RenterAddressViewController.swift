@@ -14,10 +14,12 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var zipCodeTextField: UITextField!
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var nextButtonCenterXConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.nextButton.alpha = 0.0
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
         
@@ -26,6 +28,10 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
         AppearanceController.appearanceFor(navigationController: self.navigationController)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+//        nextButton.setOffScreenToRight()
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
@@ -47,6 +53,25 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if zipCodeTextField.text != "" && addressTextField.text != "" {
+
+            nextButton.slideFromRight()
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        guard let text = textField.text else { return true }
+        if string == "" {
+            return true
+        } else if text.characters.count == 5 {
+            return false
+        } else {
+            return true
+        }
+
+    }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

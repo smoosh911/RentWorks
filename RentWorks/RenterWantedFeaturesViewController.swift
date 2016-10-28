@@ -16,6 +16,7 @@ class RenterWantedFeaturesViewController: UIViewController {
     @IBOutlet weak var poolButton: UIButton!
     @IBOutlet weak var gymButton: UIButton!
     @IBOutlet weak var dishwasherButton: UIButton!
+    @IBOutlet weak var backyardButton: UIButton!
     
     
     override func viewDidLoad() {
@@ -30,7 +31,7 @@ class RenterWantedFeaturesViewController: UIViewController {
             laundryButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(laundry)
-            laundryButton.setTitleColor(.green, for: .normal)
+            laundryButton.setTitleColor(.lightGray, for: .normal)
         }
     }
     
@@ -41,7 +42,7 @@ class RenterWantedFeaturesViewController: UIViewController {
             garageButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(garage)
-            garageButton.setTitleColor(.green, for: .normal)
+            garageButton.setTitleColor(.lightGray, for: .normal)
         }
     }
     
@@ -52,7 +53,7 @@ class RenterWantedFeaturesViewController: UIViewController {
             poolButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(pool)
-            poolButton.setTitleColor(.green, for: .normal)
+            poolButton.setTitleColor(.lightGray, for: .normal)
         }
     }
     
@@ -63,7 +64,7 @@ class RenterWantedFeaturesViewController: UIViewController {
             gymButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(gym)
-            gymButton.setTitleColor(.green, for: .normal)
+            gymButton.setTitleColor(.lightGray, for: .normal)
         }
     }
     
@@ -74,10 +75,20 @@ class RenterWantedFeaturesViewController: UIViewController {
             dishwasherButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(dishwasher)
-            dishwasherButton.setTitleColor(.green, for: .normal)
+            dishwasherButton.setTitleColor(.lightGray, for: .normal)
         }
     }
     
+    @IBAction func backyardButtonTapped(_ sender: UIButton) {
+        let backyard = UserController.PropertyFeatures.backyard.rawValue
+        if features.contains(backyard), let index = features.index(of: backyard) {
+            features.remove(at: index)
+            backyardButton.setTitleColor(.white, for: .normal)
+        } else {
+            features.append(backyard)
+            backyardButton.setTitleColor(.lightGray, for: .normal)
+        }
+    }
 
     // MARK: - Navigation
 

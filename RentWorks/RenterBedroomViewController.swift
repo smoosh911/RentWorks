@@ -19,6 +19,9 @@ class RenterBedroomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bedroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
+        bathroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
+        
         bedroomCountLabel.text = "1 bedroom"
         bathroomCountLabel.text = "0.5 bathroom"
     }

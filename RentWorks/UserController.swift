@@ -531,6 +531,7 @@ extension UserController {
         case pool = "Pool"
         case gym = "Gym"
         case dishwasher = "Dishwasher"
+        case backyard = "Backyard"
     }
     
     enum CreditRating: String {

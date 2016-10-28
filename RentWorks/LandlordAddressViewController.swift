@@ -17,6 +17,8 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        nextButton.alpha = 0
+        
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
         hideKeyboardWhenViewIsTapped()
@@ -28,7 +30,9 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         
-        if zipCodeTextField.text != "" && addressTextField.text != "" {
+        let zipCode = zipCodeTextField.text?.trimmingCharacters(in: .letters)
+        
+        if zipCode != "" && addressTextField.text != "" && zipCode?.characters.count == 5 {
             guard let address = addressTextField.text, let zipCode = zipCodeTextField.text else { return }
             UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : address])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCode])
@@ -41,6 +45,24 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
             alert.view.tintColor = AppearanceController.customOrangeColor
             self.present(alert, animated: true, completion: nil)
             
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        
+        guard let text = textField.text else { return true }
+        if string == "" {
+            return true
+        } else if text.characters.count == 5 {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if zipCodeTextField.text != "" && addressTextField.text != "" {
+            nextButton.slideFromRight()
         }
     }
     

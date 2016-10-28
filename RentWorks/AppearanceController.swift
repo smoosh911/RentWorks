@@ -14,10 +14,10 @@ class AppearanceController {
     
     static func appearanceFor(textFields: [UITextField]) {
         for textField in textFields {
-            textField.layer.borderColor = UIColor.white.cgColor
-            textField.tintColor = UIColor.white
-            textField.layer.borderWidth = 0.6
-            textField.layer.cornerRadius = 5
+//            textField.layer.borderColor = UIColor.white.cgColor
+            textField.tintColor = customOrangeColor
+//            textField.layer.borderWidth = 0.6
+//            textField.layer.cornerRadius = 5
         }
     }
     
