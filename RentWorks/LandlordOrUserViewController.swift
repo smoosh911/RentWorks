@@ -10,8 +10,12 @@ import UIKit
 
 class LandlordOrUserViewController: UIViewController {
     
+    @IBOutlet weak var renterButton: UIButton!
+    @IBOutlet weak var landlordButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -774,13 +774,13 @@
                                                 <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
-                                                <real key="value" value="0.20000000000000001"/>
+                                                <real key="value" value="0.29999999999999999"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                                <real key="value" value="3"/>
+                                                <real key="value" value="2"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
-                                                <point key="value" x="5" y="2"/>
+                                                <point key="value" x="5" y="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -801,16 +801,16 @@
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
-                                                <real key="value" value="0.20000000000000001"/>
+                                                <real key="value" value="0.29999999999999999"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
-                                                <point key="value" x="5" y="2"/>
+                                                <point key="value" x="5" y="5"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
                                                 <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                                <real key="value" value="3"/>
+                                                <real key="value" value="2"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -833,6 +833,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pU0-UX-wNM"/>
+                    <connections>
+                        <outlet property="landlordButton" destination="1ec-oL-AsK" id="01R-jG-OuS"/>
+                        <outlet property="renterButton" destination="dKl-Q1-Hwm" id="xw6-sU-N94"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GXl-Lz-q3P" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
