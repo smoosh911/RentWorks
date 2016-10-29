@@ -21,6 +21,11 @@ class LandlordAllowedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        petsAllowedButton.layer.cornerRadius = 15
+        noPetsAllowedButton.layer.cornerRadius = 15
+        smokingAllowedButton.layer.cornerRadius = 15
+        noSmokingButton.layer.cornerRadius = 15
+        
     }
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
         petsAllowed = true
