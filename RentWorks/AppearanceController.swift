@@ -27,6 +27,8 @@ class AppearanceController {
     }
     
     static let customOrangeColor = UIColor(red: 0.961, green: 0.482, blue: 0.220, alpha: 1.00)
+    
+    static let buttonPressedColor = UIColor(red: 0.902, green: 0.902, blue: 0.784, alpha: 1.00)
 }
 
 

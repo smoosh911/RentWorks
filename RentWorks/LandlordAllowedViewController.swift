@@ -18,6 +18,8 @@ class LandlordAllowedViewController: UIViewController {
     var smokingAllowed: Bool?
     var petsAllowed: Bool?
     
+    let buttonPressedColor = AppearanceController.buttonPressedColor
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,25 +32,25 @@ class LandlordAllowedViewController: UIViewController {
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
         petsAllowed = true
         petsAllowedButton.setTitleColor(.green, for: .normal)
-        noPetsAllowedButton.setTitleColor(.white, for: .normal)
+        noPetsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
     }
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
         noPetsAllowedButton.setTitleColor(.red, for: .normal)
-        petsAllowedButton.setTitleColor(.white, for: .normal)
+        petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
         petsAllowed = false
         
     }
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
         smokingAllowedButton.setTitleColor(.green, for: .normal)
-        noSmokingButton.setTitleColor(.white, for: .normal)
+        noSmokingButton.setTitleColor(buttonPressedColor, for: .normal)
         smokingAllowed = true
     }
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
         noSmokingButton.setTitleColor(.red, for: .normal)
-        smokingAllowedButton.setTitleColor(.white, for: .normal)
+        smokingAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
         smokingAllowed = true
     }
     

@@ -12,6 +12,8 @@ class LandlordPropertyFeaturesViewController: UIViewController {
 
     var features = [String]()
     
+    let buttonPressedColor = AppearanceController.buttonPressedColor
+    
     @IBOutlet weak var laundryButton: UIButton!
     @IBOutlet weak var garageButton: UIButton!
     @IBOutlet weak var poolButton: UIButton!
@@ -39,7 +41,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
             
         } else {
             features.append(laundry)
-            laundryButton.setTitleColor(.lightGray, for: .normal)
+            laundryButton.setTitleColor(buttonPressedColor, for: .normal)
         }
     }
     
@@ -50,7 +52,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
             garageButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(garage)
-            garageButton.setTitleColor(.lightGray, for: .normal)
+            garageButton.setTitleColor(buttonPressedColor, for: .normal)
         }
     }
     
@@ -61,7 +63,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
             poolButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(pool)
-            poolButton.setTitleColor(.lightGray, for: .normal)
+            poolButton.setTitleColor(buttonPressedColor, for: .normal)
         }
     }
     
@@ -72,7 +74,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
             gymButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(gym)
-            gymButton.setTitleColor(.lightGray, for: .normal)
+            gymButton.setTitleColor(buttonPressedColor, for: .normal)
         }
     }
     
@@ -83,7 +85,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
             dishwasherButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(dishwasher)
-            dishwasherButton.setTitleColor(.lightGray, for: .normal)
+            dishwasherButton.setTitleColor(buttonPressedColor, for: .normal)
         }
     }
     
@@ -94,7 +96,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
             backyardButton.setTitleColor(.white, for: .normal)
         } else {
             features.append(backyard)
-            backyardButton.setTitleColor(.lightGray, for: .normal)
+            backyardButton.setTitleColor(buttonPressedColor, for: .normal)
         }
     }
 
