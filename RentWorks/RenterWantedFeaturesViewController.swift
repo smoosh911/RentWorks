@@ -23,6 +23,12 @@ class RenterWantedFeaturesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        laundryButton.layer.cornerRadius = 15
+        garageButton.layer.cornerRadius = 15
+        poolButton.layer.cornerRadius = 15
+        gymButton.layer.cornerRadius = 15
+        dishwasherButton.layer.cornerRadius = 15
+        backyardButton.layer.cornerRadius = 15
     }
     
     @IBAction func laundryButtonTapped(_ sender: AnyObject) {

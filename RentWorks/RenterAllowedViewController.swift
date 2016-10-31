@@ -24,17 +24,30 @@ class RenterAllowedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        petsAllowedButton.layer.cornerRadius = 15
+        noPetsAllowedButton.layer.cornerRadius = 15
+        smokingAllowedButton.layer.cornerRadius = 15
+        noSmokingButton.layer.cornerRadius = 15
+        
     }
     
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
-        petsAllowed = true
         petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
         noPetsAllowedButton.setTitleColor(.white, for: .normal)
+        
+        petsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        noPetsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        
+        petsAllowed = true
     }
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
         noPetsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
         petsAllowedButton.setTitleColor(.white, for: .normal)
+        
+        noPetsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        petsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        
         petsAllowed = false
         
     }
@@ -42,12 +55,19 @@ class RenterAllowedViewController: UIViewController {
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
         smokingAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
         noSmokingButton.setTitleColor(.white, for: .normal)
+        
+        smokingAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        noSmokingButton.backgroundColor = AppearanceController.customOrangeColor
         smokingAllowed = true
     }
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
         noSmokingButton.setTitleColor(buttonPressedColor, for: .normal)
         smokingAllowedButton.setTitleColor(.white, for: .normal)
+        
+        noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        smokingAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        
         smokingAllowed = true
     }
     
