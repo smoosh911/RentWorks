@@ -19,7 +19,8 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.nextButton.alpha = 0.0
+        self.nextButton.isHidden = true
+        
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
         
@@ -62,7 +63,7 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        guard let text = textField.text else { return true }
+        guard let text = textField.text, textField == zipCodeTextField else { return true }
         if string == "" {
             return true
         } else if text.characters.count == 5 {

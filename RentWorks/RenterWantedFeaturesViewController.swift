@@ -17,11 +17,16 @@ class RenterWantedFeaturesViewController: UIViewController {
     @IBOutlet weak var gymButton: UIButton!
     @IBOutlet weak var dishwasherButton: UIButton!
     @IBOutlet weak var backyardButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
     
     let buttonPressedColor = AppearanceController.buttonPressedColor
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        nextButton.isHidden = true
+        
+        nextButton.slideFromRight()
         
         laundryButton.layer.cornerRadius = 15
         garageButton.layer.cornerRadius = 15

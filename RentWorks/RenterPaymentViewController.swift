@@ -11,9 +11,14 @@ import UIKit
 class RenterPaymentViewController: UIViewController {
     @IBOutlet weak var paymentSlider: UISlider!
     @IBOutlet weak var paymentAmountLabel: UILabel!
+    @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        nextButton.isHidden = true
+        
+        nextButton.slideFromRight()
         
         paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
     }

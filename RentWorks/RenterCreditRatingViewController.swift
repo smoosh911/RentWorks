@@ -40,6 +40,7 @@ class RenterCreditRatingViewController: UIViewController {
         super.viewDidLoad()
         
         nextButton.isHidden = true
+        nextButton.center.x += 200
         
         aPlusCreditBackgroundView.layer.cornerRadius = 15
         aCreditBackgroundView.layer.cornerRadius = 15
@@ -72,6 +73,8 @@ class RenterCreditRatingViewController: UIViewController {
     
     
     func buttonPressedAppearanceFor(backgroundView: UIView, letterLabel: UILabel, and scoreLabel: UILabel) {
+        self.showAndAnimateNextButton()
+
         let buttonBackgroundViews = [aPlusCreditBackgroundView, aCreditBackgroundView, bCreditBackgroundView, otherCreditBackgroundView].filter({$0 != backgroundView})
         
         let otherLabels = [aPlusCreditLabel, aPlusCreditScoreLabel, aCreditLabel, aCreditScoreLabel, bCreditLabel, bCreditScoreLabel, otherCreditLabel, otherCreditScoreLabel].filter({$0 != letterLabel}).filter({$0 != scoreLabel})
@@ -89,7 +92,6 @@ class RenterCreditRatingViewController: UIViewController {
                 letterLabel.textColor = .white
                 scoreLabel.textColor = .white
             }, completion: { (_) in
-                self.showAndAnimateNextButton()
             })
             
         }

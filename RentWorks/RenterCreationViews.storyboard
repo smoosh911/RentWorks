@@ -112,6 +112,7 @@
                         <outlet property="bathroomStepper" destination="fKq-TB-H6h" id="fu0-cn-gQ2"/>
                         <outlet property="bedroomCountLabel" destination="1f8-mR-qYI" id="T2S-CR-9eK"/>
                         <outlet property="bedroomStepper" destination="u7t-Z1-GXX" id="eYE-Rw-Amk"/>
+                        <outlet property="nextButton" destination="iow-4M-B6n" id="ZTf-lu-hhx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qz6-tT-Ly0" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -195,10 +196,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hsj-HD-KJS">
-                                <rect key="frame" x="287" y="547" width="57" height="100"/>
+                                <rect key="frame" x="292" y="539" width="57" height="100"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="hsj-HD-KJS" secondAttribute="height" multiplier="21:37" id="6JH-46-Oeu"/>
-                                    <constraint firstAttribute="width" constant="57" id="js6-dI-eF2"/>
+                                    <constraint firstAttribute="width" constant="57" id="jeI-Ty-7ER"/>
+                                    <constraint firstAttribute="width" secondItem="hsj-HD-KJS" secondAttribute="height" multiplier="21:37" id="yet-js-E2t"/>
                                 </constraints>
                                 <state key="normal" image="NextArrow">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -482,14 +483,14 @@
                             <constraint firstItem="j0f-nA-2gM" firstAttribute="trailing" secondItem="sfS-hg-09e" secondAttribute="trailing" id="Gin-Hs-7V1"/>
                             <constraint firstItem="sfS-hg-09e" firstAttribute="top" secondItem="zq5-l1-Gvl" secondAttribute="bottom" constant="325" id="JJC-bc-bWL"/>
                             <constraint firstItem="j0f-nA-2gM" firstAttribute="width" secondItem="sfS-hg-09e" secondAttribute="width" id="Kd9-hO-qQn"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="hsj-HD-KJS" secondAttribute="trailing" constant="15" id="MfX-Bq-y83"/>
                             <constraint firstAttribute="trailingMargin" secondItem="eE7-ba-nWz" secondAttribute="trailing" id="MwR-Uy-7p5"/>
+                            <constraint firstAttribute="trailing" secondItem="hsj-HD-KJS" secondAttribute="trailing" constant="26" id="VKq-1i-Ihj"/>
                             <constraint firstItem="eE7-ba-nWz" firstAttribute="leading" secondItem="nzA-F4-x0y" secondAttribute="leadingMargin" id="Xtz-N9-LOz"/>
-                            <constraint firstItem="iad-xU-0B5" firstAttribute="top" secondItem="hsj-HD-KJS" secondAttribute="bottom" constant="20" id="YTd-hb-cPM"/>
                             <constraint firstItem="j0f-nA-2gM" firstAttribute="height" secondItem="sfS-hg-09e" secondAttribute="height" id="ahk-Pu-tPK"/>
                             <constraint firstItem="j0f-nA-2gM" firstAttribute="top" secondItem="sfS-hg-09e" secondAttribute="top" id="cvb-qL-MT2"/>
                             <constraint firstItem="j0f-nA-2gM" firstAttribute="leading" secondItem="sfS-hg-09e" secondAttribute="leading" id="hfv-T3-XyV"/>
                             <constraint firstItem="eE7-ba-nWz" firstAttribute="top" secondItem="zq5-l1-Gvl" secondAttribute="bottom" constant="49" id="iwV-SV-Gnk"/>
+                            <constraint firstItem="iad-xU-0B5" firstAttribute="top" secondItem="hsj-HD-KJS" secondAttribute="bottom" constant="28" id="pkW-Cs-nyR"/>
                         </constraints>
                     </view>
                     <connections>
@@ -704,6 +705,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="nextButton" destination="0S2-RD-Y0S" id="ibz-3w-SX7"/>
                         <outlet property="noPetsAllowedButton" destination="nU0-BL-KIM" id="YGm-4V-qI7"/>
                         <outlet property="noSmokingButton" destination="7Go-Z7-HhS" id="NBB-ba-ACr"/>
                         <outlet property="petsAllowedButton" destination="go5-ry-ydP" id="Ff5-gv-NwM"/>
@@ -1098,6 +1100,7 @@
                         <outlet property="garageButton" destination="6Z8-GK-LB3" id="mnt-id-0E0"/>
                         <outlet property="gymButton" destination="P43-7f-c4K" id="akM-c9-pcA"/>
                         <outlet property="laundryButton" destination="RaE-Y1-kLP" id="7Nc-Du-ekf"/>
+                        <outlet property="nextButton" destination="Xrn-iB-JLZ" id="Rmr-2E-c0G"/>
                         <outlet property="poolButton" destination="hSf-6x-rv0" id="hav-kb-s6w"/>
                     </connections>
                 </viewController>
@@ -1172,6 +1175,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="nextButton" destination="yvx-a0-0j1" id="siD-QZ-HQO"/>
                         <outlet property="paymentAmountLabel" destination="c8w-K9-HiW" id="YRU-Bx-cfc"/>
                         <outlet property="paymentSlider" destination="jy0-8k-uHJ" id="j40-lA-Zj3"/>
                     </connections>
