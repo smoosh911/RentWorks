@@ -33,32 +33,49 @@ class LandlordAllowedViewController: UIViewController {
         
     }
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
+        petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        noPetsAllowedButton.setTitleColor(.white, for: .normal)
+        
+        petsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        noPetsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        
         petsAllowed = true
-        petsAllowedButton.setTitleColor(.green, for: .normal)
-        noPetsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
         
         checkIfBothButtonsHaveBeenSelected()
+        
     }
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
-        noPetsAllowedButton.setTitleColor(.red, for: .normal)
-        petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        noPetsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        petsAllowedButton.setTitleColor(.white, for: .normal)
+        
+        noPetsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        petsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        
         petsAllowed = false
         
         checkIfBothButtonsHaveBeenSelected()
+        
     }
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
-        smokingAllowedButton.setTitleColor(.green, for: .normal)
-        noSmokingButton.setTitleColor(buttonPressedColor, for: .normal)
+        smokingAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        noSmokingButton.setTitleColor(.white, for: .normal)
+        
+        smokingAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        noSmokingButton.backgroundColor = AppearanceController.customOrangeColor
         smokingAllowed = true
         
         checkIfBothButtonsHaveBeenSelected()
     }
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
-        noSmokingButton.setTitleColor(.red, for: .normal)
-        smokingAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        noSmokingButton.setTitleColor(buttonPressedColor, for: .normal)
+        smokingAllowedButton.setTitleColor(.white, for: .normal)
+        
+        noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        smokingAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        
         smokingAllowed = true
         
         checkIfBothButtonsHaveBeenSelected()

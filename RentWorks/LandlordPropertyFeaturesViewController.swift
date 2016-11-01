@@ -43,7 +43,6 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         if features.contains(laundry), let index = features.index(of: laundry) {
             features.remove(at: index)
             laundryButton.setTitleColor(.white, for: .normal)
-            
         } else {
             features.append(laundry)
             laundryButton.setTitleColor(buttonPressedColor, for: .normal)
@@ -94,7 +93,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         }
     }
     
-    @IBAction func backyardButtonTapped(_ sender: Any) {
+    @IBAction func backyardButtonTapped(_ sender: UIButton) {
         let backyard = UserController.PropertyFeatures.backyard.rawValue
         if features.contains(backyard), let index = features.index(of: backyard) {
             features.remove(at: index)
