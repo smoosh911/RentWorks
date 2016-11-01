@@ -8,12 +8,15 @@
 
 import UIKit
 
-class LandlordAddPhotosViewController: UIViewController {
+class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
 
+    @IBOutlet weak var nextButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
         
+        UserController.photoSelectedDelegate = self
+        nextButton.isHidden = true
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
@@ -24,6 +27,9 @@ class LandlordAddPhotosViewController: UIViewController {
         }
     }
     
+    func photoWasSelected() {
+        nextButton.slideFromRight()
+    }
     
     func presentAddPhotoAlert() {
         let alert = UIAlertController(title: "Hold on a second!", message: "Please add at least one photo of your property!", preferredStyle: .alert)

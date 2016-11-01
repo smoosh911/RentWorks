@@ -122,6 +122,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="nextButton" destination="UPk-1l-5GQ" id="Idq-CR-ZO4"/>
                         <segue destination="Kdw-DT-3Tl" kind="show" identifier="toPropertyAvailableVC" id="QZU-Th-Zno">
                             <nil key="action"/>
                         </segue>
@@ -168,10 +169,10 @@
                                     </segue>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="YYy-tt-s9m">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="YYy-tt-s9m">
                                 <rect key="frame" x="75" y="298" width="225" height="205"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="rcJ-ZH-wX8">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="rcJ-ZH-wX8">
                                         <rect key="frame" x="0.0" y="0.0" width="225" height="65"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nsm-N9-183">
@@ -234,7 +235,7 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="NBe-So-AHf">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="NBe-So-AHf">
                                         <rect key="frame" x="0.0" y="70" width="225" height="65"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JWP-jR-VYb">
@@ -297,7 +298,7 @@
                                             </button>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="8hv-DE-FIQ">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="8hv-DE-FIQ">
                                         <rect key="frame" x="0.0" y="140" width="225" height="65"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qF-pD-kGd">
@@ -381,6 +382,7 @@
                         <outlet property="garageButton" destination="WQj-iz-a9i" id="wVw-fA-yEA"/>
                         <outlet property="gymButton" destination="6jr-nb-nWR" id="COf-VN-fUT"/>
                         <outlet property="laundryButton" destination="nsm-N9-183" id="ynG-a5-TMD"/>
+                        <outlet property="nextButton" destination="oFf-Ok-wBk" id="655-8G-xr8"/>
                         <outlet property="poolButton" destination="JWP-jR-VYb" id="MBm-Im-EtB"/>
                     </connections>
                 </viewController>
@@ -428,7 +430,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" autorepeat="NO" value="1" minimumValue="0.5" maximumValue="20" stepValue="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LIX-tW-O4s">
+                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" autorepeat="NO" value="1" minimumValue="1" maximumValue="20" stepValue="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LIX-tW-O4s">
                                 <rect key="frame" x="136" y="476" width="94" height="29"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -480,6 +482,7 @@
                         <outlet property="bathroomStepper" destination="LIX-tW-O4s" id="JtI-qY-3F0"/>
                         <outlet property="bedroomCountLabel" destination="KFW-7L-GvL" id="9Jz-l2-d2z"/>
                         <outlet property="bedroomStepper" destination="PXc-k3-X1K" id="znp-Xm-Jc3"/>
+                        <outlet property="nextButton" destination="64y-Z5-5o5" id="nYW-mu-ZHs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xif-gT-hFv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -543,6 +546,7 @@
                     </view>
                     <connections>
                         <outlet property="availableDatePicker" destination="cQ0-gq-Ao4" id="4iD-Lv-iwi"/>
+                        <outlet property="nextButton" destination="z8b-P2-GkS" id="lQd-7p-JwU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="awo-HO-zlz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -627,6 +631,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="nextButton" destination="XwL-oh-u6q" id="Haq-dD-non"/>
                         <outlet property="paymentAmountLabel" destination="YJa-jx-DfB" id="tqc-3h-2c6"/>
                         <outlet property="paymentSlider" destination="ogG-1l-8ci" id="CnH-2N-1Qo"/>
                     </connections>
@@ -754,10 +759,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZgP-aG-ljr">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZgP-aG-ljr">
                                 <rect key="frame" x="287" y="546" width="57" height="101"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="35" id="PRZ-nf-GO9"/>
+                                    <constraint firstAttribute="width" constant="57" id="PRZ-nf-GO9"/>
                                     <constraint firstAttribute="width" secondItem="ZgP-aG-ljr" secondAttribute="height" multiplier="21:37" id="r1c-58-q3U"/>
                                 </constraints>
                                 <state key="normal" image="NextArrow">
@@ -767,7 +772,7 @@
                                     <action selector="nextButtonTapped:" destination="qYP-dv-X2r" eventType="touchUpInside" id="Bdd-aM-n2y"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ZhH-k4-Qxc">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ZhH-k4-Qxc">
                                 <rect key="frame" x="75" y="309" width="225" height="135"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="FYu-uU-VC5">
@@ -922,6 +927,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="nextButton" destination="ZgP-aG-ljr" id="bew-HC-y4h"/>
                         <outlet property="noPetsAllowedButton" destination="W25-8b-KRI" id="uz8-pJ-JiS"/>
                         <outlet property="noSmokingButton" destination="edL-Kh-iPp" id="cHM-on-Ml2"/>
                         <outlet property="petsAllowedButton" destination="N5i-us-ZbD" id="Y3C-0k-bAD"/>

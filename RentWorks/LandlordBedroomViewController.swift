@@ -14,15 +14,20 @@ class LandlordBedroomViewController: UIViewController {
     @IBOutlet weak var bathroomCountLabel: UILabel!
     @IBOutlet weak var bedroomStepper: UIStepper!
     @IBOutlet weak var bathroomStepper: UIStepper!
+    @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bedroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
-        bathroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
+        nextButton.isHidden = true
+        
+        nextButton.slideFromRight()
+        
+//        bedroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
+//        bathroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
         
         bedroomCountLabel.text = "1 bedroom"
-        bathroomCountLabel.text = "0.5 bathroom"
+        bathroomCountLabel.text = "1 bathroom"
     }
     
     @IBAction func bedroomStepperValueChanged(_ sender: UIStepper) {

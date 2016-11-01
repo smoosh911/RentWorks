@@ -15,10 +15,16 @@ class UserController {
     
     static var temporaryUserCreationDictionary = [String: Any]()
     
-    static var userCreationPhotos = [UIImage]()
+    static var userCreationPhotos = [UIImage]() {
+        didSet {
+            if userCreationPhotos.count == 1 {
+                photoSelectedDelegate?.photoWasSelected()
+            }
+        }
+    }
     
     static var userCreationType = ""
-
+    
     static var currentUserID: String?
     
     static var currentUserType: String?
@@ -31,7 +37,7 @@ class UserController {
     
     static var currentLandlord: Landlord?
     
-    
+    static weak var photoSelectedDelegate: PhotoSelectedDelegate?
     
     static func addAttributeToUserDictionary(attribute: [String: Any]) {
         guard let key = attribute.keys.first, let value = attribute.values.first else { return }
@@ -161,7 +167,7 @@ class UserController {
     }
     
     // MARK: - Property Functions
-
+    
     
     
     static func fetchAllProperties() {
@@ -223,7 +229,7 @@ class UserController {
         
     }
     
-   
+    
     
     
     static func createPropertyInCoreDataFor(landlord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
@@ -545,4 +551,8 @@ extension UserController {
         case married = "Married"
         case single = "Single"
     }
+}
+
+protocol PhotoSelectedDelegate: class {
+    func photoWasSelected()
 }

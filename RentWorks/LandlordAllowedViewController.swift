@@ -14,6 +14,7 @@ class LandlordAllowedViewController: UIViewController {
     @IBOutlet weak var noPetsAllowedButton: UIButton!
     @IBOutlet weak var smokingAllowedButton: UIButton!
     @IBOutlet weak var noSmokingButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
     
     var smokingAllowed: Bool?
     var petsAllowed: Bool?
@@ -22,6 +23,8 @@ class LandlordAllowedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        nextButton.isHidden = true
         
         petsAllowedButton.layer.cornerRadius = 15
         noPetsAllowedButton.layer.cornerRadius = 15
@@ -33,6 +36,8 @@ class LandlordAllowedViewController: UIViewController {
         petsAllowed = true
         petsAllowedButton.setTitleColor(.green, for: .normal)
         noPetsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        
+        checkIfBothButtonsHaveBeenSelected()
     }
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
@@ -40,18 +45,23 @@ class LandlordAllowedViewController: UIViewController {
         petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
         petsAllowed = false
         
+        checkIfBothButtonsHaveBeenSelected()
     }
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
         smokingAllowedButton.setTitleColor(.green, for: .normal)
         noSmokingButton.setTitleColor(buttonPressedColor, for: .normal)
         smokingAllowed = true
+        
+        checkIfBothButtonsHaveBeenSelected()
     }
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
         noSmokingButton.setTitleColor(.red, for: .normal)
         smokingAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
         smokingAllowed = true
+        
+        checkIfBothButtonsHaveBeenSelected()
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
@@ -62,6 +72,12 @@ class LandlordAllowedViewController: UIViewController {
             self.performSegue(withIdentifier: "toPropertyFeaturesVC", sender: self)
         } else {
             presentAllowedAlert()
+        }
+    }
+    
+    func checkIfBothButtonsHaveBeenSelected() {
+        if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
+            nextButton.slideFromRight()
         }
     }
     

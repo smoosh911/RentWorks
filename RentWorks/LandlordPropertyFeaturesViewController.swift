@@ -20,11 +20,16 @@ class LandlordPropertyFeaturesViewController: UIViewController {
     @IBOutlet weak var gymButton: UIButton!
     @IBOutlet weak var dishwasherButton: UIButton!
     @IBOutlet weak var backyardButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        nextButton.isHidden = true
+        
+        nextButton.slideFromRight()
+        
         laundryButton.layer.cornerRadius = 15
         garageButton.layer.cornerRadius = 15
         poolButton.layer.cornerRadius = 15

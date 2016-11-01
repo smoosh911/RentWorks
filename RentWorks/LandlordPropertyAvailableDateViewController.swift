@@ -11,14 +11,18 @@ import UIKit
 class LandlordPropertyAvailableDateViewController: UIViewController {
     
     @IBOutlet weak var availableDatePicker: UIDatePicker!
+    @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        nextButton.isHidden = true
+        
+        nextButton.slideFromRight()
+        
         availableDatePicker.minimumDate = Date()
         availableDatePicker.setValue(UIColor.white, forKey: "textColor")
     }
-    
     
     // MARK: - Navigation
     
