@@ -535,10 +535,10 @@ extension UserController {
     }
     
     enum CreditRating: String {
-        case a = "A"
-        case b = "B"
-        case c = "C"
-        case d = "D"
+        case a = "A+"
+        case b = "A"
+        case c = "B"
+        case d = "Other"
     }
     
     enum MaritalStatus: String {
