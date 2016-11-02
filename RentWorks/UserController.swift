@@ -23,6 +23,9 @@ class UserController {
         }
     }
     
+    
+    static var canPage = false
+    
     static var userCreationType = ""
     
     static var currentUserID: String?
@@ -42,6 +45,15 @@ class UserController {
     static func addAttributeToUserDictionary(attribute: [String: Any]) {
         guard let key = attribute.keys.first, let value = attribute.values.first else { return }
         temporaryUserCreationDictionary[key] = value
+    }
+    
+    static func pageRightfrom(currentVC: UIViewController) {
+        guard let pageVC = currentVC.parent as? LandlordPageViewController else { return }
+        guard let currentVCIndex = pageVC.landlordVCs.index(of: currentVC), currentVCIndex + 1 <= pageVC.landlordVCs.count else { return }
+        
+        let newIndex = currentVCIndex + 1
+        let nextVC = pageVC.landlordVCs[newIndex]
+        pageVC.setViewControllers([nextVC], direction: .forward, animated: true, completion: nil)
     }
     
     

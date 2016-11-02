@@ -72,6 +72,7 @@
 		46E8877F1DB7F17900127D21 /* Property+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E8877E1DB7F17900127D21 /* Property+Firebase.swift */; };
 		46E887811DB80AA400127D21 /* Landlord + Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E887801DB80AA400127D21 /* Landlord + Convenience.swift */; };
 		46E887831DB82B0C00127D21 /* Renter + Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E887821DB82B0C00127D21 /* Renter + Firebase.swift */; };
+		46F280251DCA7F770092E991 /* LandlordPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F280241DCA7F770092E991 /* LandlordPageViewController.swift */; };
 		654D57F560C678A9079883F8 /* Pods_RentWorksUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4056C05B39B990DA4031004E /* Pods_RentWorksUITests.framework */; };
 		C1776D592512A744D0857212 /* Pods_RentWorksTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AD73B99B2C58293311D31BC /* Pods_RentWorksTests.framework */; };
 		C73E10871D8E417D008E475F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10861D8E417D008E475F /* AppDelegate.swift */; };
@@ -161,6 +162,7 @@
 		46E8877E1DB7F17900127D21 /* Property+Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Property+Firebase.swift"; sourceTree = "<group>"; };
 		46E887801DB80AA400127D21 /* Landlord + Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Landlord + Convenience.swift"; sourceTree = "<group>"; };
 		46E887821DB82B0C00127D21 /* Renter + Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Renter + Firebase.swift"; sourceTree = "<group>"; };
+		46F280241DCA7F770092E991 /* LandlordPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordPageViewController.swift; sourceTree = "<group>"; };
 		6AD73B99B2C58293311D31BC /* Pods_RentWorksTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RentWorksTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85C81B37E212494061967D61 /* Pods-RentWorksUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RentWorksUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RentWorksUITests/Pods-RentWorksUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B3A2BAEF422FCCB37454937F /* Pods-RentWorks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RentWorks.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RentWorks/Pods-RentWorks.debug.xcconfig"; sourceTree = "<group>"; };
@@ -248,6 +250,7 @@
 		468ABC391DB5EA76009B105B /* Landlord View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				46F280241DCA7F770092E991 /* LandlordPageViewController.swift */,
 				465E96931DA98230000B36AF /* LandlordAddressViewController.swift */,
 				468ABC371DB5EA6C009B105B /* LandlordBedroomViewController.swift */,
 				468ABC3B1DB5EAA3009B105B /* LandlordPaymentViewController.swift */,
@@ -379,8 +382,8 @@
 				467A49CF1DB1F0AD001A0A12 /* MatchTableViewCell.swift */,
 				4602B09A1DB13CE400908D00 /* UIVIewIBDesignable.swift */,
 				C73E108A1D8E417D008E475F /* Main.storyboard */,
-				4625EF541DC3B1AA0055024F /* LandlordCreationViews.storyboard */,
 				4625EF521DC3B0890055024F /* RenterCreationViews.storyboard */,
+				4625EF541DC3B1AA0055024F /* LandlordCreationViews.storyboard */,
 				4625EF501DC3A74A0055024F /* UIButtonExtensions.swift */,
 				C73E10921D8E417D008E475F /* LaunchScreen.storyboard */,
 			);
@@ -750,6 +753,7 @@
 				468828D01DAAFDF00011985F /* ImageController.swift in Sources */,
 				461E5CDD1DB5839A00AD4509 /* ProfileImage + Convenience.swift in Sources */,
 				461E5CD11DB5621E00AD4509 /* Renter + Convenience.swift in Sources */,
+				46F280251DCA7F770092E991 /* LandlordPageViewController.swift in Sources */,
 				468828D21DAAFE350011985F /* NetworkController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

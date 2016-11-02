@@ -854,10 +854,10 @@
             </objects>
             <point key="canvasLocation" x="2618" y="9"/>
         </scene>
-        <!--LandlordAddressVC-->
+        <!--LandlordPageVC-->
         <scene sceneID="xXF-Kb-57g">
             <objects>
-                <viewControllerPlaceholder storyboardName="LandlordCreationViews" referencedIdentifier="LandlordAddressVC" id="yLP-gJ-WFg" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="LandlordCreationViews" referencedIdentifier="LandlordPageVC" id="yLP-gJ-WFg" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TxV-lR-k7F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3381" y="165"/>
@@ -869,49 +869,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EmI-VN-dIS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3382" y="-132"/>
-        </scene>
-        <!--Account Creation Facebook Login View Controller-->
-        <scene sceneID="WPU-yl-2QL">
-            <objects>
-                <viewController storyboardIdentifier="finalAccountCreationVC" id="QkC-vE-0Lh" customClass="AccountCreationFacebookLoginViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="dU5-Xs-Km2"/>
-                        <viewControllerLayoutGuide type="bottom" id="D5O-O2-H95"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ePS-BC-V4w">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RentMatchLogo_white.png" translatesAutoresizingMaskIntoConstraints="NO" id="ptY-Ph-y4G">
-                                <rect key="frame" x="70" y="101" width="234" height="162"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="162" id="nTZ-9w-Gyt"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now find your new renter!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tcw-da-JZJ">
-                                <rect key="frame" x="70" y="348" width="234" height="22"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="tcw-da-JZJ" firstAttribute="leading" secondItem="ePS-BC-V4w" secondAttribute="leadingMargin" constant="54" id="6od-zO-VoV"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="tcw-da-JZJ" secondAttribute="trailing" constant="55" id="G0K-cf-bb6"/>
-                            <constraint firstItem="tcw-da-JZJ" firstAttribute="top" secondItem="ptY-Ph-y4G" secondAttribute="bottom" constant="85" id="H62-vt-A6s"/>
-                            <constraint firstItem="ptY-Ph-y4G" firstAttribute="top" secondItem="dU5-Xs-Km2" secondAttribute="bottom" constant="81" id="P04-Gl-vah"/>
-                            <constraint firstItem="ptY-Ph-y4G" firstAttribute="leading" secondItem="ePS-BC-V4w" secondAttribute="leadingMargin" constant="54" id="P7e-Jz-j7K"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ptY-Ph-y4G" secondAttribute="trailing" constant="55" id="QJc-eG-vni"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="findLabel" destination="tcw-da-JZJ" id="DW9-qT-kus"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sSc-5G-Bdi" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4215" y="9"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cVS-RY-fPP">

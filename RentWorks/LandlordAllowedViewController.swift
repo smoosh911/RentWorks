@@ -24,6 +24,8 @@ class LandlordAllowedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UserController.canPage = false
+        
         nextButton.isHidden = true
         
         petsAllowedButton.layer.cornerRadius = 15
@@ -86,7 +88,7 @@ class LandlordAllowedViewController: UIViewController {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
             
-            self.performSegue(withIdentifier: "toPropertyFeaturesVC", sender: self)
+            UserController.pageRightfrom(currentVC: self)
         } else {
             presentAllowedAlert()
         }
@@ -95,6 +97,10 @@ class LandlordAllowedViewController: UIViewController {
     func checkIfBothButtonsHaveBeenSelected() {
         if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
             nextButton.slideFromRight()
+            UserController.canPage = true
+            guard let pageVC = self.parent as? LandlordPageViewController else { return }
+            pageVC.dataSource = nil
+            pageVC.dataSource = pageVC
         }
     }
     

@@ -18,7 +18,7 @@ class LandlordBedroomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        UserController.canPage = true
         nextButton.isHidden = true
         
         nextButton.slideFromRight()
@@ -63,14 +63,16 @@ class LandlordBedroomViewController: UIViewController {
             }
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    @IBAction func nextButtonTapped(_ sender: UIButton) {
+        UserController.pageRightfrom(currentVC: self)
         
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBedroomCount: bedroomStepper.value])
         
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBathroomCount: bathroomStepper.value])
-        
     }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//    }
 }
 
 extension Double {

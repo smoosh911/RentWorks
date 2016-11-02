@@ -206,7 +206,6 @@
                                 </state>
                                 <connections>
                                     <action selector="nextButtonTapped:" destination="gtW-aS-HJn" eventType="touchUpInside" id="eJS-BV-N0T"/>
-                                    <segue destination="G1F-W4-jDt" kind="show" id="PXq-8c-f6p"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="j0f-nA-2gM" userLabel="Background Labels Stack View">
@@ -516,14 +515,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Xp-IA-Bug" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7148" y="-490.70464767616198"/>
-        </scene>
-        <!--finalAccountCreationVC-->
-        <scene sceneID="PeR-4W-rfe">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="finalAccountCreationVC" id="G1F-W4-jDt" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0GJ-kT-E6A" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="8073" y="-491"/>
         </scene>
         <!--Renter Allowed View Controller-->
         <scene sceneID="nYV-5y-VA7">
@@ -1184,8 +1175,52 @@
             </objects>
             <point key="canvasLocation" x="6405.6000000000004" y="-491.60419790104953"/>
         </scene>
+        <!--Account Creation Facebook Login View Controller-->
+        <scene sceneID="UNV-09-siW">
+            <objects>
+                <viewController storyboardIdentifier="finalAccountCreationVC" id="bFx-Td-yHI" customClass="AccountCreationFacebookLoginViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Jn1-ph-aGv"/>
+                        <viewControllerLayoutGuide type="bottom" id="xMR-u0-gr7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="D9v-eM-gcZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RentMatchLogo_white.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vwg-Rs-hta">
+                                <rect key="frame" x="70" y="101" width="234" height="162"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="162" id="73Z-f0-cSJ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now find your new renter!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oU0-yE-Px6">
+                                <rect key="frame" x="70" y="348" width="234" height="22"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Vwg-Rs-hta" firstAttribute="leading" secondItem="D9v-eM-gcZ" secondAttribute="leadingMargin" constant="54" id="EXQ-go-tvv"/>
+                            <constraint firstItem="oU0-yE-Px6" firstAttribute="leading" secondItem="D9v-eM-gcZ" secondAttribute="leadingMargin" constant="54" id="KoQ-lU-IEf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Vwg-Rs-hta" secondAttribute="trailing" constant="55" id="Nqu-au-xcv"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oU0-yE-Px6" secondAttribute="trailing" constant="55" id="ncB-50-KsL"/>
+                            <constraint firstItem="oU0-yE-Px6" firstAttribute="top" secondItem="Vwg-Rs-hta" secondAttribute="bottom" constant="85" id="nnF-Ou-Apz"/>
+                            <constraint firstItem="Vwg-Rs-hta" firstAttribute="top" secondItem="Jn1-ph-aGv" secondAttribute="bottom" constant="81" id="rtN-e9-fmo"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="findLabel" destination="oU0-yE-Px6" id="Q1h-Yw-nEI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oMa-QE-txm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7919" y="-491"/>
+        </scene>
     </scenes>
     <resources>
         <image name="NextArrow" width="131" height="212"/>
+        <image name="RentMatchLogo_white.png" width="1177" height="1066"/>
     </resources>
 </document>

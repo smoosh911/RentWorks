@@ -16,7 +16,7 @@ class LandlordPaymentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        UserController.canPage = true
         nextButton.isHidden = true
         
         nextButton.slideFromRight()
@@ -32,10 +32,14 @@ class LandlordPaymentViewController: UIViewController {
         }
     }
 
+    @IBAction func nextButtonTapped(_ sender: UIButton) {
+        UserController.pageRightfrom(currentVC: self)
+        
+         UserController.addAttributeToUserDictionary(attribute: [UserController.kMonthlyPayment: Int(paymentSlider.value)])
+    }
     
     // MARK: - Navigation
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kMonthlyPayment: Int(paymentSlider.value)])
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//    }
 }

@@ -14,6 +14,8 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var nextButton: UIButton!
     
+    var pageVC: LandlordPageViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,9 +25,13 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         addressTextField.delegate = self
         hideKeyboardWhenViewIsTapped()
         
+        
+        
         self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
         AppearanceController.appearanceFor(navigationController: self.navigationController)
+        
+        self.pageVC = self.parent as? LandlordPageViewController
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
@@ -36,8 +42,8 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
             guard let address = addressTextField.text, let zipCode = zipCodeTextField.text else { return }
             UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : address])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCode])
-            
-            self.performSegue(withIdentifier: "toLandlordBedroomVC", sender: self)
+            guard let pageVC = self.pageVC else { return }
+            UserController.pageRightfrom(currentVC: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
@@ -65,6 +71,10 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         if zipCodeTextField.text != "",
             zipCodeTextField.text?.characters.count == 5, addressTextField.text != "" {
             nextButton.slideFromRight()
+            guard let pageVC = self.parent as? LandlordPageViewController else { return }
+            UserController.canPage = true
+            pageVC.dataSource = nil
+            pageVC.dataSource = pageVC
         }
     }
     

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="s59-y2-RVY">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="psY-c1-jhs">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -14,7 +14,7 @@
         <!--Landlord Add Photos View Controller-->
         <scene sceneID="0AH-wJ-jaN">
             <objects>
-                <viewController id="dr5-3d-VIY" customClass="LandlordAddPhotosViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LandlordAddPhotosVC" id="dr5-3d-VIY" customClass="LandlordAddPhotosViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jVI-mk-Aed"/>
                         <viewControllerLayoutGuide type="bottom" id="9xK-GR-lKS"/>
@@ -33,19 +33,6 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UPk-1l-5GQ">
-                                <rect key="frame" x="287" y="547" width="57" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="UPk-1l-5GQ" secondAttribute="height" multiplier="21:37" id="CFV-mF-KDo"/>
-                                    <constraint firstAttribute="width" constant="57" id="yUI-JY-hDJ"/>
-                                </constraints>
-                                <state key="normal" image="NextArrow">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="nextButtonTapped:" destination="dr5-3d-VIY" eventType="touchUpInside" id="XGn-A6-8ga"/>
-                                </connections>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="eMG-FA-MFT">
                                 <rect key="frame" x="32" y="182" width="312" height="312"/>
                                 <subviews>
@@ -109,23 +96,30 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FSZ-81-3FD">
+                                <rect key="frame" x="292" y="546" width="57" height="101"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="FSZ-81-3FD" secondAttribute="height" multiplier="21:37" id="Ong-Hy-hun"/>
+                                    <constraint firstAttribute="width" constant="57" id="hO0-ye-BTA"/>
+                                </constraints>
+                                <state key="normal" image="NextArrow">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="9xK-GR-lKS" firstAttribute="top" secondItem="UPk-1l-5GQ" secondAttribute="bottom" constant="20" id="3tF-GS-rjI"/>
                             <constraint firstItem="eMG-FA-MFT" firstAttribute="top" secondItem="27W-ZE-LY9" secondAttribute="bottom" constant="5" id="DAI-LY-eLe"/>
+                            <constraint firstAttribute="trailing" secondItem="FSZ-81-3FD" secondAttribute="trailing" constant="26" id="FBT-us-nhq"/>
                             <constraint firstItem="eMG-FA-MFT" firstAttribute="centerX" secondItem="ibS-Iv-gvT" secondAttribute="centerX" id="Piz-fH-OUF"/>
                             <constraint firstItem="27W-ZE-LY9" firstAttribute="top" secondItem="jVI-mk-Aed" secondAttribute="bottom" constant="33" id="RIT-zk-KlB"/>
                             <constraint firstItem="27W-ZE-LY9" firstAttribute="leading" secondItem="ibS-Iv-gvT" secondAttribute="leadingMargin" constant="14" id="dNT-fn-ibE"/>
                             <constraint firstAttribute="trailingMargin" secondItem="27W-ZE-LY9" secondAttribute="trailing" constant="15" id="dpY-9X-SHS"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="UPk-1l-5GQ" secondAttribute="trailing" constant="15" id="tw1-7j-Qi2"/>
+                            <constraint firstItem="9xK-GR-lKS" firstAttribute="top" secondItem="FSZ-81-3FD" secondAttribute="bottom" constant="20" id="gfu-u9-QDt"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="nextButton" destination="UPk-1l-5GQ" id="Idq-CR-ZO4"/>
-                        <segue destination="Kdw-DT-3Tl" kind="show" identifier="toPropertyAvailableVC" id="QZU-Th-Zno">
-                            <nil key="action"/>
-                        </segue>
+                        <outlet property="nextButton" destination="FSZ-81-3FD" id="0Ss-Re-8LU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dmv-ip-tEo" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -135,7 +129,7 @@
         <!--Landlord Property Features View Controller-->
         <scene sceneID="eZM-PL-XmW">
             <objects>
-                <viewController id="LYM-9f-1yw" customClass="LandlordPropertyFeaturesViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LandlordFeaturesVC" id="LYM-9f-1yw" customClass="LandlordPropertyFeaturesViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Vb8-WF-FjW"/>
                         <viewControllerLayoutGuide type="bottom" id="IkP-h7-GEe"/>
@@ -164,9 +158,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="dr5-3d-VIY" kind="show" id="rbY-xj-1iJ">
-                                        <nil key="action"/>
-                                    </segue>
+                                    <action selector="nextButtonTapped:" destination="LYM-9f-1yw" eventType="touchUpInside" id="7kR-dF-I4c"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="YYy-tt-s9m">
@@ -393,7 +385,7 @@
         <!--Landlord Bedroom View Controller-->
         <scene sceneID="GNL-fU-vxs">
             <objects>
-                <viewController id="b6x-Jm-hlr" customClass="LandlordBedroomViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LandlordRoomVC" id="b6x-Jm-hlr" customClass="LandlordBedroomViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="yQx-8m-sLM"/>
                         <viewControllerLayoutGuide type="bottom" id="XHI-Ga-FH2"/>
@@ -412,9 +404,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="o1a-zW-YJE" kind="show" id="Ws2-MZ-G7k">
-                                        <nil key="action"/>
-                                    </segue>
+                                    <action selector="nextButtonTapped:" destination="b6x-Jm-hlr" eventType="touchUpInside" id="O9Y-jN-Yb7"/>
                                 </connections>
                             </button>
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" autorepeat="NO" value="1" minimumValue="1" maximumValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="PXc-k3-X1K">
@@ -492,7 +482,7 @@
         <!--Landlord Property Available Date View Controller-->
         <scene sceneID="Pnl-ZL-6B4">
             <objects>
-                <viewController id="Kdw-DT-3Tl" customClass="LandlordPropertyAvailableDateViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LandlordPropertyAvailableVC" id="Kdw-DT-3Tl" customClass="LandlordPropertyAvailableDateViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Hhp-qo-kBa"/>
                         <viewControllerLayoutGuide type="bottom" id="pOu-5d-nYh"/>
@@ -510,9 +500,6 @@
                                 <state key="normal" image="NextArrow">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <connections>
-                                    <segue destination="bB9-LT-rwO" kind="show" id="IC4-3h-Fim"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="When is this property available?" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="877-DG-hV9">
                                 <rect key="frame" x="31" y="55" width="314" height="198"/>
@@ -553,18 +540,10 @@
             </objects>
             <point key="canvasLocation" x="7860" y="393.55322338830587"/>
         </scene>
-        <!--finalAccountCreationVC-->
-        <scene sceneID="PEo-T5-mvc">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="finalAccountCreationVC" id="bB9-LT-rwO" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Pg0-L0-5Nj" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="8690" y="393"/>
-        </scene>
         <!--Landlord Payment View Controller-->
         <scene sceneID="UBC-XY-8Pi">
             <objects>
-                <viewController id="o1a-zW-YJE" customClass="LandlordPaymentViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LandlordPaymentVC" id="o1a-zW-YJE" customClass="LandlordPaymentViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SOe-3G-efA"/>
                         <viewControllerLayoutGuide type="bottom" id="gqJ-yK-HG9"/>
@@ -583,9 +562,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="qYP-dv-X2r" kind="show" id="uDg-sx-ZZ7">
-                                        <nil key="action"/>
-                                    </segue>
+                                    <action selector="nextButtonTapped:" destination="o1a-zW-YJE" eventType="touchUpInside" id="Lgi-8h-SQD"/>
                                 </connections>
                             </button>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1500" minValue="0.0" maxValue="3000" translatesAutoresizingMaskIntoConstraints="NO" id="ogG-1l-8ci">
@@ -639,6 +616,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCz-fQ-yQt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4949.6000000000004" y="393.55322338830587"/>
+        </scene>
+        <!--Landlord Page View Controller-->
+        <scene sceneID="wRd-Oq-4eL">
+            <objects>
+                <pageViewController storyboardIdentifier="LandlordPageVC" autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="psY-c1-jhs" customClass="LandlordPageViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VHr-l4-XEr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2684" y="394"/>
         </scene>
         <!--Landlord Address View Controller-->
         <scene sceneID="uQC-64-Q18">
@@ -738,9 +723,6 @@
                         <outlet property="addressTextField" destination="Eae-2i-iSt" id="aZD-8l-A7T"/>
                         <outlet property="nextButton" destination="OOc-T8-0CB" id="hJh-6i-med"/>
                         <outlet property="zipCodeTextField" destination="y6a-HI-770" id="r9b-qN-OBR"/>
-                        <segue destination="b6x-Jm-hlr" kind="show" identifier="toLandlordBedroomVC" id="rE8-O6-dFk">
-                            <nil key="action"/>
-                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ouY-MF-J9b" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -750,7 +732,7 @@
         <!--Landlord Allowed View Controller-->
         <scene sceneID="nCt-eC-Zmv">
             <objects>
-                <viewController id="qYP-dv-X2r" customClass="LandlordAllowedViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LandlordAllowedVC" id="qYP-dv-X2r" customClass="LandlordAllowedViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="xiw-F5-1yo"/>
                         <viewControllerLayoutGuide type="bottom" id="l7O-6J-dp4"/>
@@ -932,9 +914,6 @@
                         <outlet property="noSmokingButton" destination="edL-Kh-iPp" id="cHM-on-Ml2"/>
                         <outlet property="petsAllowedButton" destination="N5i-us-ZbD" id="Y3C-0k-bAD"/>
                         <outlet property="smokingAllowedButton" destination="vFg-vb-jJt" id="IZA-rA-QbI"/>
-                        <segue destination="LYM-9f-1yw" kind="show" identifier="toPropertyFeaturesVC" id="hEC-s3-QHZ">
-                            <nil key="action"/>
-                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rED-I3-AGl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1129,8 +1108,52 @@
             </objects>
             <point key="canvasLocation" x="6974" y="864"/>
         </scene>
+        <!--Account Creation Facebook Login View Controller-->
+        <scene sceneID="Zvq-BF-7SZ">
+            <objects>
+                <viewController storyboardIdentifier="finalAccountCreationVC" id="soF-jn-Oki" customClass="AccountCreationFacebookLoginViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8mX-zW-eKH"/>
+                        <viewControllerLayoutGuide type="bottom" id="3Es-Ej-0LJ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GM6-X5-x6N">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RentMatchLogo_white.png" translatesAutoresizingMaskIntoConstraints="NO" id="HtM-Rj-qyI">
+                                <rect key="frame" x="70" y="101" width="234" height="162"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="162" id="zJh-ra-7B0"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now find your new renter!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="apt-9l-xyl">
+                                <rect key="frame" x="70" y="348" width="234" height="22"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="HtM-Rj-qyI" secondAttribute="trailing" constant="55" id="5rm-gh-bwd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="apt-9l-xyl" secondAttribute="trailing" constant="55" id="N6l-aH-Pgc"/>
+                            <constraint firstItem="apt-9l-xyl" firstAttribute="leading" secondItem="GM6-X5-x6N" secondAttribute="leadingMargin" constant="54" id="b8C-Zg-cMt"/>
+                            <constraint firstItem="HtM-Rj-qyI" firstAttribute="leading" secondItem="GM6-X5-x6N" secondAttribute="leadingMargin" constant="54" id="gYS-lf-8y8"/>
+                            <constraint firstItem="apt-9l-xyl" firstAttribute="top" secondItem="HtM-Rj-qyI" secondAttribute="bottom" constant="85" id="kAZ-Oc-R7x"/>
+                            <constraint firstItem="HtM-Rj-qyI" firstAttribute="top" secondItem="8mX-zW-eKH" secondAttribute="bottom" constant="81" id="mg7-rj-0XS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="findLabel" destination="apt-9l-xyl" id="ipb-bz-Ur7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rb9-hC-mrT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="8538" y="394"/>
+        </scene>
     </scenes>
     <resources>
         <image name="NextArrow" width="131" height="212"/>
+        <image name="RentMatchLogo_white.png" width="1177" height="1066"/>
     </resources>
 </document>

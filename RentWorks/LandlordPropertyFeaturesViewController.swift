@@ -25,7 +25,9 @@ class LandlordPropertyFeaturesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        UserController.canPage = true
+        
         nextButton.isHidden = true
         
         nextButton.slideFromRight()
@@ -104,17 +106,19 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         }
     }
 
-    
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
+    @IBAction func nextButtonTapped(_ sender: UIButton) {
+        UserController.pageRightfrom(currentVC: self)
+        
         let featureString = features.joined(separator: ", ")
         
         UserController.addAttributeToUserDictionary(attribute: [UserController.kPropertyFeatures: featureString])
         print(UserController.temporaryUserCreationDictionary)
-
     }
+    
+    // MARK: - Navigation
+
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//    }
 
 
 }

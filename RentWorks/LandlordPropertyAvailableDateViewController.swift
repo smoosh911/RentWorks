@@ -15,7 +15,7 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        UserController.canPage = true
         nextButton.isHidden = true
         
         nextButton.slideFromRight()
