@@ -24,12 +24,15 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
         availableDatePicker.setValue(UIColor.white, forKey: "textColor")
     }
     
-    // MARK: - Navigation
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+    @IBAction func nextButtonTapped(_ sender: UIButton) {
+        UserController.pageRightfrom(currentVC: self)
         UserController.addAttributeToUserDictionary(attribute: [UserController.kAvailableDate: availableDatePicker.date.timeIntervalSince1970])
     }
+    // MARK: - Navigation
+    
+    //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    //    }
     
     
 }
