@@ -826,10 +826,13 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="yLP-gJ-WFg" kind="show" id="1gC-Zd-eNW"/>
+                                            <segue destination="yLP-gJ-WFg" kind="presentation" id="1gC-Zd-eNW"/>
                                         </connections>
                                     </button>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="dKl-Q1-Hwm" firstAttribute="width" secondItem="1ec-oL-AsK" secondAttribute="width" id="nso-nq-orC"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>

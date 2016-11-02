@@ -34,6 +34,9 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         self.pageVC = self.parent as? LandlordPageViewController
     }
     
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        self.parent?.dismiss(animated: true, completion: nil)
+    }
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         
         let zipCode = zipCodeTextField.text?.trimmingCharacters(in: .letters)
@@ -42,7 +45,7 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
             guard let address = addressTextField.text, let zipCode = zipCodeTextField.text else { return }
             UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : address])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCode])
-            guard let pageVC = self.pageVC else { return }
+
             UserController.pageRightfrom(currentVC: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing", preferredStyle: .alert)
