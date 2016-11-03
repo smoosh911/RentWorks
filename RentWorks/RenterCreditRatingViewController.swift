@@ -39,7 +39,10 @@ class RenterCreditRatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        nextButton.isHidden = true
+        UserController.canPage = false
+        
+//        nextButton.isHidden = true
+//        nextButton.center.x += 200
         
         aPlusCreditBackgroundView.layer.cornerRadius = 15
         aCreditBackgroundView.layer.cornerRadius = 15
@@ -72,6 +75,8 @@ class RenterCreditRatingViewController: UIViewController {
     
     
     func buttonPressedAppearanceFor(backgroundView: UIView, letterLabel: UILabel, and scoreLabel: UILabel) {
+        self.showAndAnimateNextButton()
+
         let buttonBackgroundViews = [aPlusCreditBackgroundView, aCreditBackgroundView, bCreditBackgroundView, otherCreditBackgroundView].filter({$0 != backgroundView})
         
         let otherLabels = [aPlusCreditLabel, aPlusCreditScoreLabel, aCreditLabel, aCreditScoreLabel, bCreditLabel, bCreditScoreLabel, otherCreditLabel, otherCreditScoreLabel].filter({$0 != letterLabel}).filter({$0 != scoreLabel})
@@ -89,7 +94,6 @@ class RenterCreditRatingViewController: UIViewController {
                 letterLabel.textColor = .white
                 scoreLabel.textColor = .white
             }, completion: { (_) in
-                self.showAndAnimateNextButton()
             })
             
         }
@@ -97,15 +101,16 @@ class RenterCreditRatingViewController: UIViewController {
     
     
     func showAndAnimateNextButton() {
-        if nextButton.isHidden {
-            nextButton.slideFromRight()
-        }
+//        if nextButton.isHidden {
+//            nextButton.slideFromRight()
+            UserController.enablePagingFor(renterVC: self)
+//        }
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if creditRating != "" {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kCreditRating : creditRating])
-            self.performSegue(withIdentifier: "toFinalUserCreationVCFromRenter", sender: self)
+            UserController.pageRightFrom(renterVC: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please select your current credit score.", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)

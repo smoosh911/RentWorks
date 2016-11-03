@@ -84,13 +84,13 @@ class PhotoSelectorViewController: UIViewController, UIImagePickerControllerDele
     // MARK: UIImagePickerControllerDelegate
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        picker.dismiss(animated: true, completion: nil)
-        
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            
-            selectPhotoButton?.setTitle("", for: UIControlState())
-            selectedImageView?.image = image
-            UserController.userCreationPhotos.append(image)
+        picker.dismiss(animated: true) {
+            if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                
+                self.selectPhotoButton?.setTitle("", for: UIControlState())
+                self.selectedImageView?.image = image
+                UserController.userCreationPhotos.append(image)
+            }
         }
     }
 }

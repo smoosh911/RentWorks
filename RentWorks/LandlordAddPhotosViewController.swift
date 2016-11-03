@@ -8,22 +8,33 @@
 
 import UIKit
 
-class LandlordAddPhotosViewController: UIViewController {
+class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
 
+    @IBOutlet weak var nextButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        UserController.canPage = false
+        UserController.photoSelectedDelegate = self
+//        nextButton.isHidden = true
         
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if UserController.userCreationPhotos.count > 0 {
-            self.performSegue(withIdentifier: "toPropertyAvailableVC", sender: nil)
+            UserController.pageRightFrom(landlordVC: self)
         } else {
             presentAddPhotoAlert()
         }
     }
     
+    func photoWasSelected() {
+//        nextButton.slideFromRight()
+        UserController.canPage = true
+        guard let pageVC = self.parent as? LandlordPageViewController else { return }
+        pageVC.dataSource = nil
+        pageVC.dataSource = pageVC
+    }
     
     func presentAddPhotoAlert() {
         let alert = UIAlertController(title: "Hold on a second!", message: "Please add at least one photo of your property!", preferredStyle: .alert)

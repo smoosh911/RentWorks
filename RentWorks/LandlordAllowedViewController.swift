@@ -14,6 +14,7 @@ class LandlordAllowedViewController: UIViewController {
     @IBOutlet weak var noPetsAllowedButton: UIButton!
     @IBOutlet weak var smokingAllowedButton: UIButton!
     @IBOutlet weak var noSmokingButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
     
     var smokingAllowed: Bool?
     var petsAllowed: Bool?
@@ -23,6 +24,10 @@ class LandlordAllowedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UserController.canPage = false
+        
+        nextButton.isHidden = true
+        
         petsAllowedButton.layer.cornerRadius = 15
         noPetsAllowedButton.layer.cornerRadius = 15
         smokingAllowedButton.layer.cornerRadius = 15
@@ -30,28 +35,52 @@ class LandlordAllowedViewController: UIViewController {
         
     }
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
+        petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        noPetsAllowedButton.setTitleColor(.white, for: .normal)
+        
+        petsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        noPetsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        
         petsAllowed = true
-        petsAllowedButton.setTitleColor(.green, for: .normal)
-        noPetsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        
+        checkIfBothButtonsHaveBeenSelected()
+        
     }
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
-        noPetsAllowedButton.setTitleColor(.red, for: .normal)
-        petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        noPetsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        petsAllowedButton.setTitleColor(.white, for: .normal)
+        
+        noPetsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        petsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        
         petsAllowed = false
+        
+        checkIfBothButtonsHaveBeenSelected()
         
     }
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
-        smokingAllowedButton.setTitleColor(.green, for: .normal)
-        noSmokingButton.setTitleColor(buttonPressedColor, for: .normal)
+        smokingAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        noSmokingButton.setTitleColor(.white, for: .normal)
+        
+        smokingAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        noSmokingButton.backgroundColor = AppearanceController.customOrangeColor
         smokingAllowed = true
+        
+        checkIfBothButtonsHaveBeenSelected()
     }
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
-        noSmokingButton.setTitleColor(.red, for: .normal)
-        smokingAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
+        noSmokingButton.setTitleColor(buttonPressedColor, for: .normal)
+        smokingAllowedButton.setTitleColor(.white, for: .normal)
+        
+        noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
+        smokingAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        
         smokingAllowed = true
+        
+        checkIfBothButtonsHaveBeenSelected()
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
@@ -59,9 +88,19 @@ class LandlordAllowedViewController: UIViewController {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
             
-            self.performSegue(withIdentifier: "toPropertyFeaturesVC", sender: self)
+            UserController.pageRightFrom(landlordVC: self)
         } else {
             presentAllowedAlert()
+        }
+    }
+    
+    func checkIfBothButtonsHaveBeenSelected() {
+        if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
+            nextButton.slideFromRight()
+            UserController.canPage = true
+            guard let pageVC = self.parent as? LandlordPageViewController else { return }
+            pageVC.dataSource = nil
+            pageVC.dataSource = pageVC
         }
     }
     

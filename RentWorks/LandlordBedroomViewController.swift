@@ -14,15 +14,20 @@ class LandlordBedroomViewController: UIViewController {
     @IBOutlet weak var bathroomCountLabel: UILabel!
     @IBOutlet weak var bedroomStepper: UIStepper!
     @IBOutlet weak var bathroomStepper: UIStepper!
+    @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UserController.canPage = true
+        nextButton.isHidden = true
         
-        bedroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
-        bathroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
+        nextButton.slideFromRight()
+        
+//        bedroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
+//        bathroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
         
         bedroomCountLabel.text = "1 bedroom"
-        bathroomCountLabel.text = "0.5 bathroom"
+        bathroomCountLabel.text = "1 bathroom"
     }
     
     @IBAction func bedroomStepperValueChanged(_ sender: UIStepper) {
@@ -58,14 +63,16 @@ class LandlordBedroomViewController: UIViewController {
             }
         }
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    @IBAction func nextButtonTapped(_ sender: UIButton) {
+        UserController.pageRightFrom(landlordVC: self)
         
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBedroomCount: bedroomStepper.value])
         
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBathroomCount: bathroomStepper.value])
-        
     }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//    }
 }
 
 extension Double {

@@ -23,7 +23,7 @@ extension UIButton {
     
     
     func slideFromRight() {
-        self.alpha = 1
+        self.isHidden = false
         UIView.animate(withDuration: 1, animations: {
             
             self.center.x -= 200

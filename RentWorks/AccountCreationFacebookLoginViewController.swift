@@ -28,7 +28,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         }
         
         facebookLoginButton.delegate = self
-        facebookLoginButton.loginBehavior = .systemAccount
+        facebookLoginButton.loginBehavior = .web
         facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
         constraintsForFacebookLoginButton()
         
@@ -134,7 +134,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(facebookLoginButton)
         let centerXConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-        let centerYConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 40)
+        let centerYConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerY, relatedBy: .equal, toItem: findLabel, attribute: .centerY, multiplier: 1, constant: 40)
         let widthConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal, toItem: findLabel, attribute: .width, multiplier: 1, constant: 0)
         let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 30)
         self.view.addConstraints([centerXConstraint, centerYConstraint, widthConstraint, heightConstraint])

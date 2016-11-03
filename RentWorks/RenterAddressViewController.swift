@@ -19,9 +19,12 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.nextButton.alpha = 0.0
+        self.nextButton.isHidden = true
+        
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
+        
+        UserController.canPage = false
         
         hideKeyboardWhenViewIsTapped()
         
@@ -41,7 +44,7 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : address])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCode])
             
-            self.performSegue(withIdentifier: "toRenterBedroomVC", sender: self)
+            UserController.pageRightFrom(renterVC: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing.", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
@@ -53,16 +56,21 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        self.parent?.dismiss(animated: true, completion: nil)
+    }
     func textFieldDidEndEditing(_ textField: UITextField) {
         if zipCodeTextField.text != "" && addressTextField.text != "" {
 
             nextButton.slideFromRight()
+            
+            UserController.enablePagingFor(renterVC: self)
         }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        guard let text = textField.text else { return true }
+        guard let text = textField.text, textField == zipCodeTextField else { return true }
         if string == "" {
             return true
         } else if text.characters.count == 5 {

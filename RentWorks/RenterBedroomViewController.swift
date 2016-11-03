@@ -14,13 +14,15 @@ class RenterBedroomViewController: UIViewController {
     @IBOutlet weak var bathroomCountLabel: UILabel!
     @IBOutlet weak var bedroomStepper: UIStepper!
     @IBOutlet weak var bathroomStepper: UIStepper!
+    @IBOutlet weak var nextButton: UIButton!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        bedroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
-        bathroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
+        nextButton.isHidden = true
+        
+        nextButton.slideFromRight()
         
         bedroomCountLabel.text = "1 bedroom"
         bathroomCountLabel.text = "0.5 bathroom"
@@ -60,11 +62,15 @@ class RenterBedroomViewController: UIViewController {
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+    @IBAction func nextButtonTapped(_ sender: UIButton) {
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBedroomCount: bedroomStepper.value])
         
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBathroomCount: bathroomStepper.value])
         
+        UserController.pageRightFrom(renterVC: self)
+        
     }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//    }
 }
