@@ -45,11 +45,9 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         
         let zipCode = zipCodeTextField.text?.trimmingCharacters(in: .letters)
         
-        if zipCode != "" && addressTextField.text != "" && zipCode?.characters.count == 5 {
-            guard let address = addressTextField.text, let zipCode = zipCodeTextField.text else { return }
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : address])
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCode])
-
+        if zipCodeTextField.text != "" || addressTextField.text != "" {
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : addressTextField.text ?? "No address"])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? "No zip code"])
             UserController.pageRightFrom(landlordVC: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing", preferredStyle: .alert)
@@ -74,10 +72,9 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
             return true
         }
     }
-
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if zipCodeTextField.text != "",
-            zipCodeTextField.text?.characters.count == 5, addressTextField.text != "" {
+        if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != ""  {
             nextButton.slideFromRight()
             UserController.enablePagingFor(landlordVC: self)
         }

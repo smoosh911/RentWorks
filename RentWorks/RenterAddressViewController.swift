@@ -30,10 +30,7 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-//        nextButton.setOffScreenToRight()
-    }
+
     @IBAction func zipCodeTextFieldDidChange(_ sender: Any) {
         if zipCodeTextField.text?.characters.count == 5 {
             zipCodeTextField.resignFirstResponder()
@@ -42,10 +39,9 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         
-        if zipCodeTextField.text != "" && addressTextField.text != "" {
-            guard let address = addressTextField.text, let zipCode = zipCodeTextField.text else { return }
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : address])
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCode])
+        if zipCodeTextField.text != "" || addressTextField.text != "" {
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : addressTextField.text ?? "No address"])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? "No zip code"])
             
             UserController.pageRightFrom(renterVC: self)
         } else {
@@ -62,8 +58,9 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     @IBAction func cancelButtonTapped(_ sender: Any) {
         self.parent?.dismiss(animated: true, completion: nil)
     }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if zipCodeTextField.text != "" && addressTextField.text != "" {
+        if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != ""  {
 
             nextButton.slideFromRight()
             

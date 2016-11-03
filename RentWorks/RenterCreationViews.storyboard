@@ -42,6 +42,9 @@
                                 <state key="normal" image="NextArrow">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="nextButtonTapped:" destination="jqU-Yb-13R" eventType="touchUpInside" id="Lru-Iv-Mm1"/>
+                                </connections>
                             </button>
                             <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" autorepeat="NO" value="1" minimumValue="1" maximumValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="u7t-Z1-GXX">
                                 <rect key="frame" x="140" y="371" width="94" height="29"/>
@@ -801,12 +804,6 @@
                                     </textField>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vw-U7-JSR">
-                                <rect key="frame" x="176.5" y="301.5" width="23.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pqc-Rx-lqh">
                                 <rect key="frame" x="16" y="20" width="48" height="30"/>
                                 <constraints>
@@ -820,6 +817,12 @@
                                     <action selector="cancelButtonTapped:" destination="KcV-9U-Y1a" eventType="touchUpInside" id="HpM-Ia-jxG"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1vw-U7-JSR">
+                                <rect key="frame" x="176" y="302" width="23.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -1132,22 +1135,14 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1500" minValue="0.0" maxValue="3000" translatesAutoresizingMaskIntoConstraints="NO" id="jy0-8k-uHJ">
-                                <rect key="frame" x="29" y="428" width="318" height="31"/>
-                                <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="maximumTrackTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <action selector="paymentSliderValueChanged:" destination="XIt-d8-YY1" eventType="valueChanged" id="Xzs-Zn-qdC"/>
-                                </connections>
-                            </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c8w-K9-HiW">
-                                <rect key="frame" x="31" y="393" width="314" height="27"/>
+                                <rect key="frame" x="159" y="235" width="58" height="27"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yvx-a0-0j1">
-                                <rect key="frame" x="276" y="539" width="57" height="100"/>
+                                <rect key="frame" x="288" y="539" width="57" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="57" id="ppw-HE-pq9"/>
                                     <constraint firstAttribute="width" secondItem="yvx-a0-0j1" secondAttribute="height" multiplier="21:37" id="suK-Qk-WhQ"/>
@@ -1159,19 +1154,28 @@
                                     <action selector="nextButtonTapped:" destination="XIt-d8-YY1" eventType="touchUpInside" id="fOM-Pt-0ia"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1500" minValue="0.0" maxValue="3000" translatesAutoresizingMaskIntoConstraints="NO" id="jy0-8k-uHJ">
+                                <rect key="frame" x="35" y="382" width="304" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="13f-Gh-aar"/>
+                                </constraints>
+                                <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="maximumTrackTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="paymentSliderValueChanged:" destination="XIt-d8-YY1" eventType="valueChanged" id="Xzs-Zn-qdC"/>
+                                </connections>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="kcx-UL-3OZ" firstAttribute="centerX" secondItem="30J-Pt-me4" secondAttribute="centerX" id="6lU-Kz-rNt"/>
-                            <constraint firstItem="4MU-31-veG" firstAttribute="top" secondItem="jy0-8k-uHJ" secondAttribute="bottom" constant="209" id="AXu-Bc-Ogk"/>
-                            <constraint firstItem="jy0-8k-uHJ" firstAttribute="leading" secondItem="30J-Pt-me4" secondAttribute="leadingMargin" constant="15" id="BpX-zx-0sM"/>
-                            <constraint firstItem="c8w-K9-HiW" firstAttribute="width" secondItem="jy0-8k-uHJ" secondAttribute="width" id="Nby-B2-SAZ"/>
+                            <constraint firstItem="jy0-8k-uHJ" firstAttribute="centerX" secondItem="30J-Pt-me4" secondAttribute="centerX" id="Ljl-Ja-Tq4"/>
                             <constraint firstItem="c8w-K9-HiW" firstAttribute="centerX" secondItem="30J-Pt-me4" secondAttribute="centerX" id="QhF-nb-7bX"/>
-                            <constraint firstItem="jy0-8k-uHJ" firstAttribute="top" secondItem="c8w-K9-HiW" secondAttribute="bottom" constant="8" id="Qy4-YM-Aa6"/>
+                            <constraint firstItem="jy0-8k-uHJ" firstAttribute="top" secondItem="c8w-K9-HiW" secondAttribute="bottom" constant="120" id="Qy4-YM-Aa6"/>
+                            <constraint firstItem="c8w-K9-HiW" firstAttribute="top" secondItem="kcx-UL-3OZ" secondAttribute="bottom" constant="38" id="VUO-TP-C9u"/>
                             <constraint firstItem="kcx-UL-3OZ" firstAttribute="top" secondItem="mzT-AY-eFo" secondAttribute="bottom" constant="49" id="b7d-LM-n3Q"/>
-                            <constraint firstItem="yvx-a0-0j1" firstAttribute="trailing" secondItem="30J-Pt-me4" secondAttribute="trailingMargin" constant="-26" id="fxp-Mj-UKl"/>
+                            <constraint firstItem="yvx-a0-0j1" firstAttribute="trailing" secondItem="30J-Pt-me4" secondAttribute="trailingMargin" constant="-14" id="fxp-Mj-UKl"/>
                             <constraint firstItem="4MU-31-veG" firstAttribute="top" secondItem="yvx-a0-0j1" secondAttribute="bottom" constant="28" id="qPq-Pm-hz2"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="jy0-8k-uHJ" secondAttribute="trailing" constant="14" id="stV-rn-CWd"/>
                         </constraints>
                     </view>
                     <connections>

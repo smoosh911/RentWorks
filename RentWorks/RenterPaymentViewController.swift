@@ -20,6 +20,8 @@ class RenterPaymentViewController: UIViewController {
         
         nextButton.slideFromRight()
         
+        paymentSlider.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI_2))
+
         UserController.canPage = true
         
         paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
