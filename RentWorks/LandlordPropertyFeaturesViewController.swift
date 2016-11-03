@@ -120,7 +120,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
     }
 
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-        UserController.pageRightfrom(currentVC: self)
+        UserController.pageRightFrom(landlordVC: self)
         
         let featureString = features.joined(separator: ", ")
         

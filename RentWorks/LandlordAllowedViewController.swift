@@ -88,7 +88,7 @@ class LandlordAllowedViewController: UIViewController {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
             
-            UserController.pageRightfrom(currentVC: self)
+            UserController.pageRightFrom(landlordVC: self)
         } else {
             presentAllowedAlert()
         }

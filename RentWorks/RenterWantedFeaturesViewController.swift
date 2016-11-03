@@ -28,6 +28,8 @@ class RenterWantedFeaturesViewController: UIViewController {
         
         nextButton.slideFromRight()
         
+        UserController.canPage = true
+        
         laundryButton.layer.cornerRadius = 15
         garageButton.layer.cornerRadius = 15
         poolButton.layer.cornerRadius = 15
@@ -115,15 +117,17 @@ class RenterWantedFeaturesViewController: UIViewController {
         }
     }
 
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+    @IBAction func nextButtonTapped(_ sender: UIButton) {
         let featureString = features.joined(separator: ", ")
         
         UserController.addAttributeToUserDictionary(attribute: [UserController.kPropertyFeatures: featureString])
         print(UserController.temporaryUserCreationDictionary)
-        
+        UserController.pageRightFrom(renterVC: self)
     }
+    
+    // MARK: - Navigation
+
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        }
     
 }

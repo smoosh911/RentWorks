@@ -39,8 +39,10 @@ class RenterCreditRatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        nextButton.isHidden = true
-        nextButton.center.x += 200
+        UserController.canPage = false
+        
+//        nextButton.isHidden = true
+//        nextButton.center.x += 200
         
         aPlusCreditBackgroundView.layer.cornerRadius = 15
         aCreditBackgroundView.layer.cornerRadius = 15
@@ -99,15 +101,16 @@ class RenterCreditRatingViewController: UIViewController {
     
     
     func showAndAnimateNextButton() {
-        if nextButton.isHidden {
-            nextButton.slideFromRight()
-        }
+//        if nextButton.isHidden {
+//            nextButton.slideFromRight()
+            UserController.enablePagingFor(renterVC: self)
+//        }
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if creditRating != "" {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kCreditRating : creditRating])
-            self.performSegue(withIdentifier: "toFinalUserCreationVCFromRenter", sender: self)
+            UserController.pageRightFrom(renterVC: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please select your current credit score.", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)

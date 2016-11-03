@@ -26,6 +26,8 @@ class RenterAllowedViewController: UIViewController {
         super.viewDidLoad()
         
         nextButton.isHidden = true
+     
+        UserController.canPage = false
         
         petsAllowedButton.layer.cornerRadius = 15
         noPetsAllowedButton.layer.cornerRadius = 15
@@ -87,8 +89,7 @@ class RenterAllowedViewController: UIViewController {
         if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
-            
-            self.performSegue(withIdentifier: "toWantedPropertyFeaturesVC", sender: self)
+            UserController.pageRightFrom(renterVC: self)
         } else {
             
         }
@@ -96,6 +97,7 @@ class RenterAllowedViewController: UIViewController {
     
     func checkIfBothButtonsHaveBeenSelected() {
         if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
+            UserController.enablePagingFor(renterVC: self)
             nextButton.slideFromRight()
         }
     }

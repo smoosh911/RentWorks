@@ -24,6 +24,8 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
         
+        UserController.canPage = false
+        
         hideKeyboardWhenViewIsTapped()
         
         self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
@@ -42,7 +44,7 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : address])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCode])
             
-            self.performSegue(withIdentifier: "toRenterBedroomVC", sender: self)
+            UserController.pageRightFrom(renterVC: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing.", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
@@ -54,10 +56,15 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        self.parent?.dismiss(animated: true, completion: nil)
+    }
     func textFieldDidEndEditing(_ textField: UITextField) {
         if zipCodeTextField.text != "" && addressTextField.text != "" {
 
             nextButton.slideFromRight()
+            
+            UserController.enablePagingFor(renterVC: self)
         }
     }
     

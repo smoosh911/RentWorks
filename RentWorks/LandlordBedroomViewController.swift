@@ -64,7 +64,7 @@ class LandlordBedroomViewController: UIViewController {
         }
     }
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-        UserController.pageRightfrom(currentVC: self)
+        UserController.pageRightFrom(landlordVC: self)
         
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBedroomCount: bedroomStepper.value])
         

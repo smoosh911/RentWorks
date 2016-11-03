@@ -22,7 +22,7 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if UserController.userCreationPhotos.count > 0 {
-            UserController.pageRightfrom(currentVC: self)
+            UserController.pageRightFrom(landlordVC: self)
         } else {
             presentAddPhotoAlert()
         }

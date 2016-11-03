@@ -47,7 +47,21 @@ class UserController {
         temporaryUserCreationDictionary[key] = value
     }
     
-    static func pageRightfrom(currentVC: UIViewController) {
+    static func enablePagingFor(landlordVC landlordVC: UIViewController) {
+        guard let pageVC = landlordVC.parent as? LandlordPageViewController else { return }
+        UserController.canPage = true
+        pageVC.dataSource = nil
+        pageVC.dataSource = pageVC
+    }
+    
+    static func enablePagingFor(renterVC renterVC: UIViewController) {
+        guard let pageVC = renterVC.parent as? RenterPageViewController else { return }
+        UserController.canPage = true
+        pageVC.dataSource = nil
+        pageVC.dataSource = pageVC
+    }
+    
+    static func pageRightFrom(landlordVC currentVC: UIViewController) {
         guard let pageVC = currentVC.parent as? LandlordPageViewController else { return }
         guard let currentVCIndex = pageVC.landlordVCs.index(of: currentVC), currentVCIndex + 1 <= pageVC.landlordVCs.count else { return }
         
@@ -56,6 +70,15 @@ class UserController {
         pageVC.setViewControllers([nextVC], direction: .forward, animated: true, completion: nil)
     }
     
+    
+    static func pageRightFrom(renterVC currentVC: UIViewController) {
+        guard let pageVC = currentVC.parent as? RenterPageViewController else { return }
+        guard let currentVCIndex = pageVC.renterVCs.index(of: currentVC), currentVCIndex + 1 <= pageVC.renterVCs.count else { return }
+        
+        let newIndex = currentVCIndex + 1
+        let nextVC = pageVC.renterVCs[newIndex]
+        pageVC.setViewControllers([nextVC], direction: .forward, animated: true, completion: nil)
+    }
     
     // This function should be used when there is not a managed object matching their Facebook ID to see if they have already created an account. If so, it will pull their information and save it into Core Data so this doesn't have to be done every launch.
     
