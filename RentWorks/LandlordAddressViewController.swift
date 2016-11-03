@@ -25,18 +25,22 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         addressTextField.delegate = self
         hideKeyboardWhenViewIsTapped()
         
-        
-        
-        self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
-        AppearanceController.appearanceFor(navigationController: self.navigationController)
         
         self.pageVC = self.parent as? LandlordPageViewController
+    }
+    
+    @IBAction func zipCodeTextFieldDidChange(_ sender: Any) {
+        
+        if zipCodeTextField.text?.characters.count == 5 {
+            zipCodeTextField.resignFirstResponder()
+        }
     }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         self.parent?.dismiss(animated: true, completion: nil)
     }
+    
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         
         let zipCode = zipCodeTextField.text?.trimmingCharacters(in: .letters)
@@ -61,6 +65,7 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         
         
         guard let text = textField.text, textField == zipCodeTextField else { return true }
+        
         if string == "" {
             return true
         } else if text.characters.count == 5 {
@@ -69,7 +74,7 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
             return true
         }
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         if zipCodeTextField.text != "",
             zipCodeTextField.text?.characters.count == 5, addressTextField.text != "" {

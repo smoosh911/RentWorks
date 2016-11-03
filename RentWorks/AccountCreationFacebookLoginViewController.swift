@@ -32,6 +32,9 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
         constraintsForFacebookLoginButton()
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         if FBSDKAccessToken.current() != nil {
             setUpAndDisplayLoadingScreen()
             AuthenticationController.attemptToSignInToFirebase { (success) in

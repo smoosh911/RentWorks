@@ -28,13 +28,16 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         
         hideKeyboardWhenViewIsTapped()
         
-        self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
-        AppearanceController.appearanceFor(navigationController: self.navigationController)
     }
     
     override func viewWillAppear(_ animated: Bool) {
 //        nextButton.setOffScreenToRight()
+    }
+    @IBAction func zipCodeTextFieldDidChange(_ sender: Any) {
+        if zipCodeTextField.text?.characters.count == 5 {
+            zipCodeTextField.resignFirstResponder()
+        }
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
@@ -67,6 +70,8 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
             UserController.enablePagingFor(renterVC: self)
         }
     }
+    
+
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         

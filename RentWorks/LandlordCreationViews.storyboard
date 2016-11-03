@@ -699,17 +699,20 @@
                                 <rect key="frame" x="16" y="313" width="343" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zip Code:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wtv-or-XN0">
-                                        <rect key="frame" x="0.0" y="0.0" width="83.5" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="93" height="30"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="y6a-HI-770">
-                                        <rect key="frame" x="86.5" y="0.0" width="256.5" height="30"/>
+                                        <rect key="frame" x="96" y="0.0" width="247" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="textColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                        <connections>
+                                            <action selector="zipCodeTextFieldDidChange:" destination="s59-y2-RVY" eventType="editingChanged" id="xbh-k5-IFP"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <constraints>
@@ -722,6 +725,7 @@
                             <constraint firstItem="6uE-jJ-hRv" firstAttribute="top" secondItem="qrj-A3-ti4" secondAttribute="bottom" id="4hv-GQ-h0g"/>
                             <constraint firstItem="XLK-Bx-Pji" firstAttribute="centerX" secondItem="Ann-td-W6E" secondAttribute="centerX" id="7tE-TK-Asi"/>
                             <constraint firstItem="9C5-QT-wG8" firstAttribute="centerX" secondItem="Ann-td-W6E" secondAttribute="centerX" id="9bp-gb-wCd"/>
+                            <constraint firstItem="y6a-HI-770" firstAttribute="width" secondItem="Eae-2i-iSt" secondAttribute="width" id="I5x-fw-CQC"/>
                             <constraint firstAttribute="bottom" secondItem="Dbs-Z2-Ffx" secondAttribute="bottom" constant="286" id="KGT-S4-9ZQ"/>
                             <constraint firstItem="OOc-T8-0CB" firstAttribute="centerX" secondItem="Ann-td-W6E" secondAttribute="centerX" constant="128.5" id="LNL-gF-pXe"/>
                             <constraint firstItem="Dbs-Z2-Ffx" firstAttribute="centerX" secondItem="Ann-td-W6E" secondAttribute="centerX" id="QXV-hJ-Awb"/>
