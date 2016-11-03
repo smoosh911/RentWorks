@@ -33,60 +33,96 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         constraintsForFacebookLoginButton()
         
         if FBSDKAccessToken.current() != nil {
+            setUpAndDisplayLoadingScreen()
             AuthenticationController.attemptToSignInToFirebase { (success) in
-                self.dismissLoadingScreen()
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
-                if UserController.userCreationType == "landlord" {
-                    UserController.createLandlordAndPropertyForCurrentUser {
-                        let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
-                        self.present(mainVC, animated: true, completion: nil)
-                        print("Successfully created landlord for currentUser")
+                
+                
+                FirebaseController.handleUserInformationScenarios(completion: { (hasAccount) in
+                    if !hasAccount {
+                        if UserController.userCreationType == "landlord" {
+                            UserController.createLandlordAndPropertyForCurrentUser {
+                                self.dismissLoadingScreen()
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                                self.present(mainVC, animated: true, completion: nil)
+                                print("Successfully created landlord for currentUser")
+                            }
+                        } else if UserController.userCreationType == "renter" {
+                            UserController.createRenterForCurrentUser {
+                                self.dismissLoadingScreen()
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                                self.present(mainVC, animated: true, completion: nil)
+                                print("Successfuly created renter for current user.")
+                            }
+                        }
+                    } else {
+                        self.dismissLoadingScreen()
+                        
+                        let alert = UIAlertController(title: "Hey there", message: "Looks like you've already got an account attached to this Facebook account. If you want to log in, tap the 'Log in' button below.", preferredStyle: .alert)
+                        
+                        let loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
+                            let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                            self.present(mainVC, animated: true, completion: nil)
+                        })
+                        
+                        let dismissAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                        
+                        alert.addAction(loginAction)
+                        alert.addAction(dismissAction)
+                        self.present(alert, animated: true, completion: nil)
                     }
-                } else if UserController.userCreationType == "renter" {
-                    UserController.createRenterForCurrentUser {
-                        let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
-                        self.present(mainVC, animated: true, completion: nil)
-                        print("Successfuly created renter for current user.")
-                    }
-                }
+                })
             }
         }
-        
-      
-        
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         
         guard result.isCancelled != true else { return }
         setUpAndDisplayLoadingScreen()
-        AuthenticationController.attemptToSignInToFirebase { (success) in
-            
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            if UserController.userCreationType == "landlord" {
-                UserController.createLandlordAndPropertyForCurrentUser {
-                    self.dismissLoadingScreen()
-
-                    let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
-                    UserController.currentUserType = "landlord"
-                    self.present(mainVC, animated: true, completion: nil)
-                    print("Successfully created landlord for currentUser")
-                }
-            } else if UserController.userCreationType == "renter" {
-                UserController.createRenterForCurrentUser {
-                    self.dismissLoadingScreen()
-                    
-                    UserController.currentUserType = "renter"
-                    
-                    let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
-                    self.present(mainVC, animated: true, completion: nil)
-                    print("Successfuly created renter for current user.")
-                }
+        if FBSDKAccessToken.current() != nil {
+            AuthenticationController.attemptToSignInToFirebase { (success) in
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                
+                
+                FirebaseController.handleUserInformationScenarios(completion: { (hasAccount) in
+                    if !hasAccount {
+                        if UserController.userCreationType == "landlord" {
+                            UserController.createLandlordAndPropertyForCurrentUser {
+                                self.dismissLoadingScreen()
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                                self.present(mainVC, animated: true, completion: nil)
+                                print("Successfully created landlord for currentUser")
+                            }
+                        } else if UserController.userCreationType == "renter" {
+                            UserController.createRenterForCurrentUser {
+                                self.dismissLoadingScreen()
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                                self.present(mainVC, animated: true, completion: nil)
+                                print("Successfuly created renter for current user.")
+                            }
+                        }
+                    } else {
+                        self.dismissLoadingScreen()
+                        
+                        let alert = UIAlertController(title: "Hey there", message: "Looks like you've already got an account attached to this Facebook account. If you want to log in, tap the 'Log in' button below.", preferredStyle: .alert)
+                        
+                        alert.view.tintColor = AppearanceController.customOrangeColor
+                        
+                        let loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
+                            let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                            self.present(mainVC, animated: true, completion: nil)
+                        })
+                        
+                        let dismissAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                        
+                        alert.addAction(loginAction)
+                        alert.addAction(dismissAction)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                })
             }
         }
-        
-        
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
