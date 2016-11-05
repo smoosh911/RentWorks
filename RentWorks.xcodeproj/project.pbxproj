@@ -85,6 +85,7 @@
 		C73E10941D8E417D008E475F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C73E10921D8E417D008E475F /* LaunchScreen.storyboard */; };
 		C73E109F1D8E417D008E475F /* RentWorksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E109E1D8E417D008E475F /* RentWorksTests.swift */; };
 		C73E10AA1D8E417D008E475F /* RentWorksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10A91D8E417D008E475F /* RentWorksUITests.swift */; };
+		C77C13A41DCE6290003D75DD /* CoreLibraryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,6 +185,7 @@
 		C73E10A51D8E417D008E475F /* RentWorksUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RentWorksUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C73E10A91D8E417D008E475F /* RentWorksUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentWorksUITests.swift; sourceTree = "<group>"; };
 		C73E10AB1D8E417D008E475F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreLibraryExtensions.swift; sourceTree = "<group>"; };
 		E22112C9E00A4E1608DAA61C /* Pods-RentWorksTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RentWorksTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RentWorksTests/Pods-RentWorksTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -320,12 +322,12 @@
 			isa = PBXGroup;
 			children = (
 				C73E10861D8E417D008E475F /* AppDelegate.swift */,
-				466497D71DA6A28400BA249A /* RentWorks.entitlements */,
 				C73E10BA1D8E4313008E475F /* Model */,
 				C73E10B91D8E4310008E475F /* View */,
 				C73E10B71D8E4303008E475F /* Controller */,
 				C73E10BB1D8E449C008E475F /* Helper Classes */,
 				C73E10B81D8E4308008E475F /* Supporting Files */,
+				C77C13A51DCE7331003D75DD /* Frameworks */,
 			);
 			path = RentWorks;
 			sourceTree = "<group>";
@@ -368,14 +370,11 @@
 		C73E10B81D8E4308008E475F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				466497D71DA6A28400BA249A /* RentWorks.entitlements */,
 				460C93431DBE9DC400926966 /* GoogleService-Info.plist */,
 				C73E10901D8E417D008E475F /* Assets.xcassets */,
 				4602B09C1DB1529C00908D00 /* RentMatchLogo_white.png */,
 				466497D91DA6A7F400BA249A /* Bridging-Header.h */,
-				46600CA11DA2F9C400A7FB4B /* Bolts.framework */,
-				46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */,
-				46600C921DA2F7B700A7FB4B /* FBSDKLoginKit.framework */,
-				46600C931DA2F7B700A7FB4B /* FBSDKShareKit.framework */,
 				C73E10951D8E417D008E475F /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -416,8 +415,36 @@
 		C73E10BB1D8E449C008E475F /* Helper Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */,
 			);
 			name = "Helper Classes";
+			sourceTree = "<group>";
+		};
+		C77C13A51DCE7331003D75DD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C77C13A71DCE7344003D75DD /* Bolts */,
+				C77C13A61DCE733C003D75DD /* Facebook */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C77C13A61DCE733C003D75DD /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */,
+				46600C921DA2F7B700A7FB4B /* FBSDKLoginKit.framework */,
+				46600C931DA2F7B700A7FB4B /* FBSDKShareKit.framework */,
+			);
+			name = Facebook;
+			sourceTree = "<group>";
+		};
+		C77C13A71DCE7344003D75DD /* Bolts */ = {
+			isa = PBXGroup;
+			children = (
+				46600CA11DA2F9C400A7FB4B /* Bolts.framework */,
+			);
+			name = Bolts;
 			sourceTree = "<group>";
 		};
 		CF747A11E36413DA6596B09A /* Pods */ = {
@@ -486,6 +513,7 @@
 				C73E10A21D8E417D008E475F /* Frameworks */,
 				C73E10A31D8E417D008E475F /* Resources */,
 				F4682DB70C7ADC37229335B5 /* [CP] Copy Pods Resources */,
+				C214053A85FF7FD7FFB962B1 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -509,7 +537,7 @@
 				TargetAttributes = {
 					C73E10821D8E417D008E475F = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = W4BT774F98;
+						DevelopmentTeam = VQ78KJN546;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -598,7 +626,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		24C877330F63FBC52BF2D87C /* [CP] Copy Pods Resources */ = {
@@ -643,7 +671,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		9E1586C3C5E3609CAFC3908F /* [CP] Copy Pods Resources */ = {
@@ -676,6 +704,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RentWorks/Pods-RentWorks-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C214053A85FF7FD7FFB962B1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RentWorksUITests/Pods-RentWorksUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C2662CB31960A8F198800377 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -688,7 +731,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F4682DB70C7ADC37229335B5 /* [CP] Copy Pods Resources */ = {
@@ -750,6 +793,7 @@
 				46600C9E1DA2F91600A7FB4B /* LoginViewController.swift in Sources */,
 				467A49D01DB1F0AD001A0A12 /* MatchTableViewCell.swift in Sources */,
 				460D72381DB7448A00853402 /* RenterAddressViewController.swift in Sources */,
+				C77C13A41DCE6290003D75DD /* CoreLibraryExtensions.swift in Sources */,
 				460D723F1DB7470D00853402 /* RenterWantedFeaturesViewController.swift in Sources */,
 				460D723B1DB7450800853402 /* RenterBedroomViewController.swift in Sources */,
 				460D723D1DB7455000853402 /* RenterPaymentViewController.swift in Sources */,
@@ -919,7 +963,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RentWorks/RentWorks.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = W4BT774F98;
+				DEVELOPMENT_TEAM = VQ78KJN546;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RentWorks",
@@ -930,7 +974,7 @@
 				);
 				INFOPLIST_FILE = RentWorks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.SpencerCurtis.RentMatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.RentWorks.RentMatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "RentWorks/Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
@@ -944,7 +988,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RentWorks/RentWorks.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = W4BT774F98;
+				DEVELOPMENT_TEAM = VQ78KJN546;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RentWorks",
@@ -955,7 +999,7 @@
 				);
 				INFOPLIST_FILE = RentWorks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.SpencerCurtis.RentMatch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.RentWorks.RentMatch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "RentWorks/Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
