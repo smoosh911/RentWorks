@@ -45,7 +45,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         if features.contains(laundry), let index = features.index(of: laundry) {
             features.remove(at: index)
             laundryButton.setTitleColor(.white, for: .normal)
-            laundryButton.backgroundColor = AppearanceController.customOrangeColor
+            laundryButton.backgroundColor = AppearanceController.vengaYellowColor
         } else {
             features.append(laundry)
             laundryButton.setTitleColor(buttonPressedColor, for: .normal)
@@ -59,7 +59,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         if features.contains(garage), let index = features.index(of: garage) {
             features.remove(at: index)
             garageButton.setTitleColor(.white, for: .normal)
-            garageButton.backgroundColor = AppearanceController.customOrangeColor
+            garageButton.backgroundColor = AppearanceController.vengaYellowColor
         } else {
             features.append(garage)
             garageButton.setTitleColor(buttonPressedColor, for: .normal)
@@ -72,7 +72,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         if features.contains(pool), let index = features.index(of: pool) {
             features.remove(at: index)
             poolButton.setTitleColor(.white, for: .normal)
-            poolButton.backgroundColor = AppearanceController.customOrangeColor
+            poolButton.backgroundColor = AppearanceController.vengaYellowColor
         } else {
             features.append(pool)
             poolButton.setTitleColor(buttonPressedColor, for: .normal)
@@ -85,7 +85,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         if features.contains(gym), let index = features.index(of: gym) {
             features.remove(at: index)
             gymButton.setTitleColor(.white, for: .normal)
-            gymButton.backgroundColor = AppearanceController.customOrangeColor
+            gymButton.backgroundColor = AppearanceController.vengaYellowColor
         } else {
             features.append(gym)
             gymButton.setTitleColor(buttonPressedColor, for: .normal)
@@ -98,7 +98,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         if features.contains(dishwasher), let index = features.index(of: dishwasher) {
             features.remove(at: index)
             dishwasherButton.setTitleColor(.white, for: .normal)
-            dishwasherButton.backgroundColor = AppearanceController.customOrangeColor
+            dishwasherButton.backgroundColor = AppearanceController.vengaYellowColor
         } else {
             features.append(dishwasher)
             dishwasherButton.setTitleColor(buttonPressedColor, for: .normal)
@@ -111,7 +111,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         if features.contains(backyard), let index = features.index(of: backyard) {
             features.remove(at: index)
             backyardButton.setTitleColor(.white, for: .normal)
-            backyardButton.backgroundColor = AppearanceController.customOrangeColor
+            backyardButton.backgroundColor = AppearanceController.vengaYellowColor
         } else {
             features.append(backyard)
             backyardButton.setTitleColor(buttonPressedColor, for: .normal)

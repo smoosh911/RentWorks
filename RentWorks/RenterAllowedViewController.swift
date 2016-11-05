@@ -45,7 +45,7 @@ class RenterAllowedViewController: UIViewController {
         noPetsAllowedButton.setTitleColor(.white, for: .normal)
         
         petsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        noPetsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        noPetsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
         petsAllowed = true
         
@@ -58,7 +58,7 @@ class RenterAllowedViewController: UIViewController {
         petsAllowedButton.setTitleColor(.white, for: .normal)
         
         noPetsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        petsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        petsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
         petsAllowed = false
         
@@ -71,7 +71,7 @@ class RenterAllowedViewController: UIViewController {
         noSmokingButton.setTitleColor(.white, for: .normal)
         
         smokingAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        noSmokingButton.backgroundColor = AppearanceController.customOrangeColor
+        noSmokingButton.backgroundColor = AppearanceController.vengaYellowColor
         smokingAllowed = true
         
         checkIfBothButtonsHaveBeenSelected()
@@ -82,7 +82,7 @@ class RenterAllowedViewController: UIViewController {
         smokingAllowedButton.setTitleColor(.white, for: .normal)
         
         noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        smokingAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        smokingAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
         smokingAllowed = true
         
@@ -117,7 +117,7 @@ class RenterAllowedViewController: UIViewController {
         
         alert.addAction(dismissAction)
         
-        alert.view.tintColor = AppearanceController.customOrangeColor
+        alert.view.tintColor = AppearanceController.vengaYellowColor
         
         self.present(alert, animated: true, completion: nil)
     }

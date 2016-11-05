@@ -95,7 +95,7 @@ class RenterCreditRatingViewController: UIViewController {
         }) { _ in
             
             UIView.transition(with: backgroundView, duration: 0.2, options: .transitionCrossDissolve, animations: { 
-                buttonBackgroundViews.forEach({$0?.backgroundColor = AppearanceController.customOrangeColor})
+                buttonBackgroundViews.forEach({$0?.backgroundColor = AppearanceController.vengaYellowColor})
                 otherLabels.forEach({$0?.textColor = .white})
                 letterLabel.textColor = .white
                 scoreLabel.textColor = .white

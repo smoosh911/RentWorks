@@ -28,7 +28,7 @@ class LandlordPageViewController: UIPageViewController {
         super.viewDidLoad()
         
         dataSource = self
-        self.view.backgroundColor = AppearanceController.customOrangeColor
+        self.view.backgroundColor = AppearanceController.vengaYellowColor
         if let vc1 = landlordVCs.first {
             setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
         }

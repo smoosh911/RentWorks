@@ -40,7 +40,7 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
         let alert = UIAlertController(title: "Hold on a second!", message: "Please add at least one photo of your property!", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
         alert.addAction(dismissAction)
-        alert.view.tintColor = AppearanceController.customOrangeColor
+        alert.view.tintColor = AppearanceController.vengaYellowColor
         self.present(alert, animated: true, completion: nil)
 
     }

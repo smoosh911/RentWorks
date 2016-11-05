@@ -15,7 +15,7 @@ class AppearanceController {
     static func appearanceFor(textFields: [UITextField]) {
         for textField in textFields {
 //            textField.layer.borderColor = UIColor.white.cgColor
-            textField.tintColor = customOrangeColor
+            textField.tintColor = vengaYellowColor
 //            textField.layer.borderWidth = 0.6
 //            textField.layer.cornerRadius = 5
         }
@@ -26,7 +26,8 @@ class AppearanceController {
         navigationController?.presentTransparentNavigationBar()
     }
     
-    static let customOrangeColor = UIColor(red: 0.961, green: 0.482, blue: 0.220, alpha: 1.00)
+    static let vengaYellowColor = UIColor(red: 0.976, green: 0.937, blue: 0.110, alpha: 1.00)
+    
     
     static let viewButtonPressedColor = UIColor(red: 0.807, green: 0.391, blue: 0.000, alpha: 1.00)
     

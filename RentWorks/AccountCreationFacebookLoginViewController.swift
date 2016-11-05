@@ -110,7 +110,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         
                         let alert = UIAlertController(title: "Hey there", message: "Looks like you've already got an account attached to this Facebook account. If you want to log in, tap the 'Log in' button below.", preferredStyle: .alert)
                         
-                        alert.view.tintColor = AppearanceController.customOrangeColor
+                        alert.view.tintColor = AppearanceController.vengaYellowColor
                         
                         let loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
                             let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")

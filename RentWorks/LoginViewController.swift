@@ -107,7 +107,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         alert.addAction(dismissAction)
         alert.addAction(createAccountAction)
         
-        alert.view.tintColor = AppearanceController.customOrangeColor
+        alert.view.tintColor = AppearanceController.vengaYellowColor
         
         self.present(alert, animated: true, completion: nil)
     }
