@@ -15,10 +15,9 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var nextButtonCenterXConstraint: NSLayoutConstraint!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.nextButton.isHidden = true
         
         zipCodeTextField.delegate = self
@@ -30,7 +29,7 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
     }
-
+    
     @IBAction func zipCodeTextFieldDidChange(_ sender: Any) {
         if zipCodeTextField.text?.characters.count == 5 {
             zipCodeTextField.resignFirstResponder()

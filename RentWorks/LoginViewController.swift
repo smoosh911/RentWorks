@@ -15,7 +15,7 @@ import FirebaseStorage
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     @IBOutlet weak var rentMatchLabel: UILabel!
-    
+
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
     
@@ -23,7 +23,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
         facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]

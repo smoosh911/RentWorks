@@ -9,7 +9,7 @@
 import UIKit
 
 class RenterPageViewController: UIPageViewController {
-
+   
     
     private(set) lazy var renterVCs: [UIViewController] = {
         let storyboard = UIStoryboard(name: "RenterCreationViews", bundle: nil)
@@ -34,9 +34,7 @@ class RenterPageViewController: UIPageViewController {
         }
         
     }
-    
-    
-    
+
     func canPage() -> Bool {
         return UserController.canPage == true ? true : false
     }
