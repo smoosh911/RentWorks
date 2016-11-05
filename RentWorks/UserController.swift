@@ -127,14 +127,16 @@ class UserController {
             
             guard let landlordDictionary = snapshot.value as? [String: Any], let landlord = Landlord(dictionary: landlordDictionary, context: context) else { completion(nil); return }
             
-            FirebaseController.propertiesRef.child(landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
+            FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 
+                // At this point, it pull all properties
                 guard let propertyDictionary = snapshot.value as? [String: [String: Any]] else { return }
                 
-                let properties = propertyDictionary.flatMap({Property(dictionary: $0.value, context: context)})
+                let allProperties = propertyDictionary.flatMap({Property(dictionary: $0.value, context: context)})
+                let landlordProperties = allProperties.filter({$0.landlordID == landlordID})
                 let group = DispatchGroup()
                 
-                for property in properties {
+                for property in landlordProperties {
                     group.enter()
                     downloadAndAddImagesFor(property: property, completion: { (_) in
                         group.leave()
@@ -142,7 +144,7 @@ class UserController {
                     
                 }
                 group.notify(queue: DispatchQueue.main, execute: {
-                    for property in properties { property.landlord = landlord }
+                    for property in landlordProperties { property.landlord = landlord }
                     
                     completion(landlord)
                 })
