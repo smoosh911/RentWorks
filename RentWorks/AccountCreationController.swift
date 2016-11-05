@@ -38,8 +38,6 @@ class AccountCreationController {
         guard !currentRenterVCs.contains(nextVC) else { return }
         currentRenterVCs.append(nextVC)
         AccountCreationController.resetRenterPageVCDataSourceFor(renterVC: renterVC)
-        pageVC.setViewControllers([self], direction: .forward, animated: true, completion: nil)
-        
     }
     
     static func resetRenterPageVCDataSourceFor(renterVC: UIViewController) {
