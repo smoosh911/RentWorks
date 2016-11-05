@@ -23,8 +23,8 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
         
-        
-        
+        AccountCreationController.currentRenterVCs.append(self)
+
         hideKeyboardWhenViewIsTapped()
         
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
