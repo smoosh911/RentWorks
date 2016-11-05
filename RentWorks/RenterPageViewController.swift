@@ -30,18 +30,18 @@ extension RenterPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
-        guard let viewControllerIndex = AccountCreationController.currentRenterVCs.index(of: viewController) else { return nil }
+        guard let viewControllerIndex = AccountCreationController.renterVCs.index(of: viewController) else { return nil }
         
         let previousIndex = viewControllerIndex - 1
         
         guard previousIndex >= 0, AccountCreationController.currentRenterVCs.count > previousIndex else { return nil }
         
-        return AccountCreationController.currentRenterVCs[previousIndex]
+        return AccountCreationController.renterVCs[previousIndex]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
-        guard let viewControllerIndex = AccountCreationController.currentRenterVCs.index(of: viewController) else {
+        guard let viewControllerIndex = AccountCreationController.renterVCs.index(of: viewController) else {
             return nil
         }
         
@@ -50,6 +50,6 @@ extension RenterPageViewController: UIPageViewControllerDataSource {
         
         guard renterVCsCount != nextIndex, renterVCsCount > nextIndex else { return nil }
         
-        return AccountCreationController.currentRenterVCs[nextIndex]
+        return AccountCreationController.renterVCs[nextIndex]
     }
 }

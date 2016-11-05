@@ -33,13 +33,12 @@ class AccountCreationController {
     }
     
     static func addNextVCToRenterPageVCDataSource(renterVC: UIViewController) {
-        guard let currentVCIndex = renterVCs.index(of: renterVC), let pageVC = renterVC.parent as? RenterPageViewController else { return }
+        guard let currentVCIndex = renterVCs.index(of: renterVC) else { return }
         let nextVC = renterVCs[currentVCIndex + 1]
         guard !currentRenterVCs.contains(nextVC) else { return }
         currentRenterVCs.append(nextVC)
         AccountCreationController.resetRenterPageVCDataSourceFor(renterVC: renterVC)
-        pageVC.setViewControllers([self], direction: .forward, animated: true, completion: nil)
-        
+    
     }
     
     static func resetRenterPageVCDataSourceFor(renterVC: UIViewController) {
