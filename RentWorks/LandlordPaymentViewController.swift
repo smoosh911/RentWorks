@@ -16,7 +16,7 @@ class LandlordPaymentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserController.canPage = true
+        
         nextButton.isHidden = true
         
         nextButton.slideFromRight()
@@ -29,13 +29,16 @@ class LandlordPaymentViewController: UIViewController {
     @IBAction func paymentSliderValueChanged(_ sender: UISlider) {
         paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
         if paymentSlider.value >= 3000 {
+            
+            // TODO: - Check if setViewControllers from PageVC calls
+            
             paymentAmountLabel.text = "$\(Int(paymentSlider.value))+ per month"
 
         }
     }
 
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-        UserController.pageRightFrom(landlordVC: self)
+        AccountCreationController.pageRightFrom(landlordVC: self)
         
          UserController.addAttributeToUserDictionary(attribute: [UserController.kMonthlyPayment: Int(paymentSlider.value)])
     }

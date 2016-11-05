@@ -14,7 +14,7 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserController.canPage = false
+        
         UserController.photoSelectedDelegate = self
 //        nextButton.isHidden = true
         
@@ -22,7 +22,7 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if UserController.userCreationPhotos.count > 0 {
-            UserController.pageRightFrom(landlordVC: self)
+            AccountCreationController.pageRightFrom(landlordVC: self)
         } else {
             presentAddPhotoAlert()
         }
@@ -30,7 +30,7 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
     
     func photoWasSelected() {
 //        nextButton.slideFromRight()
-        UserController.canPage = true
+        
         guard let pageVC = self.parent as? LandlordPageViewController else { return }
         pageVC.dataSource = nil
         pageVC.dataSource = pageVC

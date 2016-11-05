@@ -21,10 +21,14 @@ class RenterPaymentViewController: UIViewController {
         nextButton.slideFromRight()
         
         paymentSlider.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI_2))
-
-        UserController.canPage = true
+        
+        AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
         
         paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        savePaymentAmountInformationToUserCreationDictionary()
     }
     
     @IBAction func paymentSliderValueChanged(_ sender: UISlider) {
@@ -36,10 +40,13 @@ class RenterPaymentViewController: UIViewController {
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-          UserController.addAttributeToUserDictionary(attribute: [UserController .kMonthlyPayment: Int(paymentSlider.value)])
-        UserController.pageRightFrom(renterVC: self)
+        savePaymentAmountInformationToUserCreationDictionary()
+        AccountCreationController.pageRightFrom(renterVC: self)
     }
 
+    func savePaymentAmountInformationToUserCreationDictionary() {
+         UserController.addAttributeToUserDictionary(attribute: [UserController .kMonthlyPayment: Int(paymentSlider.value)])
+    }
     // MARK: - Navigation
     
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

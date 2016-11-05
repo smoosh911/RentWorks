@@ -15,7 +15,7 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserController.canPage = true
+        
         nextButton.isHidden = true
         
         nextButton.slideFromRight()
@@ -26,7 +26,7 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
     
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-        UserController.pageRightFrom(landlordVC: self)
+        AccountCreationController.pageRightFrom(landlordVC: self)
         UserController.addAttributeToUserDictionary(attribute: [UserController.kAvailableDate: availableDatePicker.date.timeIntervalSince1970])
     }
     // MARK: - Navigation

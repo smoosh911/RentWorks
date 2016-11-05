@@ -9,7 +9,7 @@
 import UIKit
 
 class RenterAddressViewController: UIViewController, UITextFieldDelegate {
-
+    
     
     @IBOutlet weak var zipCodeTextField: UITextField!
     @IBOutlet weak var addressTextField: UITextField!
@@ -18,19 +18,24 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.nextButton.isHidden = true
         
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
         
-        UserController.canPage = false
+        
         
         hideKeyboardWhenViewIsTapped()
         
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
     }
-
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if zipCodeTextField.text != "", zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" {
+            saveAddressInformationToAccountCreationDictionary()
+        }
+    }
+    
     @IBAction func zipCodeTextFieldDidChange(_ sender: Any) {
         if zipCodeTextField.text?.characters.count == 5 {
             zipCodeTextField.resignFirstResponder()
@@ -39,17 +44,16 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         
-        if zipCodeTextField.text != "" || addressTextField.text != "" {
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : addressTextField.text ?? "No address"])
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? "No zip code"])
+        if zipCodeTextField.text != "", zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" {
+            saveAddressInformationToAccountCreationDictionary()
             
-            UserController.pageRightFrom(renterVC: self)
+            AccountCreationController.pageRightFrom(renterVC: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing.", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             alert.addAction(dismissAction)
             alert.view.tintColor = AppearanceController.customOrangeColor
-
+            
             self.present(alert, animated: true, completion: nil)
             
         }
@@ -61,14 +65,18 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != ""  {
-
-            nextButton.slideFromRight()
             
-            UserController.enablePagingFor(renterVC: self)
+            AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
+            nextButton.slideFromRight()
         }
     }
     
-
+    func saveAddressInformationToAccountCreationDictionary() {
+        
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : addressTextField.text ?? "No address"])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? "No zip code"])
+    }
+    
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -80,7 +88,7 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         } else {
             return true
         }
-
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

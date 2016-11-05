@@ -9,6 +9,7 @@
 import UIKit
 
 class RenterWantedFeaturesViewController: UIViewController {
+    
     var features = [String]()
     
     @IBOutlet weak var laundryButton: UIButton!
@@ -28,7 +29,7 @@ class RenterWantedFeaturesViewController: UIViewController {
         
         nextButton.slideFromRight()
         
-        UserController.canPage = true
+        AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
         
         laundryButton.layer.cornerRadius = 15
         garageButton.layer.cornerRadius = 15
@@ -36,6 +37,10 @@ class RenterWantedFeaturesViewController: UIViewController {
         gymButton.layer.cornerRadius = 15
         dishwasherButton.layer.cornerRadius = 15
         backyardButton.layer.cornerRadius = 15
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        saveWantedFeaturesToAccountCreationDictionary()
     }
     
     @IBAction func laundryButtonTapped(_ sender: AnyObject) {
@@ -118,12 +123,17 @@ class RenterWantedFeaturesViewController: UIViewController {
     }
 
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-        let featureString = features.joined(separator: ", ")
-        
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kPropertyFeatures: featureString])
-        print(UserController.temporaryUserCreationDictionary)
-        UserController.pageRightFrom(renterVC: self)
+    
+        saveWantedFeaturesToAccountCreationDictionary()
+        AccountCreationController.pageRightFrom(renterVC: self)
     }
+    
+    
+    func saveWantedFeaturesToAccountCreationDictionary() {
+        let featureString = features.joined(separator: ", ")
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kPropertyFeatures: featureString])
+    }
+    
     
     // MARK: - Navigation
 

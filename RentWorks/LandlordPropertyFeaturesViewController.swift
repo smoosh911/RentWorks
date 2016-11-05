@@ -26,7 +26,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UserController.canPage = true
+        
         
         nextButton.isHidden = true
         
@@ -120,7 +120,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
     }
 
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-        UserController.pageRightFrom(landlordVC: self)
+        AccountCreationController.pageRightFrom(landlordVC: self)
         
         let featureString = features.joined(separator: ", ")
         
