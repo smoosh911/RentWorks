@@ -48,7 +48,7 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         if zipCodeTextField.text != "" || addressTextField.text != "" {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : addressTextField.text ?? "No address"])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? "No zip code"])
-            UserController.pageRightFrom(landlordVC: self)
+            AccountCreationController.pageRightFrom(landlordVC: self)
         } else {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
@@ -76,7 +76,6 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != ""  {
             nextButton.slideFromRight()
-            UserController.enablePagingFor(landlordVC: self)
         }
     }
     

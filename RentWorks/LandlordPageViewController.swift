@@ -34,12 +34,7 @@ class LandlordPageViewController: UIPageViewController {
         }
         
     }
-    
-    
-    
-    func canPage() -> Bool {
-        return UserController.canPage == true ? true : false
-    }
+
     /*
      // MARK: - Navigation
      
@@ -56,7 +51,7 @@ class LandlordPageViewController: UIPageViewController {
 extension LandlordPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard canPage() else { return nil }
+        
             
             guard let viewControllerIndex = landlordVCs.index(of: viewController) else { return nil }
             
@@ -69,7 +64,6 @@ extension LandlordPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
-        guard canPage() else { return nil }
             guard let viewControllerIndex = landlordVCs.index(of: viewController) else {
                 return nil
             }

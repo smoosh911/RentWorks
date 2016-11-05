@@ -27,13 +27,17 @@ class RenterAllowedViewController: UIViewController {
         
         nextButton.isHidden = true
      
-        UserController.canPage = false
+        
         
         petsAllowedButton.layer.cornerRadius = 15
         noPetsAllowedButton.layer.cornerRadius = 15
         smokingAllowedButton.layer.cornerRadius = 15
         noSmokingButton.layer.cornerRadius = 15
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        saveAllowedInformationToUserDictionary()
     }
     
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
@@ -87,17 +91,21 @@ class RenterAllowedViewController: UIViewController {
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
-            UserController.pageRightFrom(renterVC: self)
+            saveAllowedInformationToUserDictionary()
+            AccountCreationController.pageRightFrom(renterVC: self)
         } else {
             
         }
     }
     
+    func saveAllowedInformationToUserDictionary() {
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
+    }
+    
     func checkIfBothButtonsHaveBeenSelected() {
         if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
-            UserController.enablePagingFor(renterVC: self)
+            AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
             nextButton.slideFromRight()
         }
     }

@@ -24,7 +24,7 @@ class LandlordAllowedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        UserController.canPage = false
+        
         
         nextButton.isHidden = true
         
@@ -88,7 +88,7 @@ class LandlordAllowedViewController: UIViewController {
             UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
             UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
             
-            UserController.pageRightFrom(landlordVC: self)
+            AccountCreationController.pageRightFrom(landlordVC: self)
         } else {
             presentAllowedAlert()
         }
@@ -97,7 +97,7 @@ class LandlordAllowedViewController: UIViewController {
     func checkIfBothButtonsHaveBeenSelected() {
         if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
             nextButton.slideFromRight()
-            UserController.canPage = true
+            
             guard let pageVC = self.parent as? LandlordPageViewController else { return }
             pageVC.dataSource = nil
             pageVC.dataSource = pageVC
