@@ -100,7 +100,8 @@ class UserController {
                 })
             } else {
                 completion(nil)
-                print("Error: \(userType)")
+                log("Error: \(userType)")
+//                print("Error: \(userType)")
             }
         }
     }
@@ -110,7 +111,11 @@ class UserController {
     
     static func createLandlordAndPropertyForCurrentUser(completion: @escaping (() -> Void)) {
         createLandlordForCurrentUser { (landlord) in
-            guard let landlord = landlord else { print("Landlord returned from completion closure is nil"); return }
+            guard let landlord = landlord else {
+                log("Landlord nil")
+//                print("Landlord returned from completion closure is nil");
+                return
+            }
             createLandlordInFirebase(landlord: landlord, completion: {
                 createPropertyInCoreDataFor(landlord: landlord, completion: { (property) in
                     guard let property = property else { print("Error creating property"); return }
