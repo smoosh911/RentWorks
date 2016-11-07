@@ -29,7 +29,7 @@ class AppearanceController {
     static let vengaYellowColor = UIColor(red: 0.976, green: 0.937, blue: 0.110, alpha: 1.00)
     
     
-    static let viewButtonPressedColor = UIColor(red: 0.807, green: 0.391, blue: 0.000, alpha: 1.00)
+    static let viewButtonPressedColor = UIColor(red: 0.945, green: 0.902, blue: 0.132, alpha: 1.00)
     
     // For the credit rating labels, because the text isn't a part of the button, the slight change in color must be done manually.
     static let buttonPressedColor = UIColor(red: 0.911, green: 0.920, blue: 0.920, alpha: 1.00)
@@ -42,6 +42,7 @@ extension UINavigationController {
     public func presentTransparentNavigationBar() {
         navigationBar.setBackgroundImage(UIImage(), for:UIBarMetrics.default)
         navigationBar.isTranslucent = true
+        navigationBar.tintColor = .black
         navigationBar.shadowImage = UIImage()
         setNavigationBarHidden(false, animated:true)
     }

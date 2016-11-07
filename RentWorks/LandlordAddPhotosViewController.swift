@@ -29,7 +29,8 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
     }
     
     func photoWasSelected() {
-//        nextButton.slideFromRight()
+        nextButton.center.x += 200
+        nextButton.slideFromRight()
         
         guard let pageVC = self.parent as? LandlordPageViewController else { return }
         pageVC.dataSource = nil
@@ -40,7 +41,7 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
         let alert = UIAlertController(title: "Hold on a second!", message: "Please add at least one photo of your property!", preferredStyle: .alert)
         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
         alert.addAction(dismissAction)
-        alert.view.tintColor = AppearanceController.vengaYellowColor
+        alert.view.tintColor = .black
         self.present(alert, animated: true, completion: nil)
 
     }

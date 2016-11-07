@@ -13,6 +13,7 @@ class LandlordPaymentViewController: UIViewController {
     @IBOutlet weak var paymentSlider: UISlider!
     @IBOutlet weak var paymentAmountLabel: UILabel!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var paymentSliderBackgroundView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +22,7 @@ class LandlordPaymentViewController: UIViewController {
         
         nextButton.slideFromRight()
         
-        paymentSlider.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI_2))
+paymentSliderBackgroundView.layer.cornerRadius = 4
         
         paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
     }

@@ -26,7 +26,7 @@ class RenterAllowedViewController: UIViewController {
         super.viewDidLoad()
         
         nextButton.isHidden = true
-     
+        
         
         
         petsAllowedButton.layer.cornerRadius = 15
@@ -41,9 +41,6 @@ class RenterAllowedViewController: UIViewController {
     }
     
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
-        petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
-        noPetsAllowedButton.setTitleColor(.white, for: .normal)
-        
         petsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
         noPetsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
@@ -54,9 +51,6 @@ class RenterAllowedViewController: UIViewController {
     }
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
-        noPetsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
-        petsAllowedButton.setTitleColor(.white, for: .normal)
-        
         noPetsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
         petsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
@@ -67,20 +61,15 @@ class RenterAllowedViewController: UIViewController {
     }
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
-        smokingAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
-        noSmokingButton.setTitleColor(.white, for: .normal)
-        
         smokingAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
         noSmokingButton.backgroundColor = AppearanceController.vengaYellowColor
+        
         smokingAllowed = true
         
         checkIfBothButtonsHaveBeenSelected()
     }
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
-        noSmokingButton.setTitleColor(buttonPressedColor, for: .normal)
-        smokingAllowedButton.setTitleColor(.white, for: .normal)
-        
         noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
         smokingAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
@@ -90,22 +79,23 @@ class RenterAllowedViewController: UIViewController {
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
-        if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
+        if petsAllowed != nil, smokingAllowed != nil {
             saveAllowedInformationToUserDictionary()
             AccountCreationController.pageRightFrom(renterVC: self)
-        } else {
-            
         }
     }
     
     func saveAllowedInformationToUserDictionary() {
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
+        if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
+        }
     }
     
     func checkIfBothButtonsHaveBeenSelected() {
         if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
             AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
+            nextButton.center.x += 200
             nextButton.slideFromRight()
         }
     }
@@ -117,9 +107,9 @@ class RenterAllowedViewController: UIViewController {
         
         alert.addAction(dismissAction)
         
-        alert.view.tintColor = AppearanceController.vengaYellowColor
+        alert.view.tintColor = .black
         
         self.present(alert, animated: true, completion: nil)
     }
-
+    
 }

@@ -52,7 +52,7 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
             let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing.", preferredStyle: .alert)
             let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
             alert.addAction(dismissAction)
-            alert.view.tintColor = AppearanceController.vengaYellowColor
+            alert.view.tintColor = .black
             
             self.present(alert, animated: true, completion: nil)
             

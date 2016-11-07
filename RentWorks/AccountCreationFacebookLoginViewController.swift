@@ -110,7 +110,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         
                         let alert = UIAlertController(title: "Hey there", message: "Looks like you've already got an account attached to this Facebook account. If you want to log in, tap the 'Log in' button below.", preferredStyle: .alert)
                         
-                        alert.view.tintColor = AppearanceController.vengaYellowColor
+                        alert.view.tintColor = .black
                         
                         let loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
                             let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
@@ -173,9 +173,9 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(facebookLoginButton)
         let centerXConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-        let centerYConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerY, relatedBy: .equal, toItem: findLabel, attribute: .centerY, multiplier: 1, constant: 40)
+        let centerYConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: -170)
         let widthConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal, toItem: findLabel, attribute: .width, multiplier: 1, constant: 0)
-        let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 30)
+        let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 40)
         self.view.addConstraints([centerXConstraint, centerYConstraint, widthConstraint, heightConstraint])
     }
 }

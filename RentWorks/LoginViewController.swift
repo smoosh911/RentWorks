@@ -14,7 +14,7 @@ import FirebaseStorage
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
-    @IBOutlet weak var rentMatchLabel: UILabel!
+    @IBOutlet weak var rentingMadeSmartLabel: UILabel!
 
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
@@ -31,7 +31,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         self.view.addSubview(facebookLoginButton)
         
         AppearanceController.appearanceFor(navigationController: self.navigationController)
-        self.navigationController?.navigationController?.navigationBar.barTintColor = UIColor.white
         
         constraintsForFacebookLoginButton()
     }
@@ -107,7 +106,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         alert.addAction(dismissAction)
         alert.addAction(createAccountAction)
         
-        alert.view.tintColor = AppearanceController.vengaYellowColor
+        alert.view.tintColor = .black
         
         self.present(alert, animated: true, completion: nil)
     }
@@ -117,9 +116,9 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false
         
         let centerXConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-        let centerYConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
+        let yConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .top, relatedBy: .equal, toItem: rentingMadeSmartLabel, attribute: .bottom, multiplier: 1, constant: 8)
         //        let widthConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal, toItem: self.passwordTextField, attribute: .width, multiplier: 1, constant: 0)
         //        let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 30)
-        self.view.addConstraints([centerXConstraint, centerYConstraint])
+        self.view.addConstraints([centerXConstraint, yConstraint])
     }
 }
