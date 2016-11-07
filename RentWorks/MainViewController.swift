@@ -156,8 +156,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     func updateUIElementsForPropertyCards() {
         let property = FirebaseController.properties[imageIndex]
         
-        print(property.propertyID)
-        
         guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
         
         
@@ -197,8 +195,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
 
     func updateUIElementsForRenterCards() {
         let renter = FirebaseController.renters[imageIndex]
-        
-        print(renter.id)
         
         guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
         

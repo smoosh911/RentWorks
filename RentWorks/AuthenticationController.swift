@@ -22,11 +22,12 @@ class AuthenticationController {
             if loggedIn == false {
                 
                 FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
-                    if error != nil {
-                        print(error?.localizedDescription)
+                    if let error = error {
+                        print(error.localizedDescription)
                         completion(false)
                     }
                     // Warning: Incomplete Implementation
+                    guard let user = user else { completion(false); return }
                     print(user)
                     completion(true)
                 })

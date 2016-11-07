@@ -85,8 +85,6 @@ class RenterCreditRatingViewController: UIViewController {
 
         let buttonBackgroundViews = [aPlusCreditBackgroundView, aCreditBackgroundView, bCreditBackgroundView, otherCreditBackgroundView].filter({$0 != backgroundView})
         
-        let otherLabels = [aPlusCreditLabel, aPlusCreditScoreLabel, aCreditLabel, aCreditScoreLabel, bCreditLabel, bCreditScoreLabel, otherCreditLabel, otherCreditScoreLabel].filter({$0 != letterLabel}).filter({$0 != scoreLabel})
-        
         UIView.transition(with: backgroundView, duration: 0.1, options: .transitionCrossDissolve, animations: {
             backgroundView.backgroundColor = AppearanceController.viewButtonPressedColor
         }) { _ in

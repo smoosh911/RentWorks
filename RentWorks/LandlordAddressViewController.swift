@@ -53,7 +53,7 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
         
-        let zipCode = zipCodeTextField.text?.trimmingCharacters(in: .letters)
+//        let zipCode = zipCodeTextField.text?.trimmingCharacters(in: .letters)
         
         if zipCodeTextField.text != "", zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" {
             saveAddressInformationToAccountCreationDictionary()
