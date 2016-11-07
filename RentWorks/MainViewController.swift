@@ -13,7 +13,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     // MARK: - Front swipeableView outlets
     
-    @IBOutlet weak var swipeableView: RWKSwipeableView!
+    @IBOutlet weak var swipeableView: UIView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
@@ -34,24 +34,24 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     // MARK: - Outlets for backgroundView that acts as a faux swipeableView
     
-    @IBOutlet weak var backgroundView: UIView!
-    @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var backgroundNameLabel: UILabel!
-    @IBOutlet weak var backgroundAddressLabel: UILabel!
-    
-    
-    @IBOutlet weak var backgroundBedroomCountLabel: UILabel!
-    @IBOutlet weak var backgroundBedroomImageView: UIImageView!
-    @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
-    @IBOutlet weak var backgroundBathroomImageView: UIImageView!
-    @IBOutlet weak var backgroundPetFriendlyImageview: UIImageView!
-    @IBOutlet weak var backgroundSmokingAllowedImageView: UIImageView!
-    
-    @IBOutlet weak var backgroundStarImageView1: UIImageView!
-    @IBOutlet weak var backgroundStarImageView2: UIImageView!
-    @IBOutlet weak var backgroundStarImageView3: UIImageView!
-    @IBOutlet weak var backgroundStarImageView4: UIImageView!
-    @IBOutlet weak var backgroundStarImageView5: UIImageView!
+//    @IBOutlet weak var backgroundView: UIView!
+//    @IBOutlet weak var backgroundImageView: UIImageView!
+//    @IBOutlet weak var backgroundNameLabel: UILabel!
+//    @IBOutlet weak var backgroundAddressLabel: UILabel!
+//    
+//    
+//    @IBOutlet weak var backgroundBedroomCountLabel: UILabel!
+//    @IBOutlet weak var backgroundBedroomImageView: UIImageView!
+//    @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
+//    @IBOutlet weak var backgroundBathroomImageView: UIImageView!
+//    @IBOutlet weak var backgroundPetFriendlyImageview: UIImageView!
+//    @IBOutlet weak var backgroundSmokingAllowedImageView: UIImageView!
+//    
+//    @IBOutlet weak var backgroundStarImageView1: UIImageView!
+//    @IBOutlet weak var backgroundStarImageView2: UIImageView!
+//    @IBOutlet weak var backgroundStarImageView3: UIImageView!
+//    @IBOutlet weak var backgroundStarImageView4: UIImageView!
+//    @IBOutlet weak var backgroundStarImageView5: UIImageView!
     
     @IBOutlet weak var matchesButton: UIButton!
     
@@ -98,8 +98,103 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         }
     }
     
+//    func wasDragged(gesture: UIPanGestureRecognizer) {
+//        
+//        let translation = gesture.translation(in: self.view)
+//        let label = gesture.view!
+//        
+//        label.center = CGPoint(x: self.view.bounds.width / 2 + translation.x, y: self.view.bounds.height / 2 + translation.y)
+//        
+//        let xFromCenter = label.center.x - self.view.bounds.width / 2
+//        
+//        let scale = min(100 / abs(xFromCenter), 1)
+//        
+////        var rotation = CGAffineTransform(rotationAngle: xFromCenter / 200)
+////        
+////        var stretch = CGAffineTransform(scaleX: scale, y: scale)
+//        
+//        var transform = CGAffineTransform.identity
+//        transform = transform.rotated(by: xFromCenter / 200)
+//        transform = transform.scaledBy(x: scale, y: scale)
+//        
+//        label.transform = transform
+//        
+//        
+//        if gesture.state == UIGestureRecognizerState.ended {
+//            if label.center.x < 100 {
+//                print("not chosen")
+//            } else if label.center.x > self.view.bounds.width - 100 {
+//                print("chosen")
+//            }
+//            
+////            rotation = CGAffineTransform(rotationAngle: 0)
+////            
+////            stretch = CGAffineTransform(scaleX: 1, y: 1)
+//            transform = transform.rotated(by: 0)
+//            transform = transform.scaledBy(x: 1, y: 1)
+//            
+//            label.transform = transform
+//            
+//            label.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
+//        }
+//    }
+    
+    func wasDragged(gesture: UIPanGestureRecognizer) {
+        
+        let translation = gesture.translation(in: self.view)
+        let label = gesture.view!
+        
+        label.center = CGPoint(x: self.view.bounds.width / 2 + translation.x, y: self.view.bounds.height / 2 + abs(translation.x))
+        
+        let xFromCenter = label.center.x - self.view.bounds.width / 2.0
+        
+        let scale = min(100.0 / (abs(xFromCenter) + 10), 1.0)
+        
+        
+        var transform = CGAffineTransform.identity
+        transform = transform.rotated(by: xFromCenter / 200.0)
+        transform = transform.scaledBy(x: scale, y: scale)
+        
+        label.transform = transform
+        
+        
+        if gesture.state == UIGestureRecognizerState.ended {
+            
+            var acceptedOrRejected = ""
+            
+            if label.center.x < 100 {
+                
+                acceptedOrRejected = "rejected"
+                
+            } else if label.center.x > self.view.bounds.width - 100 {
+                
+                acceptedOrRejected = "accepted"
+                
+            }
+            print(acceptedOrRejected)
+            
+            var endTransform = CGAffineTransform.identity
+            
+            endTransform = endTransform.rotated(by: 0.0)
+            endTransform = endTransform.scaledBy(x: 1.0, y: 1.0)
+            
+            label.transform = endTransform
+            
+            label.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
+            
+            
+        }
+        
+        
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let gesture = UIPanGestureRecognizer(target: self, action: #selector(self.wasDragged(gesture:)))
+        swipeableView.addGestureRecognizer(gesture)
+        swipeableView.isUserInteractionEnabled = true
         
         if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
         
@@ -107,7 +202,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         FirebaseController.delegate = self
         MatchController.delegate = self
-        swipeableView.delegate = self
+//        swipeableView.delegate = self
         setupViews()
         
         if UserController.currentUserType == "renter" {
@@ -176,17 +271,17 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         let nextProperty = FirebaseController.properties[backgroundimageIndex]
         
         guard  let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data), let backgroundPropertyAddress = nextProperty.address else { return }
-        backgroundImageView.image = backgroundProfilePicture
-        backgroundNameLabel.text = nextProperty.propertyDescription ?? "No description available"
-        backgroundAddressLabel.text = backgroundPropertyAddress
-        
-        backgroundBedroomCountLabel.text = "\(nextProperty.bedroomCount)"
-        backgroundBathroomCountLabel.text = nextProperty.bathroomCount.isInteger ? "\(Int(nextProperty.bathroomCount))" : "\(nextProperty.bathroomCount)"
-        
-        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
-        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
-
-        update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
+//        backgroundImageView.image = backgroundProfilePicture
+//        backgroundNameLabel.text = nextProperty.propertyDescription ?? "No description available"
+//        backgroundAddressLabel.text = backgroundPropertyAddress
+//        
+//        backgroundBedroomCountLabel.text = "\(nextProperty.bedroomCount)"
+//        backgroundBathroomCountLabel.text = nextProperty.bathroomCount.isInteger ? "\(Int(nextProperty.bathroomCount))" : "\(nextProperty.bathroomCount)"
+//        
+//        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
+//        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
+//
+//        update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
         if imageIndex < FirebaseController.properties.count - 1 {
             imageIndex += 1
         } else {
@@ -210,9 +305,9 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         let nextRenter = FirebaseController.renters[backgroundimageIndex]
         
         guard  let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
-        backgroundImageView.image = backgroundProfilePicture
-        backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
-        backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
+//        backgroundImageView.image = backgroundProfilePicture
+//        backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
+//        backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
         
         if imageIndex < FirebaseController.renters.count - 1 {
             imageIndex += 1
@@ -267,8 +362,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         swipeableView.layer.cornerRadius = 15
         imageView.layer.cornerRadius = 15
         
-        backgroundImageView.layer.cornerRadius = 15
-        backgroundView.layer.cornerRadius = 15
+//        backgroundImageView.layer.cornerRadius = 15
+//        backgroundView.layer.cornerRadius = 15
     }
     
     func setUpAndDisplayLoadingScreen() {
