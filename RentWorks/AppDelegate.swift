@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
 //        if FBSDKAccessToken.current() == nil {
 //            let loginVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
