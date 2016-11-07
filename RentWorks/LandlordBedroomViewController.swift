@@ -18,9 +18,10 @@ class LandlordBedroomViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
+
         nextButton.isHidden = true
-        
+
         nextButton.slideFromRight()
         
 //        bedroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
@@ -28,6 +29,10 @@ class LandlordBedroomViewController: UIViewController {
         
         bedroomCountLabel.text = "1"
         bathroomCountLabel.text = "1"
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        saveRoomInformationToUserCreationDictionary()
     }
     
     @IBAction func bedroomStepperValueChanged(_ sender: UIStepper) {
@@ -65,13 +70,16 @@ class LandlordBedroomViewController: UIViewController {
     }
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
-        AccountCreationController.pageRightFrom(landlordVC: self)
+        saveRoomInformationToUserCreationDictionary()
+        AccountCreationController.pageRightFrom(renterVC: self)
         
+    }
+    
+    func saveRoomInformationToUserCreationDictionary() {
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBedroomCount: bedroomStepper.value])
         
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBathroomCount: bathroomStepper.value])
     }
-    
 //    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 //    }
 }
