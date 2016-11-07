@@ -27,6 +27,9 @@ class RenterPageViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let myView = view?.subviews.first as? UIScrollView {
+            myView.canCancelContentTouches = false
+        }
         dataSource = self
         self.view.backgroundColor = AppearanceController.vengaYellowColor
         if let vc1 = renterVCs.first {
