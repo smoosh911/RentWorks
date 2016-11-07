@@ -467,7 +467,7 @@
                                     <action selector="bathroomStepperValueChanged:" destination="b6x-Jm-hlr" eventType="valueChanged" id="eEL-1H-uq7"/>
                                 </connections>
                             </stepper>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="dJ9-cN-Wpe">
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="dJ9-cN-Wpe">
                                 <rect key="frame" x="145" y="327" width="85" height="42"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SuA-jL-dK9">
@@ -485,7 +485,7 @@
                                     </imageView>
                                 </subviews>
                             </stackView>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="cxD-dG-y77">
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="cxD-dG-y77">
                                 <rect key="frame" x="154" y="414" width="67" height="42"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z3o-dY-U59">
@@ -755,12 +755,14 @@
                                     <action selector="nextButtonTapped:" destination="s59-y2-RVY" eventType="touchUpInside" id="To9-GL-jBE"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where is your property?" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XLK-Bx-Pji">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="XLK-Bx-Pji">
                                 <rect key="frame" x="30" y="48" width="314" height="202"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="314" id="70l-De-eOw"/>
                                     <constraint firstAttribute="height" constant="202" id="MQN-lv-D9s"/>
                                 </constraints>
+                                <string key="text">Where 
+is your property?</string>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="75"/>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -883,12 +885,14 @@
                                     <action selector="nextButtonTapped:" destination="qYP-dv-X2r" eventType="touchUpInside" id="Bdd-aM-n2y"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you allow the following?" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eoQ-cE-7WW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="eoQ-cE-7WW">
                                 <rect key="frame" x="30" y="48" width="314" height="192"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="314" id="F85-W8-4I3"/>
                                     <constraint firstAttribute="height" constant="192" id="lXz-4Y-r9F"/>
                                 </constraints>
+                                <string key="text">Do you 
+allow the following?</string>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="70"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
