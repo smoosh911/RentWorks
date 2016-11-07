@@ -20,16 +20,45 @@ class AccountCreationController {
         }
     }
     
+    static var currenLandlordVCs: [UIViewController] = [] {
+        didSet {
+            currenLandlordVCs.forEach({print($0.description)})
+            print("\n\n\n\n\n")
+        }
+    }
+    
     static func addNextVCToRenterPageVCDataSource(renterVC: UIViewController) {
         guard let pageVC = renterVC.parent as? RenterPageViewController, let currentVCIndex = pageVC.renterVCs.index(of: renterVC) else { return }
         let nextVC = pageVC.renterVCs[currentVCIndex + 1]
         guard !currentRenterVCs.contains(nextVC) else { return }
         currentRenterVCs.append(nextVC)
-//        AccountCreationController.resetRenterPageVCDataSourceFor(renterVC: renterVC)
+        AccountCreationController.resetRenterPageVCDataSourceFor(renterVC: renterVC)
     }
     
     static func resetRenterPageVCDataSourceFor(renterVC: UIViewController) {
         guard let pageVC = renterVC.parent as? RenterPageViewController else { return }
+        pageVC.dataSource = nil
+        pageVC.dataSource = pageVC
+    }
+    static func pageRightFrom(renterVC currentVC: UIViewController) {
+        guard let pageVC = currentVC.parent as? RenterPageViewController else { return }
+        guard let currentVCIndex = self.currentRenterVCs.index(of: currentVC), currentVCIndex + 1 <= self.currentRenterVCs.count else { return }
+        
+        let newIndex = currentVCIndex + 1
+        let nextVC = self.currentRenterVCs[newIndex]
+        pageVC.setViewControllers([nextVC], direction: .forward, animated: true, completion: nil)
+    }
+
+    static func addNextVCToLandlordPageVCDataSource(landlordVC: UIViewController) {
+        guard let pageVC = landlordVC.parent as? LandlordPageViewController, let currentVCIndex = pageVC.landlordVCs.index(of: landlordVC) else { return }
+        let nextVC = pageVC.landlordVCs[currentVCIndex + 1]
+        guard !currenLandlordVCs.contains(nextVC) else { return }
+        currenLandlordVCs.append(nextVC)
+        AccountCreationController.resetLandlordPageVCDataSourceFor(landlordVC: landlordVC)
+    }
+    
+    static func resetLandlordPageVCDataSourceFor(landlordVC: UIViewController) {
+        guard let pageVC = landlordVC.parent as? LandlordPageViewController else { return }
         pageVC.dataSource = nil
         pageVC.dataSource = pageVC
     }
@@ -44,13 +73,5 @@ class AccountCreationController {
     }
     
     
-    static func pageRightFrom(renterVC currentVC: UIViewController) {
-        guard let pageVC = currentVC.parent as? RenterPageViewController else { return }
-        guard let currentVCIndex = self.currentRenterVCs.index(of: currentVC), currentVCIndex + 1 <= self.currentRenterVCs.count else { return }
-        
-        let newIndex = currentVCIndex + 1
-        let nextVC = self.currentRenterVCs[newIndex]
-        pageVC.setViewControllers([nextVC], direction: .forward, animated: true, completion: nil)
-    }
     
 }

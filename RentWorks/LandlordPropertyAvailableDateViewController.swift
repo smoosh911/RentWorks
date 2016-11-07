@@ -16,6 +16,8 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
+        
         nextButton.isHidden = true
         
         nextButton.slideFromRight()
@@ -24,9 +26,17 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
         availableDatePicker.setValue(UIColor.white, forKey: "textColor")
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kAvailableDate: availableDatePicker.date.timeIntervalSince1970])
+    }
+    
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
         AccountCreationController.pageRightFrom(landlordVC: self)
+        savePropertyAvailableDateInformationToAccountCreationDictionary()
+    }
+    
+    func savePropertyAvailableDateInformationToAccountCreationDictionary() {
         UserController.addAttributeToUserDictionary(attribute: [UserController.kAvailableDate: availableDatePicker.date.timeIntervalSince1970])
     }
     // MARK: - Navigation

@@ -26,7 +26,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
         
         nextButton.isHidden = true
         
@@ -40,6 +40,10 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         backyardButton.layer.cornerRadius = 15
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        saveWantedFeaturesToAccountCreationDictionary()
+    }
+    
     @IBAction func laundryButtonTapped(_ sender: AnyObject) {
         let laundry = UserController.PropertyFeatures.laundry.rawValue
         if features.contains(laundry), let index = features.index(of: laundry) {
@@ -120,12 +124,13 @@ class LandlordPropertyFeaturesViewController: UIViewController {
     }
 
     @IBAction func nextButtonTapped(_ sender: UIButton) {
+        saveWantedFeaturesToAccountCreationDictionary()
         AccountCreationController.pageRightFrom(landlordVC: self)
-        
+    }
+    
+    func saveWantedFeaturesToAccountCreationDictionary() {
         let featureString = features.joined(separator: ", ")
-        
         UserController.addAttributeToUserDictionary(attribute: [UserController.kPropertyFeatures: featureString])
-        print(UserController.temporaryUserCreationDictionary)
     }
     
     // MARK: - Navigation

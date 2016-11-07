@@ -17,6 +17,8 @@ class LandlordPaymentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
+        
         nextButton.isHidden = true
         
         nextButton.slideFromRight()
@@ -24,6 +26,10 @@ class LandlordPaymentViewController: UIViewController {
         paymentSlider.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI_2))
         
         paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        savePaymentAmountInformationToUserCreationDictionary()
     }
 
     @IBAction func paymentSliderValueChanged(_ sender: UISlider) {
@@ -40,7 +46,11 @@ class LandlordPaymentViewController: UIViewController {
     @IBAction func nextButtonTapped(_ sender: UIButton) {
         AccountCreationController.pageRightFrom(landlordVC: self)
         
-         UserController.addAttributeToUserDictionary(attribute: [UserController.kMonthlyPayment: Int(paymentSlider.value)])
+savePaymentAmountInformationToUserCreationDictionary()
+    }
+    
+    func savePaymentAmountInformationToUserCreationDictionary() {
+        UserController.addAttributeToUserDictionary(attribute: [UserController .kMonthlyPayment: Int(paymentSlider.value)])
     }
     
     // MARK: - Navigation

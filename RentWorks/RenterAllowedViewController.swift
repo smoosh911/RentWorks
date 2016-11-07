@@ -26,7 +26,7 @@ class RenterAllowedViewController: UIViewController {
         super.viewDidLoad()
         
         nextButton.isHidden = true
-     
+        
         
         
         petsAllowedButton.layer.cornerRadius = 15
@@ -99,8 +99,11 @@ class RenterAllowedViewController: UIViewController {
     }
     
     func saveAllowedInformationToUserDictionary() {
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
+        if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
+            
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
+        }
     }
     
     func checkIfBothButtonsHaveBeenSelected() {
@@ -121,5 +124,5 @@ class RenterAllowedViewController: UIViewController {
         
         self.present(alert, animated: true, completion: nil)
     }
-
+    
 }

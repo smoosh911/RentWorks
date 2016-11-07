@@ -29,11 +29,10 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
     }
     
     func photoWasSelected() {
-//        nextButton.slideFromRight()
-        
-        guard let pageVC = self.parent as? LandlordPageViewController else { return }
-        pageVC.dataSource = nil
-        pageVC.dataSource = pageVC
+        nextButton.center.x += 200
+        nextButton.slideFromRight()
+
+        AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
     }
     
     func presentAddPhotoAlert() {

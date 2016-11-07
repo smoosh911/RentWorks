@@ -34,6 +34,11 @@ class LandlordAllowedViewController: UIViewController {
         noSmokingButton.layer.cornerRadius = 15
         
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        saveAllowedInformationToUserDictionary()
+    }
+    
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
         petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
         noPetsAllowedButton.setTitleColor(.white, for: .normal)
@@ -84,10 +89,8 @@ class LandlordAllowedViewController: UIViewController {
     }
     
     @IBAction func nextButtonTapped(_ sender: AnyObject) {
-        if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
-            
+        if petsAllowed != nil, smokingAllowed != nil {
+            saveAllowedInformationToUserDictionary()
             AccountCreationController.pageRightFrom(landlordVC: self)
         } else {
             presentAllowedAlert()
@@ -96,11 +99,19 @@ class LandlordAllowedViewController: UIViewController {
     
     func checkIfBothButtonsHaveBeenSelected() {
         if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
+            AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
             nextButton.slideFromRight()
+//            guard let pageVC = self.parent as? LandlordPageViewController else { return }
+//            pageVC.dataSource = nil
+//            pageVC.dataSource = pageVC
+        }
+    }
+    
+    func saveAllowedInformationToUserDictionary() {
+        if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
             
-            guard let pageVC = self.parent as? LandlordPageViewController else { return }
-            pageVC.dataSource = nil
-            pageVC.dataSource = pageVC
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
         }
     }
     
