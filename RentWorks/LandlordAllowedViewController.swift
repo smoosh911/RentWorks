@@ -35,11 +35,8 @@ class LandlordAllowedViewController: UIViewController {
         
     }
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
-        petsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
-        noPetsAllowedButton.setTitleColor(.white, for: .normal)
-        
         petsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        noPetsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        noPetsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
         petsAllowed = true
         
@@ -48,11 +45,8 @@ class LandlordAllowedViewController: UIViewController {
     }
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
-        noPetsAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
-        petsAllowedButton.setTitleColor(.white, for: .normal)
-        
         noPetsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        petsAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        petsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
         petsAllowed = false
         
@@ -61,22 +55,17 @@ class LandlordAllowedViewController: UIViewController {
     }
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
-        smokingAllowedButton.setTitleColor(buttonPressedColor, for: .normal)
-        noSmokingButton.setTitleColor(.white, for: .normal)
-        
         smokingAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        noSmokingButton.backgroundColor = AppearanceController.customOrangeColor
+        noSmokingButton.backgroundColor = AppearanceController.vengaYellowColor
+        
         smokingAllowed = true
         
         checkIfBothButtonsHaveBeenSelected()
     }
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
-        noSmokingButton.setTitleColor(buttonPressedColor, for: .normal)
-        smokingAllowedButton.setTitleColor(.white, for: .normal)
-        
         noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        smokingAllowedButton.backgroundColor = AppearanceController.customOrangeColor
+        smokingAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
         smokingAllowed = true
         
@@ -96,6 +85,7 @@ class LandlordAllowedViewController: UIViewController {
     
     func checkIfBothButtonsHaveBeenSelected() {
         if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
+            nextButton.center.x += 200
             nextButton.slideFromRight()
             
             guard let pageVC = self.parent as? LandlordPageViewController else { return }
@@ -111,7 +101,7 @@ class LandlordAllowedViewController: UIViewController {
         
         alert.addAction(dismissAction)
         
-        alert.view.tintColor = AppearanceController.customOrangeColor
+        alert.view.tintColor = .black
         
         self.present(alert, animated: true, completion: nil)
     }

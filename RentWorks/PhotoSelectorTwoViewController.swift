@@ -30,6 +30,7 @@ class PhotoSelectorTwoViewController: UIViewController, UIImagePickerControllerD
                 imagePicker.delegate = self
                 
                 let alert = UIAlertController(title: "Select Photo Location", message: nil, preferredStyle: .actionSheet)
+                alert.view.tintColor = .black
                 
                 if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
                     alert.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (_) -> Void in

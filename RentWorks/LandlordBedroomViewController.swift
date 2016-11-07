@@ -26,23 +26,23 @@ class LandlordBedroomViewController: UIViewController {
 //        bedroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
 //        bathroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
         
-        bedroomCountLabel.text = "1 bedroom"
-        bathroomCountLabel.text = "1 bathroom"
+        bedroomCountLabel.text = "1"
+        bathroomCountLabel.text = "1"
     }
     
     @IBAction func bedroomStepperValueChanged(_ sender: UIStepper) {
         if sender.value > 1 {
             if sender.value.isInteger {
                 let intValue = Int(sender.value)
-                bedroomCountLabel.text = "\(intValue) bedrooms"
+                bedroomCountLabel.text = "\(intValue)"
             } else {
-                bedroomCountLabel.text = "\(sender.value) bedrooms"
+                bedroomCountLabel.text = "\(sender.value)"
             }
         } else {
             if sender.value == 1 {
-                bedroomCountLabel.text = "1 bedroom"
+                bedroomCountLabel.text = "1"
             } else {
-            bedroomCountLabel.text = "\(sender.value) bedroom"
+                bedroomCountLabel.text = "\(sender.value)"
             }
         }
     }
@@ -51,18 +51,19 @@ class LandlordBedroomViewController: UIViewController {
         if sender.value > 1 {
             if sender.value.isInteger {
                 let intValue = Int(sender.value)
-                bathroomCountLabel.text = "\(intValue) bathrooms"
+                bathroomCountLabel.text = "\(intValue)"
             } else {
-                bathroomCountLabel.text = "\(sender.value) bathrooms"
+                bathroomCountLabel.text = "\(sender.value)"
             }
         } else {
             if sender.value == 1 {
-                bathroomCountLabel.text = "1 bathroom"
+                bathroomCountLabel.text = "1"
             } else {
-                bathroomCountLabel.text = "\(sender.value) bathroom"
+                bathroomCountLabel.text = "\(sender.value)"
             }
         }
     }
+    
     @IBAction func nextButtonTapped(_ sender: UIButton) {
         AccountCreationController.pageRightFrom(landlordVC: self)
         

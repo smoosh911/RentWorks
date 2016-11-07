@@ -42,7 +42,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TestView Apartments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="rZH-uj-BPy">
                                         <rect key="frame" x="28" y="412" width="287" height="36"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
-                                        <color key="textColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="NtP-om-Kmi">
@@ -205,7 +205,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TestView Apartments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9eU-RG-H8p">
                                         <rect key="frame" x="28" y="412" width="287" height="36"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
-                                        <color key="textColor" red="0.94901960784313721" green="0.396078431372549" blue="0.13333333333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="PcO-EL-yWJ">
@@ -351,7 +351,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A6P-fs-1kG">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RentMatchLogo_Orange" translatesAutoresizingMaskIntoConstraints="NO" id="Wdi-MC-T94">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV1" translatesAutoresizingMaskIntoConstraints="NO" id="Wdi-MC-T94">
                                         <rect key="frame" x="167.5" y="16" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="j8Z-Uq-pej"/>
@@ -493,14 +493,14 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings will go here!" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d0t-sS-NRX">
                                 <rect key="frame" x="16" y="72" width="343" height="251"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="70"/>
-                                <color key="textColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yxv-6E-15j">
                                 <rect key="frame" x="304" y="28" width="61" height="30"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Go Back">
-                                    <color key="titleColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="goBackButtonTapped:" destination="MLB-pN-4wP" eventType="touchUpInside" id="gzh-eQ-v8i"/>
@@ -511,14 +511,14 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <state key="normal" title="Sign Out">
-                                    <color key="titleColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="signOutButtonTapped:" destination="MLB-pN-4wP" eventType="touchUpInside" id="2K7-TM-uH8"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.97647058823529409" green="0.93725490196078431" blue="0.10980392156862745" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="d0t-sS-NRX" secondAttribute="trailing" id="7bf-PS-WUs"/>
                             <constraint firstItem="d0t-sS-NRX" firstAttribute="top" secondItem="yQH-Y4-Mwp" secondAttribute="bottom" constant="52" id="8qw-1B-Bk0"/>
@@ -565,7 +565,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9NB-rW-ZqQ">
                                                     <rect key="frame" x="89" y="8" width="195" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <color key="textColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="EJ3-pD-G5q">
@@ -587,7 +587,7 @@
                                                     <rect key="frame" x="287" y="9" width="80" height="41"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                     <state key="normal" title="Contact">
-                                                        <color key="titleColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="contactButtonTapped:" destination="o59-uj-1dT" eventType="touchUpInside" id="cHk-XQ-nLP"/>
@@ -629,7 +629,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hpx-l4-dRJ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RentMatchLogo_Orange" translatesAutoresizingMaskIntoConstraints="NO" id="dSD-Y4-sCr">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV1" translatesAutoresizingMaskIntoConstraints="NO" id="dSD-Y4-sCr">
                                         <rect key="frame" x="168" y="16" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="uwd-6g-Acc"/>
@@ -640,7 +640,7 @@
                                         <rect key="frame" x="8" y="21" width="37" height="30"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Back">
-                                            <color key="titleColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="backNavigationButtonTapped:" destination="HpT-Ss-Xvk" eventType="touchUpInside" id="Xo1-n4-L2I"/>
@@ -703,51 +703,65 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV2" translatesAutoresizingMaskIntoConstraints="NO" id="qtK-ld-6a4">
+                                <rect key="frame" x="60" y="101" width="254" height="225"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="225" id="Zjj-M8-XVX"/>
+                                    <constraint firstAttribute="width" constant="254" id="jms-Fm-Utq"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Renting made smart" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XtU-Qw-Ehv">
+                                <rect key="frame" x="104.5" y="334" width="165.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIm-UA-Uzb">
+                                <rect key="frame" x="303" y="547" width="56" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="1j9-eS-Xy0"/>
+                                    <constraint firstAttribute="width" secondItem="VIm-UA-Uzb" secondAttribute="height" multiplier="14:25" id="DOI-nf-xpu"/>
+                                    <constraint firstAttribute="width" constant="56" id="fex-6n-KfJ"/>
+                                </constraints>
+                                <state key="normal" image="NextArrowYellow">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dFX-DU-Ns1">
-                                <rect key="frame" x="16" y="593" width="343" height="54"/>
+                                <rect key="frame" x="16" y="547" width="343" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="DYq-mC-fWP"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
                                 <state key="normal" title="Get Started">
-                                    <color key="titleColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <segue destination="n6X-fL-rWf" kind="show" identifier="toAccountTypeVC" id="Jbg-FF-iWV"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RentMatchLogo_Orange" translatesAutoresizingMaskIntoConstraints="NO" id="OOP-wK-AgD">
-                                <rect key="frame" x="67" y="128" width="240" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="kXm-gq-jVV"/>
-                                    <constraint firstAttribute="width" constant="240" id="uee-ab-gct"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rent Match" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LZr-3M-Rpw">
-                                <rect key="frame" x="67" y="264" width="240" height="48"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="40"/>
-                                <color key="textColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="LZr-3M-Rpw" firstAttribute="leading" secondItem="cdA-ib-g0p" secondAttribute="leadingMargin" constant="51" id="Oge-f7-0vF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="LZr-3M-Rpw" secondAttribute="trailing" constant="52" id="P5p-HA-aQM"/>
-                            <constraint firstItem="OOP-wK-AgD" firstAttribute="top" secondItem="Uva-PS-c7E" secondAttribute="bottom" constant="64" id="POj-kX-eqq"/>
+                            <constraint firstItem="XtU-Qw-Ehv" firstAttribute="centerX" secondItem="cdA-ib-g0p" secondAttribute="centerX" id="5Fy-BR-fXG"/>
+                            <constraint firstItem="qtK-ld-6a4" firstAttribute="top" secondItem="Uva-PS-c7E" secondAttribute="bottom" constant="37" id="FnJ-rL-Xzy"/>
+                            <constraint firstItem="VIm-UA-Uzb" firstAttribute="trailing" secondItem="cdA-ib-g0p" secondAttribute="trailingMargin" id="Jxg-Vb-qLY"/>
+                            <constraint firstItem="qtK-ld-6a4" firstAttribute="centerX" secondItem="cdA-ib-g0p" secondAttribute="centerX" id="WJ7-Wm-QwR"/>
                             <constraint firstItem="dFX-DU-Ns1" firstAttribute="leading" secondItem="cdA-ib-g0p" secondAttribute="leadingMargin" id="Xdj-jN-VAr"/>
-                            <constraint firstItem="LZr-3M-Rpw" firstAttribute="top" secondItem="OOP-wK-AgD" secondAttribute="bottom" constant="8" id="ajq-yF-LcD"/>
+                            <constraint firstItem="XtU-Qw-Ehv" firstAttribute="top" secondItem="qtK-ld-6a4" secondAttribute="bottom" constant="8" id="bMP-0M-L3K"/>
                             <constraint firstItem="dFX-DU-Ns1" firstAttribute="trailing" secondItem="cdA-ib-g0p" secondAttribute="trailingMargin" id="bPf-bp-UA1"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="OOP-wK-AgD" secondAttribute="trailing" constant="52" id="h9G-d9-fQd"/>
+                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="VIm-UA-Uzb" secondAttribute="bottom" constant="20" id="nVc-qJ-TKm"/>
                             <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="dFX-DU-Ns1" secondAttribute="bottom" constant="20" id="rU9-wg-4iy"/>
-                            <constraint firstItem="OOP-wK-AgD" firstAttribute="leading" secondItem="cdA-ib-g0p" secondAttribute="leadingMargin" constant="51" id="ucc-D4-zcg"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="j1s-F7-pRL"/>
                     <connections>
-                        <outlet property="rentMatchLabel" destination="LZr-3M-Rpw" id="j4p-Js-hAx"/>
+                        <outlet property="rentingMadeSmartLabel" destination="XtU-Qw-Ehv" id="4oY-hC-v9u"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YLq-Mj-cPN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1834" y="9"/>
+            <point key="canvasLocation" x="1832.8" y="8.5457271364317844"/>
         </scene>
         <!--Landlord Or User View Controller-->
         <scene sceneID="hSb-Cf-2QG">
@@ -764,7 +778,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I am a..." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Yce-cu-vVk">
                                 <rect key="frame" x="30" y="59" width="314" height="302"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="75"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="BuQ-5M-K8N">
@@ -772,14 +786,14 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKl-Q1-Hwm">
                                         <rect key="frame" x="0.0" y="0.0" width="110" height="65"/>
-                                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="IT0-bz-UYL"/>
                                             <constraint firstAttribute="width" constant="110" id="x9L-ob-hS4"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                         <state key="normal" title="Renter">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
@@ -789,10 +803,10 @@
                                                 <real key="value" value="0.20000000000000001"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                                <real key="value" value="2"/>
+                                                <real key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
-                                                <point key="value" x="5" y="5"/>
+                                                <point key="value" x="0.0" y="0.0"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -801,7 +815,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ec-oL-AsK">
                                         <rect key="frame" x="150" y="0.0" width="110" height="65"/>
-                                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="110" id="Maa-Z1-dpL"/>
                                             <constraint firstAttribute="height" constant="65" id="Qmj-6y-DOc"/>
@@ -809,20 +823,20 @@
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <state key="normal" title="Landlord">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
                                                 <real key="value" value="0.20000000000000001"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
-                                                <point key="value" x="5" y="5"/>
+                                                <point key="value" x="0.0" y="0.0"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
                                                 <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                                <real key="value" value="2"/>
+                                                <real key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -835,7 +849,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="BuQ-5M-K8N" firstAttribute="leading" secondItem="l1M-R3-NwG" secondAttribute="leadingMargin" constant="41" id="Kh2-CQ-Ggx"/>
                             <constraint firstItem="Yce-cu-vVk" firstAttribute="top" secondItem="l1M-R3-NwG" secondAttribute="topMargin" constant="59" id="LsU-Cr-kGH"/>
@@ -900,6 +914,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -922,19 +937,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RentMatchLogo_white.png" translatesAutoresizingMaskIntoConstraints="NO" id="dNh-Zk-LOr">
-                                <rect key="frame" x="16" y="90" width="343" height="304"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV2" translatesAutoresizingMaskIntoConstraints="NO" id="axX-GM-oab">
+                                <rect key="frame" x="60" y="101" width="254" height="225"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="343" id="IgM-Kh-mKz"/>
-                                    <constraint firstAttribute="height" constant="304" id="o9A-RK-VGj"/>
+                                    <constraint firstAttribute="height" constant="225" id="GKF-hf-PeV"/>
+                                    <constraint firstAttribute="width" constant="254" id="WJq-WA-eXh"/>
                                 </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="dNh-Zk-LOr" firstAttribute="trailing" secondItem="WQl-jt-3m5" secondAttribute="trailingMargin" id="0a0-fy-pme"/>
-                            <constraint firstItem="dNh-Zk-LOr" firstAttribute="leading" secondItem="WQl-jt-3m5" secondAttribute="leadingMargin" id="qGI-0H-DcU"/>
-                            <constraint firstItem="dNh-Zk-LOr" firstAttribute="top" secondItem="Q18-7g-pqs" secondAttribute="bottom" constant="70" id="u6a-nN-SBB"/>
+                            <constraint firstItem="axX-GM-oab" firstAttribute="top" secondItem="Q18-7g-pqs" secondAttribute="bottom" constant="81" id="8gj-48-9jH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="axX-GM-oab" secondAttribute="trailing" constant="45" id="WgX-o5-mVj"/>
+                            <constraint firstItem="axX-GM-oab" firstAttribute="leading" secondItem="WQl-jt-3m5" secondAttribute="leadingMargin" constant="44" id="stc-fA-h9a"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -945,12 +959,13 @@
     </scenes>
     <resources>
         <image name="ChatBubble" width="1600" height="1545"/>
+        <image name="NextArrowYellow" width="131" height="212"/>
         <image name="Paw" width="1600" height="1490"/>
-        <image name="RentMatchLogo_Orange" width="882" height="694"/>
-        <image name="RentMatchLogo_white.png" width="1177" height="1066"/>
         <image name="SettingGear" width="1600" height="1596"/>
         <image name="SmokingAllowed" width="1600" height="1368"/>
         <image name="Star" width="2048" height="1947"/>
+        <image name="VengaLogoV1" width="1000" height="1050"/>
+        <image name="VengaLogoV2" width="1000" height="1089"/>
         <image name="bathIcon" width="1600" height="1478"/>
         <image name="bed" width="2048" height="1376"/>
     </resources>
