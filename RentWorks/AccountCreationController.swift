@@ -25,7 +25,13 @@ class AccountCreationController {
         let nextVC = pageVC.renterVCs[currentVCIndex + 1]
         guard !currentRenterVCs.contains(nextVC) else { return }
         currentRenterVCs.append(nextVC)
+<<<<<<< HEAD
 //        AccountCreationController.resetRenterPageVCDataSourceFor(renterVC: renterVC)
+=======
+        AccountCreationController.resetRenterPageVCDataSourceFor(renterVC: renterVC)
+        pageVC.setViewControllers([self], direction: .forward, animated: true, completion: nil)
+        
+>>>>>>> parent of 460b80f... Quick fix to solve an compile failure
     }
     
     static func resetRenterPageVCDataSourceFor(renterVC: UIViewController) {
