@@ -16,6 +16,8 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var nextButtonCenterXConstraint: NSLayoutConstraint!
     
+    var didSlide = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.nextButton.isHidden = true
@@ -64,8 +66,8 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != ""  {
-            
+        if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" && didSlide == false {
+            didSlide = true
             AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
             nextButton.slideFromRight()
         }
