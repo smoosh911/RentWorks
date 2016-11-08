@@ -39,7 +39,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     @IBOutlet weak var backgroundNameLabel: UILabel!
     @IBOutlet weak var backgroundAddressLabel: UILabel!
     
-    
     @IBOutlet weak var backgroundBedroomCountLabel: UILabel!
     @IBOutlet weak var backgroundBedroomImageView: UIImageView!
     @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
@@ -53,12 +52,14 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     @IBOutlet weak var backgroundStarImageView4: UIImageView!
     @IBOutlet weak var backgroundStarImageView5: UIImageView!
     
-    @IBOutlet weak var matchesButton: UIButton!
+    // MARK: - Other outlets
     
+    @IBOutlet weak var matchesButton: UIButton!
     
     @IBOutlet weak var navigationBarView: UIView!
     
     @IBOutlet weak var loadingLabel: UILabel!
+    
     // MARK: - Properties
 
     var rotationAngle: CGFloat = 0.0
@@ -75,6 +76,19 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     var loadingViewHasBeenDismissed = false
     
     var users: [Any] = []
+    
+    var matchingUsersAlertController: UIAlertController?
+    
+    var imageIndex = 0
+    var backgroundimageIndex: Int {
+        if UserController.currentUserType == "renter"{
+            return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
+        } else if UserController.currentUserType == "landlord" {
+            return imageIndex + 1 <= FirebaseController.renters.count - 1 ? imageIndex + 1 : 0
+        } else {
+            return 0
+        }
+    }
     
     // MARK: View life cycles
     
@@ -109,18 +123,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
 
     }
     
-    var matchingUsersAlertController: UIAlertController?
-   
-    var imageIndex = 0
-    var backgroundimageIndex: Int {
-        if UserController.currentUserType == "renter"{
-        return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
-        } else if UserController.currentUserType == "landlord" {
-            return imageIndex + 1 <= FirebaseController.renters.count - 1 ? imageIndex + 1 : 0
-        } else {
-            return 0
-        }
-    }
+
     
     // needs work: change names of variables to make unique. Also
     func wasDragged(gesture: UIPanGestureRecognizer) {
@@ -146,7 +149,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
             
             if label.center.x < 100 {
                 acceptedOrRejected = "rejected"
-                UIView.animate(withDuration: 0.5, animations: {
+                UIView.animate(withDuration: 0.3, animations: {
                     self.swipeLeftCompleteTransform(view: label)
                 }, completion: { (true) in
                     if UserController.currentUserType == "renter" {
@@ -158,7 +161,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
                 })
             } else if label.center.x > self.view.bounds.width - 100 {
                 acceptedOrRejected = "accepted"
-                UIView.animate(withDuration: 0.5, animations: {
+                UIView.animate(withDuration: 0.3, animations: {
                     self.swipeRightCompleteTransform(view: label)
                 }, completion: { (true) in
                     if UserController.currentUserType == "renter" {
@@ -169,7 +172,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
                     self.resetFrontCardTransform(view: label)
                 })
             } else {
-                UIView.animate(withDuration: 0.5, animations: {
+                UIView.animate(withDuration: 0.1, animations: {
                     self.resetFrontCardTransform(view: label)
                 })
             }
