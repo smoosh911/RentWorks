@@ -72,6 +72,8 @@
 		46E8877F1DB7F17900127D21 /* Property+Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E8877E1DB7F17900127D21 /* Property+Firebase.swift */; };
 		46E887811DB80AA400127D21 /* Landlord + Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E887801DB80AA400127D21 /* Landlord + Convenience.swift */; };
 		46E887831DB82B0C00127D21 /* Renter + Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E887821DB82B0C00127D21 /* Renter + Firebase.swift */; };
+		46EB96841DD26A57006546E8 /* CardLoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EB96831DD26A57006546E8 /* CardLoadingViewController.swift */; };
+		46EB96861DD27060006546E8 /* LaunchScreenCopyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EB96851DD27060006546E8 /* LaunchScreenCopyViewController.swift */; };
 		46F280251DCA7F770092E991 /* LandlordPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F280241DCA7F770092E991 /* LandlordPageViewController.swift */; };
 		46F280271DCA9F040092E991 /* RenterPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F280261DCA9F040092E991 /* RenterPageViewController.swift */; };
 		654D57F560C678A9079883F8 /* Pods_RentWorksUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4056C05B39B990DA4031004E /* Pods_RentWorksUITests.framework */; };
@@ -164,6 +166,8 @@
 		46E8877E1DB7F17900127D21 /* Property+Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Property+Firebase.swift"; sourceTree = "<group>"; };
 		46E887801DB80AA400127D21 /* Landlord + Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Landlord + Convenience.swift"; sourceTree = "<group>"; };
 		46E887821DB82B0C00127D21 /* Renter + Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Renter + Firebase.swift"; sourceTree = "<group>"; };
+		46EB96831DD26A57006546E8 /* CardLoadingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardLoadingViewController.swift; sourceTree = "<group>"; };
+		46EB96851DD27060006546E8 /* LaunchScreenCopyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenCopyViewController.swift; sourceTree = "<group>"; };
 		46F280241DCA7F770092E991 /* LandlordPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordPageViewController.swift; sourceTree = "<group>"; };
 		46F280261DCA9F040092E991 /* RenterPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenterPageViewController.swift; sourceTree = "<group>"; };
 		6AD73B99B2C58293311D31BC /* Pods_RentWorksTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RentWorksTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,6 +274,8 @@
 		468ABC3A1DB5EA89009B105B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				46EB96851DD27060006546E8 /* LaunchScreenCopyViewController.swift */,
+				46EB96831DD26A57006546E8 /* CardLoadingViewController.swift */,
 				46BD661A1DBD43E0007170AE /* SettingsViewController.swift */,
 				C73E10881D8E417D008E475F /* MainViewController.swift */,
 				467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */,
@@ -765,6 +771,7 @@
 				46CBAA201DCE453400DAE5B6 /* AccountCreationController.swift in Sources */,
 				460D722F1DB6C71400853402 /* PhotoSelectorViewController.swift in Sources */,
 				468ABC361DB5C5A9009B105B /* Property + Convenience.swift in Sources */,
+				46EB96841DD26A57006546E8 /* CardLoadingViewController.swift in Sources */,
 				467A49D21DB1F2E0001A0A12 /* MatchesViewController.swift in Sources */,
 				468828CE1DAAFD110011985F /* FacebookRequestController.swift in Sources */,
 				460D72411DB7473400853402 /* RenterAllowedViewController.swift in Sources */,
@@ -785,6 +792,7 @@
 				465E96901DA980FD000B36AF /* AuthenticationController.swift in Sources */,
 				460D72311DB6D84700853402 /* PhotoSelectorTwoViewController.swift in Sources */,
 				46F280271DCA9F040092E991 /* RenterPageViewController.swift in Sources */,
+				46EB96861DD27060006546E8 /* LaunchScreenCopyViewController.swift in Sources */,
 				468ABC401DB5EE2C009B105B /* LandlordPropertyFeaturesViewController.swift in Sources */,
 				46600C9E1DA2F91600A7FB4B /* LoginViewController.swift in Sources */,
 				467A49D01DB1F0AD001A0A12 /* MatchTableViewCell.swift in Sources */,
