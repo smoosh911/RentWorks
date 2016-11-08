@@ -71,7 +71,7 @@ class LandlordBedroomViewController: UIViewController {
     
     @IBAction func nextButtonTapped(_ sender: UIButton) {
         saveRoomInformationToUserCreationDictionary()
-        AccountCreationController.pageRightFrom(renterVC: self)
+        AccountCreationController.pageRightFrom(landlordVC: self)
         
     }
     

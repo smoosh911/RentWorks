@@ -88,9 +88,8 @@ class LandlordAllowedViewController: UIViewController {
             nextButton.center.x += 200
             nextButton.slideFromRight()
             
-            guard let pageVC = self.parent as? LandlordPageViewController else { return }
-            pageVC.dataSource = nil
-            pageVC.dataSource = pageVC
+            
+            AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
         }
     }
     

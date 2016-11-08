@@ -41,8 +41,8 @@ class RenterCreditRatingViewController: UIViewController {
         
         
         
-//        nextButton.isHidden = true
-//        nextButton.center.x += 200
+        nextButton.isHidden = true
+        
         
         aPlusCreditBackgroundView.layer.cornerRadius = 15
         aCreditBackgroundView.layer.cornerRadius = 15
@@ -82,14 +82,14 @@ class RenterCreditRatingViewController: UIViewController {
         self.showAndAnimateNextButton()
         
         AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
-
+        
         let buttonBackgroundViews = [aPlusCreditBackgroundView, aCreditBackgroundView, bCreditBackgroundView, otherCreditBackgroundView].filter({$0 != backgroundView})
         
         UIView.transition(with: backgroundView, duration: 0.1, options: .transitionCrossDissolve, animations: {
             backgroundView.backgroundColor = AppearanceController.viewButtonPressedColor
         }) { _ in
             
-            UIView.transition(with: backgroundView, duration: 0.2, options: .transitionCrossDissolve, animations: { 
+            UIView.transition(with: backgroundView, duration: 0.2, options: .transitionCrossDissolve, animations: {
                 buttonBackgroundViews.forEach({$0?.backgroundColor = AppearanceController.vengaYellowColor})
             }, completion: { (_) in
             })
@@ -99,11 +99,12 @@ class RenterCreditRatingViewController: UIViewController {
     
     
     func showAndAnimateNextButton() {
-//        if nextButton.isHidden {
-//            nextButton.slideFromRight()
-//        }
+        if nextButton.isHidden {
+            nextButton.center.x += 200
+            nextButton.slideFromRight()
+        }
     }
-
+    
     func saveCreditRatingInformationToUserCreationDictionary() {
         UserController.addAttributeToUserDictionary(attribute: [UserController.kCreditRating : creditRating])
     }

@@ -1,4 +1,4 @@
-//
+    //
 //  AppDelegate.swift
 //  RentWorks
 //
@@ -23,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
 //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
 //        if FBSDKAccessToken.current() == nil {
 //            let loginVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
 //            

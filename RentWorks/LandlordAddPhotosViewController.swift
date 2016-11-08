@@ -16,7 +16,7 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
         super.viewDidLoad()
         
         UserController.photoSelectedDelegate = self
-//        nextButton.isHidden = true
+        nextButton.isHidden = true
         
     }
     
@@ -31,11 +31,10 @@ class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
     func photoWasSelected() {
         nextButton.center.x += 200
         nextButton.slideFromRight()
-        
-        guard let pageVC = self.parent as? LandlordPageViewController else { return }
-        pageVC.dataSource = nil
-        pageVC.dataSource = pageVC
+    
+        AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
     }
+    
     
     func presentAddPhotoAlert() {
         let alert = UIAlertController(title: "Hold on a second!", message: "Please add at least one photo of your property!", preferredStyle: .alert)

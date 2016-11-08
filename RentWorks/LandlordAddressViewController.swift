@@ -94,6 +94,7 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
             
             AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
             if didSlide == false {
+                nextButton.center.x += 200
                 nextButton.slideFromRight()
                 didSlide = true
             }
