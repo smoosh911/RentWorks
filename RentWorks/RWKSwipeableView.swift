@@ -8,9 +8,20 @@
 
 import UIKit
 
+protocol RWKSwipeableViewDelegate {
+    func swipeLeftCompleteTransform(view: UIView)
+    func swipeRightCompleteTransform(view: UIView)
+    func resetFrontCardTransform(view: UIView)
+    func beingDragged(gesture: UIPanGestureRecognizer)
+    func updateUIElementsForPropertyCards()
+    func updateUIElementsForRenterCards()
+    func resetData()
+    func likeUser()
+}
+
 class RWKSwipeableView: UIView {
     
-    weak var delegate: RWKSwipeableViewDelegate?
+    var delegate: RWKSwipeableViewDelegate?
     
     var property: Property? 
     var renter: Renter?
@@ -31,98 +42,64 @@ class RWKSwipeableView: UIView {
         
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(beingDragged))
         self.addGestureRecognizer(panGestureRecognizer)
-        guard let superView = self.superview else { return }
-        constraintArray = superView.constraints
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        hideDropShadow()
         setupPanGestureRecognizer()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        hideDropShadow()
         setupPanGestureRecognizer()
     }
     
-    func showDropShadow() {
-        UIView.animate(withDuration: 1) { 
-            self.shadowOpacity = 0.3
-        }
-    }
-    
-    func hideDropShadow() {
-        UIView.animate(withDuration: 1) {
-            self.shadowOpacity = 0.0
-            self.shadowOffset = CGPoint(x: 0, y: 0)
-        }
-    }
-    
     func beingDragged() {
-        guard let sender = panGestureRecognizer,
-            let senderView = sender.view,
-            let superView = self.superview else { return }
-        
-        xFromCenter = sender.translation(in: senderView).x
-        yFromCenter = sender.translation(in: senderView).y
-        
-        switch sender.state {
-            
-        case .began:
-            showDropShadow()
-            UIView.animate(withDuration: 0.2, animations: {
-                senderView.center = sender.location(in: superView)
-                }, completion: { (complete) in
-            })
-        case .changed:
-            dragCount += 1
-            
-            if senderView.center.x > superView.center.x + 25 || senderView.center.x < superView.center.x  - 25 || dragCount > 10  {
-                if senderView.center.x > previousX {
-                    rotationAngle += 0.01
-                } else if senderView.center.x < previousX {
-                    rotationAngle -= 0.01
-                }
-                UIView.animate(withDuration: 0.1, animations: {
-                    senderView.transform = CGAffineTransform(rotationAngle: self.rotationAngle)
-                    
-                    }, completion: nil)
-                previousX = senderView.center.x
-                
-            }
-            senderView.center = sender.location(in: superView)
-            break
-            
-        case .ended:
-            if sender.velocity(in: superView).x > 200 || sender.velocity(in: superView).y > 200.0 || sender.velocity(in: superView).x < -200.0 || sender.velocity(in: superView).y < -200.0 {
-                
-                delegate?.swipeAnimationsFor(swipeableView: self, inSuperview: superView)
-            } else {
-                delegate?.put(swipeableView: self, inCenterOf: superView)
-                delegate?.reset(swipeableView: self, inSuperview: superView)
-            }
-            dragCount = 0
-            rotationAngle = 0.0
-            self.hideDropShadow()
-            break
-        case .possible:
-            break
-        case .cancelled:
-            break
-        case .failed:
-            break
-            
+        if delegate == nil {
+            return
         }
         
+        let gesture = panGestureRecognizer!
+        
+        delegate!.beingDragged(gesture: gesture)
+        
+        let label = gesture.view!
+        
+        if gesture.state == UIGestureRecognizerState.ended {
+            
+            var acceptedOrRejected = ""
+            let swipeDistanceRequired: CGFloat = 150.0
+        
+            if label.center.x < swipeDistanceRequired {
+                acceptedOrRejected = "rejected"
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.delegate!.swipeLeftCompleteTransform(view: label)
+                }, completion: { (true) in
+                    if UserController.currentUserType == "renter" {
+                        self.delegate!.updateUIElementsForPropertyCards()
+                    } else if UserController.currentUserType == "landlord" {
+                        self.delegate!.updateUIElementsForRenterCards()
+                    }
+                    self.delegate!.resetFrontCardTransform(view: label)
+                })
+            } else if label.center.x > self.bounds.width - swipeDistanceRequired {
+                acceptedOrRejected = "accepted"
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.delegate!.swipeRightCompleteTransform(view: label)
+                }, completion: { (true) in
+                    if UserController.currentUserType == "renter" {
+                        self.delegate!.updateUIElementsForPropertyCards()
+                    } else if UserController.currentUserType == "landlord" {
+                        self.delegate!.updateUIElementsForRenterCards()
+                    }
+                    self.delegate!.resetFrontCardTransform(view: label)
+                })
+            } else {
+                UIView.animate(withDuration: 0.1, animations: {
+                    self.delegate!.resetFrontCardTransform(view: label)
+                })
+            }
+            print(acceptedOrRejected)
+        }
     }
-}
-
-protocol RWKSwipeableViewDelegate: class {
-    func swipeAnimationsFor(swipeableView: UIView, inSuperview superview: UIView)
-    func rightAnimationFor(swipeableView: UIView, inSuperview superview: UIView)
-    func leftAnimationFor(swipeableView: UIView, inSuperview superview: UIView)
-    func put(swipeableView: UIView, inCenterOf superview: UIView)
-    func reset(swipeableView: UIView, inSuperview: UIView)
 }

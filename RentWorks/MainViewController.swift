@@ -10,10 +10,9 @@ import UIKit
 
 class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDelegate {
     
-    
     // MARK: - Front swipeableView outlets
     
-    @IBOutlet weak var swipeableView: UIView!
+    @IBOutlet weak var swipeableView: RWKSwipeableView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
@@ -95,17 +94,13 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let gesture = UIPanGestureRecognizer(target: self, action: #selector(self.wasDragged(gesture:)))
-        swipeableView.addGestureRecognizer(gesture)
-        swipeableView.isUserInteractionEnabled = true
-        
         if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
         
         setUpAndDisplayLoadingScreen()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         FirebaseController.delegate = self
         MatchController.delegate = self
-        //        swipeableView.delegate = self
+        swipeableView.delegate = self
         setupViews()
         
         if UserController.currentUserType == "renter" {
@@ -121,105 +116,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         setMatchesButtonImage()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
 
-    }
-    
-
-    
-    // needs work: change names of variables to make unique. Also
-    func wasDragged(gesture: UIPanGestureRecognizer) {
-        
-        let translation = gesture.translation(in: self.view)
-        let label = gesture.view!
-        
-        label.center = CGPoint(x: self.view.bounds.width / 2 + translation.x, y: self.view.bounds.height / 2 + abs(translation.x) + 20)
-        
-        let xFromCenter = label.center.x - self.view.bounds.width / 2.0
-        
-        let scale = min(100.0 / (abs(xFromCenter) + 10), 1.0)
-        
-        var transform = CGAffineTransform.identity
-        transform = transform.rotated(by: xFromCenter / 200.0)
-        transform = transform.scaledBy(x: scale, y: scale)
-        
-        label.transform = transform
-        
-        if gesture.state == UIGestureRecognizerState.ended {
-            
-            var acceptedOrRejected = ""
-            
-            if label.center.x < 100 {
-                acceptedOrRejected = "rejected"
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.swipeLeftCompleteTransform(view: label)
-                }, completion: { (true) in
-                    if UserController.currentUserType == "renter" {
-                        self.updateUIElementsForPropertyCards()
-                    } else if UserController.currentUserType == "landlord" {
-                        self.updateUIElementsForRenterCards()
-                    }
-                    self.resetFrontCardTransform(view: label)
-                })
-            } else if label.center.x > self.view.bounds.width - 100 {
-                acceptedOrRejected = "accepted"
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.swipeRightCompleteTransform(view: label)
-                }, completion: { (true) in
-                    if UserController.currentUserType == "renter" {
-                        self.updateUIElementsForPropertyCards()
-                    } else if UserController.currentUserType == "landlord" {
-                        self.updateUIElementsForRenterCards()
-                    }
-                    self.resetFrontCardTransform(view: label)
-                })
-            } else {
-                UIView.animate(withDuration: 0.1, animations: {
-                    self.resetFrontCardTransform(view: label)
-                })
-            }
-            print(acceptedOrRejected)
-            
-        }
-    }
-    
-    // MARK: Card transforms
-    
-    func swipeLeftCompleteTransform(view: UIView) {
-        view.center = CGPoint(x: self.view.bounds.width / 2 - 300, y: self.view.bounds.height / 2 + 200 + 20)
-        
-        let xFromCenter = view.center.x - self.view.bounds.width / 2.0
-        
-        let scale = min(100.0 / (abs(xFromCenter) + 10), 1.0)
-        
-        var anitransform = CGAffineTransform.identity
-        anitransform = anitransform.rotated(by: xFromCenter / 200.0)
-        anitransform = anitransform.scaledBy(x: scale, y: scale)
-        
-        view.transform = anitransform
-    }
-    
-    func swipeRightCompleteTransform(view: UIView) {
-        view.center = CGPoint(x: self.view.bounds.width / 2 + 300, y: self.view.bounds.height / 2 + 200 + 20)
-        
-        let xFromCenter = view.center.x - self.view.bounds.width / 2.0
-        
-        let scale = min(100.0 / (abs(xFromCenter) + 10), 1.0)
-        
-        var anitransform = CGAffineTransform.identity
-        anitransform = anitransform.rotated(by: xFromCenter / 200.0)
-        anitransform = anitransform.scaledBy(x: scale, y: scale)
-        
-        view.transform = anitransform
-    }
-    
-    func resetFrontCardTransform(view: UIView) {
-        var endTransform = CGAffineTransform.identity
-        
-        endTransform = endTransform.rotated(by: 0.0)
-        endTransform = endTransform.scaledBy(x: 1.0, y: 1.0)
-        
-        view.transform = endTransform
-        
-        view.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2 + 20)
     }
     
     // MARK: - FirebaseUserDelegate
@@ -252,75 +148,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     // MARK: - UI Related
     
-    func updateUIElementsForPropertyCards() {
-        let property = FirebaseController.properties[imageIndex]
-        
-//        print(property.propertyID)
-        
-        guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
-        
-        
-        imageView.image = profilePicture
-        nameLabel.text = property.propertyDescription ?? "No description available"
-        addressLabel.text = address
-        
-        bedroomCountLabel.text = "\(property.bedroomCount)"
-        bathroomCountLabel.text = property.bathroomCount.isInteger ? "\(Int(property.bathroomCount))" : "\(property.bathroomCount)"
-        
-        petFriendlyImageView.image = property.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
-        smokingAllowedImageView.image = property.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
-        
-        update(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
-        
-        let nextProperty = FirebaseController.properties[backgroundimageIndex]
-        
-        guard  let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data), let backgroundPropertyAddress = nextProperty.address else { return }
-        backgroundImageView.image = backgroundProfilePicture
-        backgroundNameLabel.text = nextProperty.propertyDescription ?? "No description available"
-        backgroundAddressLabel.text = backgroundPropertyAddress
-        
-        backgroundBedroomCountLabel.text = "\(nextProperty.bedroomCount)"
-        backgroundBathroomCountLabel.text = nextProperty.bathroomCount.isInteger ? "\(Int(nextProperty.bathroomCount))" : "\(nextProperty.bathroomCount)"
-        
-        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
-        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
-
-        update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
-        if imageIndex < FirebaseController.properties.count - 1 {
-            imageIndex += 1
-        } else {
-            imageIndex = 0
-        }
-        
-    }
-
-    func updateUIElementsForRenterCards() {
-        let renter = FirebaseController.renters[imageIndex]
-        
-        print(renter.id)
-        
-        guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
-        
-        
-        imageView.image = profilePicture
-        nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
-        addressLabel.text = renter.bio ?? "No bio yet!"
-        
-        let nextRenter = FirebaseController.renters[backgroundimageIndex]
-        
-        guard  let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
-        backgroundImageView.image = backgroundProfilePicture
-        backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
-        backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
-        
-        if imageIndex < FirebaseController.renters.count - 1 {
-            imageIndex += 1
-        } else {
-            imageIndex = 0
-        }
-        
-    }
-
     func update(starImageViews: [UIImageView], for rating: Double) {
         
         switch rating {
@@ -417,98 +244,146 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
 
 // MARK: - RWKSwipeableViewDelegate
 
-//extension MainViewController: RWKSwipeableViewDelegate {
-//    
-//    func swipeAnimationsFor(swipeableView: UIView, inSuperview superview: UIView) {
-//        if swipeableView.center.x > superview.center.x + 45 {
-//            rightAnimationFor(swipeableView: swipeableView, inSuperview: superview)
-//        } else if swipeableView.center.x < superview.center.x - 45 {
-//            leftAnimationFor(swipeableView: swipeableView, inSuperview: superview)
-//            
-//        } else {
-//            put(swipeableView: swipeableView, inCenterOf: superview)
-//            reset(swipeableView: swipeableView, inSuperview: superview)
-//        }
-//    }
-//    
-//    func rightAnimationFor(swipeableView: UIView, inSuperview superview: UIView) {
-//        let finishPoint = CGPoint(x: CGFloat(750), y: superview.center.y - 100)
-//
-//        UIView.animate(withDuration: 0.7, animations: {
-//            swipeableView.center = finishPoint
-//            swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: 90))
-//        }) { (complete) in
-//            
-//            
-//            
-//            guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
-//
-//            if UserController.currentUserType == "renter" {
-//                guard let property = swipeableView.property else { return }
-//                MatchController.addCurrentRenter(toLikelistOf: property)
-//            } else if UserController.currentUserType == "landlord" {
-//                guard let renter = swipeableView.renter else { return }
-//                MatchController.addCurrentLandlord(toLikelistOf: renter)
-//            }
-//            self.reset(swipeableView: swipeableView, inSuperview: superview)
-//            
-//            if UserController.currentUserType == "renter" {
-//                self.updateUIElementsForPropertyCards()
-//            } else if UserController.currentUserType == "landlord" {
-//                self.updateUIElementsForRenterCards()
-//            }
-//            
-//        }
-//    }
-//    
-//    func leftAnimationFor(swipeableView: UIView, inSuperview superview: UIView) {
-//        let finishPoint = CGPoint(x: CGFloat(-750), y: superview.center.y - 100)
-//    
-//        UIView.animate(withDuration: 0.7, animations: {
-//            swipeableView.center = finishPoint
-//            swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: -90))
-//        }) { (complete) in
-//            
-//            self.reset(swipeableView: swipeableView, inSuperview: superview)
-//
-//            
-//            if UserController.currentUserType == "renter" {
-//                self.updateUIElementsForPropertyCards()
-//            } else if UserController.currentUserType == "landlord" {
-//                self.updateUIElementsForRenterCards()
-//            }
-//        }
-//    }
-//    
-//    func put(swipeableView: UIView, inCenterOf superview: UIView) {
-//        UIView.animate(withDuration: 0.3, animations: {
-//            swipeableView.center = self.view.center
-//            swipeableView.transform = CGAffineTransform(rotationAngle: 0.0)
-//        })
-//    }
-//    
-//    func reset(swipeableView: UIView, inSuperview: UIView) {
-//        let constraints = inSuperview.constraints
-//        swipeableView.removeFromSuperview()
-//        inSuperview.addSubview(swipeableView)
-//        inSuperview.addConstraints(constraints)
-//        self.view.bringSubview(toFront: self.navigationBarView)
-//        swipeableView.transform = CGAffineTransform(rotationAngle: 0.0)
-//        
-//        guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
-//        
-//        if UserController.currentUserType == "renter" {
-//            let property = FirebaseController.properties[imageIndex]
-//            swipeableView.property = property
-//            swipeableView.renter = nil
-//        } else if UserController.currentUserType == "landlord" {
-//            let renter = FirebaseController.renters[imageIndex]
-//            swipeableView.renter = renter
-//            swipeableView.property = nil
-//        }
-//    }
-//    
-//    func degreesToRadians(degree: Double) -> CGFloat {
-//        return CGFloat(M_PI * (degree) / 180.0)
-//    }
-//}
+extension MainViewController: RWKSwipeableViewDelegate {
+
+    // MARK: - Animations
+    
+    func beingDragged(gesture: UIPanGestureRecognizer) {
+        
+        let translation = gesture.translation(in: self.view)
+        let label = gesture.view!
+        
+        label.center = CGPoint(x: self.view.bounds.width / 2 + translation.x * 1.3, y: self.view.bounds.height / 2 + 20)
+        
+        let xFromCenter = label.center.x - self.view.bounds.width / 2.0
+        
+        var transform = CGAffineTransform.identity
+        transform = transform.rotated(by: xFromCenter / 800.0)
+        
+        label.transform = transform
+    }
+    
+    func swipeLeftCompleteTransform(view: UIView) {
+        view.center = CGPoint(x: self.view.bounds.width / 2 - 500, y: self.view.bounds.height / 2 + 20)
+        
+        let xFromCenter = view.center.x - self.view.bounds.width / 2.0
+        
+        var anitransform = CGAffineTransform.identity
+        anitransform = anitransform.rotated(by: xFromCenter / 800.0)
+        
+        view.transform = anitransform
+    }
+    
+    func swipeRightCompleteTransform(view: UIView) {
+        view.center = CGPoint(x: self.view.bounds.width / 2 + 500, y: self.view.bounds.height / 2 + 20)
+        let xFromCenter = view.center.x - self.view.bounds.width / 2.0
+        
+        var anitransform = CGAffineTransform.identity
+        anitransform = anitransform.rotated(by: xFromCenter / 800.0)
+        
+        view.transform = anitransform
+        
+        likeUser()
+    }
+    
+    func resetFrontCardTransform(view: UIView) {
+        var endTransform = CGAffineTransform.identity
+        
+        endTransform = endTransform.rotated(by: 0.0)
+        endTransform = endTransform.scaledBy(x: 1.0, y: 1.0)
+        
+        view.transform = endTransform
+        
+        view.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2 + 20)
+    }
+    
+    // MARK: - update data
+    
+    func updateUIElementsForPropertyCards() {
+        let property = FirebaseController.properties[imageIndex]
+        
+        //        print(property.propertyID)
+        
+        guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
+        
+        
+        imageView.image = profilePicture
+        nameLabel.text = property.propertyDescription ?? "No description available"
+        addressLabel.text = address
+        
+        bedroomCountLabel.text = "\(property.bedroomCount)"
+        bathroomCountLabel.text = property.bathroomCount.isInteger ? "\(Int(property.bathroomCount))" : "\(property.bathroomCount)"
+        
+        petFriendlyImageView.image = property.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
+        smokingAllowedImageView.image = property.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
+        
+        update(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
+        
+        let nextProperty = FirebaseController.properties[backgroundimageIndex]
+        
+        guard  let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data), let backgroundPropertyAddress = nextProperty.address else { return }
+        backgroundImageView.image = backgroundProfilePicture
+        backgroundNameLabel.text = nextProperty.propertyDescription ?? "No description available"
+        backgroundAddressLabel.text = backgroundPropertyAddress
+        
+        backgroundBedroomCountLabel.text = "\(nextProperty.bedroomCount)"
+        backgroundBathroomCountLabel.text = nextProperty.bathroomCount.isInteger ? "\(Int(nextProperty.bathroomCount))" : "\(nextProperty.bathroomCount)"
+        
+        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
+        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
+        
+        update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
+        
+        resetData()
+    }
+    
+    func updateUIElementsForRenterCards() {
+        let renter = FirebaseController.renters[imageIndex]
+        
+        //        print(renter.id)
+        
+        guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
+        
+        
+        imageView.image = profilePicture
+        nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
+        addressLabel.text = renter.bio ?? "No bio yet!"
+        
+        let nextRenter = FirebaseController.renters[backgroundimageIndex]
+        
+        guard  let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
+        backgroundImageView.image = backgroundProfilePicture
+        backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
+        backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
+        
+        resetData()
+    }
+    
+    func likeUser() {
+        
+        if UserController.currentUserType == "renter" {
+            guard let property = swipeableView.property else { return }
+            MatchController.addCurrentRenter(toLikelistOf: property)
+        } else if UserController.currentUserType == "landlord" {
+            guard let renter = swipeableView.renter else { return }
+            MatchController.addCurrentLandlord(toLikelistOf: renter)
+        }
+    }
+    
+    func resetData() {
+        if UserController.currentUserType == "renter" {
+            let property = FirebaseController.properties[imageIndex]
+            swipeableView.property = property
+            swipeableView.renter = nil
+        } else if UserController.currentUserType == "landlord" {
+            let renter = FirebaseController.renters[imageIndex]
+            swipeableView.renter = renter
+            swipeableView.property = nil
+        }
+        if imageIndex < FirebaseController.properties.count - 1 {
+            imageIndex += 1
+        } else {
+            imageIndex = 0
+        }
+    }
+}
