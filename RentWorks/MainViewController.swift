@@ -30,7 +30,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     @IBOutlet weak var starImageView4: UIImageView!
     @IBOutlet weak var starImageView5: UIImageView!
     
-    
     // MARK: - Outlets for backgroundView that acts as a faux swipeableView
     
     @IBOutlet weak var backgroundView: UIView!
@@ -376,15 +375,21 @@ extension MainViewController: RWKSwipeableViewDelegate {
             let property = FirebaseController.properties[imageIndex]
             swipeableView.property = property
             swipeableView.renter = nil
+            if imageIndex < FirebaseController.properties.count - 1 {
+                imageIndex += 1
+            } else {
+                imageIndex = 0
+            }
         } else if UserController.currentUserType == "landlord" {
             let renter = FirebaseController.renters[imageIndex]
             swipeableView.renter = renter
             swipeableView.property = nil
+            if imageIndex < FirebaseController.renters.count - 1 {
+                imageIndex += 1
+            } else {
+                imageIndex = 0
+            }
         }
-        if imageIndex < FirebaseController.properties.count - 1 {
-            imageIndex += 1
-        } else {
-            imageIndex = 0
-        }
+        
     }
 }

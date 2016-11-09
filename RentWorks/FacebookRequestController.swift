@@ -30,7 +30,7 @@ class FacebookRequestController {
         guard let request = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": permissions], httpMethod: "GET") else { return }
         
         request.start(completionHandler: { (connection, result, error) in
-            guard error == nil, let resultDict = result as? [String: Any] else { print(error?.localizedDescription); completion(nil); return }
+            guard error == nil, let resultDict = result as? [String: Any] else { print(error!.localizedDescription); completion(nil); return }
             
             completion(resultDict)
         })
@@ -41,7 +41,7 @@ class FacebookRequestController {
         guard let request = FBSDKGraphRequest(graphPath: "me", parameters: ["fields": "id"], httpMethod: "GET") else { return }
         
         request.start(completionHandler: { (connection, result, error) in
-            guard error == nil, let resultDict = result as? [String: Any], let id = resultDict.values.first as? String else { print(error?.localizedDescription); completion(nil); return }
+            guard error == nil, let resultDict = result as? [String: Any], let id = resultDict.values.first as? String else { print(error!.localizedDescription); completion(nil); return }
             completion(id)
         })
     }

@@ -164,7 +164,7 @@ class UserController {
         let landlordRef = FirebaseController.landlordsRef.child(id)
         landlordRef.setValue(dict) { (error, reference) in
             if error != nil {
-                print(error?.localizedDescription)
+                print(error!.localizedDescription)
                 completion()
             } else {
                 completion()
@@ -256,7 +256,7 @@ class UserController {
         let propertyRef = FirebaseController.propertiesRef.child(propertyID)
         propertyRef.setValue(dict) { (error, reference) in
             if error != nil {
-                print(error?.localizedDescription)
+                print(error!.localizedDescription)
                 completion()
             } else {
                 completion()
@@ -276,7 +276,7 @@ class UserController {
             count += 1
             group.enter()
             FirebaseController.store(profileImage: image, forUserID: landlordID, and: property, with: count, completion: { (metadata, error, imageData) in
-                guard error == nil else { print(error?.localizedDescription); completion(); return }
+                guard error == nil else { print(error!.localizedDescription); completion(); return }
                 print("Successfully uploaded image")
                 
                 guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString else { completion(); return }
@@ -307,7 +307,7 @@ class UserController {
         
         let count = 1
         FirebaseController.store(profileImage: image, forUserID: landlordID, and: property, with: count, completion: { (metadata, error, imageData) in
-            guard error == nil, let imageURL = metadata?.downloadURL()?.absoluteString else { print(error?.localizedDescription); return }
+            guard error == nil, let imageURL = metadata?.downloadURL()?.absoluteString else { print(error!.localizedDescription); return }
             print("Successfully uploaded image")
             completion(imageURL)
         })
@@ -386,7 +386,7 @@ class UserController {
         let propertyRef = FirebaseController.rentersRef.child(renterID)
         propertyRef.setValue(dict) { (error, reference) in
             if error != nil {
-                print(error?.localizedDescription)
+                print(error!.localizedDescription)
                 completion()
             } else {
                 completion()
@@ -456,7 +456,7 @@ class UserController {
                 group.enter()
                 count += 1
                 FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error, imageData) in
-                    guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString, error == nil else { print(error?.localizedDescription); group.leave(); return }
+                    guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString, error == nil else { print(error!.localizedDescription); group.leave(); return }
                     print("Successfully uploaded image")
                     _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil, imageURL: imageURL)
                     group.leave()
@@ -474,7 +474,7 @@ class UserController {
         
         let count = 1
         FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error, imageData) in
-            guard error == nil, let imageURL = metadata?.downloadURL()?.absoluteString else { print(error?.localizedDescription); return }
+            guard error == nil, let imageURL = metadata?.downloadURL()?.absoluteString else { print(error!.localizedDescription); return }
             FirebaseController.likesRef.child(renterID).child("0").setValue(true)
             print("Successfully uploaded image")
             completion(imageURL)
