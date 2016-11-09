@@ -58,9 +58,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     @IBOutlet weak var navigationBarView: UIView!
     
-    @IBOutlet weak var loadingLabel: UILabel!
     // MARK: - Properties
-
+    
     var rotationAngle: CGFloat = 0.0
     var xFromCenter: CGFloat = 0.0
     var yFromCenter: CGFloat = 0.0
@@ -79,18 +78,18 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     override func viewWillAppear(_ animated: Bool) {
         setMatchesButtonImage()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-
+        
     }
     
     var matchingUsersAlertController: UIAlertController?
-   
+    
     
     
     
     var imageIndex = 0
     var backgroundimageIndex: Int {
         if UserController.currentUserType == "renter"{
-        return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
+            return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
         } else if UserController.currentUserType == "landlord" {
             return imageIndex + 1 <= FirebaseController.renters.count - 1 ? imageIndex + 1 : 0
         } else {
@@ -103,19 +102,18 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         
         if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
         
-        setUpAndDisplayLoadingScreen()
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         FirebaseController.delegate = self
         MatchController.delegate = self
         swipeableView.delegate = self
         setupViews()
         
+        
         if UserController.currentUserType == "renter" {
-            UserController.fetchAllProperties()
-            users = FirebaseController.properties
+            updateUIElementsForPropertyCards()
         } else if UserController.currentUserType == "landlord" {
-            UserController.fetchAllRenters()
-            
+            updateUIElementsForRenterCards()
         }
     }
     
@@ -123,16 +121,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     // MARK: - FirebaseUserDelegate
     
     func propertiesWereUpdated() {
-        MatchController.observeLikesForCurrentRenter()
-        dismissLoadingScreen()
         updateUIElementsForPropertyCards()
     }
     
     func rentersWereUpdated() {
-        dismissLoadingScreen()
         updateUIElementsForRenterCards()
-        MatchController.observeLikesForCurrentLandlord()
-
     }
     
     // MARK: - UserMatchingDelegate
@@ -183,7 +176,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         
         backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
         backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
-
+        
         update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
         if imageIndex < FirebaseController.properties.count - 1 {
             imageIndex += 1
@@ -192,7 +185,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         }
         
     }
-
+    
     func updateUIElementsForRenterCards() {
         let renter = FirebaseController.renters[imageIndex]
         
@@ -217,7 +210,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         }
         
     }
-
+    
     func update(starImageViews: [UIImageView], for rating: Double) {
         
         switch rating {
@@ -266,48 +259,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         backgroundImageView.layer.cornerRadius = 15
         backgroundView.layer.cornerRadius = 15
     }
-    
-    func setUpAndDisplayLoadingScreen() {
-        self.loadingView = UIView(frame: self.view.frame)
-        self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
-        
-        guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator, let loadingLabel = self.loadingLabel else { return }
-        loadingLabel.tintColor = .black
-        loadingLabel.isHidden = false
-        loadingView.backgroundColor = AppearanceController.vengaYellowColor
-        loadingActivityIndicator.activityIndicatorViewStyle = .gray
-        
-        loadingView.addSubview(loadingActivityIndicator)
-        loadingView.addSubview(loadingLabel)
-        self.view.addSubview(loadingView)
-        
-        loadingLabel.minimumScaleFactor = 0.5
-        
-        let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-        let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
-        let centerXLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-        let bottomLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .bottom, relatedBy: .equal, toItem: self.loadingActivityIndicator, attribute: .top, multiplier: 1, constant: -25)
-        let leadingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 20)
-        let trailingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -20)
-        
-        
-        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint, centerXLoadingLabelConstraint, bottomLoadingLabelConstraint, leadingLoadingLabelConstraint, trailingLoadingLabelConstraint])
-        
-        loadingActivityIndicator.startAnimating()
-    }
-    
-    func dismissLoadingScreen() {
-        UIView.animate(withDuration: 0.8, animations: {
-            self.loadingActivityIndicator?.alpha = 0
-            self.loadingView?.alpha = 0
-            self.loadingLabel.alpha = 0
-        }) { (_) in
-            self.loadingActivityIndicator?.removeFromSuperview()
-            self.loadingView?.removeFromSuperview()
-            self.loadingLabel.removeFromSuperview()
-            self.loadingViewHasBeenDismissed = true
-        }
-    }
 }
 
 // MARK: - RWKSwipeableViewDelegate
@@ -328,7 +279,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
     
     func rightAnimationFor(swipeableView: UIView, inSuperview superview: UIView) {
         let finishPoint = CGPoint(x: CGFloat(750), y: superview.center.y - 100)
-
+        
         UIView.animate(withDuration: 0.7, animations: {
             swipeableView.center = finishPoint
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: 90))
@@ -337,7 +288,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
             
             
             guard let swipeableView = swipeableView as? RWKSwipeableView else { return }
-
+            
             if UserController.currentUserType == "renter" {
                 guard let property = swipeableView.property else { return }
                 MatchController.addCurrentRenter(toLikelistOf: property)
@@ -358,14 +309,14 @@ extension MainViewController: RWKSwipeableViewDelegate {
     
     func leftAnimationFor(swipeableView: UIView, inSuperview superview: UIView) {
         let finishPoint = CGPoint(x: CGFloat(-750), y: superview.center.y - 100)
-    
+        
         UIView.animate(withDuration: 0.7, animations: {
             swipeableView.center = finishPoint
             swipeableView.transform = CGAffineTransform(rotationAngle: self.degreesToRadians(degree: -90))
         }) { (complete) in
             
             self.reset(swipeableView: swipeableView, inSuperview: superview)
-
+            
             
             if UserController.currentUserType == "renter" {
                 self.updateUIElementsForPropertyCards()

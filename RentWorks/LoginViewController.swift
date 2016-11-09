@@ -44,7 +44,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             self.dismissLoadingScreen()
             if success {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                 
                 self.present(mainVC, animated: true, completion: nil)
             } else {

@@ -46,14 +46,14 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         if UserController.userCreationType == "landlord" {
                             UserController.createLandlordAndPropertyForCurrentUser {
                                 self.dismissLoadingScreen()
-                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                                 self.present(mainVC, animated: true, completion: nil)
                                 print("Successfully created landlord for currentUser")
                             }
                         } else if UserController.userCreationType == "renter" {
                             UserController.createRenterForCurrentUser {
                                 self.dismissLoadingScreen()
-                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                                 self.present(mainVC, animated: true, completion: nil)
                                 print("Successfuly created renter for current user.")
                             }
@@ -64,7 +64,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         let alert = UIAlertController(title: "Hey there", message: "Looks like you've already got an account attached to this Facebook account. If you want to log in, tap the 'Log in' button below.", preferredStyle: .alert)
                         
                         let loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
-                            let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                            let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                             self.present(mainVC, animated: true, completion: nil)
                         })
                         
@@ -93,14 +93,14 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         if UserController.userCreationType == "landlord" {
                             UserController.createLandlordAndPropertyForCurrentUser {
                                 self.dismissLoadingScreen()
-                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                                 self.present(mainVC, animated: true, completion: nil)
                                 print("Successfully created landlord for currentUser")
                             }
                         } else if UserController.userCreationType == "renter" {
                             UserController.createRenterForCurrentUser {
                                 self.dismissLoadingScreen()
-                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                                 self.present(mainVC, animated: true, completion: nil)
                                 print("Successfuly created renter for current user.")
                             }
@@ -113,7 +113,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         alert.view.tintColor = .black
                         
                         let loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
-                            let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                            let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                             self.present(mainVC, animated: true, completion: nil)
                         })
                         
