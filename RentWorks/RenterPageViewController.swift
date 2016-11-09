@@ -11,14 +11,28 @@ import UIKit
 class RenterPageViewController: UIPageViewController {
    
     
-    
+    private(set) lazy var renterVCs: [UIViewController] = {
+        let storyboard = UIStoryboard(name: "RenterCreationViews", bundle: nil)
+        
+        let vc1 = storyboard.instantiateViewController(withIdentifier: "RenterAddressVC")
+        let vc2 = storyboard.instantiateViewController(withIdentifier: "RenterRoomVC")
+        let vc3 = storyboard.instantiateViewController(withIdentifier: "RenterAllowedVC")
+        let vc4 = storyboard.instantiateViewController(withIdentifier: "RenterFeaturesVC")
+        let vc5 = storyboard.instantiateViewController(withIdentifier: "RenterPaymentVC")
+        let vc6 = storyboard.instantiateViewController(withIdentifier: "RenterCreditScoreVC")
+        let vc7 = storyboard.instantiateViewController(withIdentifier: "finalAccountCreationVC")
+        return [vc1, vc2, vc3, vc4, vc5, vc6, vc7]
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let myView = view?.subviews.first as? UIScrollView {
+            myView.canCancelContentTouches = false
+        }
         dataSource = self
-        self.view.backgroundColor = AppearanceController.customOrangeColor
-        if let vc1 = AccountCreationController.renterVCs.first {
+        self.view.backgroundColor = AppearanceController.vengaYellowColor
+        if let vc1 = renterVCs.first {
             setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
         }
         
@@ -30,18 +44,18 @@ extension RenterPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
-        guard let viewControllerIndex = AccountCreationController.currentRenterVCs.index(of: viewController) else { return nil }
+        guard let viewControllerIndex = renterVCs.index(of: viewController) else { return nil }
         
         let previousIndex = viewControllerIndex - 1
         
         guard previousIndex >= 0, AccountCreationController.currentRenterVCs.count > previousIndex else { return nil }
         
-        return AccountCreationController.currentRenterVCs[previousIndex]
+        return renterVCs[previousIndex]
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
-        guard let viewControllerIndex = AccountCreationController.currentRenterVCs.index(of: viewController) else {
+        guard let viewControllerIndex = renterVCs.index(of: viewController) else {
             return nil
         }
         
@@ -50,6 +64,6 @@ extension RenterPageViewController: UIPageViewControllerDataSource {
         
         guard renterVCsCount != nextIndex, renterVCsCount > nextIndex else { return nil }
         
-        return AccountCreationController.currentRenterVCs[nextIndex]
+        return renterVCs[nextIndex]
     }
 }

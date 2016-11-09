@@ -205,9 +205,10 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
         
         guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator, let loadingLabel = self.loadingLabel else { return }
+        loadingLabel.tintColor = .black
         loadingLabel.isHidden = false
-        loadingView.backgroundColor = AppearanceController.customOrangeColor
-        loadingActivityIndicator.activityIndicatorViewStyle = .whiteLarge
+        loadingView.backgroundColor = AppearanceController.vengaYellowColor
+        loadingActivityIndicator.activityIndicatorViewStyle = .gray
         
         loadingView.addSubview(loadingActivityIndicator)
         loadingView.addSubview(loadingLabel)

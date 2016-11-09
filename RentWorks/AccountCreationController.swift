@@ -12,18 +12,6 @@ class AccountCreationController {
     
     static let sharedController = AccountCreationController()
     
-    static var renterVCs: [UIViewController] = {
-        let storyboard = UIStoryboard(name: "RenterCreationViews", bundle: nil)
-        
-        let vc1 = storyboard.instantiateViewController(withIdentifier: "RenterAddressVC")
-        let vc2 = storyboard.instantiateViewController(withIdentifier: "RenterRoomVC")
-        let vc3 = storyboard.instantiateViewController(withIdentifier: "RenterAllowedVC")
-        let vc4 = storyboard.instantiateViewController(withIdentifier: "RenterFeaturesVC")
-        let vc5 = storyboard.instantiateViewController(withIdentifier: "RenterPaymentVC")
-        let vc6 = storyboard.instantiateViewController(withIdentifier: "RenterCreditScoreVC")
-        let vc7 = storyboard.instantiateViewController(withIdentifier: "finalAccountCreationVC")
-        return [vc1, vc2, vc3, vc4, vc5, vc6, vc7]
-    }()
     
     static var currentRenterVCs: [UIViewController] = [] {
         didSet {
@@ -33,11 +21,17 @@ class AccountCreationController {
     }
     
     static func addNextVCToRenterPageVCDataSource(renterVC: UIViewController) {
-        guard let currentVCIndex = renterVCs.index(of: renterVC), let pageVC = renterVC.parent as? RenterPageViewController else { return }
-        let nextVC = renterVCs[currentVCIndex + 1]
+        guard let pageVC = renterVC.parent as? RenterPageViewController, let currentVCIndex = pageVC.renterVCs.index(of: renterVC) else { return }
+        let nextVC = pageVC.renterVCs[currentVCIndex + 1]
         guard !currentRenterVCs.contains(nextVC) else { return }
         currentRenterVCs.append(nextVC)
+<<<<<<< HEAD
+//        AccountCreationController.resetRenterPageVCDataSourceFor(renterVC: renterVC)
+=======
         AccountCreationController.resetRenterPageVCDataSourceFor(renterVC: renterVC)
+        pageVC.setViewControllers([self], direction: .forward, animated: true, completion: nil)
+        
+>>>>>>> parent of 460b80f... Quick fix to solve an compile failure
     }
     
     static func resetRenterPageVCDataSourceFor(renterVC: UIViewController) {

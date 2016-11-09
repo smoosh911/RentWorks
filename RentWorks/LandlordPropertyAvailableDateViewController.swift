@@ -21,7 +21,7 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
         nextButton.slideFromRight()
         
         availableDatePicker.minimumDate = Date()
-        availableDatePicker.setValue(UIColor.white, forKey: "textColor")
+        availableDatePicker.setValue(UIColor.black, forKey: "textColor")
     }
     
     
