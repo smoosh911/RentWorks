@@ -598,10 +598,10 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x5t-LS-nAV">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x5t-LS-nAV">
                                 <rect key="frame" x="16" y="314" width="343" height="101"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1500" minValue="0.0" maxValue="3000" translatesAutoresizingMaskIntoConstraints="NO" id="ogG-1l-8ci">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1500" minValue="0.0" maxValue="3000" translatesAutoresizingMaskIntoConstraints="NO" id="ogG-1l-8ci">
                                         <rect key="frame" x="6" y="51" width="331" height="31"/>
                                         <color key="minimumTrackTintColor" red="0.16786024305555555" green="0.77037217881944442" blue="0.89683702256944442" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="maximumTrackTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -609,7 +609,7 @@
                                             <action selector="paymentSliderValueChanged:" destination="o1a-zW-YJE" eventType="valueChanged" id="O3r-MT-4gN"/>
                                         </connections>
                                     </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YJa-jx-DfB">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YJa-jx-DfB">
                                         <rect key="frame" x="142" y="8" width="58" height="35"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="35" id="Jhj-6u-eWF"/>
@@ -648,6 +648,7 @@
                             <constraint firstItem="gqJ-yK-HG9" firstAttribute="top" secondItem="XwL-oh-u6q" secondAttribute="bottom" constant="20" id="BDf-Uw-cGH"/>
                             <constraint firstItem="x5t-LS-nAV" firstAttribute="leading" secondItem="BMB-OO-YV1" secondAttribute="leadingMargin" id="CqC-n6-QUP"/>
                             <constraint firstItem="XwL-oh-u6q" firstAttribute="trailing" secondItem="BMB-OO-YV1" secondAttribute="trailingMargin" constant="-15" id="EJt-GB-oay"/>
+                            <constraint firstItem="x5t-LS-nAV" firstAttribute="top" secondItem="SOe-3G-efA" secondAttribute="bottom" constant="294" id="Edb-J5-FRz"/>
                             <constraint firstItem="x5t-LS-nAV" firstAttribute="trailing" secondItem="BMB-OO-YV1" secondAttribute="trailingMargin" id="FKX-G6-Xwq"/>
                         </constraints>
                     </view>

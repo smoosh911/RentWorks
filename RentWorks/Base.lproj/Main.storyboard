@@ -450,7 +450,6 @@
                         <outlet property="bedroomCountLabel" destination="cPW-ep-bN4" id="4ow-sN-Qbg"/>
                         <outlet property="bedroomImageView" destination="qQ9-2v-VEG" id="iMk-QG-VJ9"/>
                         <outlet property="imageView" destination="ItB-82-QF3" id="Y9h-Xp-eCW"/>
-                        <outlet property="loadingLabel" destination="q8T-ua-ez3" id="QuG-Ya-EoP"/>
                         <outlet property="matchesButton" destination="5fq-R0-zgg" id="hIR-5j-ZKv"/>
                         <outlet property="nameLabel" destination="9eU-RG-H8p" id="i50-QO-PKc"/>
                         <outlet property="navigationBarView" destination="A6P-fs-1kG" id="2ol-9f-ZMO"/>
@@ -887,6 +886,41 @@
             </objects>
             <point key="canvasLocation" x="3382" y="-132"/>
         </scene>
+        <!--Card Loading View Controller-->
+        <scene sceneID="Ws4-sd-KvF">
+            <objects>
+                <viewController storyboardIdentifier="cardLoadingVC" id="eIy-nj-s6T" customClass="CardLoadingViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="doP-CW-qqJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="Xww-XL-SGP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="UIj-Ta-QUy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hang tight, we're grabbing the latest cards for you..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Bi7-oH-2I1">
+                                <rect key="frame" x="20" y="60" width="339" height="137"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="0Bi-Z5-LTX">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <connections>
+                        <segue destination="qb0-tH-hUM" kind="presentation" identifier="toMainSwipingVC" modalTransitionStyle="crossDissolve" id="egX-ez-lNW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v7v-kN-xyo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="37.600000000000001" y="757.87106446776613"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="cVS-RY-fPP">
             <objects>
@@ -925,10 +959,10 @@
             </objects>
             <point key="canvasLocation" x="1047" y="9"/>
         </scene>
-        <!--View Controller-->
+        <!--Launch Screen Copy View Controller-->
         <scene sceneID="2Oe-cV-Wvv">
             <objects>
-                <viewController storyboardIdentifier="launchScreenCopy" id="4bt-6e-eVg" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="launchScreenCopy" id="4bt-6e-eVg" customClass="LaunchScreenCopyViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Q18-7g-pqs"/>
                         <viewControllerLayoutGuide type="bottom" id="wLT-nw-Okf"/>
@@ -945,6 +979,7 @@
                                 </constraints>
                             </imageView>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="axX-GM-oab" firstAttribute="top" secondItem="Q18-7g-pqs" secondAttribute="bottom" constant="81" id="8gj-48-9jH"/>
                             <constraint firstAttribute="trailingMargin" secondItem="axX-GM-oab" secondAttribute="trailing" constant="45" id="WgX-o5-mVj"/>

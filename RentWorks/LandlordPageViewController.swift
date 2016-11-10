@@ -60,7 +60,7 @@ extension LandlordPageViewController: UIPageViewControllerDataSource {
             
             let previousIndex = viewControllerIndex - 1
             
-            guard previousIndex >= 0, landlordVCs.count > previousIndex else { return nil }
+            guard previousIndex >= 0, AccountCreationController.currenLandlordVCs.count > previousIndex else { return nil }
             
             return landlordVCs[previousIndex]
     }
@@ -72,7 +72,7 @@ extension LandlordPageViewController: UIPageViewControllerDataSource {
             }
             
             let nextIndex = viewControllerIndex + 1
-            let landlordVCsCount = landlordVCs.count
+            let landlordVCsCount = AccountCreationController.currenLandlordVCs.count
             
             guard landlordVCsCount != nextIndex, landlordVCsCount > nextIndex else { return nil }
             
