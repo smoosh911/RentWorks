@@ -39,7 +39,6 @@ class RWKSwipeableView: UIView {
     var originalPoint: CGPoint = CGPoint.zero
     
     func setupPanGestureRecognizer() {
-        
         panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(beingDragged))
         self.addGestureRecognizer(panGestureRecognizer)
     }
@@ -66,11 +65,12 @@ class RWKSwipeableView: UIView {
         let label = gesture.view!
         
         if gesture.state == UIGestureRecognizerState.ended {
+            guard let superView = self.superview else { return }
             
             var acceptedOrRejected = ""
-            let swipeDistanceRequired: CGFloat = 150.0
+            let swipeDistanceFromEdgeRequired: CGFloat = 75
         
-            if label.center.x < swipeDistanceRequired {
+            if label.center.x < swipeDistanceFromEdgeRequired {
                 acceptedOrRejected = "rejected"
                 UIView.animate(withDuration: 0.2, animations: {
                     self.delegate!.swipeLeftCompleteTransform(view: label)
@@ -82,7 +82,7 @@ class RWKSwipeableView: UIView {
                     }
                     self.delegate!.resetFrontCardTransform(view: label)
                 })
-            } else if label.center.x > self.bounds.width - swipeDistanceRequired {
+            } else if label.center.x > superView.bounds.width - swipeDistanceFromEdgeRequired {
                 acceptedOrRejected = "accepted"
                 UIView.animate(withDuration: 0.2, animations: {
                     self.delegate!.swipeRightCompleteTransform(view: label)

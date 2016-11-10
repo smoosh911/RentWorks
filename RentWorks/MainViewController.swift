@@ -56,8 +56,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     @IBOutlet weak var navigationBarView: UIView!
     
-//    @IBOutlet weak var loadingLabel: UILabel!
-    
     // MARK: - Properties
 
     var rotationAngle: CGFloat = 0.0
@@ -95,7 +93,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         
         if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
         
-//        setUpAndDisplayLoadingScreen()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         FirebaseController.delegate = self
         MatchController.delegate = self
@@ -103,11 +100,9 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         setupViews()
         
         if UserController.currentUserType == "renter" {
-            UserController.fetchAllProperties()
-            users = FirebaseController.properties
+            updateUIElementsForPropertyCards()
         } else if UserController.currentUserType == "landlord" {
-            UserController.fetchAllRenters()
-            
+            updateUIElementsForRenterCards()
         }
     }
     
@@ -120,16 +115,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     // MARK: - FirebaseUserDelegate
     
     func propertiesWereUpdated() {
-//        MatchController.observeLikesForCurrentRenter()
-//        dismissLoadingScreen()
         updateUIElementsForPropertyCards()
     }
     
     func rentersWereUpdated() {
-//        dismissLoadingScreen()
         updateUIElementsForRenterCards()
-//        MatchController.observeLikesForCurrentLandlord()
-
     }
     
     // MARK: - UserMatchingDelegate
@@ -196,50 +186,6 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         backgroundImageView.layer.cornerRadius = 15
         backgroundView.layer.cornerRadius = 15
     }
-    
-    // MARK: loading screen
-    
-//    func setUpAndDisplayLoadingScreen() {
-//        self.loadingView = UIView(frame: self.view.frame)
-//        self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
-//        
-//        guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator, let loadingLabel = self.loadingLabel else { return }
-//        loadingLabel.tintColor = .black
-//        loadingLabel.isHidden = false
-//        loadingView.backgroundColor = AppearanceController.vengaYellowColor
-//        loadingActivityIndicator.activityIndicatorViewStyle = .gray
-//        
-//        loadingView.addSubview(loadingActivityIndicator)
-//        loadingView.addSubview(loadingLabel)
-//        self.view.addSubview(loadingView)
-//        
-//        loadingLabel.minimumScaleFactor = 0.5
-//        
-//        let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-//        let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
-//        let centerXLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-//        let bottomLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .bottom, relatedBy: .equal, toItem: self.loadingActivityIndicator, attribute: .top, multiplier: 1, constant: -25)
-//        let leadingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 20)
-//        let trailingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -20)
-//        
-//        
-//        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint, centerXLoadingLabelConstraint, bottomLoadingLabelConstraint, leadingLoadingLabelConstraint, trailingLoadingLabelConstraint])
-//        
-//        loadingActivityIndicator.startAnimating()
-//    }
-//    
-//    func dismissLoadingScreen() {
-//        UIView.animate(withDuration: 0.8, animations: {
-//            self.loadingActivityIndicator?.alpha = 0
-//            self.loadingView?.alpha = 0
-//            self.loadingLabel.alpha = 0
-//        }) { (_) in
-//            self.loadingActivityIndicator?.removeFromSuperview()
-//            self.loadingView?.removeFromSuperview()
-//            self.loadingLabel.removeFromSuperview()
-//            self.loadingViewHasBeenDismissed = true
-//        }
-//    }
 }
 
 // MARK: - RWKSwipeableViewDelegate
@@ -249,37 +195,48 @@ extension MainViewController: RWKSwipeableViewDelegate {
     // MARK: - Animations
     
     func beingDragged(gesture: UIPanGestureRecognizer) {
-        
         let translation = gesture.translation(in: self.view)
         let label = gesture.view!
         
-        label.center = CGPoint(x: self.view.bounds.width / 2 + translation.x * 1.3, y: self.view.bounds.height / 2 + 20)
+        let swipeSpeed: CGFloat = 1.3
+        let paddingFromBottomOfScreen: CGFloat = 20.0
+        let rotationSpeedBuffer: CGFloat = 800.0 // the higher the number the slower the rotation
+        
+        label.center = CGPoint(x: self.view.bounds.width / 2 + translation.x * swipeSpeed, y: self.view.bounds.height / 2 + paddingFromBottomOfScreen)
         
         let xFromCenter = label.center.x - self.view.bounds.width / 2.0
         
         var transform = CGAffineTransform.identity
-        transform = transform.rotated(by: xFromCenter / 800.0)
+        transform = transform.rotated(by: xFromCenter / rotationSpeedBuffer)
         
         label.transform = transform
     }
     
     func swipeLeftCompleteTransform(view: UIView) {
-        view.center = CGPoint(x: self.view.bounds.width / 2 - 500, y: self.view.bounds.height / 2 + 20)
+        let paddingFromBottomOfScreen: CGFloat = 20.0
+        let rotationSpeedBuffer: CGFloat = 800.0 // the higher the number the slower the rotation
+        let xEndPoint: CGFloat = 500.0 // this is where the card will animate to when the user lets go
+        
+        view.center = CGPoint(x: self.view.bounds.width / 2 - xEndPoint, y: self.view.bounds.height / 2 + paddingFromBottomOfScreen)
         
         let xFromCenter = view.center.x - self.view.bounds.width / 2.0
         
         var anitransform = CGAffineTransform.identity
-        anitransform = anitransform.rotated(by: xFromCenter / 800.0)
+        anitransform = anitransform.rotated(by: xFromCenter / rotationSpeedBuffer)
         
         view.transform = anitransform
     }
     
     func swipeRightCompleteTransform(view: UIView) {
-        view.center = CGPoint(x: self.view.bounds.width / 2 + 500, y: self.view.bounds.height / 2 + 20)
+        let paddingFromBottomOfScreen: CGFloat = 20.0
+        let rotationSpeedBuffer: CGFloat = 800.0 // the higher the number the slower the rotation
+        let xEndPoint: CGFloat = 500.0 // this is where the card will animate to when the user lets go
+        
+        view.center = CGPoint(x: self.view.bounds.width / 2 + xEndPoint, y: self.view.bounds.height / 2 + paddingFromBottomOfScreen)
         let xFromCenter = view.center.x - self.view.bounds.width / 2.0
         
         var anitransform = CGAffineTransform.identity
-        anitransform = anitransform.rotated(by: xFromCenter / 800.0)
+        anitransform = anitransform.rotated(by: xFromCenter / rotationSpeedBuffer)
         
         view.transform = anitransform
         
@@ -287,6 +244,8 @@ extension MainViewController: RWKSwipeableViewDelegate {
     }
     
     func resetFrontCardTransform(view: UIView) {
+        let paddingFromBottomOfScreen: CGFloat = 20.0
+        
         var endTransform = CGAffineTransform.identity
         
         endTransform = endTransform.rotated(by: 0.0)
@@ -294,7 +253,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
         
         view.transform = endTransform
         
-        view.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2 + 20)
+        view.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2 + paddingFromBottomOfScreen)
     }
     
     // MARK: - update data
@@ -302,10 +261,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
     func updateUIElementsForPropertyCards() {
         let property = FirebaseController.properties[imageIndex]
         
-        //        print(property.propertyID)
-        
         guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
-        
         
         imageView.image = profilePicture
         nameLabel.text = property.propertyDescription ?? "No description available"
@@ -339,8 +295,6 @@ extension MainViewController: RWKSwipeableViewDelegate {
     
     func updateUIElementsForRenterCards() {
         let renter = FirebaseController.renters[imageIndex]
-        
-        //        print(renter.id)
         
         guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
         
@@ -389,6 +343,5 @@ extension MainViewController: RWKSwipeableViewDelegate {
                 imageIndex = 0
             }
         }
-        
     }
 }
