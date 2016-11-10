@@ -360,7 +360,6 @@ extension MainViewController: RWKSwipeableViewDelegate {
     }
     
     func likeUser() {
-        
         if UserController.currentUserType == "renter" {
             guard let property = swipeableView.property else { return }
             MatchController.addCurrentRenter(toLikelistOf: property)
