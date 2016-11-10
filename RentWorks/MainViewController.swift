@@ -56,7 +56,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     @IBOutlet weak var navigationBarView: UIView!
     
-    @IBOutlet weak var loadingLabel: UILabel!
+//    @IBOutlet weak var loadingLabel: UILabel!
     
     // MARK: - Properties
 
@@ -95,7 +95,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         
         if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
         
-        setUpAndDisplayLoadingScreen()
+//        setUpAndDisplayLoadingScreen()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         FirebaseController.delegate = self
         MatchController.delegate = self
@@ -120,15 +120,15 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     // MARK: - FirebaseUserDelegate
     
     func propertiesWereUpdated() {
-        MatchController.observeLikesForCurrentRenter()
-        dismissLoadingScreen()
+//        MatchController.observeLikesForCurrentRenter()
+//        dismissLoadingScreen()
         updateUIElementsForPropertyCards()
     }
     
     func rentersWereUpdated() {
-        dismissLoadingScreen()
+//        dismissLoadingScreen()
         updateUIElementsForRenterCards()
-        MatchController.observeLikesForCurrentLandlord()
+//        MatchController.observeLikesForCurrentLandlord()
 
     }
     
@@ -199,47 +199,47 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     // MARK: loading screen
     
-    func setUpAndDisplayLoadingScreen() {
-        self.loadingView = UIView(frame: self.view.frame)
-        self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
-        
-        guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator, let loadingLabel = self.loadingLabel else { return }
-        loadingLabel.tintColor = .black
-        loadingLabel.isHidden = false
-        loadingView.backgroundColor = AppearanceController.vengaYellowColor
-        loadingActivityIndicator.activityIndicatorViewStyle = .gray
-        
-        loadingView.addSubview(loadingActivityIndicator)
-        loadingView.addSubview(loadingLabel)
-        self.view.addSubview(loadingView)
-        
-        loadingLabel.minimumScaleFactor = 0.5
-        
-        let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-        let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
-        let centerXLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-        let bottomLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .bottom, relatedBy: .equal, toItem: self.loadingActivityIndicator, attribute: .top, multiplier: 1, constant: -25)
-        let leadingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 20)
-        let trailingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -20)
-        
-        
-        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint, centerXLoadingLabelConstraint, bottomLoadingLabelConstraint, leadingLoadingLabelConstraint, trailingLoadingLabelConstraint])
-        
-        loadingActivityIndicator.startAnimating()
-    }
-    
-    func dismissLoadingScreen() {
-        UIView.animate(withDuration: 0.8, animations: {
-            self.loadingActivityIndicator?.alpha = 0
-            self.loadingView?.alpha = 0
-            self.loadingLabel.alpha = 0
-        }) { (_) in
-            self.loadingActivityIndicator?.removeFromSuperview()
-            self.loadingView?.removeFromSuperview()
-            self.loadingLabel.removeFromSuperview()
-            self.loadingViewHasBeenDismissed = true
-        }
-    }
+//    func setUpAndDisplayLoadingScreen() {
+//        self.loadingView = UIView(frame: self.view.frame)
+//        self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
+//        
+//        guard let loadingView = self.loadingView, let loadingActivityIndicator = loadingActivityIndicator, let loadingLabel = self.loadingLabel else { return }
+//        loadingLabel.tintColor = .black
+//        loadingLabel.isHidden = false
+//        loadingView.backgroundColor = AppearanceController.vengaYellowColor
+//        loadingActivityIndicator.activityIndicatorViewStyle = .gray
+//        
+//        loadingView.addSubview(loadingActivityIndicator)
+//        loadingView.addSubview(loadingLabel)
+//        self.view.addSubview(loadingView)
+//        
+//        loadingLabel.minimumScaleFactor = 0.5
+//        
+//        let centerXLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
+//        let centerYLoadingViewConstraint = NSLayoutConstraint(item: loadingView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1, constant: 0)
+//        let centerXLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
+//        let bottomLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .bottom, relatedBy: .equal, toItem: self.loadingActivityIndicator, attribute: .top, multiplier: 1, constant: -25)
+//        let leadingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 20)
+//        let trailingLoadingLabelConstraint = NSLayoutConstraint(item: loadingLabel, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -20)
+//        
+//        
+//        self.view.addConstraints([centerXLoadingViewConstraint, centerYLoadingViewConstraint, centerXLoadingLabelConstraint, bottomLoadingLabelConstraint, leadingLoadingLabelConstraint, trailingLoadingLabelConstraint])
+//        
+//        loadingActivityIndicator.startAnimating()
+//    }
+//    
+//    func dismissLoadingScreen() {
+//        UIView.animate(withDuration: 0.8, animations: {
+//            self.loadingActivityIndicator?.alpha = 0
+//            self.loadingView?.alpha = 0
+//            self.loadingLabel.alpha = 0
+//        }) { (_) in
+//            self.loadingActivityIndicator?.removeFromSuperview()
+//            self.loadingView?.removeFromSuperview()
+//            self.loadingLabel.removeFromSuperview()
+//            self.loadingViewHasBeenDismissed = true
+//        }
+//    }
 }
 
 // MARK: - RWKSwipeableViewDelegate
