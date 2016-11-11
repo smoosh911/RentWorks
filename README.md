@@ -65,4 +65,4 @@ Follow the steps below to get developing on this project.
 #### Warnings
 
 ## Questions and Concerns
-If you have any questions or concerns please contact the lead developer Michael Perry at perrmichaelscott@gmail.com
+If you have any questions or concerns please contact the lead developer Michael Perry at perrmichaelscott@gmail.com.
