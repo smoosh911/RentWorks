@@ -184,9 +184,7 @@ class UserController {
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
             
             let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
-            
-            //            FirebaseController.properties = landlordProperties
-            
+
             let group = DispatchGroup()
             
             

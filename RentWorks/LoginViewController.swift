@@ -117,8 +117,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         let centerXConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
         let yConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .top, relatedBy: .equal, toItem: rentingMadeSmartLabel, attribute: .bottom, multiplier: 1, constant: 8)
-        //        let widthConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal, toItem: self.passwordTextField, attribute: .width, multiplier: 1, constant: 0)
-        //        let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 30)
+
         self.view.addConstraints([centerXConstraint, yConstraint])
     }
 }

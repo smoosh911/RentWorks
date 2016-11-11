@@ -46,39 +46,6 @@ class AuthenticationController {
         }
     }
     
-//    static func getCurrentUser(completion: ((_ success: Bool) -> Void)? = nil) {
-//        checkFirebaseLoginStatus { (loggedIn) in
-//            if loggedIn {
-//                FacebookRequestController.requestCurrentUsers(information: [.name, .email, .user_birthday], completion: { (dict) in
-//                    //                    guard let dict = dict, let currentUser = TestUser(facebookDictionary: dict) else { return }
-//                    //                    FirebaseController.checkForExistingUserInformation(user: currentUser, completion: { (hasAccount, hasPhoto) in
-//                    //                        FirebaseController.handleUserInformationScenariosFor(user: currentUser, hasAccount: hasAccount, hasPhoto: hasPhoto, completion: {
-//                    //                            if hasPhoto {
-//                    //                                self.currentUser = currentUser
-//                    //                                MatchController.observeLikesFor(user: currentUser)
-//                    //                                if let completion = completion {
-//                    //                                    completion(true)
-//                    //                                }
-//                    //
-//                    //                            }
-//                    //
-//                    //                        })
-//                    //                    })
-//                })
-//            } else {
-//                AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
-//                    if success {
-//                        getCurrentUser(completion: completion)
-//                    }
-//                })
-//                NSLog("Not logged into Firebase. Unable to pull current user's information.")
-//                completion?(false)
-//            }
-//        }
-//    }
-    
-    
-    
     static func signOutOfFirebase() {
         do {
             try FIRAuth.auth()?.signOut()

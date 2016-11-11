@@ -205,44 +205,6 @@ class FirebaseController {
         })
     }
     
-    // WARNING: - At its current state, this function will pull ALL the users, INCLUDING their profile pictures from Firebase. This is not a final function, but only to test.
-    
-    //    static func getAllFirebaseUsersAndTheirProfilePictures(completion: (([TestUser]?) -> Void)? = nil) {
-    //
-    //        // TODO: - Make an alertController that will tell the user that the cards (users) are loading so that all this stuff below can run.
-    //        AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
-    //            if loggedIn {
-    //
-    //                FirebaseController.fetchAllFirebaseUsers { (testUsers) in
-    //                    guard let testUsers = testUsers else { return }
-    //                    let group = DispatchGroup()
-    //                    for user in testUsers {
-    //                        group.enter()
-    //                        //                        FirebaseController.downloadProfileImage(forUser: user, and: nil, completion: { (image) in
-    //                        //                            guard let image = image else { group.leave(); return }
-    //                        //                            user.profilePic = image
-    //                        //                            group.leave()
-    //                        //                        })
-    //                    }
-    //
-    //                    group.notify(queue: DispatchQueue.main, execute: {
-    //                        // Dismiss the alertController here.
-    //                        self.users = testUsers.filter({$0 != AuthenticationController.currentUser})
-    //                        completion?(users)
-    //
-    //                    })
-    //                }
-    //            } else {
-    //                AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
-    //                    if success {
-    //                        getAllFirebaseUsersAndTheirProfilePictures(completion: nil)
-    //                    }
-    //                })
-    //                print("Not logged in")
-    //            }
-    //        }
-    //    }
-    
     static func fetchUsersFor(userIDs: [String], completion: @escaping ([TestUser?]) -> Void) {
         let group = DispatchGroup()
         var usersArray: [TestUser?] = []
@@ -275,7 +237,6 @@ class FirebaseController {
             
             var scenarios = (false, "noAccount")
             FirebaseController.landlordsRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
-                print(snapshot)
                 guard snapshot.value as? [String: Any] != nil else { group.leave(); return }
                 
                 scenarios = (true, "landlord")
@@ -286,7 +247,6 @@ class FirebaseController {
             
             group.enter()
             FirebaseController.rentersRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
-                print(snapshot)
                 guard snapshot.value as? [String: Any] != nil else { group.leave(); return }
                 
                 scenarios = (true, "renter")
@@ -453,16 +413,6 @@ class FirebaseController {
             addressRef.setValue("1234 S Testing Road, MockTown, UT, 84321")
         }
     }
-    
-    //    static func uploadAndStoreMockPhotos() {
-    //
-    //        for i in 1...15 {
-    //            guard let image = UIImage(named: "\(i)") else { print("could not find image"); return }
-    //            storeMock(profileImage: image, forUser: "\(i)", completion: { (_, error) in
-    //                if error != nil { print(error?.localizedDescription); return }
-    //            })
-    //        }
-    //    }
     
     static func store(profileImage: UIImage, forUserID userID: String, and property: Property?, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?, Data?) -> Void) {
         
