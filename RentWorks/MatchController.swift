@@ -34,7 +34,7 @@ class MatchController {
             let userLikesRef = FirebaseController.likesRef.child(renterID)
             
             userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
-
+                
                 guard let likeDictionary = snapshot.value as? [String: Any] else { isObservingCurrentUserLikeEndpoint = false; return }
                 
                 
@@ -68,7 +68,7 @@ class MatchController {
                             }
                             
                         }
-
+                        
                     })
                     
                 })
@@ -168,42 +168,60 @@ class MatchController {
     
     static func checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: [String: Any], completion: @escaping (_ matchingIDs: [String]) -> Void) {
         var matchingUsersIDArray: [String] = []
-        let group = DispatchGroup()
         
         if UserController.currentUserType == "renter" {
             
             FirebaseController.landlordsRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 guard let landlordsDictionary = snapshot.value as? [String: Any] else { return }
                 
+                let landlordIDs = landlordsDictionary.flatMap({$0.key})
                 
-                let operationQueue = OperationQueue()
+                let checkQueue = DispatchQueue(label: "matchCheckQueue")
                 
-//                let op1 = BlockOperation {
+                var landlordsAndProperties: [(landlordID: String, propertyID: String)] = []
+                
                 let likedPropertyIDs = otherUserDictionary.flatMap({$0.key})
-                for propertyID in likedPropertyIDs {
-                FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                    guard let propertyDict = snapshot.value as? [String: Any] else { return }
+                let op1Group = DispatchGroup()
+                for likedPropertyID in likedPropertyIDs {
                     
+                    op1Group.enter()
                     
-                })
-                
-                }
-                for id in otherUserDictionary.keys {
-                    group.enter()
-                    FirebaseController.likesRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
-                        guard let matchDictionary = snapshot.value as? [String: Any], let currentRenter = UserController.currentRenter, let renterID = currentRenter.id else { group.leave(); return }
-                        if matchDictionary.keys.contains(renterID) {
-                            matchingUsersIDArray.append(id)
-                            group.leave()
+                    FirebaseController.propertiesRef.child(likedPropertyID).observeSingleEvent(of: .value, with: { (snapshot) in
+                        guard let propertyDict = snapshot.value as? [String: Any], let property = Property(dictionary: propertyDict), let landlordID = property.landlordID, let propertyID = property.propertyID else { op1Group.leave(); return }
+                        
+                        if landlordIDs.contains(landlordID) {
+                            landlordsAndProperties.append((landlordID, propertyID))
+                            op1Group.leave()
                         } else {
-                            group.leave()
+                            op1Group.leave()
                         }
                     })
                 }
+                op1Group.notify(queue: checkQueue, execute: {
+                    let group = DispatchGroup()
+                    
+                    for landlordAndProperty in landlordsAndProperties {
+                        group.enter()
+                        FirebaseController.likesRef.child(landlordAndProperty.landlordID).child(landlordAndProperty.propertyID).observeSingleEvent(of: .value, with: { (snapshot) in
+                            guard let matchDictionary = snapshot.value as? [String: Any], let currentRenter = UserController.currentRenter, let renterID = currentRenter.id else { group.leave(); return }
+                            if matchDictionary.keys.contains(renterID) {
+                                matchingUsersIDArray.append(landlordAndProperty.propertyID)
+                                group.leave()
+                            } else {
+                                group.leave()
+                            }
+                        })
+                    }
+                    
+                    group.notify(queue: DispatchQueue.main) {
+                        completion(matchingUsersIDArray)
+                    }
+                })
                 
             }, withCancel: { (error) in print(error.localizedDescription) })
             
         } else if UserController.currentUserType == "landlord" {
+            let group = DispatchGroup()
             let subgroup = DispatchGroup()
             guard let properties = UserController.currentLandlord?.property?.array as? [Property] else { print("Cannot fetch properties for the current landlord"); return }
             for property in properties {
@@ -228,9 +246,9 @@ class MatchController {
                 })
             }
             
-        }
-        group.notify(queue: DispatchQueue.main) {
-            completion(matchingUsersIDArray)
+            group.notify(queue: DispatchQueue.main) {
+                completion(matchingUsersIDArray)
+            }
         }
     }
 }
