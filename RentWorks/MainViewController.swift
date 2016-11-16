@@ -75,7 +75,23 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var matchingUsersAlertController: UIAlertController?
     
-    var imageIndex = 0
+    var imageIndex = 0 {
+        didSet{
+            if UserController.currentUserType == "renter"{
+                if FirebaseController.properties.count < 2 {
+                    self.backgroundView.isHidden = true
+                } else {
+                    self.backgroundView.isHidden = false
+                }
+            } else if UserController.currentUserType == "landlord" {
+                if FirebaseController.renters.count < 2 {
+                    self.backgroundView.isHidden = true
+                } else {
+                    self.backgroundView.isHidden = false
+                }
+            }
+        }
+    }
     var backgroundimageIndex: Int {
         if UserController.currentUserType == "renter"{
             return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
@@ -91,8 +107,10 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
         
+        self.backgroundView.isHidden = true
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         FirebaseController.delegate = self
         MatchController.delegate = self
@@ -277,7 +295,10 @@ extension MainViewController: RWKSwipeableViewDelegate {
         
         let nextProperty = FirebaseController.properties[backgroundimageIndex]
         
-        guard  let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data), let backgroundPropertyAddress = nextProperty.address else { return }
+        guard let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data), let backgroundPropertyAddress = nextProperty.address else { return }
+        
+        self.backgroundView.isHidden = false
+        
         backgroundImageView.image = backgroundProfilePicture
         backgroundNameLabel.text = nextProperty.propertyDescription ?? "No description available"
         backgroundAddressLabel.text = backgroundPropertyAddress

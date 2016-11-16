@@ -184,28 +184,32 @@ class UserController {
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
             
             let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
-
+            
+            // FirebaseController.properties = landlordProperties
+            
+            let backgroundQ = DispatchQueue.global(qos: .background)
             let group = DispatchGroup()
             
             
             for propertyDict in allPropertiesDict {
                 group.enter()
-                let dict = propertyDict.value
-                guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = landlordProperties.filter({$0.propertyID == propertyID}).first else { group.leave(); return }
-                
-                let subGroup = DispatchGroup()
-                
-                for imageURL in imageURLArray {
-                    subGroup.enter()
-                    FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
-                        subGroup.leave()
+                backgroundQ.async(group: group, execute: {
+                    let dict = propertyDict.value
+                    guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = landlordProperties.filter({$0.propertyID == propertyID}).first else { group.leave(); return }
+                    
+                    let subGroup = DispatchGroup()
+                    
+                    for imageURL in imageURLArray {
+                        subGroup.enter()
+                        FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
+                            subGroup.leave()
+                        })
+                    }
+                    
+                    subGroup.notify(queue: DispatchQueue.main, execute: {
+                        group.leave()
                     })
-                }
-                
-                subGroup.notify(queue: DispatchQueue.main, execute: {
-                    group.leave()
                 })
-                
             }
             
             group.notify(queue: DispatchQueue.main, execute: {
@@ -427,20 +431,20 @@ class UserController {
             
             let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
             
+            let backgroundQ = DispatchQueue.global(qos: .background)
             let group = DispatchGroup()
-            
             
             for propertyDict in allRentersDict {
                 group.enter()
-                let dict = propertyDict.value
-                guard let renterID = dict[UserController.kID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let renter = rentersArray.filter({$0.id == renterID}).first else { group.leave(); return }
-                
-                FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
-                    group.leave()
+                backgroundQ.async(group: group, execute: {
+                    let dict = propertyDict.value
+                    guard let renterID = dict[UserController.kID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let renter = rentersArray.filter({$0.id == renterID}).first else { group.leave(); return }
+                    
+                    FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
+                        group.leave()
+                    })
                 })
             }
-            
-            
             
             group.notify(queue: DispatchQueue.main, execute: {
                 FirebaseController.renters = rentersArray
