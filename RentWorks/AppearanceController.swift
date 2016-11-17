@@ -15,7 +15,7 @@ class AppearanceController {
     static func appearanceFor(textFields: [UITextField]) {
         for textField in textFields {
 //            textField.layer.borderColor = UIColor.white.cgColor
-            textField.tintColor = vengaYellowColor
+            textField.tintColor = vengaOrangeColor
 //            textField.layer.borderWidth = 0.6
 //            textField.layer.cornerRadius = 5
         }
@@ -28,7 +28,8 @@ class AppearanceController {
     
     static let vengaYellowColor = UIColor(red: 0.976, green: 0.937, blue: 0.110, alpha: 1.00)
     
-    
+    static let vengaOrangeColor = UIColor(red: 0.961, green: 0.482, blue: 0.220, alpha: 1.00)
+
     static let viewButtonPressedColor = UIColor(red: 0.945, green: 0.902, blue: 0.132, alpha: 1.00)
     
     // For the credit rating labels, because the text isn't a part of the button, the slight change in color must be done manually.

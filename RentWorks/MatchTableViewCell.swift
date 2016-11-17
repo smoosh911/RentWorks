@@ -29,7 +29,7 @@ class MatchTableViewCell: UITableViewCell {
     
     @IBAction func contactButtonTapped(_ sender: AnyObject) {
         let mailComposeVC = MFMailComposeViewController()
-        mailComposeVC.view.tintColor = AppearanceController.vengaYellowColor
+        mailComposeVC.view.tintColor = AppearanceController.vengaOrangeColor
         //        mailComposeVC.navigationBar.barTintColor = UIColor.orange
         guard MFMailComposeViewController.canSendMail() else { /* present alert to say they can't send email */ return }
         if let renter = renter {
@@ -91,7 +91,7 @@ class MatchTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 36.5
         profileImageView.clipsToBounds = true
         
-        contactButton.layer.borderColor = AppearanceController.vengaYellowColor.cgColor
+        contactButton.layer.borderColor = AppearanceController.vengaOrangeColor.cgColor
         contactButton.layer.cornerRadius = 4
         contactButton.layer.borderWidth = 0.4
     }

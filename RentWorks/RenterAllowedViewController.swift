@@ -42,7 +42,7 @@ class RenterAllowedViewController: UIViewController {
     
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
         petsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        noPetsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
+        noPetsAllowedButton.backgroundColor = AppearanceController.vengaOrangeColor
         
         petsAllowed = true
         
@@ -52,7 +52,7 @@ class RenterAllowedViewController: UIViewController {
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
         noPetsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        petsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
+        petsAllowedButton.backgroundColor = AppearanceController.vengaOrangeColor
         
         petsAllowed = false
         
@@ -62,7 +62,7 @@ class RenterAllowedViewController: UIViewController {
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
         smokingAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        noSmokingButton.backgroundColor = AppearanceController.vengaYellowColor
+        noSmokingButton.backgroundColor = AppearanceController.vengaOrangeColor
         
         smokingAllowed = true
         
@@ -71,7 +71,7 @@ class RenterAllowedViewController: UIViewController {
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
         noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        smokingAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
+        smokingAllowedButton.backgroundColor = AppearanceController.vengaOrangeColor
         
         smokingAllowed = true
         
