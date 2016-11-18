@@ -31,6 +31,7 @@
 		4625EF511DC3A74A0055024F /* UIButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4625EF501DC3A74A0055024F /* UIButtonExtensions.swift */; };
 		4625EF531DC3B0890055024F /* RenterCreationViews.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4625EF521DC3B0890055024F /* RenterCreationViews.storyboard */; };
 		4625EF551DC3B1AA0055024F /* LandlordCreationViews.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4625EF541DC3B1AA0055024F /* LandlordCreationViews.storyboard */; };
+		464AAA771DDE649400384B5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 464AAA761DDE649400384B5A /* Assets.xcassets */; };
 		465E96901DA980FD000B36AF /* AuthenticationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465E968F1DA980FD000B36AF /* AuthenticationController.swift */; };
 		465E96921DA981E1000B36AF /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465E96911DA981E1000B36AF /* FirebaseController.swift */; };
 		465E96951DA98230000B36AF /* LandlordAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 465E96931DA98230000B36AF /* LandlordAddressViewController.swift */; };
@@ -81,7 +82,6 @@
 		C73E10891D8E417D008E475F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10881D8E417D008E475F /* MainViewController.swift */; };
 		C73E108C1D8E417D008E475F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C73E108A1D8E417D008E475F /* Main.storyboard */; };
 		C73E108F1D8E417D008E475F /* RentWorks.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C73E108D1D8E417D008E475F /* RentWorks.xcdatamodeld */; };
-		C73E10911D8E417D008E475F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C73E10901D8E417D008E475F /* Assets.xcassets */; };
 		C73E10941D8E417D008E475F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C73E10921D8E417D008E475F /* LaunchScreen.storyboard */; };
 		C73E109F1D8E417D008E475F /* RentWorksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E109E1D8E417D008E475F /* RentWorksTests.swift */; };
 		C73E10AA1D8E417D008E475F /* RentWorksUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C73E10A91D8E417D008E475F /* RentWorksUITests.swift */; };
@@ -132,6 +132,7 @@
 		4625EF501DC3A74A0055024F /* UIButtonExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIButtonExtensions.swift; sourceTree = "<group>"; };
 		4625EF521DC3B0890055024F /* RenterCreationViews.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RenterCreationViews.storyboard; sourceTree = "<group>"; };
 		4625EF541DC3B1AA0055024F /* LandlordCreationViews.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LandlordCreationViews.storyboard; sourceTree = "<group>"; };
+		464AAA761DDE649400384B5A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		465E968F1DA980FD000B36AF /* AuthenticationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationController.swift; sourceTree = "<group>"; };
 		465E96911DA981E1000B36AF /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 		465E96931DA98230000B36AF /* LandlordAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordAddressViewController.swift; sourceTree = "<group>"; };
@@ -176,7 +177,6 @@
 		C73E10881D8E417D008E475F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		C73E108B1D8E417D008E475F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C73E108E1D8E417D008E475F /* RentWorks.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RentWorks.xcdatamodel; sourceTree = "<group>"; };
-		C73E10901D8E417D008E475F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C73E10931D8E417D008E475F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C73E10951D8E417D008E475F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C73E109A1D8E417D008E475F /* RentWorksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RentWorksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -371,9 +371,9 @@
 		C73E10B81D8E4308008E475F /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				464AAA761DDE649400384B5A /* Assets.xcassets */,
 				466497D71DA6A28400BA249A /* RentWorks.entitlements */,
 				460C93431DBE9DC400926966 /* GoogleService-Info.plist */,
-				C73E10901D8E417D008E475F /* Assets.xcassets */,
 				466497D91DA6A7F400BA249A /* Bridging-Header.h */,
 				C73E10951D8E417D008E475F /* Info.plist */,
 			);
@@ -586,10 +586,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C73E10941D8E417D008E475F /* LaunchScreen.storyboard in Resources */,
-				C73E10911D8E417D008E475F /* Assets.xcassets in Resources */,
 				4625EF551DC3B1AA0055024F /* LandlordCreationViews.storyboard in Resources */,
 				4625EF531DC3B0890055024F /* RenterCreationViews.storyboard in Resources */,
 				460C93441DBE9DC400926966 /* GoogleService-Info.plist in Resources */,
+				464AAA771DDE649400384B5A /* Assets.xcassets in Resources */,
 				C73E108C1D8E417D008E475F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

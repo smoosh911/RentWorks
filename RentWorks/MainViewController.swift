@@ -149,7 +149,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     func setMatchesButtonImage() {
         DispatchQueue.main.async {
-            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "NewChat"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
+            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleV2"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "NewChatV2"), for: .normal)
         }
     }
     
@@ -159,38 +159,38 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         
         switch rating {
         case 1:
-            starImageViews[0].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[1].image = #imageLiteral(resourceName: "Star")
-            starImageViews[2].image = #imageLiteral(resourceName: "Star")
-            starImageViews[3].image = #imageLiteral(resourceName: "Star")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+            starImageViews[0].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[1].image = #imageLiteral(resourceName: "StarV2")
+            starImageViews[2].image = #imageLiteral(resourceName: "StarV2")
+            starImageViews[3].image = #imageLiteral(resourceName: "StarV2")
+            starImageViews[4].image = #imageLiteral(resourceName: "StarV2")
             
         case 2:
-            starImageViews[0].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[1].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[2].image = #imageLiteral(resourceName: "Star")
-            starImageViews[3].image = #imageLiteral(resourceName: "Star")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+            starImageViews[0].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[1].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[2].image = #imageLiteral(resourceName: "StarV2")
+            starImageViews[3].image = #imageLiteral(resourceName: "StarV2")
+            starImageViews[4].image = #imageLiteral(resourceName: "StarV2")
         case 3:
-            starImageViews[0].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[1].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[2].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[3].image = #imageLiteral(resourceName: "Star")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+            starImageViews[0].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[1].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[2].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[3].image = #imageLiteral(resourceName: "StarV2")
+            starImageViews[4].image = #imageLiteral(resourceName: "StarV2")
         case 4:
-            starImageViews[0].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[1].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[2].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[3].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+            starImageViews[0].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[1].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[2].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[3].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[4].image = #imageLiteral(resourceName: "StarV2")
         case 5:
-            starImageViews[0].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[1].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[2].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[3].image = #imageLiteral(resourceName: "FilledStar")
-            starImageViews[4].image = #imageLiteral(resourceName: "FilledStar")
+            starImageViews[0].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[1].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[2].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[3].image = #imageLiteral(resourceName: "FilledStarV2-1")
+            starImageViews[4].image = #imageLiteral(resourceName: "FilledStarV2-1")
         default:
-            _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
+            _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "StarV2")})
         }
         
     }
@@ -288,8 +288,8 @@ extension MainViewController: RWKSwipeableViewDelegate {
         bedroomCountLabel.text = "\(property.bedroomCount)"
         bathroomCountLabel.text = property.bathroomCount.isInteger ? "\(Int(property.bathroomCount))" : "\(property.bathroomCount)"
         
-        petFriendlyImageView.image = property.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
-        smokingAllowedImageView.image = property.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmoking")
+        petFriendlyImageView.image = property.petFriendly ? #imageLiteral(resourceName: "PawV2") : #imageLiteral(resourceName: "NoPawV2-1")
+        smokingAllowedImageView.image = property.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowedV2") : #imageLiteral(resourceName: "NoSmokingV2-1")
         
         update(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
         
@@ -306,8 +306,8 @@ extension MainViewController: RWKSwipeableViewDelegate {
         backgroundBedroomCountLabel.text = "\(nextProperty.bedroomCount)"
         backgroundBathroomCountLabel.text = nextProperty.bathroomCount.isInteger ? "\(Int(nextProperty.bathroomCount))" : "\(nextProperty.bathroomCount)"
         
-        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
-        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmoking")
+        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "PawV2") : #imageLiteral(resourceName: "NoPawV2-1")
+        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowedV2") : #imageLiteral(resourceName: "NoSmokingV2-1")
         
         update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
         
