@@ -149,7 +149,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     func setMatchesButtonImage() {
         DispatchQueue.main.async {
-            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleV2"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "NewChatV2"), for: .normal)
+            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "NewChatV2"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleV2"), for: .normal)
         }
     }
     
