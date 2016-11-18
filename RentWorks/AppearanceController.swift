@@ -28,7 +28,7 @@ class AppearanceController {
     
     static let vengaYellowColor = UIColor(red: 0.976, green: 0.937, blue: 0.110, alpha: 1.00)
     
-    static let vengaOrangeColor = UIColor(red: 0.961, green: 0.482, blue: 0.220, alpha: 1.00)
+    static let vengaOrangeColor = UIColor(red: 0.949, green: 0.396, blue: 0.133, alpha: 1.00)
 
     static let viewButtonPressedColor = UIColor(red: 0.945, green: 0.902, blue: 0.132, alpha: 1.00)
     
