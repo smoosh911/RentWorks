@@ -352,14 +352,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV1" translatesAutoresizingMaskIntoConstraints="NO" id="Wdi-MC-T94">
-                                        <rect key="frame" x="167.5" y="16" width="40" height="40"/>
+                                        <rect key="frame" x="167.5" y="19" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="j8Z-Uq-pej"/>
                                             <constraint firstAttribute="width" constant="40" id="jDP-ps-bID"/>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5fq-R0-zgg">
-                                        <rect key="frame" x="337" y="21" width="30" height="30"/>
+                                        <rect key="frame" x="337" y="24" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="g7F-5I-r1s"/>
                                             <constraint firstAttribute="height" constant="30" id="l5c-Wc-1SF"/>
@@ -372,12 +372,12 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QcL-4q-vqk">
-                                        <rect key="frame" x="8" y="21" width="30" height="30"/>
+                                        <rect key="frame" x="8" y="24" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="0t0-2l-Yzl"/>
                                             <constraint firstAttribute="width" constant="30" id="rjF-BK-mkK"/>
                                         </constraints>
-                                        <state key="normal" image="SettingGear">
+                                        <state key="normal" image="SettingGearV2">
                                             <color key="titleColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
@@ -392,7 +392,7 @@
                                     <constraint firstItem="Wdi-MC-T94" firstAttribute="centerX" secondItem="A6P-fs-1kG" secondAttribute="centerX" id="Znh-7K-tJa"/>
                                     <constraint firstItem="QcL-4q-vqk" firstAttribute="leading" secondItem="A6P-fs-1kG" secondAttribute="leading" constant="8" id="ddT-eM-WUo"/>
                                     <constraint firstItem="5fq-R0-zgg" firstAttribute="centerY" secondItem="Wdi-MC-T94" secondAttribute="centerY" id="fQH-4Z-OgQ"/>
-                                    <constraint firstAttribute="bottom" secondItem="Wdi-MC-T94" secondAttribute="bottom" id="oZ3-ZQ-Sup"/>
+                                    <constraint firstAttribute="bottom" secondItem="Wdi-MC-T94" secondAttribute="bottom" constant="-3" id="oZ3-ZQ-Sup"/>
                                     <constraint firstItem="QcL-4q-vqk" firstAttribute="centerY" secondItem="Wdi-MC-T94" secondAttribute="centerY" id="qRU-nW-arD"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -495,9 +495,8 @@
                                     <action selector="goBackButtonTapped:" destination="MLB-pN-4wP" eventType="touchUpInside" id="gzh-eQ-v8i"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QcR-W1-IiX">
-                                <rect key="frame" x="16" y="597" width="343" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QcR-W1-IiX">
+                                <rect key="frame" x="16" y="599" width="343" height="48"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <state key="normal" title="Sign Out">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -507,13 +506,16 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.96078431372549022" green="0.4823529411764706" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="WDw-14-f04" firstAttribute="top" secondItem="QcR-W1-IiX" secondAttribute="bottom" constant="20" id="2sH-XI-7qH"/>
                             <constraint firstAttribute="trailingMargin" secondItem="d0t-sS-NRX" secondAttribute="trailing" id="7bf-PS-WUs"/>
                             <constraint firstItem="d0t-sS-NRX" firstAttribute="top" secondItem="yQH-Y4-Mwp" secondAttribute="bottom" constant="52" id="8qw-1B-Bk0"/>
                             <constraint firstAttribute="leadingMargin" secondItem="d0t-sS-NRX" secondAttribute="leading" id="KtA-yh-0ks"/>
                             <constraint firstItem="yxv-6E-15j" firstAttribute="top" secondItem="yQH-Y4-Mwp" secondAttribute="bottom" constant="8" id="RHt-bg-Lfk"/>
+                            <constraint firstItem="QcR-W1-IiX" firstAttribute="trailing" secondItem="8fr-jV-Qiu" secondAttribute="trailingMargin" id="XoI-0g-qa2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="yxv-6E-15j" secondAttribute="trailing" constant="-6" id="YEB-oa-Dye"/>
+                            <constraint firstItem="QcR-W1-IiX" firstAttribute="leading" secondItem="8fr-jV-Qiu" secondAttribute="leadingMargin" id="r42-dS-j21"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -619,14 +621,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="56"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV1" translatesAutoresizingMaskIntoConstraints="NO" id="dSD-Y4-sCr">
-                                        <rect key="frame" x="168" y="16" width="40" height="40"/>
+                                        <rect key="frame" x="168" y="19" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="uwd-6g-Acc"/>
                                             <constraint firstAttribute="width" constant="40" id="zq9-9t-aJE"/>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qdv-zc-KXZ">
-                                        <rect key="frame" x="8" y="21" width="37" height="30"/>
+                                        <rect key="frame" x="8" y="24" width="37" height="30"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Back">
                                             <color key="titleColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
@@ -639,7 +641,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="10E-Ja-D1S"/>
-                                    <constraint firstAttribute="bottom" secondItem="dSD-Y4-sCr" secondAttribute="bottom" id="8tZ-4O-isB"/>
+                                    <constraint firstAttribute="bottom" secondItem="dSD-Y4-sCr" secondAttribute="bottom" constant="-3" id="8tZ-4O-isB"/>
                                     <constraint firstAttribute="height" constant="56" id="Wk2-zv-HEl"/>
                                     <constraint firstItem="dSD-Y4-sCr" firstAttribute="centerX" secondItem="hpx-l4-dRJ" secondAttribute="centerX" id="oJ0-L4-SmF"/>
                                     <constraint firstItem="Qdv-zc-KXZ" firstAttribute="centerY" secondItem="dSD-Y4-sCr" secondAttribute="centerY" id="qNp-3m-14T"/>
@@ -712,7 +714,7 @@
                                     <constraint firstAttribute="width" secondItem="VIm-UA-Uzb" secondAttribute="height" multiplier="14:25" id="DOI-nf-xpu"/>
                                     <constraint firstAttribute="width" constant="56" id="fex-6n-KfJ"/>
                                 </constraints>
-                                <state key="normal" image="NextArrow">
+                                <state key="normal" image="NextArrowOrange">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -775,7 +777,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKl-Q1-Hwm">
                                         <rect key="frame" x="0.0" y="0.0" width="110" height="65"/>
-                                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.96789902448654175" green="0.48338955640792847" blue="0.17093735933303833" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="IT0-bz-UYL"/>
                                             <constraint firstAttribute="width" constant="110" id="x9L-ob-hS4"/>
@@ -804,7 +806,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ec-oL-AsK">
                                         <rect key="frame" x="150" y="0.0" width="110" height="65"/>
-                                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.96789902448654175" green="0.48338955640792847" blue="0.17093735933303833" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="110" id="Maa-Z1-dpL"/>
                                             <constraint firstAttribute="height" constant="65" id="Qmj-6y-DOc"/>
@@ -838,7 +840,7 @@
                                 </constraints>
                             </stackView>
                         </subviews>
-                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.96789902448654175" green="0.48338955640792847" blue="0.17093735933303833" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="BuQ-5M-K8N" firstAttribute="leading" secondItem="l1M-R3-NwG" secondAttribute="leadingMargin" constant="41" id="Kh2-CQ-Ggx"/>
                             <constraint firstItem="Yce-cu-vVk" firstAttribute="top" secondItem="l1M-R3-NwG" secondAttribute="topMargin" constant="59" id="LsU-Cr-kGH"/>
@@ -903,7 +905,7 @@
                                 <color key="color" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.96078431372549022" green="0.4823529411764706" blue="0.2196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="0Bi-Z5-LTX" firstAttribute="centerX" secondItem="UIj-Ta-QUy" secondAttribute="centerX" id="4kA-i4-c3I"/>
                             <constraint firstItem="Bi7-oH-2I1" firstAttribute="leading" secondItem="UIj-Ta-QUy" secondAttribute="leadingMargin" id="Awe-wb-dqj"/>
@@ -943,10 +945,10 @@
             <objects>
                 <navigationController storyboardIdentifier="loginVC" automaticallyAdjustsScrollViewInsets="NO" id="Qq3-1I-Axi" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8G6-qI-0GL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="8G6-qI-0GL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -994,9 +996,10 @@
     <resources>
         <image name="BathroomsIconV2" width="1600" height="1478"/>
         <image name="ChatBubble" width="1600" height="1545"/>
-        <image name="NextArrow" width="131" height="212"/>
+        <image name="NextArrowOrange" width="131" height="212"/>
         <image name="PawV2" width="1600" height="1490"/>
         <image name="SettingGear" width="1600" height="1596"/>
+        <image name="SettingGearV2" width="1600" height="1596"/>
         <image name="SmokingAllowedV2" width="1600" height="1368"/>
         <image name="StarV2" width="2048" height="1947"/>
         <image name="VengaLogoV1" width="1000" height="1050"/>
