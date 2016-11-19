@@ -75,6 +75,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var matchingUsersAlertController: UIAlertController?
     
+    // needs work possibly: make sure there isn't a redundant amount of backgroundview.ishidden calls
     var imageIndex = 0 {
         didSet{
             if UserController.currentUserType == "renter"{
