@@ -382,7 +382,7 @@ class UserController {
     
     static func createRenterInCoreDataForCurrentUser(completion: @escaping ((_ renter: Renter?) -> Void) = { _ in }) {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
-            FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
+            FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email, .user_work_history], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
                 guard let renter = Renter(dictionary: temporaryUserCreationDictionary) else { NSLog("Renter could not be initialized from dictionary"); completion(nil); return }
                 saveToPersistentStore()
