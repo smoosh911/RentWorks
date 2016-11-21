@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Landlord" representedClassName="Landlord" parentEntity="User" syncable="YES" codeGenerationType="class">
+        <attribute name="wantsCreditRating" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="property" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Property" inverseName="landlord" inverseEntity="Property" syncable="YES"/>
     </entity>
     <entity name="ProfileImage" representedClassName="ProfileImage" syncable="YES" codeGenerationType="class">
@@ -50,7 +51,7 @@
         <attribute name="starRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Landlord" positionX="225" positionY="189" width="128" height="60"/>
+        <element name="Landlord" positionX="225" positionY="189" width="128" height="75"/>
         <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="118"/>
         <element name="Property" positionX="223" positionY="324" width="128" height="253"/>
         <element name="Renter" positionX="-254" positionY="174" width="146" height="225"/>

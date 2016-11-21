@@ -52,14 +52,17 @@ class UserController {
     static func fetchLoggedInUserFromFirebase(completion: @escaping (User?) -> Void) {
         
         FirebaseController.checkForExistingUserInformation { (hasAccount, userType) in
+            
             guard let currentUserID = currentUserID else { completion(nil); return }
             if userType == "renter" {
+                UserController.userCreationType = UserController.UserCreationType.renter.rawValue
                 self.fetchRenterFromFirebaseFor(renterID: currentUserID, completion: { (renter) in
                     self.currentRenter = renter
                     self.currentUserType = "renter"
                     completion(renter)
                 })
             } else if userType == "landlord" {
+                UserController.userCreationType = UserController.UserCreationType.landlord.rawValue
                 self.fetchLandlordFromFirebaseFor(landlordID: currentUserID, completion: { (landlord) in
                     self.currentLandlord = landlord
                     self.currentUserType = "landlord"
@@ -99,7 +102,6 @@ class UserController {
     static func getCurrentLandlordFromCoreData(completion: @escaping (_ landlordExists: Bool) -> Void) {
         let request: NSFetchRequest<Landlord> = Landlord.fetchRequest()
         
-        
         guard let landlords = try? CoreDataStack.context.fetch(request) else { completion(false); return }
         
         guard let id = UserController.currentUserID else { completion(false); return }
@@ -109,6 +111,10 @@ class UserController {
         self.currentUserType = "landlord"
         completion(true)
         
+    }
+    
+    static func updateCurrentLandlordInFirebase(id: String, attributeToUpdate: String, newValue: String) {
+        FirebaseController.landlordsRef.child(id).child(attributeToUpdate).setValue(newValue)
     }
     
     static func createLandlordForCurrentUser(completion: @escaping ((_ landlord: Landlord?) -> Void) = { _ in }) {
@@ -544,6 +550,7 @@ extension UserController {
     
     static let kFirstName = "first_name"
     static let kLastName = "last_name"
+    static let kWantsCreditRating = "wants_credit_rating"
     static let kCreditRating = "creditRating"
     static let kEmail = "email"
     static let kMaritalStatus = "maritalStatus"
@@ -578,6 +585,11 @@ extension UserController {
     enum MaritalStatus: String {
         case married = "Married"
         case single = "Single"
+    }
+    
+    enum UserCreationType: String {
+        case landlord = "landlord"
+        case renter = "renter"
     }
 }
 

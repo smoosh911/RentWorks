@@ -6,4 +6,8 @@
 //  Copyright © 2016 Michael Perry. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class RenterMainViewController: MainViewController {
+    
+}

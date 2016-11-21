@@ -14,12 +14,18 @@ class LaunchScreenCopyViewController: UIViewController {
         super.viewDidLoad()
         
         FirebaseController.handleUserInformationScenarios(completion: { (success) in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let storyboard: UIStoryboard!
             if success {
+                if UserController.userCreationType == "landlord" {
+                    storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                } else {
+                    storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
+                }
                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                 self.present(mainVC, animated: true, completion: nil)
                 
             } else {
+                storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let loginVC = storyboard.instantiateViewController(withIdentifier: "loginVC")
                 self.present(loginVC, animated: true, completion: nil)
             }

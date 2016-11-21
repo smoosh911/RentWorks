@@ -323,7 +323,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
         
         imageView.image = profilePicture
         nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
-        addressLabel.text = renter.bio ?? "No bio yet!"
+//        addressLabel.text = renter.bio ?? "No bio yet!"
         
         let nextRenter = FirebaseController.renters[backgroundimageIndex]
         
