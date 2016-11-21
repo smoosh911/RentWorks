@@ -430,7 +430,6 @@ class UserController {
         
     }
     
-    
     static func fetchAllRenters() {
         FirebaseController.rentersRef.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allRentersDict = snapshot.value as? [String: [String: Any]] else { return }
@@ -458,8 +457,34 @@ class UserController {
         })
     }
     
-    
-    
+    // needs work: group with other method
+    static func fetchAllRentersAndWait(completion: @escaping () -> Void) {
+        FirebaseController.rentersRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allRentersDict = snapshot.value as? [String: [String: Any]] else { return }
+            
+            let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
+            
+            let backgroundQ = DispatchQueue.global(qos: .background)
+            let group = DispatchGroup()
+            
+            for propertyDict in allRentersDict {
+                group.enter()
+                backgroundQ.async(group: group, execute: {
+                    let dict = propertyDict.value
+                    guard let renterID = dict[UserController.kID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let renter = rentersArray.filter({$0.id == renterID}).first else { group.leave(); return }
+                    
+                    FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
+                        group.leave()
+                    })
+                })
+            }
+            
+            group.notify(queue: DispatchQueue.main, execute: {
+                FirebaseController.renters = rentersArray
+                completion()
+            })
+        })
+    }
     
     static func saveRenterProfileImagesToCoreDataAndFirebase(forRenter renter: Renter, completion: @escaping () -> Void) {
         var count = 0

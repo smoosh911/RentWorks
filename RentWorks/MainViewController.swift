@@ -118,11 +118,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         swipeableView.delegate = self
         setupViews()
         
-        if UserController.currentUserType == "renter" {
-            updateUIElementsForPropertyCards()
-        } else if UserController.currentUserType == "landlord" {
-            updateUIElementsForRenterCards()
-        }
+//        if UserController.currentUserType == "renter" {
+//            updateUIElementsForPropertyCards()
+//        } else if UserController.currentUserType == "landlord" {
+//            updateUIElementsForRenterCards()
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,11 +134,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     // MARK: - FirebaseUserDelegate
     
     func propertiesWereUpdated() {
-        updateUIElementsForPropertyCards()
+//        updateUIElementsForPropertyCards()
     }
     
     func rentersWereUpdated() {
-        updateUIElementsForRenterCards()
+//        updateUIElementsForRenterCards()
     }
     
     // MARK: - UserMatchingDelegate
@@ -278,6 +278,15 @@ extension MainViewController: RWKSwipeableViewDelegate {
     // MARK: - update data
     
     func updateUIElementsForPropertyCards() {
+        // needs work: should have to check usertype in future. Only doing this becasue this function is called by the firebasecontrolelr delegate when properties is updated and I update properties for other perposes as a land lord
+        if UserController.currentUserType == UserController.UserCreationType.landlord.rawValue {
+            return
+        }
+        
+        if !(FirebaseController.properties.count > 0) {
+            return
+        }
+        
         let property = FirebaseController.properties[imageIndex]
         
         guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
@@ -316,6 +325,9 @@ extension MainViewController: RWKSwipeableViewDelegate {
     }
     
     func updateUIElementsForRenterCards() {
+        if !(FirebaseController.renters.count > 0) {
+            return
+        }
         let renter = FirebaseController.renters[imageIndex]
         
         guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
