@@ -13,44 +13,61 @@ class LandlordMainViewController: MainViewController {
     @IBOutlet weak var lblFrontCardCreditRating: UILabel!
     @IBOutlet weak var lblBackCardCreditRating: UILabel!
     
+    var wantsCreditRating = ""
+    
+    var cardsAreLoading = false {
+        didSet {
+            if cardsAreLoading {
+                let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                self.present(mainVC, animated: true, completion: nil)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
-            UserController.fetchAllRentersAndWait(completion: {
-                FirebaseController.renters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
-                
-                if !(FirebaseController.renters.count > 0) {
-                    super.swipeableView.isHidden = true
-                    super.backgroundView.isHidden = true
-                    self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
-                    return
-                } else {
-                    super.swipeableView.isHidden = false
-                }
-                
-                self.updateRenterCardUI()
-            })
+            wantsCreditRating = desiredCreditRating
+            FirebaseController.renters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
+            
+            if !(FirebaseController.renters.count > 0) {
+                super.swipeableView.isHidden = true
+                super.backgroundView.isHidden = true
+                self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+                return
+            } else {
+                super.swipeableView.isHidden = false
+            }
+            self.updateRenterCardUI()
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
-            UserController.fetchAllRentersAndWait(completion: { 
-                FirebaseController.renters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
-                
-                if !(FirebaseController.renters.count > 0) {
-                    super.swipeableView.isHidden = true
-                    super.backgroundView.isHidden = true
-                    return
-                } else {
-                    super.swipeableView.isHidden = false
+        if super.previousVCWasCardsLoadingVC {
+            super.previousVCWasCardsLoadingVC = false
+        } else {
+            if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
+                if wantsCreditRating != desiredCreditRating {
+                    cardsAreLoading = true
+                    UserController.fetchAllRentersAndWait(completion: {
+                        FirebaseController.renters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
+                        
+                        if !(FirebaseController.renters.count > 0) {
+                            super.swipeableView.isHidden = true
+                            super.backgroundView.isHidden = true
+                            return
+                        } else {
+                            super.swipeableView.isHidden = false
+                        }
+                        self.cardsAreLoading = false
+                        self.updateRenterCardUI()
+                    })
                 }
-                
-                self.updateRenterCardUI()
-            })
+            }
         }
     }
     

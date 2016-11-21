@@ -69,7 +69,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
-    var loadingViewHasBeenDismissed = false
+//    var loadingViewHasBeenDismissed = false
+    var previousVCWasCardsLoadingVC = false
     
     var users: [Any] = []
     

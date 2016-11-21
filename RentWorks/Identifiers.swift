@@ -12,6 +12,7 @@ class Identifiers {
     enum Segues: String {
         case ToPropertyDetailsVC = "segueShowPropertyDetails"
         case MoreCardsVC = "segueShowNoMoreCardsVC"
+        case MainSwipingVC = "toMainSwipingVC"
     }
     
     enum Cells: String {
