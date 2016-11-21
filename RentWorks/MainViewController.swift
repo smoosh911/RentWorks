@@ -325,29 +325,6 @@ extension MainViewController: RWKSwipeableViewDelegate {
         resetData()
     }
     
-    func updateUIElementsForRenterCards() {
-        if !(FirebaseController.renters.count > 0) {
-            return
-        }
-        let renter = FirebaseController.renters[imageIndex]
-        
-        guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
-        
-        
-        imageView.image = profilePicture
-        nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
-//        addressLabel.text = renter.bio ?? "No bio yet!"
-        
-        let nextRenter = FirebaseController.renters[backgroundimageIndex]
-        
-        guard  let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
-        backgroundImageView.image = backgroundProfilePicture
-        backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
-        backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
-        
-        resetData()
-    }
-    
     func likeUser() {
         if UserController.currentUserType == "renter" {
             guard let property = swipeableView.property else { return }

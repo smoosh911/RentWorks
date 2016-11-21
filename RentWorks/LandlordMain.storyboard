@@ -423,7 +423,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="twI-PN-CLc">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noImageProfile90x90" translatesAutoresizingMaskIntoConstraints="NO" id="twI-PN-CLc">
                                 <rect key="frame" x="137" y="66" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Gg8-u5-5gf"/>
@@ -541,12 +541,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pqi-Q3-Z7O">
-                                <rect key="frame" x="75.5" y="284" width="224" height="100"/>
+                                <rect key="frame" x="70.5" y="284" width="235" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="hjs-vV-heR"/>
                                 </constraints>
                                 <string key="text">Sorry, there are no more 
-cards for you to swip through</string>
+cards for you to swip through. 
+Try modifying the filters to get 
+more results.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1040,5 +1042,6 @@ cards for you to swip through</string>
         <image name="SmokingAllowed" width="1600" height="1368"/>
         <image name="Star" width="2048" height="1947"/>
         <image name="VengaLogoV1" width="1000" height="1050"/>
+        <image name="noImageProfile90x90" width="90" height="90"/>
     </resources>
 </document>

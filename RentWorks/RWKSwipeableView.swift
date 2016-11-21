@@ -8,13 +8,12 @@
 
 import UIKit
 
-protocol RWKSwipeableViewDelegate {
+@objc protocol RWKSwipeableViewDelegate {
     func swipeLeftCompleteTransform(view: UIView)
     func swipeRightCompleteTransform(view: UIView)
     func resetFrontCardTransform(view: UIView)
     func beingDragged(gesture: UIPanGestureRecognizer)
-    func updateUIElementsForPropertyCards()
-    func updateUIElementsForRenterCards()
+    @objc optional func updateCardUI()
     func resetData()
     func likeUser()
 }
@@ -75,11 +74,8 @@ class RWKSwipeableView: UIView {
                 UIView.animate(withDuration: 0.2, animations: {
                     self.delegate!.swipeLeftCompleteTransform(view: label)
                 }, completion: { (true) in
-                    if UserController.currentUserType == "renter" {
-                        self.delegate!.updateUIElementsForPropertyCards()
-                    } else if UserController.currentUserType == "landlord" {
-                        self.delegate!.updateUIElementsForRenterCards()
-                    }
+                    guard let updateCardUIFunc = self.delegate!.updateCardUI?() else { return }
+                    updateCardUIFunc
                     self.delegate!.resetFrontCardTransform(view: label)
                 })
             } else if label.center.x > superView.bounds.width - swipeDistanceFromEdgeRequired {
@@ -87,11 +83,8 @@ class RWKSwipeableView: UIView {
                 UIView.animate(withDuration: 0.2, animations: {
                     self.delegate!.swipeRightCompleteTransform(view: label)
                 }, completion: { (true) in
-                    if UserController.currentUserType == "renter" {
-                        self.delegate!.updateUIElementsForPropertyCards()
-                    } else if UserController.currentUserType == "landlord" {
-                        self.delegate!.updateUIElementsForRenterCards()
-                    }
+                    guard let updateCardUIFunc = self.delegate!.updateCardUI?() else { return }
+                    updateCardUIFunc
                     self.delegate!.resetFrontCardTransform(view: label)
                 })
             } else {
