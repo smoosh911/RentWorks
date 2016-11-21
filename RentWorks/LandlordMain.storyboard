@@ -241,6 +241,12 @@
                                             </imageView>
                                         </subviews>
                                     </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1234 East, 4321 South, Testing, UT 09876" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dgz-1Z-1Yi">
+                                        <rect key="frame" x="28" y="450" width="287" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -248,8 +254,12 @@
                                     <constraint firstItem="y7r-eR-gFp" firstAttribute="top" secondItem="upX-55-hoA" secondAttribute="bottom" constant="1" id="Afx-te-G3d"/>
                                     <constraint firstItem="OSC-RM-E3w" firstAttribute="centerX" secondItem="jTp-jL-qdN" secondAttribute="centerX" id="F5x-SF-pmU"/>
                                     <constraint firstAttribute="bottom" secondItem="Gme-SR-jh2" secondAttribute="bottom" constant="8" id="GI8-hb-vl9"/>
+                                    <constraint firstItem="OSC-RM-E3w" firstAttribute="top" secondItem="dgz-1Z-1Yi" secondAttribute="bottom" constant="4" id="Gn1-nv-Nmb"/>
+                                    <constraint firstItem="dgz-1Z-1Yi" firstAttribute="top" secondItem="y7r-eR-gFp" secondAttribute="bottom" constant="2" id="I9k-30-8UY"/>
+                                    <constraint firstAttribute="trailing" secondItem="dgz-1Z-1Yi" secondAttribute="trailing" constant="28" id="MEZ-SO-xOU"/>
                                     <constraint firstItem="Gme-SR-jh2" firstAttribute="top" secondItem="OSC-RM-E3w" secondAttribute="bottom" constant="5" id="UlZ-wN-fRT"/>
                                     <constraint firstAttribute="trailing" secondItem="y7r-eR-gFp" secondAttribute="trailing" constant="28" id="a1w-av-swb"/>
+                                    <constraint firstItem="dgz-1Z-1Yi" firstAttribute="leading" secondItem="jTp-jL-qdN" secondAttribute="leading" constant="28" id="f5b-vu-K4b"/>
                                     <constraint firstItem="y7r-eR-gFp" firstAttribute="leading" secondItem="jTp-jL-qdN" secondAttribute="leading" constant="28" id="rZR-Tl-eTp"/>
                                     <constraint firstAttribute="trailing" secondItem="upX-55-hoA" secondAttribute="trailing" id="tyH-I1-AOc"/>
                                     <constraint firstItem="upX-55-hoA" firstAttribute="leading" secondItem="jTp-jL-qdN" secondAttribute="leading" id="uUT-HK-eie"/>
@@ -367,6 +377,7 @@
                         <outlet property="imageView" destination="upX-55-hoA" id="85P-Es-uwB"/>
                         <outlet property="lblBackCardCreditRating" destination="jfZ-aT-MaZ" id="ePn-KR-6R4"/>
                         <outlet property="lblFrontCardCreditRating" destination="3db-aw-BSS" id="7A5-tu-6rS"/>
+                        <outlet property="lblRenterBio" destination="dgz-1Z-1Yi" id="MZp-Bi-50J"/>
                         <outlet property="matchesButton" destination="AFI-Ge-1lj" id="30W-3q-Lyt"/>
                         <outlet property="nameLabel" destination="y7r-eR-gFp" id="ukF-nD-cor"/>
                         <outlet property="navigationBarView" destination="9Yz-SV-v1L" id="vw4-WY-Dv4"/>

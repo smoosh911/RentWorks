@@ -12,6 +12,7 @@ class LandlordMainViewController: MainViewController {
     
     @IBOutlet weak var lblFrontCardCreditRating: UILabel!
     @IBOutlet weak var lblBackCardCreditRating: UILabel!
+    @IBOutlet weak var lblRenterBio: UILabel!
     
     var wantsCreditRating = ""
     var filteredRenters: [Renter] = [] {
@@ -20,8 +21,10 @@ class LandlordMainViewController: MainViewController {
                 super.backgroundView.isHidden = true
                 super.swipeableView.isHidden = true
             } else if filteredRenters.count == 1 {
+                super.swipeableView.isHidden = false
                 super.backgroundView.isHidden = true
             } else {
+                super.swipeableView.isHidden = false
                 super.backgroundView.isHidden = false
             }
         }
@@ -85,7 +88,7 @@ class LandlordMainViewController: MainViewController {
         lblFrontCardCreditRating.text = renter.creditRating
         imageView.image = profilePicture
         nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
-        //        addressLabel.text = renter.bio ?? "No bio yet!"
+        lblRenterBio.text = renter.bio ?? "No bio yet!"
         
         guard let nextRenter = backCardRenter, let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
         backgroundImageView.image = backgroundProfilePicture
