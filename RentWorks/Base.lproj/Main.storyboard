@@ -1,27 +1,267 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qq3-1I-Axi">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Main View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Login View Controller-->
+        <scene sceneID="c5i-qi-9kL">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="9Z4-ai-1st" customClass="LoginViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                        <viewControllerLayoutGuide type="top" id="Uva-PS-c7E"/>
+                        <viewControllerLayoutGuide type="bottom" id="UqD-JY-oma"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="cdA-ib-g0p">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV2" translatesAutoresizingMaskIntoConstraints="NO" id="qtK-ld-6a4">
+                                <rect key="frame" x="60" y="101" width="254" height="225"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="225" id="Zjj-M8-XVX"/>
+                                    <constraint firstAttribute="width" constant="254" id="jms-Fm-Utq"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Renting made smart" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XtU-Qw-Ehv">
+                                <rect key="frame" x="104" y="334" width="166" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIm-UA-Uzb">
+                                <rect key="frame" x="303" y="547" width="56" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="1j9-eS-Xy0"/>
+                                    <constraint firstAttribute="width" secondItem="VIm-UA-Uzb" secondAttribute="height" multiplier="14:25" id="DOI-nf-xpu"/>
+                                    <constraint firstAttribute="width" constant="56" id="fex-6n-KfJ"/>
+                                </constraints>
+                                <state key="normal" image="NextArrowYellow">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dFX-DU-Ns1">
+                                <rect key="frame" x="16" y="547" width="343" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="DYq-mC-fWP"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                                <state key="normal" title="Get Started">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <segue destination="n6X-fL-rWf" kind="show" identifier="toAccountTypeVC" id="Jbg-FF-iWV"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="XtU-Qw-Ehv" firstAttribute="centerX" secondItem="cdA-ib-g0p" secondAttribute="centerX" id="5Fy-BR-fXG"/>
+                            <constraint firstItem="qtK-ld-6a4" firstAttribute="top" secondItem="Uva-PS-c7E" secondAttribute="bottom" constant="37" id="FnJ-rL-Xzy"/>
+                            <constraint firstItem="VIm-UA-Uzb" firstAttribute="trailing" secondItem="cdA-ib-g0p" secondAttribute="trailingMargin" id="Jxg-Vb-qLY"/>
+                            <constraint firstItem="qtK-ld-6a4" firstAttribute="centerX" secondItem="cdA-ib-g0p" secondAttribute="centerX" id="WJ7-Wm-QwR"/>
+                            <constraint firstItem="dFX-DU-Ns1" firstAttribute="leading" secondItem="cdA-ib-g0p" secondAttribute="leadingMargin" id="Xdj-jN-VAr"/>
+                            <constraint firstItem="XtU-Qw-Ehv" firstAttribute="top" secondItem="qtK-ld-6a4" secondAttribute="bottom" constant="8" id="bMP-0M-L3K"/>
+                            <constraint firstItem="dFX-DU-Ns1" firstAttribute="trailing" secondItem="cdA-ib-g0p" secondAttribute="trailingMargin" id="bPf-bp-UA1"/>
+                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="VIm-UA-Uzb" secondAttribute="bottom" constant="20" id="nVc-qJ-TKm"/>
+                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="dFX-DU-Ns1" secondAttribute="bottom" constant="20" id="rU9-wg-4iy"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="j1s-F7-pRL"/>
+                    <connections>
+                        <outlet property="rentingMadeSmartLabel" destination="XtU-Qw-Ehv" id="4oY-hC-v9u"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YLq-Mj-cPN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1832.8" y="8.5457271364317844"/>
+        </scene>
+        <!--Landlord Or User View Controller-->
+        <scene sceneID="hSb-Cf-2QG">
+            <objects>
+                <viewController id="n6X-fL-rWf" customClass="LandlordOrUserViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="D0L-AO-6Th"/>
+                        <viewControllerLayoutGuide type="bottom" id="fbB-bn-UpE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="l1M-R3-NwG">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I am a..." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Yce-cu-vVk">
+                                <rect key="frame" x="30" y="59" width="314" height="302"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="75"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="BuQ-5M-K8N">
+                                <rect key="frame" x="57" y="457" width="260" height="65"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKl-Q1-Hwm">
+                                        <rect key="frame" x="0.0" y="0.0" width="110" height="65"/>
+                                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="65" id="IT0-bz-UYL"/>
+                                            <constraint firstAttribute="width" constant="110" id="x9L-ob-hS4"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                        <state key="normal" title="Renter">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                                <real key="value" value="0.20000000000000001"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
+                                                <point key="value" x="0.0" y="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="T7G-mW-4Wi" kind="presentation" identifier="toRenterPageVC" id="jA0-dO-i7v"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ec-oL-AsK">
+                                        <rect key="frame" x="150" y="0.0" width="110" height="65"/>
+                                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="110" id="Maa-Z1-dpL"/>
+                                            <constraint firstAttribute="height" constant="65" id="Qmj-6y-DOc"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <state key="normal" title="Landlord">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                                <real key="value" value="0.20000000000000001"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
+                                                <point key="value" x="0.0" y="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="yLP-gJ-WFg" kind="presentation" identifier="toLandlordPageVC" id="1gC-Zd-eNW"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="dKl-Q1-Hwm" firstAttribute="width" secondItem="1ec-oL-AsK" secondAttribute="width" id="nso-nq-orC"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="BuQ-5M-K8N" firstAttribute="leading" secondItem="l1M-R3-NwG" secondAttribute="leadingMargin" constant="41" id="Kh2-CQ-Ggx"/>
+                            <constraint firstItem="Yce-cu-vVk" firstAttribute="top" secondItem="l1M-R3-NwG" secondAttribute="topMargin" constant="59" id="LsU-Cr-kGH"/>
+                            <constraint firstItem="fbB-bn-UpE" firstAttribute="top" secondItem="BuQ-5M-K8N" secondAttribute="bottom" constant="145" id="NHE-lA-N3K"/>
+                            <constraint firstItem="BuQ-5M-K8N" firstAttribute="top" secondItem="Yce-cu-vVk" secondAttribute="bottom" constant="96" id="TUb-iV-Jzj"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="BuQ-5M-K8N" secondAttribute="trailing" constant="42" id="Vgm-jQ-9C0"/>
+                            <constraint firstItem="Yce-cu-vVk" firstAttribute="leading" secondItem="l1M-R3-NwG" secondAttribute="leadingMargin" constant="14" id="ZtN-UT-1iN"/>
+                            <constraint firstItem="BuQ-5M-K8N" firstAttribute="centerX" secondItem="l1M-R3-NwG" secondAttribute="centerX" id="i4j-6v-KAZ"/>
+                            <constraint firstItem="Yce-cu-vVk" firstAttribute="centerX" secondItem="BuQ-5M-K8N" secondAttribute="centerX" id="snk-i7-aOC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="pU0-UX-wNM"/>
+                    <connections>
+                        <outlet property="landlordButton" destination="1ec-oL-AsK" id="01R-jG-OuS"/>
+                        <outlet property="renterButton" destination="dKl-Q1-Hwm" id="xw6-sU-N94"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GXl-Lz-q3P" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2618" y="9"/>
+        </scene>
+        <!--LandlordPageVC-->
+        <scene sceneID="xXF-Kb-57g">
+            <objects>
+                <viewControllerPlaceholder storyboardName="LandlordCreationViews" referencedIdentifier="LandlordPageVC" id="yLP-gJ-WFg" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TxV-lR-k7F" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3381" y="165"/>
+        </scene>
+        <!--RenterPageVC-->
+        <scene sceneID="BoE-OA-lXH">
+            <objects>
+                <viewControllerPlaceholder storyboardName="RenterCreationViews" referencedIdentifier="RenterPageVC" id="T7G-mW-4Wi" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EmI-VN-dIS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3382" y="-132"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Pyw-jd-FXN">
+            <objects>
+                <navigationController storyboardIdentifier="loginVC" automaticallyAdjustsScrollViewInsets="NO" id="Qq3-1I-Axi" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8G6-qI-0GL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="9Z4-ai-1st" kind="relationship" relationship="rootViewController" id="c6d-aH-fvR"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4PO-td-Quu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1047" y="9"/>
+        </scene>
+        <!--Launch Screen Copy View Controller-->
+        <scene sceneID="2Oe-cV-Wvv">
+            <objects>
+                <viewController storyboardIdentifier="launchScreenCopy" id="4bt-6e-eVg" customClass="LaunchScreenCopyViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Q18-7g-pqs"/>
+                        <viewControllerLayoutGuide type="bottom" id="wLT-nw-Okf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="WQl-jt-3m5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV2" translatesAutoresizingMaskIntoConstraints="NO" id="axX-GM-oab">
+                                <rect key="frame" x="60" y="101" width="254" height="225"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="225" id="GKF-hf-PeV"/>
+                                    <constraint firstAttribute="width" constant="254" id="WJq-WA-eXh"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="axX-GM-oab" firstAttribute="top" secondItem="Q18-7g-pqs" secondAttribute="bottom" constant="81" id="8gj-48-9jH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="axX-GM-oab" secondAttribute="trailing" constant="45" id="WgX-o5-mVj"/>
+                            <constraint firstItem="axX-GM-oab" firstAttribute="leading" secondItem="WQl-jt-3m5" secondAttribute="leadingMargin" constant="44" id="stc-fA-h9a"/>
+                        </constraints>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lx1-Mr-KAS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="38" y="9"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NextArrowYellow" width="131" height="212"/>
+        <image name="VengaLogoV2" width="1000" height="1089"/>
+    </resources>
 </document>
