@@ -22,7 +22,11 @@ class RenterMainViewController: MainViewController {
     @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
     @IBOutlet weak var backgroundBathroomImageView: UIImageView!
     
-    var wantedPayment: Int64 = 0
+    // MARK: variables
+    
+    let filterKeys = UserController.RenterFilters.self
+    static var settingsDidChange = false
+    
     var filteredProperties: [Property] = [] {
         didSet {
             if filteredProperties.count == 0 && backgroundView.isHidden {
@@ -52,15 +56,13 @@ class RenterMainViewController: MainViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        filteredProperties = getFilteredProperties()
         
-        if let desiredPayment = UserController.currentRenter?.wantedPayment {
-            wantedPayment = desiredPayment
-            filteredProperties = FirebaseController.properties.filter({ $0.monthlyPayment <= desiredPayment})
-            if filteredProperties.isEmpty {
-                self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
-            }
-            self.updateCardUI()
+        if filteredProperties.isEmpty {
+            self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
         }
+        self.updateCardUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -69,15 +71,13 @@ class RenterMainViewController: MainViewController {
         if super.previousVCWasCardsLoadingVC {
             super.previousVCWasCardsLoadingVC = false
         } else {
-            if let desiredPayment = UserController.currentRenter?.wantedPayment {
-                if wantedPayment != desiredPayment {
-                    wantedPayment = desiredPayment
-                    filteredProperties = FirebaseController.properties.filter({ $0.monthlyPayment <= desiredPayment })
-                    if filteredProperties.isEmpty {
-                        self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
-                    }
-                    self.updateCardUI()
+            if RenterMainViewController.settingsDidChange {
+                RenterMainViewController.settingsDidChange = false
+                filteredProperties = getFilteredProperties()
+                if filteredProperties.isEmpty {
+                    self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
                 }
+                self.updateCardUI()
             }
         }
     }
@@ -130,5 +130,23 @@ class RenterMainViewController: MainViewController {
         update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
         
         resetData()
+    }
+    
+    // MARK: helper methods
+    
+    func getFilteredProperties() -> [Property] {
+        let filterSettingsDict = UserController.getRenterFiltersDictionary()
+        
+        let desiredBathroomCount = filterSettingsDict[filterKeys.kBathrommCount.rawValue] as! Double
+        let desiredBedroomCount = Int64(filterSettingsDict[filterKeys.kBedroomCount.rawValue] as! Int)
+        let desiredPayment = Int64(filterSettingsDict[filterKeys.kMonthlyPayment.rawValue] as! Int)
+        let desiredPetsAllowed = filterSettingsDict[filterKeys.kPetsAllowed.rawValue] as! Bool
+        let desiredSmokingAllowed = filterSettingsDict[filterKeys.kSmokingAllowed.rawValue] as! Bool
+        let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as! String
+        let desiredZipcode = filterSettingsDict[filterKeys.kZipCode.rawValue] as! String
+        
+        let filtered = FirebaseController.properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == desiredBedroomCount && $0.monthlyPayment <= desiredPayment && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed && $0.zipCode == desiredZipcode})
+        
+        return filtered
     }
 }

@@ -307,11 +307,6 @@ class UserController {
         }
     }
     
-    
-    
-    
-    
-    
     static func saveMockPropertyProfileImagesToCoreDataAndFirebase(for propertyID: String,
                                                                    landlord: Landlord, completion: @escaping (String) -> Void) {
         
@@ -535,6 +530,21 @@ class UserController {
     
     static func updateCurrentRenterInFirebase(id: String, attributeToUpdate: String, newValue: String) {
         FirebaseController.rentersRef.child(id).child(attributeToUpdate).setValue(newValue)
+    }
+    
+    static func getRenterFiltersDictionary() -> [String: Any] {
+        var filterDict = [String: Any]()
+        guard let renter = UserController.currentRenter?.dictionaryRepresentation else {
+            log("ERROR: renter is nil")
+            return filterDict
+        }
+        
+        for filter in UserController.RenterFilters.allValues {
+            let filterString = filter.rawValue
+            filterDict[filterString] = renter[filterString]
+        }
+        
+        return filterDict
     }
     
     // MARK: - Persistence

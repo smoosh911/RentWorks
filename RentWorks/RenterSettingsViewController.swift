@@ -41,7 +41,9 @@ class RenterSettingsViewController: SettingsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        filterSettingsDict = getFiltersDictionary()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateSettingsChanged), name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
+        
+        filterSettingsDict = UserController.getRenterFiltersDictionary()
         
         guard let filterSettings = filterSettingsDict else { return }
         
@@ -163,21 +165,10 @@ class RenterSettingsViewController: SettingsViewController {
         UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kZipCode.rawValue, newValue: zipcode)
         UserController.saveToPersistentStore()
     }
-
+    
     // MARK: helper functions
     
-    func getFiltersDictionary() -> [String: Any] {
-        var filterDict = [String: Any]()
-        guard let renter = UserController.currentRenter?.dictionaryRepresentation else {
-            log("ERROR: renter is nil")
-            return filterDict
-        }
-        
-        for filter in UserController.RenterFilters.allValues {
-            let filterString = filter.rawValue
-            filterDict[filterString] = renter[filterString]
-        }
-        
-        return filterDict
+    @objc private func updateSettingsChanged() {
+        RenterMainViewController.settingsDidChange = true
     }
 }
