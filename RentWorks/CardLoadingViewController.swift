@@ -37,6 +37,8 @@ class CardLoadingViewController: UIViewController, FirebaseUserDelegate {
             if let desinationNav = segue.destination as? UINavigationController {
                 if let childVC = desinationNav.viewControllers[0] as? LandlordMainViewController {
                     childVC.previousVCWasCardsLoadingVC = true
+                } else if let childVC = desinationNav.viewControllers[0] as? RenterMainViewController {
+                    childVC.previousVCWasCardsLoadingVC = true
                 }
             }
         }

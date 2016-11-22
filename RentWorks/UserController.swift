@@ -356,7 +356,9 @@ class UserController {
         }
     }
     
-    
+    static func updateCurrentPropertyInFirebase(id: String, attributeToUpdate: String, newValue: String) {
+        FirebaseController.propertiesRef.child(id).child(attributeToUpdate).setValue(newValue)
+    }
     
     // MARK: - Renter functions
     
@@ -531,7 +533,9 @@ class UserController {
         })
     }
     
-    
+    static func updateCurrentRenterInFirebase(id: String, attributeToUpdate: String, newValue: String) {
+        FirebaseController.rentersRef.child(id).child(attributeToUpdate).setValue(newValue)
+    }
     
     // MARK: - Persistence
     
@@ -583,6 +587,16 @@ extension UserController {
     static let kChildCount = "childCount"
     static let kBio = "bio"
     
+    enum RenterFilters: String {
+        case kBathrommCount = "bathroomCount"
+        case kBedroomCount = "bedroomCount"
+        case kMonthlyPayment = "monthlyPayment"
+        case kPetsAllowed = "petsAllowed"
+        case kPropertyFeatures = "propertyFeatures"
+        case kSmokingAllowed = "smokingAllowed"
+        case kZipCode = "zipCode"
+        static let allValues = [kBathrommCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode]
+    }
     
     enum PropertyType: String {
         case studio = "Studio"

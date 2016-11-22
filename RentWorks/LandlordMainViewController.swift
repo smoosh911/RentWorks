@@ -11,8 +11,10 @@ import UIKit
 class LandlordMainViewController: MainViewController {
     
     @IBOutlet weak var lblFrontCardCreditRating: UILabel!
-    @IBOutlet weak var lblBackCardCreditRating: UILabel!
     @IBOutlet weak var lblRenterBio: UILabel!
+    
+    @IBOutlet weak var lblBackCardCreditRating: UILabel!
+    @IBOutlet weak var lblBackCardRenterBio: UILabel!
     
     var wantsCreditRating = ""
     var filteredRenters: [Renter] = [] {
@@ -93,7 +95,7 @@ class LandlordMainViewController: MainViewController {
         guard let nextRenter = backCardRenter, let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
         backgroundImageView.image = backgroundProfilePicture
         backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
-        backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
+        lblBackCardRenterBio.text = nextRenter.bio ?? "No bio yet!"
         
         lblBackCardCreditRating.text = nextRenter.creditRating
         
