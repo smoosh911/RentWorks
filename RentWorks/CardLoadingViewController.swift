@@ -24,11 +24,23 @@ class CardLoadingViewController: UIViewController, FirebaseUserDelegate {
     
     func propertiesWereUpdated() {
         MatchController.observeLikesForCurrentRenter()
-        self.performSegue(withIdentifier: "toMainSwipingVC", sender: nil)
+        self.performSegue(withIdentifier: Identifiers.Segues.MainSwipingVC.rawValue, sender: nil)
     }
     
     func rentersWereUpdated() {
         MatchController.observeLikesForCurrentLandlord()
-        self.performSegue(withIdentifier: "toMainSwipingVC", sender: nil)
+        self.performSegue(withIdentifier: Identifiers.Segues.MainSwipingVC.rawValue, sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Identifiers.Segues.MainSwipingVC.rawValue {
+            if let desinationNav = segue.destination as? UINavigationController {
+                if let childVC = desinationNav.viewControllers[0] as? LandlordMainViewController {
+                    childVC.previousVCWasCardsLoadingVC = true
+                } else if let childVC = desinationNav.viewControllers[0] as? RenterMainViewController {
+                    childVC.previousVCWasCardsLoadingVC = true
+                }
+            }
+        }
     }
 }

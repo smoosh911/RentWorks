@@ -76,7 +76,12 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 FirebaseController.handleUserInformationScenarios { (success) in
                     self.dismissLoadingScreen()
                     if success {
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                        let storyboard: UIStoryboard!
+                        if UserController.userCreationType == "landlord" {
+                            storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                        } else {
+                            storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
+                        }
                         let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                         
                         self.present(mainVC, animated: true, completion: nil)

@@ -52,14 +52,17 @@ class UserController {
     static func fetchLoggedInUserFromFirebase(completion: @escaping (User?) -> Void) {
         
         FirebaseController.checkForExistingUserInformation { (hasAccount, userType) in
+            
             guard let currentUserID = currentUserID else { completion(nil); return }
             if userType == "renter" {
+                UserController.userCreationType = UserController.UserCreationType.renter.rawValue
                 self.fetchRenterFromFirebaseFor(renterID: currentUserID, completion: { (renter) in
                     self.currentRenter = renter
                     self.currentUserType = "renter"
                     completion(renter)
                 })
             } else if userType == "landlord" {
+                UserController.userCreationType = UserController.UserCreationType.landlord.rawValue
                 self.fetchLandlordFromFirebaseFor(landlordID: currentUserID, completion: { (landlord) in
                     self.currentLandlord = landlord
                     self.currentUserType = "landlord"
@@ -99,7 +102,6 @@ class UserController {
     static func getCurrentLandlordFromCoreData(completion: @escaping (_ landlordExists: Bool) -> Void) {
         let request: NSFetchRequest<Landlord> = Landlord.fetchRequest()
         
-        
         guard let landlords = try? CoreDataStack.context.fetch(request) else { completion(false); return }
         
         guard let id = UserController.currentUserID else { completion(false); return }
@@ -109,6 +111,10 @@ class UserController {
         self.currentUserType = "landlord"
         completion(true)
         
+    }
+    
+    static func updateCurrentLandlordInFirebase(id: String, attributeToUpdate: String, newValue: String) {
+        FirebaseController.landlordsRef.child(id).child(attributeToUpdate).setValue(newValue)
     }
     
     static func createLandlordForCurrentUser(completion: @escaping ((_ landlord: Landlord?) -> Void) = { _ in }) {
@@ -301,11 +307,6 @@ class UserController {
         }
     }
     
-    
-    
-    
-    
-    
     static func saveMockPropertyProfileImagesToCoreDataAndFirebase(for propertyID: String,
                                                                    landlord: Landlord, completion: @escaping (String) -> Void) {
         
@@ -350,7 +351,9 @@ class UserController {
         }
     }
     
-    
+    static func updateCurrentPropertyInFirebase(id: String, attributeToUpdate: String, newValue: String) {
+        FirebaseController.propertiesRef.child(id).child(attributeToUpdate).setValue(newValue)
+    }
     
     // MARK: - Renter functions
     
@@ -424,7 +427,6 @@ class UserController {
         
     }
     
-    
     static func fetchAllRenters() {
         FirebaseController.rentersRef.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allRentersDict = snapshot.value as? [String: [String: Any]] else { return }
@@ -452,8 +454,34 @@ class UserController {
         })
     }
     
-    
-    
+    // needs work: group with other method
+    static func fetchAllRentersAndWait(completion: @escaping () -> Void) {
+        FirebaseController.rentersRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allRentersDict = snapshot.value as? [String: [String: Any]] else { return }
+            
+            let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
+            
+            let backgroundQ = DispatchQueue.global(qos: .background)
+            let group = DispatchGroup()
+            
+            for propertyDict in allRentersDict {
+                group.enter()
+                backgroundQ.async(group: group, execute: {
+                    let dict = propertyDict.value
+                    guard let renterID = dict[UserController.kID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let renter = rentersArray.filter({$0.id == renterID}).first else { group.leave(); return }
+                    
+                    FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
+                        group.leave()
+                    })
+                })
+            }
+            
+            group.notify(queue: DispatchQueue.main, execute: {
+                FirebaseController.renters = rentersArray
+                completion()
+            })
+        })
+    }
     
     static func saveRenterProfileImagesToCoreDataAndFirebase(forRenter renter: Renter, completion: @escaping () -> Void) {
         var count = 0
@@ -500,7 +528,24 @@ class UserController {
         })
     }
     
+    static func updateCurrentRenterInFirebase(id: String, attributeToUpdate: String, newValue: String) {
+        FirebaseController.rentersRef.child(id).child(attributeToUpdate).setValue(newValue)
+    }
     
+    static func getRenterFiltersDictionary() -> [String: Any] {
+        var filterDict = [String: Any]()
+        guard let renter = UserController.currentRenter?.dictionaryRepresentation else {
+            log("ERROR: renter is nil")
+            return filterDict
+        }
+        
+        for filter in UserController.RenterFilters.allValues {
+            let filterString = filter.rawValue
+            filterDict[filterString] = renter[filterString]
+        }
+        
+        return filterDict
+    }
     
     // MARK: - Persistence
     
@@ -544,6 +589,7 @@ extension UserController {
     
     static let kFirstName = "first_name"
     static let kLastName = "last_name"
+    static let kWantsCreditRating = "wants_credit_rating"
     static let kCreditRating = "creditRating"
     static let kEmail = "email"
     static let kMaritalStatus = "maritalStatus"
@@ -551,6 +597,16 @@ extension UserController {
     static let kChildCount = "childCount"
     static let kBio = "bio"
     
+    enum RenterFilters: String {
+        case kBathrommCount = "bathroomCount"
+        case kBedroomCount = "bedroomCount"
+        case kMonthlyPayment = "monthlyPayment"
+        case kPetsAllowed = "petsAllowed"
+        case kPropertyFeatures = "propertyFeatures"
+        case kSmokingAllowed = "smokingAllowed"
+        case kZipCode = "zipCode"
+        static let allValues = [kBathrommCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode]
+    }
     
     enum PropertyType: String {
         case studio = "Studio"
@@ -578,6 +634,11 @@ extension UserController {
     enum MaritalStatus: String {
         case married = "Married"
         case single = "Single"
+    }
+    
+    enum UserCreationType: String {
+        case landlord = "landlord"
+        case renter = "renter"
     }
 }
 

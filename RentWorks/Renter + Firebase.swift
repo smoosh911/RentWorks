@@ -21,7 +21,6 @@ extension Renter {
             let id = id
             else { return nil }
         
-        
         var dictionaryRepresentation: [String: Any] = [UserController.kEmail: email,
                 UserController.kZipCode: zipCode,
                 UserController.kPropertyFeatures: wantedPropertyFeatures,

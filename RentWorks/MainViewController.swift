@@ -15,12 +15,8 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     @IBOutlet weak var swipeableView: RWKSwipeableView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var addressLabel: UILabel!
     
-    @IBOutlet weak var bedroomCountLabel: UILabel!
-    @IBOutlet weak var bedroomImageView: UIImageView!
-    @IBOutlet weak var bathroomCountLabel: UILabel!
-    @IBOutlet weak var bathroomImageView: UIImageView!
+    
     @IBOutlet weak var petFriendlyImageView: UIImageView!
     @IBOutlet weak var smokingAllowedImageView: UIImageView!
     
@@ -35,12 +31,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var backgroundNameLabel: UILabel!
-    @IBOutlet weak var backgroundAddressLabel: UILabel!
     
-    @IBOutlet weak var backgroundBedroomCountLabel: UILabel!
-    @IBOutlet weak var backgroundBedroomImageView: UIImageView!
-    @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
-    @IBOutlet weak var backgroundBathroomImageView: UIImageView!
     @IBOutlet weak var backgroundPetFriendlyImageview: UIImageView!
     @IBOutlet weak var backgroundSmokingAllowedImageView: UIImageView!
     
@@ -69,12 +60,14 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
-    var loadingViewHasBeenDismissed = false
+//    var loadingViewHasBeenDismissed = false
+    var previousVCWasCardsLoadingVC = false
     
     var users: [Any] = []
     
     var matchingUsersAlertController: UIAlertController?
     
+    // needs work possibly: make sure there isn't a redundant amount of backgroundview.ishidden calls
     var imageIndex = 0 {
         didSet{
             if UserController.currentUserType == "renter"{
@@ -117,11 +110,11 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         swipeableView.delegate = self
         setupViews()
         
-        if UserController.currentUserType == "renter" {
-            updateUIElementsForPropertyCards()
-        } else if UserController.currentUserType == "landlord" {
-            updateUIElementsForRenterCards()
-        }
+//        if UserController.currentUserType == "renter" {
+//            updateUIElementsForPropertyCards()
+//        } else if UserController.currentUserType == "landlord" {
+//            updateUIElementsForRenterCards()
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -132,12 +125,13 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     // MARK: - FirebaseUserDelegate
     
+    // needs work: remove these at some point
     func propertiesWereUpdated() {
-        updateUIElementsForPropertyCards()
+//        updateUIElementsForPropertyCards()
     }
     
     func rentersWereUpdated() {
-        updateUIElementsForRenterCards()
+//        updateUIElementsForRenterCards()
     }
     
     // MARK: - UserMatchingDelegate
@@ -275,64 +269,6 @@ extension MainViewController: RWKSwipeableViewDelegate {
     }
     
     // MARK: - update data
-    
-    func updateUIElementsForPropertyCards() {
-        let property = FirebaseController.properties[imageIndex]
-        
-        guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
-        
-        imageView.image = profilePicture
-        nameLabel.text = property.propertyDescription ?? "No description available"
-        addressLabel.text = address
-        
-        bedroomCountLabel.text = "\(property.bedroomCount)"
-        bathroomCountLabel.text = property.bathroomCount.isInteger ? "\(Int(property.bathroomCount))" : "\(property.bathroomCount)"
-        
-        petFriendlyImageView.image = property.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
-        smokingAllowedImageView.image = property.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
-        
-        update(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
-        
-        let nextProperty = FirebaseController.properties[backgroundimageIndex]
-        
-        guard let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data), let backgroundPropertyAddress = nextProperty.address else { return }
-        
-        self.backgroundView.isHidden = false
-        
-        backgroundImageView.image = backgroundProfilePicture
-        backgroundNameLabel.text = nextProperty.propertyDescription ?? "No description available"
-        backgroundAddressLabel.text = backgroundPropertyAddress
-        
-        backgroundBedroomCountLabel.text = "\(nextProperty.bedroomCount)"
-        backgroundBathroomCountLabel.text = nextProperty.bathroomCount.isInteger ? "\(Int(nextProperty.bathroomCount))" : "\(nextProperty.bathroomCount)"
-        
-        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
-        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
-        
-        update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
-        
-        resetData()
-    }
-    
-    func updateUIElementsForRenterCards() {
-        let renter = FirebaseController.renters[imageIndex]
-        
-        guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
-        
-        
-        imageView.image = profilePicture
-        nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
-        addressLabel.text = renter.bio ?? "No bio yet!"
-        
-        let nextRenter = FirebaseController.renters[backgroundimageIndex]
-        
-        guard  let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
-        backgroundImageView.image = backgroundProfilePicture
-        backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
-        backgroundAddressLabel.text = nextRenter.bio ?? "No bio yet!"
-        
-        resetData()
-    }
     
     func likeUser() {
         if UserController.currentUserType == "renter" {
