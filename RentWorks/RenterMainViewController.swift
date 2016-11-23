@@ -8,7 +8,9 @@
 
 import UIKit
 
-class RenterMainViewController: MainViewController {
+class RenterMainViewController: MainViewController, UserMatchingDelegate {
+    
+    // MARK: outlets
     
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var bedroomCountLabel: UILabel!
@@ -21,6 +23,8 @@ class RenterMainViewController: MainViewController {
     @IBOutlet weak var backgroundBedroomImageView: UIImageView!
     @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
     @IBOutlet weak var backgroundBathroomImageView: UIImageView!
+    
+    @IBOutlet weak var matchesButton: UIButton!
     
     // MARK: variables
     
@@ -56,7 +60,8 @@ class RenterMainViewController: MainViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setMatchesButtonImage()
+        MatchController.delegate = self
         filteredProperties = getFilteredProperties()
         
         if filteredProperties.isEmpty {
@@ -111,7 +116,7 @@ class RenterMainViewController: MainViewController {
         petFriendlyImageView.image = property.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
         smokingAllowedImageView.image = property.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
         
-        update(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
+        updateStars(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
         
         guard let nextProperty = backCardProperty, let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data)  else { return }
         
@@ -127,9 +132,22 @@ class RenterMainViewController: MainViewController {
         backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
         backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
         
-        update(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
+        updateStars(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
         
         resetData()
+    }
+    
+    func setMatchesButtonImage() {
+        DispatchQueue.main.async {
+            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
+        }
+    }
+    
+    // MARK: - UserMatchingDelegate
+    
+    func currentUserHasMatches() {
+        setMatchesButtonImage()
+        MatchController.delegate = self
     }
     
     // MARK: helper methods
@@ -137,7 +155,7 @@ class RenterMainViewController: MainViewController {
     func getFilteredProperties() -> [Property] {
         let filterSettingsDict = UserController.getRenterFiltersDictionary()
         
-        let desiredBathroomCount = filterSettingsDict[filterKeys.kBathrommCount.rawValue] as! Double
+        let desiredBathroomCount = filterSettingsDict[filterKeys.kBathroomCount.rawValue] as! Double
         let desiredBedroomCount = Int64(filterSettingsDict[filterKeys.kBedroomCount.rawValue] as! Int)
         let desiredPayment = Int64(filterSettingsDict[filterKeys.kMonthlyPayment.rawValue] as! Int)
         let desiredPetsAllowed = filterSettingsDict[filterKeys.kPetsAllowed.rawValue] as! Bool

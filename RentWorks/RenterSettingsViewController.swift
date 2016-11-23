@@ -54,7 +54,7 @@ class RenterSettingsViewController: SettingsViewController {
                 stpBedrooms.value = Double(bedroomCount)
                 lblBedroomCount.text = "\(stpBedrooms.value)"
                 break
-            case filterKeys.kBathrommCount.rawValue:
+            case filterKeys.kBathroomCount.rawValue:
                 let bathroomCount = filter.value as! Double
                 stpBathrooms.value = bathroomCount
                 lblBathroomCount.text = "\(stpBathrooms.value)"
@@ -125,7 +125,7 @@ class RenterSettingsViewController: SettingsViewController {
         let countString = "\(bathroomCount)"
         lblBathroomCount.text = countString
         renter?.wantedBathroomCount = bathroomCount
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathrommCount.rawValue, newValue: countString)
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: countString)
         UserController.saveToPersistentStore()
     }
     

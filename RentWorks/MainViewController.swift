@@ -8,14 +8,13 @@
 
 import UIKit
 
-class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDelegate {
+class MainViewController: UIViewController, FirebaseUserDelegate {
     
     // MARK: - Front swipeableView outlets
     
     @IBOutlet weak var swipeableView: RWKSwipeableView!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    
     
     @IBOutlet weak var petFriendlyImageView: UIImageView!
     @IBOutlet weak var smokingAllowedImageView: UIImageView!
@@ -43,7 +42,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     
     // MARK: - Other outlets
     
-    @IBOutlet weak var matchesButton: UIButton!
+    
     
     @IBOutlet weak var navigationBarView: UIView!
     
@@ -106,7 +105,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
         self.backgroundView.isHidden = true
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         FirebaseController.delegate = self
-        MatchController.delegate = self
+        
         swipeableView.delegate = self
         setupViews()
         
@@ -118,7 +117,7 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        setMatchesButtonImage()
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
 
     }
@@ -134,22 +133,9 @@ class MainViewController: UIViewController, UserMatchingDelegate, FirebaseUserDe
 //        updateUIElementsForRenterCards()
     }
     
-    // MARK: - UserMatchingDelegate
-    
-    func currentUserHasMatches() {
-        setMatchesButtonImage()
-        MatchController.delegate = self
-    }
-    
-    func setMatchesButtonImage() {
-        DispatchQueue.main.async {
-            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
-        }
-    }
-    
     // MARK: - UI Related
-    
-    func update(starImageViews: [UIImageView], for rating: Double) {
+    // needs work: this fuction occurs multiple times in code
+    func updateStars(starImageViews: [UIImageView], for rating: Double) {
         
         switch rating {
         case 1:

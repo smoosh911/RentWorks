@@ -19,6 +19,7 @@ class CardLoadingViewController: UIViewController, FirebaseUserDelegate {
             UserController.fetchAllProperties()
         } else if UserController.currentUserType == "landlord" {
             UserController.fetchAllRenters()
+            UserController.fetchAllProperties()
         }
     }
     

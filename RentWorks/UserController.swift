@@ -183,8 +183,6 @@ class UserController {
     
     // MARK: - Property Functions
     
-    
-    
     static func fetchAllProperties() {
         FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
@@ -245,9 +243,6 @@ class UserController {
         }
         
     }
-    
-    
-    
     
     static func createPropertyInCoreDataFor(landlord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
         guard let landlordID = landlord.id else { completion(nil); return }
@@ -351,8 +346,24 @@ class UserController {
         }
     }
     
-    static func updateCurrentPropertyInFirebase(id: String, attributeToUpdate: String, newValue: String) {
+    static func updateCurrentPropertyInFirebase(id: String, attributeToUpdate: String, newValue: Any) {
         FirebaseController.propertiesRef.child(id).child(attributeToUpdate).setValue(newValue)
+    }
+    
+    static func getPropertyDetailsDictionary(property: Property) -> [String: Any] {
+        var propertyDic = [String: Any]()
+        
+        guard let propertyDicRep = property.dictionaryRepresentation else {
+            log("ERROR: property is nil")
+            return propertyDic
+        }
+        
+        for detail in UserController.PropertyDetailValues.allValues {
+            let detailString = detail.rawValue
+            propertyDic[detailString] = propertyDicRep[detailString]
+        }
+        
+        return propertyDic
     }
     
     // MARK: - Renter functions
@@ -370,7 +381,6 @@ class UserController {
         completion(true)
         
     }
-    
     
     static func createRenterForCurrentUser(completion: @escaping () -> Void) {
         self.createRenterInCoreDataForCurrentUser { (renter) in
@@ -393,7 +403,6 @@ class UserController {
             })
         }
     }
-    
     
     static func createRenterInFirebase(renter: Renter, completion: @escaping () -> Void) {
         guard let dict = renter.dictionaryRepresentation, let renterID = renter.id else { completion(); return }
@@ -598,14 +607,28 @@ extension UserController {
     static let kBio = "bio"
     
     enum RenterFilters: String {
-        case kBathrommCount = "bathroomCount"
+        case kBathroomCount = "bathroomCount"
         case kBedroomCount = "bedroomCount"
         case kMonthlyPayment = "monthlyPayment"
         case kPetsAllowed = "petsAllowed"
         case kPropertyFeatures = "propertyFeatures"
         case kSmokingAllowed = "smokingAllowed"
         case kZipCode = "zipCode"
-        static let allValues = [kBathrommCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode]
+        static let allValues = [kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode]
+    }
+    
+    enum PropertyDetailValues: String {
+        case kAddress = "address"
+        case kAvailableDate = "availableDate"
+        case kBathroomCount = "bathroomCount"
+        case kBedroomCount = "bedroomCount"
+        case kMonthlyPayment = "monthlyPayment"
+        case kPetsAllowed = "petsAllowed"
+        case kPropertyFeatures = "propertyFeatures"
+        case kSmokingAllowed = "smokingAllowed"
+        case kStarRating = "starRating"
+        case kZipCode = "zipCode"
+        static let allValues = [kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kStarRating, kZipCode]
     }
     
     enum PropertyType: String {

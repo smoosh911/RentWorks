@@ -15,7 +15,11 @@ class Identifiers {
         case MainSwipingVC = "toMainSwipingVC"
     }
     
-    enum Cells: String {
+    enum TableViewCells: String {
         case PropertyCell = "propertyCell"
+    }
+    
+    enum CollectionViewCells: String {
+        case PropertyImageCell = "propertyImageCell"
     }
 }
