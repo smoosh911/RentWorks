@@ -16,9 +16,11 @@ class CardLoadingViewController: UIViewController, FirebaseUserDelegate {
         FirebaseController.delegate = self
         
         if UserController.currentUserType == "renter" {
-            UserController.fetchAllProperties()
+            UserController.fetchProperties(numberOfProperties: 6)
         } else if UserController.currentUserType == "landlord" {
-            UserController.fetchAllRenters()
+            UserController.fetchRenters(numberOfRenters: 6, completion: { 
+                UserController.fetchProperties(numberOfProperties: 6)
+            })
         }
     }
     

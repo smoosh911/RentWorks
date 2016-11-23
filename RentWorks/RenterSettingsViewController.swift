@@ -41,8 +41,6 @@ class RenterSettingsViewController: SettingsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateSettingsChanged), name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
-        
         filterSettingsDict = UserController.getRenterFiltersDictionary()
         
         guard let filterSettings = filterSettingsDict else { return }
@@ -54,7 +52,7 @@ class RenterSettingsViewController: SettingsViewController {
                 stpBedrooms.value = Double(bedroomCount)
                 lblBedroomCount.text = "\(stpBedrooms.value)"
                 break
-            case filterKeys.kBathrommCount.rawValue:
+            case filterKeys.kBathroomCount.rawValue:
                 let bathroomCount = filter.value as! Double
                 stpBathrooms.value = bathroomCount
                 lblBathroomCount.text = "\(stpBathrooms.value)"
@@ -125,7 +123,7 @@ class RenterSettingsViewController: SettingsViewController {
         let countString = "\(bathroomCount)"
         lblBathroomCount.text = countString
         renter?.wantedBathroomCount = bathroomCount
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathrommCount.rawValue, newValue: countString)
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: countString)
         UserController.saveToPersistentStore()
     }
     
@@ -164,11 +162,5 @@ class RenterSettingsViewController: SettingsViewController {
         UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPropertyFeatures.rawValue, newValue: propertyFeatures)
         UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kZipCode.rawValue, newValue: zipcode)
         UserController.saveToPersistentStore()
-    }
-    
-    // MARK: helper functions
-    
-    @objc private func updateSettingsChanged() {
-        RenterMainViewController.settingsDidChange = true
     }
 }

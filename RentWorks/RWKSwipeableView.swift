@@ -14,7 +14,7 @@ import UIKit
     func resetFrontCardTransform(view: UIView)
     func beingDragged(gesture: UIPanGestureRecognizer)
     @objc optional func updateCardUI()
-    func resetData()
+//    func resetData()
     func likeUser()
 }
 

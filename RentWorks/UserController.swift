@@ -183,10 +183,8 @@ class UserController {
     
     // MARK: - Property Functions
     
-    
-    
-    static func fetchAllProperties() {
-        FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+    static func fetchProperties(numberOfProperties: UInt) {
+        FirebaseController.propertiesRef.queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
             
             let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
@@ -245,9 +243,6 @@ class UserController {
         }
         
     }
-    
-    
-    
     
     static func createPropertyInCoreDataFor(landlord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
         guard let landlordID = landlord.id else { completion(nil); return }
@@ -351,8 +346,24 @@ class UserController {
         }
     }
     
-    static func updateCurrentPropertyInFirebase(id: String, attributeToUpdate: String, newValue: String) {
+    static func updateCurrentPropertyInFirebase(id: String, attributeToUpdate: String, newValue: Any) {
         FirebaseController.propertiesRef.child(id).child(attributeToUpdate).setValue(newValue)
+    }
+    
+    static func getPropertyDetailsDictionary(property: Property) -> [String: Any] {
+        var propertyDic = [String: Any]()
+        
+        guard let propertyDicRep = property.dictionaryRepresentation else {
+            log("ERROR: property is nil")
+            return propertyDic
+        }
+        
+        for detail in UserController.PropertyDetailValues.allValues {
+            let detailString = detail.rawValue
+            propertyDic[detailString] = propertyDicRep[detailString]
+        }
+        
+        return propertyDic
     }
     
     // MARK: - Renter functions
@@ -370,7 +381,6 @@ class UserController {
         completion(true)
         
     }
-    
     
     static func createRenterForCurrentUser(completion: @escaping () -> Void) {
         self.createRenterInCoreDataForCurrentUser { (renter) in
@@ -393,7 +403,6 @@ class UserController {
             })
         }
     }
-    
     
     static func createRenterInFirebase(renter: Renter, completion: @escaping () -> Void) {
         guard let dict = renter.dictionaryRepresentation, let renterID = renter.id else { completion(); return }
@@ -427,7 +436,7 @@ class UserController {
         
     }
     
-    static func fetchAllRenters() {
+    static func fetchRenters() {
         FirebaseController.rentersRef.observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allRentersDict = snapshot.value as? [String: [String: Any]] else { return }
             
@@ -453,6 +462,38 @@ class UserController {
             })
         })
     }
+    
+    static func fetchRenters(numberOfRenters: UInt, completion: @escaping () -> Void) {
+        FirebaseController.rentersRef.queryLimited(toFirst: numberOfRenters).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allRentersDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
+            let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
+            
+            let backgroundQ = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
+            let mainQ = DispatchQueue.main
+            let group = DispatchGroup()
+            
+            for propertyDict in allRentersDict {
+                group.enter()
+                backgroundQ.async(group: group, execute: {
+                    let dict = propertyDict.value
+                    guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = rentersArray.filter({$0.id == "\(renterID)"}).first else { group.leave(); return }
+                    let imageURLArray = Array(imageDict.values)
+                    FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
+                        print("yes")
+                        mainQ.async {
+                            group.leave()
+                        }
+                    })
+                })
+            }
+            
+            group.notify(queue: DispatchQueue.main, execute: {
+                FirebaseController.renters = rentersArray
+                completion()
+            })
+        })
+    }
+    
     
     // needs work: group with other method
     static func fetchAllRentersAndWait(completion: @escaping () -> Void) {
@@ -598,14 +639,28 @@ extension UserController {
     static let kBio = "bio"
     
     enum RenterFilters: String {
-        case kBathrommCount = "bathroomCount"
+        case kBathroomCount = "bathroomCount"
         case kBedroomCount = "bedroomCount"
         case kMonthlyPayment = "monthlyPayment"
         case kPetsAllowed = "petsAllowed"
         case kPropertyFeatures = "propertyFeatures"
         case kSmokingAllowed = "smokingAllowed"
         case kZipCode = "zipCode"
-        static let allValues = [kBathrommCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode]
+        static let allValues = [kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode]
+    }
+    
+    enum PropertyDetailValues: String {
+        case kAddress = "address"
+        case kAvailableDate = "availableDate"
+        case kBathroomCount = "bathroomCount"
+        case kBedroomCount = "bedroomCount"
+        case kMonthlyPayment = "monthlyPayment"
+        case kPetsAllowed = "petsAllowed"
+        case kPropertyFeatures = "propertyFeatures"
+        case kSmokingAllowed = "smokingAllowed"
+        case kStarRating = "starRating"
+        case kZipCode = "zipCode"
+        static let allValues = [kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kStarRating, kZipCode]
     }
     
     enum PropertyType: String {

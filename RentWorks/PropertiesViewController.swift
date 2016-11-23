@@ -14,20 +14,15 @@ class PropertiesViewController: UIViewController {
     
     // MARK: variables
     
-    var properties: [Property] = UserController.currentLandlord?.property?.array as! [Property]
+    var properties: [Property] = []
     var selectedCell: PropertyTableViewCell? = nil
     
     // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // needs work: don't get properties all over again
-        UserController.fetchAllProperties()
         let landlordID = UserController.currentUserID
         properties = FirebaseController.properties.filter({ $0.landlordID == landlordID})
-        if properties.count == 0 {
-            properties = UserController.currentLandlord?.property?.array as! [Property]
-        }
     }
     
     // MARK: segues
@@ -52,7 +47,7 @@ extension PropertiesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // needs work: refactor to take in dictionary
         let property = properties[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.Cells.PropertyCell.rawValue, for: indexPath) as! PropertyTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.TableViewCells.PropertyCell.rawValue, for: indexPath) as! PropertyTableViewCell
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
