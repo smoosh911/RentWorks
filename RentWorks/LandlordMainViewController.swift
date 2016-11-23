@@ -25,9 +25,6 @@ class LandlordMainViewController: MainViewController {
     var filteredRenters: [Renter] = [] {
         didSet {
             if filteredRenters.count == 0 {
-                super.backgroundView.isHidden = true
-                super.swipeableView.isHidden = true
-            } else if filteredRenters.count == 1 {
                 super.swipeableView.isHidden = false
                 super.backgroundView.isHidden = true
             } else {
@@ -79,23 +76,32 @@ class LandlordMainViewController: MainViewController {
         }
     }
     
+    // MARK: actions
+    
+    @IBAction func btnResetCards_TouchedUpInside(_ sender: Any) {
+        UserController.eraseAllHasBeenViewedByForLandlordFromRenters(landlordID: UserController.currentUserID!, completion: {
+            self.downloadMoreCards()
+        })
+    }
+    
     // MARK: helper methods
     
     func updateCardUI() {
-        
-        if filteredRenters.isEmpty {
-            return
+        if filteredRenters.count < 1 {
+            downloadMoreCards()
         }
         
-        if currentCardRenter != nil {
-            UserController.addHasBeenViewdByLandlordToRenterInFirebase(renterID: currentCardRenter!.id!, landlordID: UserController.currentUserID!)
+        if filteredRenters.isEmpty {
+            super.backgroundView.isHidden = true
+            super.swipeableView.isHidden = true
+            return
         }
         
         currentCardRenter = filteredRenters.removeFirst()
         guard let renter = currentCardRenter else { return }
-        if filteredRenters.count < 2 {
-            downloadMoreCards()
-        }
+        
+        UserController.addHasBeenViewdByLandlordToRenterInFirebase(renterID: renter.id!, landlordID: UserController.currentUserID!)
+        
         var backCardRenter: Renter? = nil
         if !super.backgroundView.isHidden {
             backCardRenter = filteredRenters.first
@@ -124,8 +130,15 @@ class LandlordMainViewController: MainViewController {
             UserController.fetchRenters(numberOfRenters: 6, completion: {
                 if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
                     let newFilteredRenters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
-                    self.filteredRenters.append(contentsOf: newFilteredRenters)
-                    self.updateCardUI()
+                    let uniqueRenters = newFilteredRenters.filter({ !self.filteredRenters.contains($0) })
+                    if uniqueRenters.count > 0 {
+                        self.filteredRenters.append(contentsOf: uniqueRenters)
+                    }
+                    if self.filteredRenters.count == 0 {
+                        self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+                    } else {
+                        self.updateCardUI()
+                    }
                 }
                 FirebaseController.isFetchingNewRenters = false
             })

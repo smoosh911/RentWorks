@@ -436,64 +436,34 @@ class UserController {
     }
     
     static func fetchRenters(numberOfRenters: UInt, completion: @escaping () -> Void) {
-//        FirebaseController.landlordsRef.child(UserController.currentUserID!).child(UserController.kHasViewed).observeSingleEvent(of: .value, with: { (snap) in
-            FirebaseController.rentersRef.queryOrdered(byChild: "\(UserController.kHasBeenViewedBy)/\(UserController.currentUserID!)").queryEqual(toValue: nil).queryLimited(toFirst: numberOfRenters).observeSingleEvent(of: .value, with: { (snapshot) in
-                guard let allRentersDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
-                let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
-                
-                let backgroundQ = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
-                let mainQ = DispatchQueue.main
-                let group = DispatchGroup()
-                
-                for propertyDict in allRentersDict {
-                    group.enter()
-                    backgroundQ.async(group: group, execute: {
-                        let dict = propertyDict.value
-                        guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = rentersArray.filter({$0.id == "\(renterID)"}).first else { group.leave(); return }
-                        let imageURLArray = Array(imageDict.values)
-                        FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
-                            print("yes")
-                            mainQ.async {
-                                group.leave()
-                            }
-                        })
+        FirebaseController.rentersRef.queryOrdered(byChild: "\(UserController.kHasBeenViewedBy)/\(UserController.currentUserID!)").queryEqual(toValue: nil).queryLimited(toFirst: numberOfRenters).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allRentersDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
+            let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
+            
+            let backgroundQ = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
+            let mainQ = DispatchQueue.main
+            let group = DispatchGroup()
+            
+            for propertyDict in allRentersDict {
+                group.enter()
+                backgroundQ.async(group: group, execute: {
+                    let dict = propertyDict.value
+                    guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = rentersArray.filter({$0.id == "\(renterID)"}).first else { group.leave(); return }
+                    let imageURLArray = Array(imageDict.values)
+                    FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
+                        print("yes")
+                        mainQ.async {
+                            group.leave()
+                        }
                     })
-                }
-                
-                group.notify(queue: DispatchQueue.main, execute: {
-                    FirebaseController.renters = rentersArray
-                    completion()
                 })
+            }
+            
+            group.notify(queue: DispatchQueue.main, execute: {
+                FirebaseController.renters = rentersArray
+                completion()
             })
-//            FirebaseController.rentersRef.queryLimited(toFirst: numberOfRenters).observeSingleEvent(of: .value, with: { (snapshot) in
-//                guard let allRentersDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
-//                let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
-//                
-//                let backgroundQ = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
-//                let mainQ = DispatchQueue.main
-//                let group = DispatchGroup()
-//                
-//                for propertyDict in allRentersDict {
-//                    group.enter()
-//                    backgroundQ.async(group: group, execute: {
-//                        let dict = propertyDict.value
-//                        guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = rentersArray.filter({$0.id == "\(renterID)"}).first else { group.leave(); return }
-//                        let imageURLArray = Array(imageDict.values)
-//                        FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
-//                            print("yes")
-//                            mainQ.async {
-//                                group.leave()
-//                            }
-//                        })
-//                    })
-//                }
-//                
-//                group.notify(queue: DispatchQueue.main, execute: {
-//                    FirebaseController.renters = rentersArray
-//                    completion()
-//                })
-//            })
-//        })
+        })
     }
     
     // needs work: group with other method
@@ -591,6 +561,19 @@ class UserController {
     
     static func addHasBeenViewdByLandlordToRenterInFirebase(renterID: String, landlordID: String) {
         FirebaseController.rentersRef.child(renterID).child(UserController.kHasBeenViewedBy).child(landlordID).setValue(true)
+    }
+    
+    static func eraseAllHasBeenViewedByForLandlordFromRenters(landlordID: String, completion: @escaping () -> Void) {
+        FirebaseController.rentersRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allRentersDict = snapshot.value as? [String: [String: Any]] else { return }
+            
+            let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
+            
+            for renter in rentersArray {
+                FirebaseController.rentersRef.child(renter.id!).child(UserController.kHasBeenViewedBy).child(landlordID).removeValue()
+            }
+            completion()
+        })
     }
     
     // MARK: - Persistence
