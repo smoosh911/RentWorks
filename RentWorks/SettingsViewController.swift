@@ -11,14 +11,21 @@ import FBSDKLoginKit
 
 class SettingsViewController: UIViewController {
 
+    // MARK: outlets
+    
     @IBOutlet weak var lblUserName: UILabel!
     @IBOutlet weak var imgviewProfilePic: UIImageView!
     
+    // MARK: variables
+    
     let manager = FBSDKLoginManager()
+    static var settingsDidChange = false
+    
+    // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateSettingsChanged), name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
         if UserController.currentUserType == "renter" {
             guard let profileImages = UserController.currentRenter!.profileImages?.array as? [ProfileImage] else { return }
             
@@ -34,6 +41,8 @@ class SettingsViewController: UIViewController {
         print(manager)
     }
     
+    // MARK: actions
+    
     @IBAction func signOutButtonTapped(_ sender: Any) {
         manager.logOut()
         
@@ -41,9 +50,13 @@ class SettingsViewController: UIViewController {
         self.present(loginVC, animated: true, completion: nil)
     }
     
-    
     @IBAction func goBackButtonTapped(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
     }
 
+    // MARK: helper functions
+    
+    @objc private func updateSettingsChanged() {
+        SettingsViewController.settingsDidChange = true
+    }
 }

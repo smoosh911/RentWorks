@@ -29,7 +29,6 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
     // MARK: variables
     
     let filterKeys = UserController.RenterFilters.self
-    static var settingsDidChange = false
     
     var filteredProperties: [Property] = [] {
         didSet {
@@ -76,8 +75,8 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
         if super.previousVCWasCardsLoadingVC {
             super.previousVCWasCardsLoadingVC = false
         } else {
-            if RenterMainViewController.settingsDidChange {
-                RenterMainViewController.settingsDidChange = false
+            if SettingsViewController.settingsDidChange {
+                SettingsViewController.settingsDidChange = false
                 filteredProperties = getFilteredProperties()
                 if filteredProperties.isEmpty {
                     self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
@@ -134,7 +133,7 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
         
         updateStars(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
         
-        resetData()
+//        resetData()
     }
     
     func setMatchesButtonImage() {

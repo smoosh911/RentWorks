@@ -16,7 +16,6 @@ class LandlordMainViewController: MainViewController {
     @IBOutlet weak var lblBackCardCreditRating: UILabel!
     @IBOutlet weak var lblBackCardRenterBio: UILabel!
     
-    var wantsCreditRating = ""
     var filteredRenters: [Renter] = [] {
         didSet {
             if filteredRenters.count == 0 {
@@ -45,7 +44,6 @@ class LandlordMainViewController: MainViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
-            wantsCreditRating = desiredCreditRating
             filteredRenters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
             if filteredRenters.isEmpty {
                 self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
@@ -61,8 +59,8 @@ class LandlordMainViewController: MainViewController {
             super.previousVCWasCardsLoadingVC = false
         } else {
             if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
-                if wantsCreditRating != desiredCreditRating {
-                    wantsCreditRating = desiredCreditRating
+                if SettingsViewController.settingsDidChange {
+                    SettingsViewController.settingsDidChange = false
                     filteredRenters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
                     if filteredRenters.isEmpty {
                         self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
@@ -79,10 +77,10 @@ class LandlordMainViewController: MainViewController {
             return
         }
         
-        let renter = filteredRenters[imageIndex]
+        let renter = filteredRenters.removeFirst()
         var backCardRenter: Renter? = nil
         if !super.backgroundView.isHidden {
-            backCardRenter = filteredRenters[backgroundimageIndex]
+            backCardRenter = filteredRenters.first
         }
         
         guard let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data) else { return }
@@ -99,6 +97,6 @@ class LandlordMainViewController: MainViewController {
         
         lblBackCardCreditRating.text = nextRenter.creditRating
         
-        resetData()
+//        resetData()
     }
 }

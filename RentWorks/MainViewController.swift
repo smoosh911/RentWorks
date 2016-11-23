@@ -67,32 +67,32 @@ class MainViewController: UIViewController, FirebaseUserDelegate {
     var matchingUsersAlertController: UIAlertController?
     
     // needs work possibly: make sure there isn't a redundant amount of backgroundview.ishidden calls
-    var imageIndex = 0 {
-        didSet{
-            if UserController.currentUserType == "renter"{
-                if FirebaseController.properties.count < 2 {
-                    self.backgroundView.isHidden = true
-                } else {
-                    self.backgroundView.isHidden = false
-                }
-            } else if UserController.currentUserType == "landlord" {
-                if FirebaseController.renters.count < 2 {
-                    self.backgroundView.isHidden = true
-                } else {
-                    self.backgroundView.isHidden = false
-                }
-            }
-        }
-    }
-    var backgroundimageIndex: Int {
-        if UserController.currentUserType == "renter"{
-            return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
-        } else if UserController.currentUserType == "landlord" {
-            return imageIndex + 1 <= FirebaseController.renters.count - 1 ? imageIndex + 1 : 0
-        } else {
-            return 0
-        }
-    }
+//    var imageIndex = 0 {
+//        didSet{
+//            if UserController.currentUserType == "renter"{
+//                if FirebaseController.properties.count < 2 {
+//                    self.backgroundView.isHidden = true
+//                } else {
+//                    self.backgroundView.isHidden = false
+//                }
+//            } else if UserController.currentUserType == "landlord" {
+//                if FirebaseController.renters.count < 2 {
+//                    self.backgroundView.isHidden = true
+//                } else {
+//                    self.backgroundView.isHidden = false
+//                }
+//            }
+//        }
+//    }
+//    var backgroundimageIndex: Int {
+//        if UserController.currentUserType == "renter"{
+//            return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
+//        } else if UserController.currentUserType == "landlord" {
+//            return imageIndex + 1 <= FirebaseController.renters.count - 1 ? imageIndex + 1 : 0
+//        } else {
+//            return 0
+//        }
+//    }
     
     // MARK: View life cycles
     
@@ -266,25 +266,25 @@ extension MainViewController: RWKSwipeableViewDelegate {
         }
     }
     
-    func resetData() {
-        if UserController.currentUserType == "renter" {
-            let property = FirebaseController.properties[imageIndex]
-            swipeableView.property = property
-            swipeableView.renter = nil
-            if imageIndex < FirebaseController.properties.count - 1 {
-                imageIndex += 1
-            } else {
-                imageIndex = 0
-            }
-        } else if UserController.currentUserType == "landlord" {
-            let renter = FirebaseController.renters[imageIndex]
-            swipeableView.renter = renter
-            swipeableView.property = nil
-            if imageIndex < FirebaseController.renters.count - 1 {
-                imageIndex += 1
-            } else {
-                imageIndex = 0
-            }
-        }
-    }
+//    func resetData() {
+//        if UserController.currentUserType == "renter" {
+//            let property = FirebaseController.properties[imageIndex]
+//            swipeableView.property = property
+//            swipeableView.renter = nil
+//            if imageIndex < FirebaseController.properties.count - 1 {
+//                imageIndex += 1
+//            } else {
+//                imageIndex = 0
+//            }
+//        } else if UserController.currentUserType == "landlord" {
+//            let renter = FirebaseController.renters[imageIndex]
+//            swipeableView.renter = renter
+//            swipeableView.property = nil
+//            if imageIndex < FirebaseController.renters.count - 1 {
+//                imageIndex += 1
+//            } else {
+//                imageIndex = 0
+//            }
+//        }
+//    }
 }
