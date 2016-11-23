@@ -10,11 +10,17 @@ import UIKit
 
 class LandlordMainViewController: MainViewController {
     
+    // MARK: outlets
+    
     @IBOutlet weak var lblFrontCardCreditRating: UILabel!
     @IBOutlet weak var lblRenterBio: UILabel!
     
     @IBOutlet weak var lblBackCardCreditRating: UILabel!
     @IBOutlet weak var lblBackCardRenterBio: UILabel!
+    
+    // MARK: variables
+    
+    var currentCardRenter: Renter? = nil
     
     var filteredRenters: [Renter] = [] {
         didSet {
@@ -40,6 +46,8 @@ class LandlordMainViewController: MainViewController {
             }
         }
     }
+    
+    // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,13 +79,23 @@ class LandlordMainViewController: MainViewController {
         }
     }
     
+    // MARK: helper methods
+    
     func updateCardUI() {
         
         if filteredRenters.isEmpty {
             return
         }
         
-        let renter = filteredRenters.removeFirst()
+        if currentCardRenter != nil {
+            UserController.addHasBeenViewdByLandlordToRenterInFirebase(renterID: currentCardRenter!.id!, landlordID: UserController.currentUserID!)
+        }
+        
+        currentCardRenter = filteredRenters.removeFirst()
+        guard let renter = currentCardRenter else { return }
+        if filteredRenters.count < 2 {
+            downloadMoreCards()
+        }
         var backCardRenter: Renter? = nil
         if !super.backgroundView.isHidden {
             backCardRenter = filteredRenters.first
@@ -98,5 +116,19 @@ class LandlordMainViewController: MainViewController {
         lblBackCardCreditRating.text = nextRenter.creditRating
         
 //        resetData()
+    }
+    
+    func downloadMoreCards() {
+        if !FirebaseController.isFetchingNewRenters {
+            FirebaseController.isFetchingNewRenters = true
+            UserController.fetchRenters(numberOfRenters: 6, completion: {
+                if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
+                    let newFilteredRenters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
+                    self.filteredRenters.append(contentsOf: newFilteredRenters)
+                    self.updateCardUI()
+                }
+                FirebaseController.isFetchingNewRenters = false
+            })
+        }
     }
 }

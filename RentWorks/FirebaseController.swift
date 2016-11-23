@@ -17,12 +17,15 @@ class FirebaseController {
     static let ref = FIRDatabase.database().reference()
     static let allUsersRef = ref.child("users")
     static let landlordsRef = ref.child("landlords")
+    static let landlordHasViewedRef = FirebaseController.landlordsRef.child("hasViewed")
     static let rentersRef = ref.child("renters")
     static let propertiesRef = ref.child("properties")
     static let likesRef = ref.child("likes")
     
     static let storageRef = FIRStorage.storage().reference()
     static let profileImagesRef = storageRef.child("profileImages")
+    
+    static var isFetchingNewRenters = false
     
     static weak var delegate: FirebaseUserDelegate?
     
