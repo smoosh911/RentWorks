@@ -82,6 +82,11 @@ class RenterSettingsViewController: SettingsViewController {
                 log("no filters")
             }
         }
+        
+        guard let profileImages = UserController.currentRenter!.profileImages?.array as? [ProfileImage] else { return }
+        
+        lblUserName.text = "\(UserController.currentRenter!.firstName!) \(UserController.currentRenter!.lastName!)"
+        imgviewProfilePic.image = UIImage(data: profileImages[0].imageData as! Data)
     }
     
     // MARK: actions

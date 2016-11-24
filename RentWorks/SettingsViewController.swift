@@ -26,14 +26,6 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateSettingsChanged), name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
-        if UserController.currentUserType == "renter" {
-            guard let profileImages = UserController.currentRenter!.profileImages?.array as? [ProfileImage] else { return }
-            
-            lblUserName.text = "\(UserController.currentRenter!.firstName!) \(UserController.currentRenter!.lastName!)"
-            imgviewProfilePic.image = UIImage(data: profileImages[0].imageData as! Data)
-        } else {
-            lblUserName.text = "\(UserController.currentLandlord!.firstName!) \(UserController.currentLandlord!.lastName!)"
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -42,7 +34,7 @@ class SettingsViewController: UIViewController {
     }
     
     // MARK: actions
-    
+    // needs work: there should be a global function that clears global data upon sign outs
     @IBAction func signOutButtonTapped(_ sender: Any) {
         manager.logOut()
         MatchController.isObservingCurrentUserLikeEndpoint = false

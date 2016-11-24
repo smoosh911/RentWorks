@@ -19,7 +19,7 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         super.viewDidLoad()
         pkrCreditRating.dataSource = self
         pkrCreditRating.delegate = self
-        
+        lblUserName.text = "\(UserController.currentLandlord!.firstName!) \(UserController.currentLandlord!.lastName!)"
         if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
             let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating)
             pkrCreditRating.selectRow(ratingIndex!, inComponent: 0, animated: false)

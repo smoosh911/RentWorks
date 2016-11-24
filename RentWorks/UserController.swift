@@ -120,12 +120,15 @@ class UserController {
     static func createLandlordForCurrentUser(completion: @escaping ((_ landlord: Landlord?) -> Void) = { _ in }) {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
             FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
-                _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
-                
+//                _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
+//                var landlordDict = temporaryUserCreationDictionary
+//                landlordDict.removeValue(forKey: "availableDate")
+//                landlordDict.removeValue(forKey: "propertyFeatures")
                 let id = facebookDictionary?[kID] as? String
                 
-                guard let landlord = Landlord(dictionary: temporaryUserCreationDictionary, id: id) else { NSLog("Landlord could not be initialized from dictionary"); completion(nil); return }
-                saveToPersistentStore()
+                guard let landlord = Landlord(dictionary: facebookDictionary!, id: id) else { print("Landlord could not be initialized from dictionary"); completion(nil); return }
+//                saveToPersistentStore()
+                UserController.currentLandlord = landlord
                 completion(landlord)
             })
         }
@@ -135,7 +138,7 @@ class UserController {
         
         FirebaseController.landlordsRef.child(landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
             
-            guard let landlordDictionary = snapshot.value as? [String: Any], let landlord = Landlord(dictionary: landlordDictionary, context: context) else { completion(nil); return }
+            guard let landlordDictionary = snapshot.value as? [String: Any], let landlord = Landlord(dictionary: landlordDictionary, id: landlordID, context: context) else { completion(nil); return }
             
             FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 
@@ -309,7 +312,7 @@ class UserController {
         let prop = Property(dictionary: temporaryUserCreationDictionary, landlordID: landlordID)
         guard let property = prop else { NSLog("Property could not be initialized from dictionary"); completion(nil); return }
         property.landlord = landlord
-        saveToPersistentStore()
+//        saveToPersistentStore()
         completion(property)
     }
     
@@ -351,7 +354,7 @@ class UserController {
                     // Print imageURL in console
                     
                     _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property, imageURL: imageURL)
-                    saveToPersistentStore()
+//                    saveToPersistentStore()
                     group.leave()
                     
                 }
@@ -377,7 +380,7 @@ class UserController {
                 
                 _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property)
                 
-                UserController.saveToPersistentStore()
+//                UserController.saveToPersistentStore()
                 group.leave()
             }
         }
@@ -469,10 +472,10 @@ class UserController {
     
     static func createRenterInCoreDataForCurrentUser(completion: @escaping ((_ renter: Renter?) -> Void) = { _ in }) {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
-            FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email, .user_work_history], completion: { (facebookDictionary) in
+            FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
                 guard let renter = Renter(dictionary: temporaryUserCreationDictionary) else { NSLog("Renter could not be initialized from dictionary"); completion(nil); return }
-                saveToPersistentStore()
+//                saveToPersistentStore()
                 completion(renter)
             })
         }

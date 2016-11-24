@@ -179,13 +179,15 @@ class RenterMainViewController: MainViewController {
     func getFilteredProperties() -> [Property] {
         let filterSettingsDict = UserController.getRenterFiltersDictionary()
         
-        let desiredBathroomCount = filterSettingsDict[filterKeys.kBathroomCount.rawValue] as! Double
-        let desiredBedroomCount = Int64(filterSettingsDict[filterKeys.kBedroomCount.rawValue] as! Int)
-        let desiredPayment = Int64(filterSettingsDict[filterKeys.kMonthlyPayment.rawValue] as! Int)
-        let desiredPetsAllowed = filterSettingsDict[filterKeys.kPetsAllowed.rawValue] as! Bool
-        let desiredSmokingAllowed = filterSettingsDict[filterKeys.kSmokingAllowed.rawValue] as! Bool
-        let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as! String
-        let desiredZipcode = filterSettingsDict[filterKeys.kZipCode.rawValue] as! String
+        guard let desiredBathroomCount = filterSettingsDict[filterKeys.kBathroomCount.rawValue] as? Double,
+            let desiredBedroomCount = filterSettingsDict[filterKeys.kBedroomCount.rawValue] as? Int64,
+            let desiredPayment = filterSettingsDict[filterKeys.kMonthlyPayment.rawValue] as? Int64,
+            let desiredPetsAllowed = filterSettingsDict[filterKeys.kPetsAllowed.rawValue] as? Bool,
+            let desiredSmokingAllowed = filterSettingsDict[filterKeys.kSmokingAllowed.rawValue] as? Bool,
+//            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
+            let desiredZipcode = filterSettingsDict[filterKeys.kZipCode.rawValue] as? String else {
+                return [Property]()
+        }
         
         let filtered = FirebaseController.properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == desiredBedroomCount && $0.monthlyPayment <= desiredPayment && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed && $0.zipCode == desiredZipcode})
         
