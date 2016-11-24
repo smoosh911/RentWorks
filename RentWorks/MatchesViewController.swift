@@ -32,7 +32,6 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         self.present(emailComposeVC, animated: true, completion: nil)
     }
     
-    
     func present(emailErrorAlert: UIAlertController) {
         self.present(emailErrorAlert, animated: true, completion: nil)
     }
@@ -40,7 +39,6 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if UserController.currentUserType == "landlord" {
@@ -52,9 +50,12 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "matchCell", for: indexPath) as? MatchTableViewCell else { return UITableViewCell() }
-        
         
         if UserController.currentUserType == "landlord" {
             let matchingRenter = MatchController.matchedRenters[indexPath.row]

@@ -99,6 +99,7 @@ class LandlordMainViewController: MainViewController {
         
         currentCardRenter = filteredRenters.removeFirst()
         guard let renter = currentCardRenter else { return }
+        swipeableView.renter = renter
         
         UserController.addHasBeenViewdByLandlordToRenterInFirebase(renterID: renter.id!, landlordID: UserController.currentUserID!)
         
@@ -120,14 +121,13 @@ class LandlordMainViewController: MainViewController {
         lblBackCardRenterBio.text = nextRenter.bio ?? "No bio yet!"
         
         lblBackCardCreditRating.text = nextRenter.creditRating
-        
-//        resetData()
     }
     
     func downloadMoreCards() {
         if !FirebaseController.isFetchingNewRenters {
             FirebaseController.isFetchingNewRenters = true
             UserController.fetchRenters(numberOfRenters: 6, completion: {
+                FirebaseController.isFetchingNewRenters = false
                 if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
                     let newFilteredRenters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
                     let uniqueRenters = newFilteredRenters.filter({ !self.filteredRenters.contains($0) })
@@ -140,7 +140,6 @@ class LandlordMainViewController: MainViewController {
                         self.updateCardUI()
                     }
                 }
-                FirebaseController.isFetchingNewRenters = false
             })
         }
     }

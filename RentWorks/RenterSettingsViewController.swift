@@ -94,11 +94,12 @@ class RenterSettingsViewController: SettingsViewController {
     }
     
     @IBAction func sldRent_TouchedUpInsideAndOutside(_ sender: UISlider) {
-        let price = "\(Int(sender.value))"
+        let price = Int64(sender.value)
         if UserController.currentUserID == nil {
             return
         }
-        UserController.currentRenter?.wantedPayment = Int64(sender.value)
+//        let priceString = "\(Int(sender.value))"
+        UserController.currentRenter?.wantedPayment = price
         UserController.updateCurrentRenterInFirebase(id: UserController.currentUserID!, attributeToUpdate: filterKeys.kMonthlyPayment.rawValue, newValue: price)
         UserController.saveToPersistentStore()
     }
@@ -112,7 +113,7 @@ class RenterSettingsViewController: SettingsViewController {
         let countString = "\(bedroomCount)"
         lblBedroomCount.text = countString
         renter?.wantedBedroomCount = bedroomCount
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBedroomCount.rawValue, newValue: countString)
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBedroomCount.rawValue, newValue: bedroomCount)
         UserController.saveToPersistentStore()
     }
     
@@ -123,7 +124,7 @@ class RenterSettingsViewController: SettingsViewController {
         let countString = "\(bathroomCount)"
         lblBathroomCount.text = countString
         renter?.wantedBathroomCount = bathroomCount
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: countString)
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: bathroomCount)
         UserController.saveToPersistentStore()
     }
     
@@ -133,9 +134,9 @@ class RenterSettingsViewController: SettingsViewController {
         let petsAllowed = sender.isOn
         guard let id = UserController.currentUserID else { return }
         
-        let boolString = "\(petsAllowed)"
+//        let boolString = "\(petsAllowed)"
         renter?.wantsPetFriendly = petsAllowed
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: boolString)
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: petsAllowed)
         UserController.saveToPersistentStore()
     }
     
@@ -143,9 +144,9 @@ class RenterSettingsViewController: SettingsViewController {
         let smokingAllowed = sender.isOn
         guard let id = UserController.currentUserID else { return }
         
-        let boolString = "\(smokingAllowed)"
+//        let boolString = "\(smokingAllowed)"
         renter?.wantsSmoking = smokingAllowed
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: boolString)
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: smokingAllowed)
         UserController.saveToPersistentStore()
     }
     

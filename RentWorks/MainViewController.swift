@@ -42,8 +42,6 @@ class MainViewController: UIViewController, FirebaseUserDelegate {
     
     // MARK: - Other outlets
     
-    
-    
     @IBOutlet weak var navigationBarView: UIView!
     
     // MARK: - Properties
@@ -109,11 +107,6 @@ class MainViewController: UIViewController, FirebaseUserDelegate {
         swipeableView.delegate = self
         setupViews()
         
-//        if UserController.currentUserType == "renter" {
-//            updateUIElementsForPropertyCards()
-//        } else if UserController.currentUserType == "landlord" {
-//            updateUIElementsForRenterCards()
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

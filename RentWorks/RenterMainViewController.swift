@@ -98,6 +98,7 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
         }
         
         let property = filteredProperties.removeFirst()
+        swipeableView.property = property
         var backCardProperty: Property? = nil
         if filteredProperties.count > 0 {
             backCardProperty = filteredProperties.first
@@ -132,8 +133,6 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
         backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
         
         updateStars(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
-        
-//        resetData()
     }
     
     func setMatchesButtonImage() {
