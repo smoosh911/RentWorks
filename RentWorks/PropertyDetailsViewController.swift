@@ -12,6 +12,8 @@ class PropertyDetailsViewController: UIViewController {
     
     // MARK: outlets
     
+    @IBOutlet weak var btnMessages: UIButton!
+    
     @IBOutlet weak var txtfldPropertyAddress: UITextField!
     @IBOutlet weak var txtfldDateAvailable: UITextField!
     
@@ -101,7 +103,9 @@ class PropertyDetailsViewController: UIViewController {
             }
         }
     
-    
+        if MatchController.currentUserHasNewMatches {
+            setMatchesButtonImage()
+        }
     }
 
     // MARK: actions
@@ -184,6 +188,12 @@ class PropertyDetailsViewController: UIViewController {
     }
     
     // MARK: helper methods
+    
+    func setMatchesButtonImage() {
+        DispatchQueue.main.async {
+            MatchController.currentUserHasNewMatches ? self.btnMessages.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.btnMessages.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
+        }
+    }
     
     @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
         _ = self.navigationController?.popViewController(animated: true)

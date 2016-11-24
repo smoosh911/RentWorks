@@ -369,9 +369,29 @@ class UserController {
     // needs work: this method should check if there is something in the renters before it goes to the internet
     static func getPropertyWithID(propertyID: String, completion: @escaping (_ renter: Property?) -> Void) {
         FirebaseController.propertiesRef.queryOrderedByKey().queryEqual(toValue: propertyID).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let userDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
-            let properties = userDict.flatMap({Property(dictionary: $0.value)})
-            completion(properties.first)
+            guard let allPropertiesDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
+            let properties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+            let backgroundQ = DispatchQueue.global(qos: .background)
+            let group = DispatchGroup()
+            
+            for propertyDict in allPropertiesDict {
+                group.enter()
+                backgroundQ.async(group: group, execute: {
+                    let dict = propertyDict.value
+                    guard let imageURLDict = (dict[UserController.kImageURLS] as? [String: String])?.values, let property = properties.first else { group.leave(); return }
+                    let imageURLArray = Array(imageURLDict)
+                    
+                    for imageURL in imageURLArray {
+                        FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
+                            group.leave()
+                        })
+                    }
+                })
+            }
+            
+            group.notify(queue: DispatchQueue.main, execute: {
+                completion(properties.first)
+            })
         })
     }
     

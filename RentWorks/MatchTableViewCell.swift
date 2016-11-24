@@ -29,9 +29,10 @@ class MatchTableViewCell: UITableViewCell {
     
     @IBAction func contactButtonTapped(_ sender: AnyObject) {
         let mailComposeVC = MFMailComposeViewController()
-        mailComposeVC.view.tintColor = AppearanceController.vengaYellowColor
+        
         //        mailComposeVC.navigationBar.barTintColor = UIColor.orange
         guard MFMailComposeViewController.canSendMail() else { /* present alert to say they can't send email */ return }
+        mailComposeVC.view.tintColor = AppearanceController.vengaYellowColor
         if let renter = renter {
             guard let email = renter.email else { return }
             mailComposeVC.setToRecipients([email])
