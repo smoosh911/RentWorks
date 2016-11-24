@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RenterMainViewController: MainViewController, UserMatchingDelegate {
+class RenterMainViewController: MainViewController {
     
     // MARK: outlets
     
@@ -59,8 +59,6 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMatchesButtonImage()
-        MatchController.delegate = self
         filteredProperties = getFilteredProperties()
         
         if filteredProperties.isEmpty {
@@ -71,7 +69,7 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        setMatchesButtonImage()
         if super.previousVCWasCardsLoadingVC {
             super.previousVCWasCardsLoadingVC = false
         } else {
@@ -145,7 +143,6 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
     
     func currentUserHasMatches() {
         setMatchesButtonImage()
-        MatchController.delegate = self
     }
     
     // MARK: helper methods

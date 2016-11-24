@@ -102,10 +102,11 @@ class PropertyDetailsViewController: UIViewController {
                 log("no details")
             }
         }
+    }
     
-        if MatchController.currentUserHasNewMatches {
-            setMatchesButtonImage()
-        }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setMatchesButtonImage()
     }
 
     // MARK: actions

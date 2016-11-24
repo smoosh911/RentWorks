@@ -17,6 +17,15 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
         MatchController.delegate = self
         MatchController.currentUserHasNewMatches = false
+        
+        let oldLandlordMatchCount = UserDefaults.standard.integer(forKey: Identifiers.UserDefaults.landlordMatchCount.rawValue)
+        let oldRenterMatchCount = UserDefaults.standard.integer(forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
+        
+        if MatchController.matchedRenters.count > oldLandlordMatchCount || MatchController.matchedProperties.count > oldRenterMatchCount {
+            UserDefaults.standard.set(MatchController.matchedRenters.count, forKey: Identifiers.UserDefaults.landlordMatchCount.rawValue)
+            UserDefaults.standard.set(MatchController.matchedProperties.count, forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
+            MatchController.currentUserHasNewMatches = false
+        }
     }
     
     func currentUserHasMatches() {

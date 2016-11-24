@@ -22,4 +22,9 @@ class Identifiers {
     enum CollectionViewCells: String {
         case PropertyImageCell = "propertyImageCell"
     }
+    
+    enum UserDefaults: String {
+        case landlordMatchCount = "landlordMatchCount"
+        case renterMatchCount = "renterMatchCount"
+    }
 }

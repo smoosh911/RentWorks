@@ -45,7 +45,11 @@ class SettingsViewController: UIViewController {
     
     @IBAction func signOutButtonTapped(_ sender: Any) {
         manager.logOut()
-        
+        MatchController.isObservingCurrentUserLikeEndpoint = false
+        MatchController.matchedProperties = []
+        MatchController.matchedRenters = []
+        UserDefaults.standard.set(0, forKey: Identifiers.UserDefaults.landlordMatchCount.rawValue)
+        UserDefaults.standard.set(0, forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
         let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "loginVC")
         self.present(loginVC, animated: true, completion: nil)
     }

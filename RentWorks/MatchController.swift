@@ -22,6 +22,8 @@ class MatchController {
     
     static var firstMatch = false
     
+    static var currentUserHasMatches = false
+    
     static var currentUserHasNewMatches = false
     
     static func observeLikesForCurrentRenter() {
@@ -57,7 +59,7 @@ class MatchController {
                             for match in matches {
                                 if !matchedProperties.contains(match) {
                                     matchedProperties.append(match)
-                                    currentUserHasNewMatches = true
+                                    currentUserHasMatches = true
                                     delegate?.currentUserHasMatches()
                                 }
                             }
@@ -65,9 +67,15 @@ class MatchController {
                             matchedProperties = matches
                             matches = []
                             if matchedProperties.count > 0 {
-                                currentUserHasNewMatches = true
+                                currentUserHasMatches = true
                                 delegate?.currentUserHasMatches()
                             }
+                        }
+                        let oldrenterMatchCount = UserDefaults.standard.integer(forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
+                        if oldrenterMatchCount < matchedProperties.count {
+                            currentUserHasNewMatches = true
+                        } else {
+                            currentUserHasNewMatches = false
                         }
                     })
                 })
@@ -117,7 +125,7 @@ class MatchController {
                                 for match in matches {
                                     if !matchedRenters.contains(match) {
                                         matchedRenters.append(match)
-                                        currentUserHasNewMatches = true
+                                        currentUserHasMatches = true
                                         delegate?.currentUserHasMatches()
                                     }
                                 }
@@ -125,9 +133,15 @@ class MatchController {
                                 matchedRenters = matches
                                 matches = []
                                 if matchedRenters.count > 0 {
-                                    currentUserHasNewMatches = true
+                                    currentUserHasMatches = true
                                     delegate?.currentUserHasMatches()
                                 }
+                            }
+                            let oldLandlordMatchCount = UserDefaults.standard.integer(forKey: Identifiers.UserDefaults.landlordMatchCount.rawValue)
+                            if oldLandlordMatchCount < matchedRenters.count {
+                                currentUserHasNewMatches = true
+                            } else {
+                                currentUserHasNewMatches = false
                             }
                         })
                     })
