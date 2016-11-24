@@ -214,6 +214,46 @@ class UserController {
         })
     }
     
+    static func fetchProperties(numberOfProperties: UInt, completion: @escaping () -> Void) {
+        FirebaseController.propertiesRef.queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
+            
+            let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+            
+            // FirebaseController.properties = landlordProperties
+            
+            let backgroundQ = DispatchQueue.global(qos: .background)
+            let group = DispatchGroup()
+            
+            for propertyDict in allPropertiesDict {
+                group.enter()
+                backgroundQ.async(group: group, execute: {
+                    let dict = propertyDict.value
+                    guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = landlordProperties.filter({$0.propertyID == propertyID}).first else { group.leave(); return }
+                    
+                    let subGroup = DispatchGroup()
+                    
+                    for imageURL in imageURLArray {
+                        subGroup.enter()
+                        FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
+                            print("yes")
+                            subGroup.leave()
+                        })
+                    }
+                    
+                    subGroup.notify(queue: DispatchQueue.main, execute: {
+                        group.leave()
+                    })
+                })
+            }
+            
+            group.notify(queue: DispatchQueue.main, execute: {
+                FirebaseController.properties = landlordProperties
+                completion()
+            })
+        })
+    }
+    
     static func fetchProperties(numberOfProperties: UInt) {
         FirebaseController.propertiesRef.queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }

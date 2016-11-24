@@ -26,6 +26,7 @@ class FirebaseController {
     static let profileImagesRef = storageRef.child("profileImages")
     
     static var isFetchingNewRenters = false
+    static var isFetchingNewProperties = false
     
     static weak var delegate: FirebaseUserDelegate?
     

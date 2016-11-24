@@ -32,10 +32,7 @@ class RenterMainViewController: MainViewController {
     
     var filteredProperties: [Property] = [] {
         didSet {
-            if filteredProperties.count == 0 && backgroundView.isHidden {
-                super.swipeableView.isHidden = false
-                super.backgroundView.isHidden = true
-            } else if filteredProperties.count == 0 {
+            if filteredProperties.count == 0 {
                 super.swipeableView.isHidden = false
                 super.backgroundView.isHidden = true
             } else {
@@ -84,6 +81,14 @@ class RenterMainViewController: MainViewController {
         }
     }
     
+    // MARK: actions
+    
+    @IBAction func btnResetCards_TouchedUpInside(_ sender: UIButton) {
+        UserController.eraseAllHasBeenViewedByForLandlordFromRenters(landlordID: UserController.currentUserID!, completion: {
+            self.downloadMoreCards()
+        })
+    }
+    
     // MARK: UI fuctions
     
     func updateCardUI() {
@@ -91,7 +96,8 @@ class RenterMainViewController: MainViewController {
         
         if filteredProperties.isEmpty {
             self.swipeableView.isHidden = true
-            self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+            self.backgroundView.isHidden = true
+            downloadMoreCards()
             return
         }
         
@@ -146,6 +152,26 @@ class RenterMainViewController: MainViewController {
     }
     
     // MARK: helper methods
+    
+    func downloadMoreCards() {
+        if !FirebaseController.isFetchingNewProperties {
+            FirebaseController.isFetchingNewProperties = true
+            UserController.fetchProperties(numberOfProperties: 6, completion: {
+                FirebaseController.isFetchingNewProperties = false
+                
+                let newFilteredProperties = self.getFilteredProperties()
+                let uniqueProperties = newFilteredProperties.filter({ !self.filteredProperties.contains($0) })
+                if uniqueProperties.count > 0 {
+                    self.filteredProperties.append(contentsOf: uniqueProperties)
+                }
+                if self.filteredProperties.count == 0 {
+                    self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+                } else {
+                    self.updateCardUI()
+                }
+            })
+        }
+    }
     
     func getFilteredProperties() -> [Property] {
         let filterSettingsDict = UserController.getRenterFiltersDictionary()

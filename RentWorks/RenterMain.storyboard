@@ -373,7 +373,7 @@
                                             </segue>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PV6-QO-pxc">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PV6-QO-pxc" userLabel="Back Button">
                                         <rect key="frame" x="8" y="21" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="3hH-K4-Z6W"/>
@@ -386,13 +386,25 @@
                                             <segue destination="07Z-xQ-ECb" kind="presentation" id="Jm5-KC-TaH"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bpE-oL-4dy" userLabel="Venga Button">
+                                        <rect key="frame" x="168" y="16" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="7XZ-9p-jiB"/>
+                                            <constraint firstAttribute="height" constant="40" id="HRk-7x-Upt"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="btnResetCards_TouchedUpInside:" destination="aKh-NS-aHp" eventType="touchUpInside" id="TwP-vm-Y1D"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="C3k-lc-tAs" firstAttribute="centerX" secondItem="nVm-Ek-rWb" secondAttribute="centerX" id="926-Ln-snb"/>
                                     <constraint firstItem="6PF-pR-pwH" firstAttribute="centerY" secondItem="C3k-lc-tAs" secondAttribute="centerY" id="EvU-W8-dIf"/>
+                                    <constraint firstItem="bpE-oL-4dy" firstAttribute="centerY" secondItem="C3k-lc-tAs" secondAttribute="centerY" id="KVS-du-Uem"/>
                                     <constraint firstAttribute="bottom" secondItem="C3k-lc-tAs" secondAttribute="bottom" id="LHi-6z-mtO"/>
                                     <constraint firstItem="PV6-QO-pxc" firstAttribute="leading" secondItem="nVm-Ek-rWb" secondAttribute="leading" constant="8" id="NOH-K1-Bxj"/>
+                                    <constraint firstItem="bpE-oL-4dy" firstAttribute="centerX" secondItem="C3k-lc-tAs" secondAttribute="centerX" id="Rgd-vQ-yzy"/>
                                     <constraint firstItem="PV6-QO-pxc" firstAttribute="centerY" secondItem="C3k-lc-tAs" secondAttribute="centerY" id="WET-BO-xRd"/>
                                     <constraint firstAttribute="height" constant="56" id="meD-PW-Pck"/>
                                     <constraint firstAttribute="trailing" secondItem="6PF-pR-pwH" secondAttribute="trailing" constant="8" id="zt7-SS-qxD"/>
