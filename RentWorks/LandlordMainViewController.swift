@@ -87,6 +87,8 @@ class LandlordMainViewController: MainViewController {
     // MARK: helper methods
     
     func updateCardUI() {
+        
+        // needs work: this if statement should be in the next if statement
         if filteredRenters.count < 1 {
             downloadMoreCards()
         }
@@ -101,7 +103,7 @@ class LandlordMainViewController: MainViewController {
         guard let renter = currentCardRenter else { return }
         swipeableView.renter = renter
         
-        UserController.addHasBeenViewdByLandlordToRenterInFirebase(renterID: renter.id!, landlordID: UserController.currentUserID!)
+        UserController.addHasBeenViewedByLandlordToRenterInFirebase(renterID: renter.id!, landlordID: UserController.currentUserID!)
         
         var backCardRenter: Renter? = nil
         if !super.backgroundView.isHidden {

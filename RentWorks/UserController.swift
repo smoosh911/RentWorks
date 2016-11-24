@@ -214,8 +214,9 @@ class UserController {
         })
     }
     
+    // needs work: try and compile these two fetchProperty functions together
     static func fetchProperties(numberOfProperties: UInt, completion: @escaping () -> Void) {
-        FirebaseController.propertiesRef.queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
+        FirebaseController.propertiesRef.queryOrdered(byChild: "\(UserController.kHasBeenViewedBy)/\(UserController.currentUserID!)").queryEqual(toValue: nil).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
             
             let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
@@ -236,7 +237,7 @@ class UserController {
                     for imageURL in imageURLArray {
                         subGroup.enter()
                         FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
-                            print("yes")
+                            print("profile image downloaded")
                             subGroup.leave()
                         })
                     }
@@ -255,7 +256,7 @@ class UserController {
     }
     
     static func fetchProperties(numberOfProperties: UInt) {
-        FirebaseController.propertiesRef.queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
+        FirebaseController.propertiesRef.queryOrdered(byChild: "\(UserController.kHasBeenViewedBy)/\(UserController.currentUserID!)").queryEqual(toValue: nil).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
             
             let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
@@ -435,6 +436,10 @@ class UserController {
         })
     }
     
+    static func addHasBeenViewedByRenterToPropertyInFirebase(propertyID: String, renterID: String) {
+        FirebaseController.propertiesRef.child(propertyID).child(UserController.kHasBeenViewedBy).child(renterID).setValue(true)
+    }
+    
     // MARK: - Renter functions
     
     static func getCurrentRenterFromCoreData(completion: @escaping (_ renterExists: Bool) -> Void) {
@@ -521,7 +526,7 @@ class UserController {
                     guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = rentersArray.filter({$0.id == "\(renterID)"}).first else { group.leave(); return }
                     let imageURLArray = Array(imageDict.values)
                     FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
-                        print("yes")
+                        print("renter image downloaded")
                         mainQ.async {
                             group.leave()
                         }
@@ -613,7 +618,7 @@ class UserController {
         return filterDict
     }
     
-    static func addHasBeenViewdByLandlordToRenterInFirebase(renterID: String, landlordID: String) {
+    static func addHasBeenViewedByLandlordToRenterInFirebase(renterID: String, landlordID: String) {
         FirebaseController.rentersRef.child(renterID).child(UserController.kHasBeenViewedBy).child(landlordID).setValue(true)
     }
     

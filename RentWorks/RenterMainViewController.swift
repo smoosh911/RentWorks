@@ -103,8 +103,11 @@ class RenterMainViewController: MainViewController {
         
         let property = filteredProperties.removeFirst()
         swipeableView.property = property
+        
+        UserController.addHasBeenViewedByRenterToPropertyInFirebase(propertyID: property.propertyID!, renterID: UserController.currentUserID!)
+        
         var backCardProperty: Property? = nil
-        if filteredProperties.count > 0 {
+        if !super.backgroundView.isHidden {
             backCardProperty = filteredProperties.first
         }
         
