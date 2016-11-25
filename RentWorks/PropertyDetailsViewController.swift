@@ -124,7 +124,7 @@ class PropertyDetailsViewController: UIViewController {
 //        let priceString = "\(Int(sender.value))"
         property.monthlyPayment = Int64(sender.value)
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
-        UserController.saveToPersistentStore()
+        // UserController.saveToPersistentStore()
     }
     
     // steppers
@@ -137,7 +137,7 @@ class PropertyDetailsViewController: UIViewController {
         lblBedroomCount.text = countString
         property.bedroomCount = bedroomCount
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBedroomCount, newValue: bedroomCount)
-        UserController.saveToPersistentStore()
+        // UserController.saveToPersistentStore()
     }
     
     @IBAction func stpBathrooms_ValueChanged(_ sender: UIStepper) {
@@ -147,7 +147,7 @@ class PropertyDetailsViewController: UIViewController {
         lblBathroomCount.text = countString
         property.bathroomCount = bathroomCount
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBathroomCount, newValue: bathroomCount)
-        UserController.saveToPersistentStore()
+        // UserController.saveToPersistentStore()
     }
     
     // switches
@@ -159,7 +159,7 @@ class PropertyDetailsViewController: UIViewController {
 //        let boolString = "\(petsAllowed)"
         property.petFriendly = petsAllowed
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPetsAllowed, newValue: petsAllowed)
-        UserController.saveToPersistentStore()
+        // UserController.saveToPersistentStore()
     }
     
     @IBAction func swtSmoking_ValueChanged(_ sender: UISwitch) {
@@ -169,7 +169,7 @@ class PropertyDetailsViewController: UIViewController {
 //        let boolString = "\(smokingAllowed)"
         property.smokingAllowed = smokingAllowed
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: smokingAllowed)
-        UserController.saveToPersistentStore()
+        // UserController.saveToPersistentStore()
     }
     
     // buttons
@@ -185,7 +185,7 @@ class PropertyDetailsViewController: UIViewController {
         property.zipCode = zipcode
 //        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyFeatures, newValue: propertyFeatures)
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
-        UserController.saveToPersistentStore()
+        // UserController.saveToPersistentStore()
     }
     
     // MARK: helper methods

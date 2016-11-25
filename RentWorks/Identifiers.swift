@@ -13,6 +13,11 @@ class Identifiers {
         case ToPropertyDetailsVC = "segueShowPropertyDetails"
         case MoreCardsVC = "segueShowNoMoreCardsVC"
         case MainSwipingVC = "toMainSwipingVC"
+        case noInternetVC = "segueToNoInternetVC"
+    }
+    
+    enum StoryboardIDs: String {
+        case noInternetVC = "noInternetVC"
     }
     
     enum TableViewCells: String {

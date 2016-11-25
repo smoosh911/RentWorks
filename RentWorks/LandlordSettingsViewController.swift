@@ -37,7 +37,7 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         }
         UserController.currentLandlord?.wantsCreditRating = rowValue
         UserController.updateCurrentLandlordInFirebase(id: UserController.currentUserID!, attributeToUpdate: UserController.kWantsCreditRating, newValue: rowValue)
-        UserController.saveToPersistentStore()
+//        UserController.saveToPersistentStore()
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {

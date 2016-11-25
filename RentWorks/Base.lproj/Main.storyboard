@@ -227,6 +227,45 @@
             </objects>
             <point key="canvasLocation" x="1047" y="9"/>
         </scene>
+        <!--No Internet View Controller-->
+        <scene sceneID="cru-zF-oxI">
+            <objects>
+                <viewController storyboardIdentifier="noInternetVC" id="cz9-i6-fhB" customClass="NoInternetViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0XM-I0-HZU"/>
+                        <viewControllerLayoutGuide type="bottom" id="d2T-Eo-jYK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jMx-wR-Osf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No internet connection" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6aR-2t-qUH">
+                                <rect key="frame" x="99" y="323" width="176" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sAM-eC-uoJ">
+                                <rect key="frame" x="164" y="352" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Retry"/>
+                                <connections>
+                                    <action selector="btnRetry_TouchedUpInside:" destination="cz9-i6-fhB" eventType="touchUpInside" id="4n9-Yn-6oR"/>
+                                    <segue destination="4bt-6e-eVg" kind="show" id="KMA-x1-M8D"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6aR-2t-qUH" firstAttribute="centerY" secondItem="jMx-wR-Osf" secondAttribute="centerY" id="EAe-QV-6f8"/>
+                            <constraint firstItem="6aR-2t-qUH" firstAttribute="centerX" secondItem="jMx-wR-Osf" secondAttribute="centerX" id="o10-TM-Rzs"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0um-Vx-crg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-158" y="847"/>
+        </scene>
         <!--Launch Screen Copy View Controller-->
         <scene sceneID="2Oe-cV-Wvv">
             <objects>
@@ -254,6 +293,9 @@
                             <constraint firstItem="axX-GM-oab" firstAttribute="leading" secondItem="WQl-jt-3m5" secondAttribute="leadingMargin" constant="44" id="stc-fA-h9a"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <segue destination="cz9-i6-fhB" kind="show" identifier="segueToNoInternetVC" id="FyM-H9-k8l"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lx1-Mr-KAS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

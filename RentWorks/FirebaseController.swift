@@ -82,7 +82,7 @@ class FirebaseController {
                 _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property, context: property.managedObjectContext)
                 
                 if property.managedObjectContext != nil {
-                    UserController.saveToPersistentStore()
+//                    UserController.saveToPersistentStore()
                 }
                 group.leave()
             }
@@ -107,7 +107,7 @@ class FirebaseController {
                 _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil)
                 
                 if context != nil {
-                    UserController.saveToPersistentStore()
+//                    UserController.saveToPersistentStore()
                 }
                 group.leave()
             }
@@ -133,7 +133,7 @@ class FirebaseController {
                 guard let imageData = imageData, error == nil else { completion(false); return }
                 
                 _ = ProfileImage(userID: userID, imageData: imageData as NSData, renter: renter, property: nil)
-                UserController.saveToPersistentStore()
+//                UserController.saveToPersistentStore()
             }
         } else if let propertyID = property?.propertyID, let landlordID = property?.landlord?.id, user as? Renter == nil {
             
@@ -144,7 +144,7 @@ class FirebaseController {
                 guard let imageData = imageData, error == nil else { completion(false); return }
                 
                 _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
-                UserController.saveToPersistentStore()
+//                UserController.saveToPersistentStore()
             }
             completion(true)
         }

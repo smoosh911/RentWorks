@@ -86,6 +86,7 @@
 		C77C13A41DCE6290003D75DD /* CoreLibraryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */; };
 		C7F93B701DE61624004F54F4 /* CreateFakeFireBaseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */; };
 		C7F93B841DE79571004F54F4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7F93B831DE79571004F54F4 /* Info.plist */; };
+		C7F93B861DE7D87E004F54F4 /* NoInternetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,7 +108,7 @@
 		460D72401DB7473400853402 /* RenterAllowedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenterAllowedViewController.swift; sourceTree = "<group>"; };
 		460D72421DB7484F00853402 /* RenterCreditRatingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenterCreditRatingViewController.swift; sourceTree = "<group>"; };
 		460D72441DB74D5A00853402 /* AccountCreationFacebookLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCreationFacebookLoginViewController.swift; sourceTree = "<group>"; };
-		461E5CCE1DB561AF00AD4509 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
+		461E5CCE1DB561AF00AD4509 /* UserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UserController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		461E5CD01DB5621E00AD4509 /* Renter + Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Renter + Convenience.swift"; sourceTree = "<group>"; };
 		461E5CD41DB5774B00AD4509 /* CoreDataStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		461E5CDC1DB5839A00AD4509 /* ProfileImage + Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ProfileImage + Convenience.swift"; sourceTree = "<group>"; };
@@ -116,7 +117,7 @@
 		4625EF521DC3B0890055024F /* RenterCreationViews.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RenterCreationViews.storyboard; sourceTree = "<group>"; };
 		4625EF541DC3B1AA0055024F /* LandlordCreationViews.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LandlordCreationViews.storyboard; sourceTree = "<group>"; };
 		465E968F1DA980FD000B36AF /* AuthenticationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationController.swift; sourceTree = "<group>"; };
-		465E96911DA981E1000B36AF /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
+		465E96911DA981E1000B36AF /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FirebaseController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		465E96931DA98230000B36AF /* LandlordAddressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordAddressViewController.swift; sourceTree = "<group>"; };
 		465E96941DA98230000B36AF /* TestUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUser.swift; sourceTree = "<group>"; };
 		46600C911DA2F7B700A7FB4B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -166,18 +167,19 @@
 		C748D8B11DE278CB009EC662 /* RenterMain.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RenterMain.storyboard; sourceTree = "<group>"; };
 		C748D8B51DE27F40009EC662 /* RenterMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenterMainViewController.swift; sourceTree = "<group>"; };
 		C748D8B71DE280B9009EC662 /* LandlordMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordMainViewController.swift; sourceTree = "<group>"; };
-		C748D8BB1DE2869A009EC662 /* LandlordSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordSettingsViewController.swift; sourceTree = "<group>"; };
+		C748D8BB1DE2869A009EC662 /* LandlordSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LandlordSettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C748D8BD1DE2A259009EC662 /* PropertiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertiesViewController.swift; sourceTree = "<group>"; };
 		C748D8C01DE2A628009EC662 /* PropertyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyTableViewCell.swift; sourceTree = "<group>"; };
-		C748D8C21DE2AC94009EC662 /* PropertyDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyDetailsViewController.swift; sourceTree = "<group>"; };
+		C748D8C21DE2AC94009EC662 /* PropertyDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PropertyDetailsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C748D8C41DE2AF01009EC662 /* Identifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identifiers.swift; sourceTree = "<group>"; };
 		C748D8C61DE2C584009EC662 /* NoCardsLeftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCardsLeftViewController.swift; sourceTree = "<group>"; };
-		C748D8C81DE398FF009EC662 /* RenterSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenterSettingsViewController.swift; sourceTree = "<group>"; };
+		C748D8C81DE398FF009EC662 /* RenterSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = RenterSettingsViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C748D8CA1DE4D12E009EC662 /* NotificationObservers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationObservers.swift; sourceTree = "<group>"; };
 		C748D8CD1DE50C01009EC662 /* PropertyImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreLibraryExtensions.swift; sourceTree = "<group>"; };
 		C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFakeFireBaseDataController.swift; sourceTree = "<group>"; };
 		C7F93B831DE79571004F54F4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoInternetViewController.swift; sourceTree = "<group>"; };
 		E22112C9E00A4E1608DAA61C /* Pods-RentWorksTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RentWorksTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RentWorksTests/Pods-RentWorksTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -251,6 +253,7 @@
 				C73E10881D8E417D008E475F /* MainViewController.swift */,
 				467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */,
 				C748D8C61DE2C584009EC662 /* NoCardsLeftViewController.swift */,
+				C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */,
 				46BD661A1DBD43E0007170AE /* SettingsViewController.swift */,
 				460D72391DB7448D00853402 /* Renter Creation View Controllers */,
 				468ABC391DB5EA76009B105B /* Landlord Creation View Controllers */,
@@ -599,6 +602,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7F93B861DE7D87E004F54F4 /* NoInternetViewController.swift in Sources */,
 				467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */,
 				465E96921DA981E1000B36AF /* FirebaseController.swift in Sources */,
 				460D72431DB7484F00853402 /* RenterCreditRatingViewController.swift in Sources */,
