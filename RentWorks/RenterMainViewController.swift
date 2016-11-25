@@ -45,7 +45,7 @@ class RenterMainViewController: MainViewController {
     var cardsAreLoading = false {
         didSet {
             if cardsAreLoading {
-                let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                 self.present(mainVC, animated: true, completion: nil)
             }
