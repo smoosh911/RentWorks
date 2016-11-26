@@ -8,6 +8,7 @@
 import Foundation
 import CoreData
 import FirebaseStorage
+import Firebase
 
 class UserController {
     
@@ -35,6 +36,10 @@ class UserController {
     static var propertyCount: Int = 0
     
     static var fetchCount = 0
+    
+    static var propertyFetchCount = 0
+    
+//    static var currentUserHasBeenViewedByIDs: [String] = []
     
     static var currentRenter: Renter?
     
@@ -76,8 +81,32 @@ class UserController {
         }
     }
     
-    
     // MARK: - Landlord functions
+    
+    static func eraseAllHasBeenViewedByForLandlordFromRenters(landlordID: String, completion: @escaping () -> Void) {
+        FirebaseController.rentersRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allRentersDict = snapshot.value as? [String: [String: Any]] else { return }
+            
+            let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
+            
+            for renter in rentersArray {
+                FirebaseController.rentersRef.child(renter.id!).child(UserController.kHasBeenViewedBy).child(landlordID).removeValue()
+            }
+            completion()
+        })
+    }
+    
+    static func resetStartAtForLandlordInFirebase(landlordID: String) {
+        FirebaseController.rentersRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("landlord nil"); return }
+            let key = child.key
+            FirebaseController.landlordsRef.child(landlordID).child(UserController.kStartAt).setValue(key)
+        })
+    }
+    
+    static func updateStartAtForLandlordInFirebase(landlordID: String, newStartAt: String) {
+        FirebaseController.landlordsRef.child(landlordID).child(UserController.kStartAt).setValue(newStartAt)
+    }
     
     static func createLandlordAndPropertyForCurrentUser(completion: @escaping (() -> Void)) {
         createLandlordForCurrentUser { (landlord) in
@@ -181,6 +210,14 @@ class UserController {
     
     // MARK: - Property Functions
     
+    static func getLastPropertyIDInFirebase(completion: @escaping (_ lastPropertyID: String) -> Void) {
+        FirebaseController.propertiesRef.queryOrderedByKey().queryLimited(toLast: 1).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("landlord nil"); return }
+            let key = child.key
+            completion(key)
+        })
+    }
+    
     static func fetchPropertiesForLandlord(landlordID: String) {
         FirebaseController.propertiesRef.queryOrdered(byChild: UserController.kLandlordID).queryEqual(toValue: landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
@@ -217,84 +254,216 @@ class UserController {
         })
     }
     
-    // needs work: try and compile these two fetchProperty functions together
-    static func fetchProperties(numberOfProperties: UInt, completion: @escaping () -> Void) {
-        FirebaseController.propertiesRef.queryOrdered(byChild: "\(UserController.kHasBeenViewedBy)/\(UserController.currentUserID!)").queryEqual(toValue: nil).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
-            
-            let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
-            
-            // FirebaseController.properties = landlordProperties
-            
-            let backgroundQ = DispatchQueue.global(qos: .background)
-            let group = DispatchGroup()
-            
-            for propertyDict in allPropertiesDict {
-                group.enter()
-                backgroundQ.async(group: group, execute: {
-                    let dict = propertyDict.value
-                    guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = landlordProperties.filter({$0.propertyID == propertyID}).first else { group.leave(); return }
-                    
-                    let subGroup = DispatchGroup()
-                    
-                    for imageURL in imageURLArray {
-                        subGroup.enter()
-                        FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
-                            print("profile image downloaded")
-                            subGroup.leave()
-                        })
-                    }
-                    
-                    subGroup.notify(queue: DispatchQueue.main, execute: {
-                        group.leave()
+    // refactor to not iterate over all propertydict
+    static func fetchImagesForProperties(propertiesDict: [String: [String: Any]], coreDataProperties: [Property], completion: @escaping () -> Void) {
+        
+        let backgroundQ = DispatchQueue.global(qos: .background)
+        let group = DispatchGroup()
+        
+        for propertyDict in propertiesDict {
+            group.enter()
+            backgroundQ.async(group: group, execute: {
+                let dict = propertyDict.value
+                guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = coreDataProperties.filter({$0.propertyID == propertyID}).first, let renterID = UserController.currentUserID else { group.leave(); return }
+                
+                let subGroup = DispatchGroup()
+                
+                for imageURL in imageURLArray {
+                    subGroup.enter()
+                    FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
+                        print("property image downloaded")
+                        subGroup.leave()
                     })
+                }
+                
+                subGroup.notify(queue: DispatchQueue.main, execute: {
+                    group.leave()
                 })
-            }
-            
-            group.notify(queue: DispatchQueue.main, execute: {
-                FirebaseController.properties = landlordProperties
-                completion()
             })
+        }
+        group.notify(queue: DispatchQueue.main, execute: {
+            FirebaseController.properties = coreDataProperties
+            completion()
         })
     }
     
-    static func fetchProperties(numberOfProperties: UInt) {
-        FirebaseController.propertiesRef.queryOrdered(byChild: "\(UserController.kHasBeenViewedBy)/\(UserController.currentUserID!)").queryEqual(toValue: nil).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
-            
-            let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
-            
-            // FirebaseController.properties = landlordProperties
-            
-            let backgroundQ = DispatchQueue.global(qos: .background)
-            let group = DispatchGroup()
-            
-            for propertyDict in allPropertiesDict {
-                group.enter()
-                backgroundQ.async(group: group, execute: {
-                    let dict = propertyDict.value
-                    guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = landlordProperties.filter({$0.propertyID == propertyID}).first else { group.leave(); return }
-                    
-                    let subGroup = DispatchGroup()
-                    
-                    for imageURL in imageURLArray {
-                        subGroup.enter()
-                        FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
-                            subGroup.leave()
-                        })
-                    }
-                    
-                    subGroup.notify(queue: DispatchQueue.main, execute: {
-                        group.leave()
+    static func fetchOneImageForPropertiesCards(propertiesDict: [String: [String: Any]], coreDataProperties: [Property], completion: @escaping () -> Void) {
+        
+        let backgroundQ = DispatchQueue.global(qos: .background)
+        let group = DispatchGroup()
+        
+        for propertyDict in propertiesDict {
+            group.enter()
+            backgroundQ.async(group: group, execute: {
+                let dict = propertyDict.value
+                guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = coreDataProperties.filter({$0.propertyID == propertyID}).first, let renterID = UserController.currentUserID else { group.leave(); return }
+                
+                let subGroup = DispatchGroup()
+                
+                    subGroup.enter()
+                    FirebaseController.downloadProfileImageFor(property: property, withURL: imageURLArray.first!, completion: {
+                        print("property image downloaded")
+                        subGroup.leave()
                     })
+                
+                subGroup.notify(queue: DispatchQueue.main, execute: {
+                    group.leave()
                 })
-            }
-            
-            group.notify(queue: DispatchQueue.main, execute: {
-                FirebaseController.properties = landlordProperties
             })
+        }
+        group.notify(queue: DispatchQueue.main, execute: {
+            FirebaseController.properties = coreDataProperties
+            completion()
         })
     }
+    
+    // needs work: try and compile these two fetchProperty functions together
+    // and this function is messy
+    static func fetchProperties(numberOfProperties: UInt, completion: @escaping () -> Void) {
+        if UserController.propertyFetchCount == 1 { // if fecth count is one then you are at the end of the database
+            completion()
+            return
+        }
+        FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: currentRenter!.startAt!).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
+
+            UserController.propertyFetchCount = allPropertiesDict.count
+            var landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+            landlordProperties.sort {$0.propertyID! < $1.propertyID!}
+            let lastProperty = landlordProperties.removeLast()
+            // needs work: only get once and store
+            var filteredProperties: [Property] = []
+            if UserController.propertyFetchCount < 2 {
+                filteredProperties = getFilteredProperties(properties: [lastProperty])
+            } else {
+                updateCurrentRenterInFirebase(id: currentUserID!, attributeToUpdate: UserController.kStartAt, newValue: lastProperty.propertyID!)
+                currentRenter!.startAt = lastProperty.propertyID!
+                filteredProperties = getFilteredProperties(properties: landlordProperties)
+            }
+            if !filteredProperties.isEmpty {
+                fetchImagesForProperties(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
+                    completion()
+                })
+            } else {
+                completion()
+            }
+        })
+    }
+    
+    static func getFilteredProperties(properties: [Property]) -> [Property] {
+        let filterSettingsDict = UserController.getRenterFiltersDictionary()
+        
+        guard let desiredBathroomCount = filterSettingsDict[RenterFilters.kBathroomCount.rawValue] as? Double,
+            let desiredBedroomCount = filterSettingsDict[RenterFilters.kBedroomCount.rawValue] as? Int,
+            let desiredPayment = filterSettingsDict[RenterFilters.kMonthlyPayment.rawValue] as? Int,
+            let desiredPetsAllowed = filterSettingsDict[RenterFilters.kPetsAllowed.rawValue] as? Bool,
+            let desiredSmokingAllowed = filterSettingsDict[RenterFilters.kSmokingAllowed.rawValue] as? Bool,
+            //            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
+            let desiredZipcode = filterSettingsDict[RenterFilters.kZipCode.rawValue] as? String,
+            let renterID = currentUserID else {
+                return [Property]()
+                
+        }
+        
+        let filtered = properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == Int64(desiredBedroomCount) && $0.monthlyPayment <= Int64(desiredPayment) && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed && $0.zipCode == desiredZipcode})
+        
+        var finalFiltered: [Property] = []
+        for property in filtered {
+            if let hasBeenViewedByObjects = property.hasBeenViewedBy?.flatMap({$0 as? HasBeenViewedBy}) {
+                let hasBeenViewedByIDs = hasBeenViewedByObjects.map{$0.viewerID} as! [String]
+                if !hasBeenViewedByIDs.contains(renterID) {
+                    finalFiltered.append(property)
+                }
+            }
+        }
+        
+        return finalFiltered
+    }
+    
+//    static func fetchProperties(numberOfProperties: UInt) {
+//        resetStartAtForRenterInFirebase(renterID: currentUserID!)
+//        FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: currentRenter!.startAt!).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
+//            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
+//            
+//            let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+//            
+//            let filteredProperties = getFilteredProperties(properties: landlordProperties)
+//            
+//            
+//            fetchImagesForProperties(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: { 
+//                
+//            })
+    
+            // FirebaseController.properties = landlordProperties
+            
+//            let backgroundQ = DispatchQueue.global(qos: .background)
+//            let group = DispatchGroup()
+//            
+//            for propertyDict in allPropertiesDict {
+//                group.enter()
+//                backgroundQ.async(group: group, execute: {
+//                    let dict = propertyDict.value
+//                    guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = landlordProperties.filter({$0.propertyID == propertyID}).first, let renterID = UserController.currentUserID else { group.leave(); return }
+//                    updateStartAtForRenterInFirebase(renterID: renterID, newStartAt: propertyID)
+//                    let subGroup = DispatchGroup()
+//                    
+//                    for imageURL in imageURLArray {
+//                        subGroup.enter()
+//                        FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
+//                            subGroup.leave()
+//                        })
+//                    }
+//                    
+//                    subGroup.notify(queue: DispatchQueue.main, execute: {
+//                        group.leave()
+//                    })
+//                })
+//            }
+//            
+//            group.notify(queue: DispatchQueue.main, execute: {
+//                FirebaseController.properties = landlordProperties
+//            })
+//        })
+//    }
+    
+    /* Fetch by hasBeenViewedBy. We may need this later */
+//    static func fetchProperties(numberOfProperties: UInt) {
+//        FirebaseController.propertiesRef.queryOrdered(byChild: "\(UserController.kHasBeenViewedBy)/\(UserController.currentUserID!)").queryEqual(toValue: nil).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
+//            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
+//            
+//            let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+//            
+//            // FirebaseController.properties = landlordProperties
+//            
+//            let backgroundQ = DispatchQueue.global(qos: .background)
+//            let group = DispatchGroup()
+//            
+//            for propertyDict in allPropertiesDict {
+//                group.enter()
+//                backgroundQ.async(group: group, execute: {
+//                    let dict = propertyDict.value
+//                    guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = landlordProperties.filter({$0.propertyID == propertyID}).first, let renterID = UserController.currentUserID else { group.leave(); return }
+//                    updateStartAtForRenterInFirebase(renterID: renterID, newStartAt: propertyID)
+//                    let subGroup = DispatchGroup()
+//                    
+//                    for imageURL in imageURLArray {
+//                        subGroup.enter()
+//                        FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
+//                            subGroup.leave()
+//                        })
+//                    }
+//                    
+//                    subGroup.notify(queue: DispatchQueue.main, execute: {
+//                        group.leave()
+//                    })
+//                })
+//            }
+//            
+//            group.notify(queue: DispatchQueue.main, execute: {
+//                FirebaseController.properties = landlordProperties
+//            })
+//        })
+//    }
     
     static func getPropertyCount() {
         
@@ -445,6 +614,19 @@ class UserController {
     
     // MARK: - Renter functions
     
+    static func resetStartAtForRenterInFirebase(renterID: String) {
+        FirebaseController.propertiesRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("landlord nil"); return }
+            let key = child.key
+            FirebaseController.rentersRef.child(renterID).child(UserController.kStartAt).setValue(key)
+            currentRenter!.startAt = key
+        })
+    }
+    
+//    static func updateStartAtForRenterInFirebase(renterID: String, newStartAt: String) {
+//        FirebaseController.rentersRef.child(renterID).child(UserController.kStartAt).setValue(newStartAt)
+//    }
+    
     static func getCurrentRenterFromCoreData(completion: @escaping (_ renterExists: Bool) -> Void) {
         let request: NSFetchRequest<Renter> = Renter.fetchRequest()
         
@@ -474,9 +656,16 @@ class UserController {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
             FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
-                guard let renter = Renter(dictionary: temporaryUserCreationDictionary) else { NSLog("Renter could not be initialized from dictionary"); completion(nil); return }
-//                saveToPersistentStore()
-                completion(renter)
+                FirebaseController.propertiesRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
+                    guard let child = snapshot.children.nextObject() as? FIRDataSnapshot, let renterID = temporaryUserCreationDictionary[UserController.kID] as? String else { log("landlord nil"); return }
+                    let key = child.key
+                    
+//                    FirebaseController.rentersRef.child(renterID).child(UserController.kStartAt).setValue(key)
+                    temporaryUserCreationDictionary[UserController.kStartAt] = key
+                    guard let renter = Renter(dictionary: temporaryUserCreationDictionary) else { log("Renter could not be initialized from dictionary"); completion(nil); return }
+                    //                saveToPersistentStore()
+                    completion(renter)
+                })
             })
         }
     }
@@ -625,14 +814,14 @@ class UserController {
         FirebaseController.rentersRef.child(renterID).child(UserController.kHasBeenViewedBy).child(landlordID).setValue(true)
     }
     
-    static func eraseAllHasBeenViewedByForLandlordFromRenters(landlordID: String, completion: @escaping () -> Void) {
-        FirebaseController.rentersRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let allRentersDict = snapshot.value as? [String: [String: Any]] else { return }
+    static func eraseAllHasBeenViewedByForRenterFromProperties(renterID: String, completion: @escaping () -> Void) {
+        FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
             
-            let rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
+            let properties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
             
-            for renter in rentersArray {
-                FirebaseController.rentersRef.child(renter.id!).child(UserController.kHasBeenViewedBy).child(landlordID).removeValue()
+            for property in properties {
+                FirebaseController.propertiesRef.child(property.propertyID!).child(UserController.kHasBeenViewedBy).child(renterID).removeValue()
             }
             completion()
         })
@@ -716,6 +905,8 @@ extension UserController {
     static let kBio = "bio"
 //    static let kHasViewed = "hasViewed"
     static let kHasBeenViewedBy = "hasBeenViewedBy"
+    
+    static let kStartAt = "startAt"
     
     enum RenterFilters: String {
         case kBathroomCount = "bathroomCount"

@@ -11,32 +11,32 @@ import CoreData
 
 extension Renter {
     
-    @discardableResult convenience init?(address: String, birthday: NSDate = NSDate(), firstName: String, lastName: String, starRating: Double, id: String, creditRating: String, email: String, wantedPropertyFeatures: String, wantsPetFriendly: Bool, wantsSmoking: Bool, wantedBedroomCount: Int64, wantedBathroomCount: Double, wantedPayment: Int64, wantedZipCode: String, maritalStatus: String, bio: String, context: NSManagedObjectContext? = CoreDataStack.context) {
-        
-        if let context = context {
-            self.init(context: context)
-        } else {
-            self.init(entity: Renter.entity(), insertInto: nil)
-        }
-        
-        self.address = address
-        self.birthday = birthday
-        self.firstName = firstName
-        self.lastName = lastName
-        self.starRating = starRating
-        self.id = id
-        self.creditRating = creditRating
-        self.email = email
-        self.wantedPropertyFeatures = wantedPropertyFeatures
-        self.wantsPetFriendly = wantsPetFriendly
-        self.wantsSmoking = wantsSmoking
-        self.wantedBedroomCount = wantedBedroomCount
-        self.wantedBathroomCount = wantedBathroomCount
-        self.wantedPayment = wantedPayment
-        self.wantedZipCode = wantedZipCode
-        self.maritalStatus = maritalStatus
-        self.bio = bio
-    }
+//    @discardableResult convenience init?(address: String, birthday: NSDate = NSDate(), firstName: String, lastName: String, starRating: Double, id: String, creditRating: String, email: String, wantedPropertyFeatures: String, wantsPetFriendly: Bool, wantsSmoking: Bool, wantedBedroomCount: Int64, wantedBathroomCount: Double, wantedPayment: Int64, wantedZipCode: String, maritalStatus: String, bio: String, context: NSManagedObjectContext? = CoreDataStack.context) {
+//        
+//        if let context = context {
+//            self.init(context: context)
+//        } else {
+//            self.init(entity: Renter.entity(), insertInto: nil)
+//        }
+//        
+//        self.address = address
+//        self.birthday = birthday
+//        self.firstName = firstName
+//        self.lastName = lastName
+//        self.starRating = starRating
+//        self.id = id
+//        self.creditRating = creditRating
+//        self.email = email
+//        self.wantedPropertyFeatures = wantedPropertyFeatures
+//        self.wantsPetFriendly = wantsPetFriendly
+//        self.wantsSmoking = wantsSmoking
+//        self.wantedBedroomCount = wantedBedroomCount
+//        self.wantedBathroomCount = wantedBathroomCount
+//        self.wantedPayment = wantedPayment
+//        self.wantedZipCode = wantedZipCode
+//        self.maritalStatus = maritalStatus
+//        self.bio = bio
+//    }
     
     @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext? = CoreDataStack.context) {
         
@@ -52,7 +52,8 @@ extension Renter {
             let wantedBedroomCount = dictionary[UserController.kBedroomCount] as? Double,
             let wantedBathroomCount = dictionary[UserController.kBathroomCount] as? Double,
             let wantsPetFriendly = dictionary[UserController.kPetsAllowed] as? Bool,
-            let wantsSmoking = dictionary[UserController.kSmokingAllowed] as? Bool
+            let wantsSmoking = dictionary[UserController.kSmokingAllowed] as? Bool,
+            let startAt = dictionary[UserController.kStartAt] as? String
             else { return nil }
         
         if let context = context {
@@ -74,5 +75,6 @@ extension Renter {
         self.wantedBedroomCount = Int64(wantedBedroomCount)
         self.wantedBathroomCount = wantedBathroomCount
         self.wantsSmoking = wantsSmoking
+        self.startAt = startAt
     }
 }

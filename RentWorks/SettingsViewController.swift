@@ -25,7 +25,7 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateSettingsChanged), name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateSettingsChanged), name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,7 +52,7 @@ class SettingsViewController: UIViewController {
 
     // MARK: helper functions
     
-    @objc private func updateSettingsChanged() {
-        SettingsViewController.settingsDidChange = true
-    }
+//    @objc private func updateSettingsChanged() {
+//        SettingsViewController.settingsDidChange = true
+//    }
 }

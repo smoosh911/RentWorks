@@ -73,7 +73,7 @@ class RenterMainViewController: MainViewController {
             if SettingsViewController.settingsDidChange {
                 SettingsViewController.settingsDidChange = false
                 filteredProperties = getFilteredProperties()
-                if filteredProperties.isEmpty {
+                if filteredProperties.isEmpty && UserController.propertyFetchCount == 1 {
                     self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
                 }
                 self.updateCardUI()
@@ -84,7 +84,7 @@ class RenterMainViewController: MainViewController {
     // MARK: actions
     
     @IBAction func btnResetCards_TouchedUpInside(_ sender: UIButton) {
-        UserController.eraseAllHasBeenViewedByForLandlordFromRenters(landlordID: UserController.currentUserID!, completion: {
+        UserController.eraseAllHasBeenViewedByForRenterFromProperties(renterID: UserController.currentUserID!, completion: {
             self.downloadMoreCards()
         })
     }
@@ -158,8 +158,12 @@ class RenterMainViewController: MainViewController {
     
     func downloadMoreCards() {
         if !FirebaseController.isFetchingNewProperties {
+            if UserController.propertyFetchCount == 1 { // if fetch count is one here then the last card in the database has already been pulled
+                performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+                return
+            }
             FirebaseController.isFetchingNewProperties = true
-            UserController.fetchProperties(numberOfProperties: 6, completion: {
+            UserController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: {
                 FirebaseController.isFetchingNewProperties = false
                 
                 let newFilteredProperties = self.getFilteredProperties()
@@ -167,8 +171,9 @@ class RenterMainViewController: MainViewController {
                 if uniqueProperties.count > 0 {
                     self.filteredProperties.append(contentsOf: uniqueProperties)
                 }
-                if self.filteredProperties.count == 0 {
-                    self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+                if newFilteredProperties.count == 0 && UserController.propertyFetchCount > 1 {
+                    self.downloadMoreCards()
+                    return
                 } else {
                     self.updateCardUI()
                 }
@@ -177,19 +182,24 @@ class RenterMainViewController: MainViewController {
     }
     
     func getFilteredProperties() -> [Property] {
-        let filterSettingsDict = UserController.getRenterFiltersDictionary()
+//        let filterSettingsDict = UserController.getRenterFiltersDictionary()
+//        
+//        guard let desiredBathroomCount = filterSettingsDict[filterKeys.kBathroomCount.rawValue] as? Double,
+//            let desiredBedroomCount = filterSettingsDict[filterKeys.kBedroomCount.rawValue] as? Int64,
+//            let desiredPayment = filterSettingsDict[filterKeys.kMonthlyPayment.rawValue] as? Int64,
+//            let desiredPetsAllowed = filterSettingsDict[filterKeys.kPetsAllowed.rawValue] as? Bool,
+//            let desiredSmokingAllowed = filterSettingsDict[filterKeys.kSmokingAllowed.rawValue] as? Bool,
+////            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
+//            let desiredZipcode = filterSettingsDict[filterKeys.kZipCode.rawValue] as? String else {
+//                return [Property]()
+//        }
+//        
+//        let filtered = FirebaseController.properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == desiredBedroomCount && $0.monthlyPayment <= desiredPayment && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed && $0.zipCode == desiredZipcode})
         
-        guard let desiredBathroomCount = filterSettingsDict[filterKeys.kBathroomCount.rawValue] as? Double,
-            let desiredBedroomCount = filterSettingsDict[filterKeys.kBedroomCount.rawValue] as? Int64,
-            let desiredPayment = filterSettingsDict[filterKeys.kMonthlyPayment.rawValue] as? Int64,
-            let desiredPetsAllowed = filterSettingsDict[filterKeys.kPetsAllowed.rawValue] as? Bool,
-            let desiredSmokingAllowed = filterSettingsDict[filterKeys.kSmokingAllowed.rawValue] as? Bool,
-//            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
-            let desiredZipcode = filterSettingsDict[filterKeys.kZipCode.rawValue] as? String else {
-                return [Property]()
+        let filtered = FirebaseController.properties
+        if FirebaseController.properties.count > 0 {
+            FirebaseController.properties.removeAll()
         }
-        
-        let filtered = FirebaseController.properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == desiredBedroomCount && $0.monthlyPayment <= desiredPayment && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed && $0.zipCode == desiredZipcode})
         
         return filtered
     }

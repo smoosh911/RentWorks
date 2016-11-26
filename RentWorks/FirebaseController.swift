@@ -28,19 +28,11 @@ class FirebaseController {
     static var isFetchingNewRenters = false
     static var isFetchingNewProperties = false
     
-    static weak var delegate: FirebaseUserDelegate?
+    static let cardDownloadCount: UInt = 6
     
-    static var properties: [Property] = [] {
-        didSet {
-            delegate?.propertiesWereUpdated()
-        }
-    }
+    static var properties: [Property] = []
     
-    static var renters: [Renter] = [] {
-        didSet {
-            delegate?.rentersWereUpdated()
-        }
-    }
+    static var renters: [Renter] = []
     
     // MARK: - Image storage/downloading
     
@@ -465,9 +457,4 @@ class FirebaseController {
         }
     }
     
-}
-
-protocol FirebaseUserDelegate: class {
-    func propertiesWereUpdated()
-    func rentersWereUpdated()
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController, FirebaseUserDelegate {
+class MainViewController: UIViewController {
     
     // MARK: - Front swipeableView outlets
     
@@ -102,7 +102,6 @@ class MainViewController: UIViewController, FirebaseUserDelegate {
         
         self.backgroundView.isHidden = true
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        FirebaseController.delegate = self
         
         swipeableView.delegate = self
         setupViews()
@@ -110,20 +109,8 @@ class MainViewController: UIViewController, FirebaseUserDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
 
-    }
-    
-    // MARK: - FirebaseUserDelegate
-    
-    // needs work: remove these at some point
-    func propertiesWereUpdated() {
-//        updateUIElementsForPropertyCards()
-    }
-    
-    func rentersWereUpdated() {
-//        updateUIElementsForRenterCards()
     }
     
     // MARK: - UI Related
