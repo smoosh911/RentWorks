@@ -38,6 +38,7 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         UserController.currentLandlord?.wantsCreditRating = rowValue
         UserController.updateCurrentLandlordInFirebase(id: UserController.currentUserID!, attributeToUpdate: UserController.kWantsCreditRating, newValue: rowValue)
 //        UserController.saveToPersistentStore()
+        updateSettingsChanged()
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -63,5 +64,9 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
 //        }
 //        UserController.currentLandlord?.wantsCreditRating = txtfldCreditRating.text!
 //    }
-    
+    private func updateSettingsChanged() {
+        SettingsViewController.settingsDidChange = true
+        UserController.renterFetchCount = 0
+        UserController.resetStartAtForLandlordInFirebase(landlordID: UserController.currentUserID!)
+    }
 }

@@ -52,14 +52,25 @@ extension Renter {
             let wantedBedroomCount = dictionary[UserController.kBedroomCount] as? Double,
             let wantedBathroomCount = dictionary[UserController.kBathroomCount] as? Double,
             let wantsPetFriendly = dictionary[UserController.kPetsAllowed] as? Bool,
-            let wantsSmoking = dictionary[UserController.kSmokingAllowed] as? Bool,
-            let startAt = dictionary[UserController.kStartAt] as? String
+            let wantsSmoking = dictionary[UserController.kSmokingAllowed] as? Bool
             else { return nil }
         
         if let context = context {
             self.init(context: context)
         } else {
             self.init(entity: Renter.entity(), insertInto: nil)
+        }
+        
+        if let hasBeenViewedBy = dictionary[UserController.kHasBeenViewedBy] as? [String: Bool] {
+            let hasBeenViewedByIDs = Array(hasBeenViewedBy.keys)
+            
+            for id in hasBeenViewedByIDs {
+                HasBeenViewedBy(hasBeenViewedByID: id, propertyOrRenter: self)
+            }
+        }
+        
+        if let startAtVal = dictionary[UserController.kStartAt] as? String {
+            self.startAt = startAtVal
         }
         
         self.email = email
@@ -75,6 +86,5 @@ extension Renter {
         self.wantedBedroomCount = Int64(wantedBedroomCount)
         self.wantedBathroomCount = wantedBathroomCount
         self.wantsSmoking = wantsSmoking
-        self.startAt = startAt
     }
 }

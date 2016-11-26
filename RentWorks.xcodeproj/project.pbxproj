@@ -244,6 +244,9 @@
 		468ABC3A1DB5EA89009B105B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				460D72391DB7448D00853402 /* Renter Creation View Controllers */,
+				468ABC391DB5EA76009B105B /* Landlord Creation View Controllers */,
+				460D72361DB742E000853402 /* Photo Selector VIew Controllers */,
 				C748D8BA1DE28683009EC662 /* Renter */,
 				C748D8B91DE28679009EC662 /* Landlord */,
 				460D72441DB74D5A00853402 /* AccountCreationFacebookLoginViewController.swift */,
@@ -257,9 +260,6 @@
 				C748D8C61DE2C584009EC662 /* NoCardsLeftViewController.swift */,
 				C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */,
 				46BD661A1DBD43E0007170AE /* SettingsViewController.swift */,
-				460D72391DB7448D00853402 /* Renter Creation View Controllers */,
-				468ABC391DB5EA76009B105B /* Landlord Creation View Controllers */,
-				460D72361DB742E000853402 /* Photo Selector VIew Controllers */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -480,6 +480,7 @@
 				C73E10811D8E417D008E475F /* Resources */,
 				A7730FAA5F74352E5F94C457 /* [CP] Embed Pods Frameworks */,
 				24C877330F63FBC52BF2D87C /* [CP] Copy Pods Resources */,
+				C77666281DEA21A300F2A8EF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -580,7 +581,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		A7730FAA5F74352E5F94C457 /* [CP] Embed Pods Frameworks */ = {
@@ -597,6 +598,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-RentWorks/Pods-RentWorks-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		C77666281DEA21A300F2A8EF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=rentworks-da6b1:my:app:id\n\n# Replace the /Path/To/ServiceAccount.json with the path to the key you just downloaded\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"ServiceAccount.json\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

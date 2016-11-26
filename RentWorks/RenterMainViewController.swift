@@ -173,7 +173,7 @@ class RenterMainViewController: MainViewController {
                 }
                 if newFilteredProperties.count == 0 && UserController.propertyFetchCount > 1 {
                     self.downloadMoreCards()
-                    return
+//                    return
                 } else {
                     self.updateCardUI()
                 }

@@ -63,15 +63,13 @@ class LandlordMainViewController: MainViewController {
         if super.previousVCWasCardsLoadingVC {
             super.previousVCWasCardsLoadingVC = false
         } else {
-            if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
-                if SettingsViewController.settingsDidChange {
-                    SettingsViewController.settingsDidChange = false
-                    filteredRenters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
-                    if filteredRenters.isEmpty {
-                        self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
-                    }
-                    self.updateCardUI()
+            if SettingsViewController.settingsDidChange {
+                SettingsViewController.settingsDidChange = false
+                filteredRenters = getFilteredRenters()
+                if filteredRenters.isEmpty && UserController.renterFetchCount == 1 {
+                    self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
                 }
+                self.updateCardUI()
             }
         }
     }
@@ -127,22 +125,33 @@ class LandlordMainViewController: MainViewController {
     
     func downloadMoreCards() {
         if !FirebaseController.isFetchingNewRenters {
+            if UserController.renterFetchCount == 1 { // if fetch count is one here then the last card in the database has already been pulled
+                performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+                return
+            }
             FirebaseController.isFetchingNewRenters = true
             UserController.fetchRenters(numberOfRenters: 6, completion: {
                 FirebaseController.isFetchingNewRenters = false
-                if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
-                    let newFilteredRenters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
-                    let uniqueRenters = newFilteredRenters.filter({ !self.filteredRenters.contains($0) })
-                    if uniqueRenters.count > 0 {
-                        self.filteredRenters.append(contentsOf: uniqueRenters)
-                    }
-                    if self.filteredRenters.count == 0 {
-                        self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
-                    } else {
-                        self.updateCardUI()
-                    }
+                let newFilteredRenters = self.getFilteredRenters()
+                let uniqueRenters = newFilteredRenters.filter({ !self.filteredRenters.contains($0) })
+                if uniqueRenters.count > 0 {
+                    self.filteredRenters.append(contentsOf: uniqueRenters)
+                }
+                if newFilteredRenters.count == 0 && UserController.propertyFetchCount > 1 {
+                    self.downloadMoreCards()
+                } else {
+                    self.updateCardUI()
                 }
             })
         }
+    }
+    
+    func getFilteredRenters() -> [Renter] {
+        let filtered = FirebaseController.renters
+        if FirebaseController.renters.count > 0 {
+            FirebaseController.renters.removeAll()
+        }
+        
+        return filtered
     }
 }

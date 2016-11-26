@@ -36,19 +36,19 @@ class MatchTableViewCell: UITableViewCell {
         if let renter = renter {
             guard let email = renter.email else { return }
             mailComposeVC.setToRecipients([email])
-            mailComposeVC.setSubject("We matched on RentMatch!")
+            mailComposeVC.setSubject("We matched on Venga!")
             delegate?.present(emailComposeVC: mailComposeVC)
         } else if let property = property {
             // Fix this fetching later to pull the landlord from CoreData when they actually have that relationship.
             if let email = property.landlord?.email {
                 mailComposeVC.setToRecipients([email])
-                mailComposeVC.setSubject("We matched on RentMatch!")
+                mailComposeVC.setSubject("We matched on Venga!")
                 delegate?.present(emailComposeVC: mailComposeVC)
             } else {
                 FirebaseController.getLandlordFor(property: property, completion: { (landlord) in
                     guard let landlord = landlord, let email = landlord.email else { return }
                     mailComposeVC.setToRecipients([email])
-                    mailComposeVC.setSubject("We matched on RentMatch!")
+                    mailComposeVC.setSubject("We matched on Venga!")
                     self.delegate?.present(emailComposeVC: mailComposeVC)
                 })
             }
