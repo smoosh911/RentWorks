@@ -24,8 +24,6 @@ class LandlordAllowedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
         nextButton.isHidden = true
         
         petsAllowedButton.layer.cornerRadius = 15
@@ -67,7 +65,7 @@ class LandlordAllowedViewController: UIViewController {
         noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
         smokingAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
         
-        smokingAllowed = true
+        smokingAllowed = false
         
         checkIfBothButtonsHaveBeenSelected()
     }

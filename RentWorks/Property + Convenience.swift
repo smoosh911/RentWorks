@@ -52,6 +52,14 @@ extension Property {
         }
         // TODO: - Change this to not a static value
         
+        if let hasBeenViewedBy = dictionary[UserController.kHasBeenViewedBy] as? [String: Bool] {
+            let hasBeenViewedByIDs = Array(hasBeenViewedBy.keys)
+            
+            for id in hasBeenViewedByIDs {
+                HasBeenViewedBy(hasBeenViewedByID: id, propertyOrRenter: self)
+            }
+        }
+        
         self.availableDate = NSDate(timeIntervalSince1970: availableDate)
         self.bathroomCount = bathroomCount
         self.bedroomCount = Int64(bedroomCount)

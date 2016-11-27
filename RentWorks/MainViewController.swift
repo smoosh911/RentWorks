@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController, FirebaseUserDelegate {
+class MainViewController: UIViewController {
     
     // MARK: - Front swipeableView outlets
     
@@ -41,8 +41,6 @@ class MainViewController: UIViewController, FirebaseUserDelegate {
     @IBOutlet weak var backgroundStarImageView5: UIImageView!
     
     // MARK: - Other outlets
-    
-    
     
     @IBOutlet weak var navigationBarView: UIView!
     
@@ -104,33 +102,15 @@ class MainViewController: UIViewController, FirebaseUserDelegate {
         
         self.backgroundView.isHidden = true
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        FirebaseController.delegate = self
         
         swipeableView.delegate = self
         setupViews()
         
-//        if UserController.currentUserType == "renter" {
-//            updateUIElementsForPropertyCards()
-//        } else if UserController.currentUserType == "landlord" {
-//            updateUIElementsForRenterCards()
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
 
-    }
-    
-    // MARK: - FirebaseUserDelegate
-    
-    // needs work: remove these at some point
-    func propertiesWereUpdated() {
-//        updateUIElementsForPropertyCards()
-    }
-    
-    func rentersWereUpdated() {
-//        updateUIElementsForRenterCards()
     }
     
     // MARK: - UI Related
@@ -189,6 +169,13 @@ class MainViewController: UIViewController, FirebaseUserDelegate {
 // MARK: - RWKSwipeableViewDelegate
 
 extension MainViewController: RWKSwipeableViewDelegate {
+    internal func updateCardUI() {
+        
+    }
+    
+    internal func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any) {
+        
+    }
 
     // MARK: - Animations
     

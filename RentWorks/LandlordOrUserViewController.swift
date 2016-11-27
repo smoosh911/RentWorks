@@ -18,14 +18,15 @@ class LandlordOrUserViewController: UIViewController {
         landlordButton.layer.cornerRadius = 15
         renterButton.layer.cornerRadius = 15
         
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toRenterPageVC" {
             UserController.userCreationType = "renter"
+            UserController.currentUserType = "renter"
         } else if segue.identifier == "toLandlordPageVC" {
             UserController.userCreationType = "landlord"
+            UserController.currentUserType = "landlord"
         }
     }
 }

@@ -16,11 +16,17 @@ class MatchController {
     
     static var isObservingCurrentUserLikeEndpoint = false
     
-    static var matchedRenters: [Renter] = []
+//    static var matchedRenters: [Renter] = []
+    
+    static var matchedRentersForProperties: [String: [Renter]] = [:] // the string is the property id
     
     static var matchedProperties: [Property] = []
     
     static var firstMatch = false
+    
+    static var propertyIDsWithMatches: [String] = [] // the strings are property IDs
+    
+    static var currentUserHasMatches = false
     
     static var currentUserHasNewMatches = false
     
@@ -45,9 +51,11 @@ class MatchController {
                     
                     for id in matchingIDArray {
                         group.enter()
-                        guard let matchedProperty = FirebaseController.properties.filter({$0.propertyID == id}).first else { group.leave(); return }
-                        matches.append(matchedProperty)
-                        group.leave()
+                        UserController.getPropertyWithID(propertyID: id, completion: { (propertyResult) in
+                            guard let property = propertyResult else { return }
+                            matches.append(property)
+                            group.leave()
+                        })
                     }
                     group.notify(queue: DispatchQueue.main, execute: {
                         
@@ -55,7 +63,7 @@ class MatchController {
                             for match in matches {
                                 if !matchedProperties.contains(match) {
                                     matchedProperties.append(match)
-                                    currentUserHasNewMatches = true
+                                    currentUserHasMatches = true
                                     delegate?.currentUserHasMatches()
                                 }
                             }
@@ -63,21 +71,23 @@ class MatchController {
                             matchedProperties = matches
                             matches = []
                             if matchedProperties.count > 0 {
-                                currentUserHasNewMatches = true
+                                currentUserHasMatches = true
                                 delegate?.currentUserHasMatches()
                             }
-                            
                         }
-
+                        let oldrenterMatchCount = UserDefaults.standard.integer(forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
+                        if oldrenterMatchCount < matchedProperties.count {
+                            currentUserHasNewMatches = true
+                        } else {
+                            currentUserHasNewMatches = false
+                        }
                     })
-                    
                 })
             })
         } else {
             print("The app is already observing currentUser's endpoint")
         }
     }
-    
     
     static func observeLikesForCurrentLandlord() {
         if isObservingCurrentUserLikeEndpoint == false {
@@ -96,7 +106,7 @@ class MatchController {
                 guard let propertyID = property.propertyID else { return }
                 let userLikesRef = FirebaseController.likesRef.child(propertyID)
                 
-                userLikesRef.observe(FIRDataEventType.value, with: { (snapshot)in
+                userLikesRef.observe(FIRDataEventType.value, with: { (snapshot) in
                     
                     guard let likeDictionary = snapshot.value as? [String: Any] else { isObservingCurrentUserLikeEndpoint = false; return }
                     print(likeDictionary)
@@ -107,29 +117,43 @@ class MatchController {
                         
                         for id in matchingIDArray {
                             subgroup.enter()
-                            guard let matchedRenter = FirebaseController.renters.filter({$0.id == id}).first else { subgroup.leave(); return }
-                            matches.append(matchedRenter)
-                            subgroup.leave()
+                            UserController.getRenterWithID(renterID: id, completion: { (renterResult) in
+                                guard let renter = renterResult else { return }
+                                matches.append(renter)
+                                
+                                subgroup.leave()
+                            })
                         }
                         subgroup.notify(queue: DispatchQueue.main, execute: {
-                            
-                            
-                            if matchedRenters.count > 0 {
+                            var currentRentersForProperty = matchedRentersForProperties[propertyID]
+                            if currentRentersForProperty == nil {
+                                currentRentersForProperty = []
+                            }
+                            if currentRentersForProperty!.count > 0 {
                                 for match in matches {
-                                    if !matchedRenters.contains(match) {
-                                        matchedRenters.append(match)
+                                    if !currentRentersForProperty!.contains(match) {
+                                        currentRentersForProperty!.append(match)
+                                        matchedRentersForProperties[propertyID] = currentRentersForProperty!
                                         currentUserHasNewMatches = true
+                                        propertyIDsWithMatches.append(propertyID)
                                         delegate?.currentUserHasMatches()
                                     }
                                 }
                             } else {
-                                matchedRenters = matches
+                                currentRentersForProperty! = matches
+                                matchedRentersForProperties[propertyID] = currentRentersForProperty!
                                 matches = []
-                                if matchedRenters.count > 0 {
-                                    currentUserHasNewMatches = true
+                                if currentRentersForProperty!.count > 0 {
+                                    currentUserHasMatches = true
                                     delegate?.currentUserHasMatches()
                                 }
-                                
+                            }
+                            let oldPropertyMatchCount = UserDefaults.standard.integer(forKey: "\(Identifiers.UserDefaults.propertyMatchCount.rawValue)/\(propertyID)")
+                            if oldPropertyMatchCount < currentRentersForProperty!.count {
+                                currentUserHasNewMatches = true
+                                propertyIDsWithMatches.append(propertyID)
+                            } else {
+                                currentUserHasNewMatches = false
                             }
                         })
                     })
@@ -140,29 +164,21 @@ class MatchController {
         }
     }
     
-    
-    
-    
     // TODO: - For observing like endpoints, take landlord's propertyIDs and observe each one.
     
     static func addCurrentRenter(toLikelistOf likedProperty: Property, completion: (() -> Void)? = nil) {
-        guard let landlordID = likedProperty.landlordID, let propertyID = likedProperty.propertyID, let currentRenterID = UserController.currentRenter?.id else { completion?(); return }
+        guard let propertyID = likedProperty.propertyID, let currentRenterID = UserController.currentRenter?.id else { completion?(); return }
         
-        let matchedUserRef = FirebaseController.likesRef.child(landlordID).child(propertyID)
-        
-        matchedUserRef.child(currentRenterID).setValue(true)
+        FirebaseController.likesRef.child(propertyID).child(currentRenterID).setValue(true)
         
         completion?()
     }
-    
     
     // Change this function/Firebase endpoints later to support adding a specific property?
     static func addCurrentLandlord(toLikelistOf likedRenter: Renter, completion: (() -> Void)? = nil) {
         guard let renterID = likedRenter.id, let firstProperty = UserController.currentLandlord?.property?.firstObject as? Property, let firstPropertyID = firstProperty.propertyID else { completion?(); return }
         
-        let matchedUserRef = FirebaseController.likesRef.child(renterID)
-        
-        matchedUserRef.child(firstPropertyID).setValue(true)
+        FirebaseController.likesRef.child(renterID).child(firstPropertyID).setValue(true)
         
         completion?()
     }
@@ -170,7 +186,6 @@ class MatchController {
     static func checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: [String: Any], completion: @escaping (_ matchingIDs: [String]) -> Void) {
         var matchingUsersIDArray: [String] = []
         let group = DispatchGroup()
-        
         if UserController.currentUserType == "renter" {
             
             for id in otherUserDictionary.keys {

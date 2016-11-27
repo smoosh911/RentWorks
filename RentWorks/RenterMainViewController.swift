@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RenterMainViewController: MainViewController, UserMatchingDelegate {
+class RenterMainViewController: MainViewController {
     
     // MARK: outlets
     
@@ -32,10 +32,7 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
     
     var filteredProperties: [Property] = [] {
         didSet {
-            if filteredProperties.count == 0 && backgroundView.isHidden {
-                super.swipeableView.isHidden = false
-                super.backgroundView.isHidden = true
-            } else if filteredProperties.count == 0 {
+            if filteredProperties.count == 0 {
                 super.swipeableView.isHidden = false
                 super.backgroundView.isHidden = true
             } else {
@@ -48,7 +45,7 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
     var cardsAreLoading = false {
         didSet {
             if cardsAreLoading {
-                let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                 self.present(mainVC, animated: true, completion: nil)
             }
@@ -59,8 +56,6 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setMatchesButtonImage()
-        MatchController.delegate = self
         filteredProperties = getFilteredProperties()
         
         if filteredProperties.isEmpty {
@@ -71,14 +66,14 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        setMatchesButtonImage()
         if super.previousVCWasCardsLoadingVC {
             super.previousVCWasCardsLoadingVC = false
         } else {
             if SettingsViewController.settingsDidChange {
                 SettingsViewController.settingsDidChange = false
                 filteredProperties = getFilteredProperties()
-                if filteredProperties.isEmpty {
+                if filteredProperties.isEmpty && UserController.propertyFetchCount == 1 {
                     self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
                 }
                 self.updateCardUI()
@@ -86,20 +81,31 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
         }
     }
     
-    // MARK: UI fuctions
+    // MARK: actions
     
-    func updateCardUI() {
+    @IBAction func btnResetCards_TouchedUpInside(_ sender: UIButton) {
+        UserController.eraseAllHasBeenViewedByForRenterFromProperties(renterID: UserController.currentUserID!, completion: {
+            self.downloadMoreCards()
+        })
+    }
+    
+    // MARK: Swipableview delegate
+    
+    override func updateCardUI() {
         // needs work: should have to check usertype in future. Only doing this becasue this function is called by the firebasecontrolelr delegate when properties is updated and I update properties for other perposes as a land lord
         
         if filteredProperties.isEmpty {
             self.swipeableView.isHidden = true
-            self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+            self.backgroundView.isHidden = true
+            downloadMoreCards()
             return
         }
         
         let property = filteredProperties.removeFirst()
+        swipeableView.property = property
+        
         var backCardProperty: Property? = nil
-        if filteredProperties.count > 0 {
+        if !super.backgroundView.isHidden {
             backCardProperty = filteredProperties.first
         }
         
@@ -132,8 +138,11 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
         backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
         
         updateStars(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
-        
-//        resetData()
+    }
+    
+    override func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any) {
+        guard let property = cardEntity as? Property, let propertyID = property.propertyID, let renterID = UserController.currentUserID else { return }
+        UserController.addHasBeenViewedByRenterToPropertyInFirebase(propertyID: propertyID, renterID: renterID)
     }
     
     func setMatchesButtonImage() {
@@ -146,23 +155,54 @@ class RenterMainViewController: MainViewController, UserMatchingDelegate {
     
     func currentUserHasMatches() {
         setMatchesButtonImage()
-        MatchController.delegate = self
     }
     
     // MARK: helper methods
     
+    func downloadMoreCards() {
+        if !FirebaseController.isFetchingNewProperties {
+            if UserController.propertyFetchCount == 1 { // if fetch count is one here then the last card in the database has already been pulled
+                performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+                return
+            }
+            FirebaseController.isFetchingNewProperties = true
+            UserController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: {
+                FirebaseController.isFetchingNewProperties = false
+                
+                let newFilteredProperties = self.getFilteredProperties()
+                let uniqueProperties = newFilteredProperties.filter({ !self.filteredProperties.contains($0) })
+                if uniqueProperties.count > 0 {
+                    self.filteredProperties.append(contentsOf: uniqueProperties)
+                }
+                if newFilteredProperties.count == 0 && UserController.propertyFetchCount > 1 {
+                    self.downloadMoreCards()
+//                    return
+                } else {
+                    self.updateCardUI()
+                }
+            })
+        }
+    }
+    
     func getFilteredProperties() -> [Property] {
-        let filterSettingsDict = UserController.getRenterFiltersDictionary()
+//        let filterSettingsDict = UserController.getRenterFiltersDictionary()
+//        
+//        guard let desiredBathroomCount = filterSettingsDict[filterKeys.kBathroomCount.rawValue] as? Double,
+//            let desiredBedroomCount = filterSettingsDict[filterKeys.kBedroomCount.rawValue] as? Int64,
+//            let desiredPayment = filterSettingsDict[filterKeys.kMonthlyPayment.rawValue] as? Int64,
+//            let desiredPetsAllowed = filterSettingsDict[filterKeys.kPetsAllowed.rawValue] as? Bool,
+//            let desiredSmokingAllowed = filterSettingsDict[filterKeys.kSmokingAllowed.rawValue] as? Bool,
+////            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
+//            let desiredZipcode = filterSettingsDict[filterKeys.kZipCode.rawValue] as? String else {
+//                return [Property]()
+//        }
+//        
+//        let filtered = FirebaseController.properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == desiredBedroomCount && $0.monthlyPayment <= desiredPayment && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed && $0.zipCode == desiredZipcode})
         
-        let desiredBathroomCount = filterSettingsDict[filterKeys.kBathroomCount.rawValue] as! Double
-        let desiredBedroomCount = Int64(filterSettingsDict[filterKeys.kBedroomCount.rawValue] as! Int)
-        let desiredPayment = Int64(filterSettingsDict[filterKeys.kMonthlyPayment.rawValue] as! Int)
-        let desiredPetsAllowed = filterSettingsDict[filterKeys.kPetsAllowed.rawValue] as! Bool
-        let desiredSmokingAllowed = filterSettingsDict[filterKeys.kSmokingAllowed.rawValue] as! Bool
-        let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as! String
-        let desiredZipcode = filterSettingsDict[filterKeys.kZipCode.rawValue] as! String
-        
-        let filtered = FirebaseController.properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == desiredBedroomCount && $0.monthlyPayment <= desiredPayment && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed && $0.zipCode == desiredZipcode})
+        let filtered = FirebaseController.properties
+        if FirebaseController.properties.count > 0 {
+            FirebaseController.properties.removeAll()
+        }
         
         return filtered
     }

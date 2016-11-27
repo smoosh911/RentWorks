@@ -8,18 +8,19 @@
 
 import UIKit
 
-class CardLoadingViewController: UIViewController, FirebaseUserDelegate {
+class CardLoadingViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        FirebaseController.delegate = self
         
         if UserController.currentUserType == "renter" {
-            UserController.fetchProperties(numberOfProperties: 6)
+            UserController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: { 
+                self.propertiesWereUpdated()
+            })
         } else if UserController.currentUserType == "landlord" {
-            UserController.fetchRenters(numberOfRenters: 6, completion: { 
-                UserController.fetchProperties(numberOfProperties: 6)
+            UserController.fetchRenters(numberOfRenters: FirebaseController.cardDownloadCount, completion: {
+                self.rentersWereUpdated()
+                UserController.fetchPropertiesForLandlord(landlordID: UserController.currentUserID!)
             })
         }
     }

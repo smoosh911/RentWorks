@@ -13,6 +13,12 @@ class Identifiers {
         case ToPropertyDetailsVC = "segueShowPropertyDetails"
         case MoreCardsVC = "segueShowNoMoreCardsVC"
         case MainSwipingVC = "toMainSwipingVC"
+        case noInternetVC = "segueToNoInternetVC"
+        case propertyMatchesVC = "segueToPropertyMatchesVC"
+    }
+    
+    enum StoryboardIDs: String {
+        case noInternetVC = "noInternetVC"
     }
     
     enum TableViewCells: String {
@@ -21,5 +27,11 @@ class Identifiers {
     
     enum CollectionViewCells: String {
         case PropertyImageCell = "propertyImageCell"
+    }
+    
+    enum UserDefaults: String {
+        case landlordMatchCount = "landlordMatchCount"
+        case renterMatchCount = "renterMatchCount"
+        case propertyMatchCount = "propertyMatchCount"
     }
 }

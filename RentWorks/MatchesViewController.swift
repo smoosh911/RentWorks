@@ -17,6 +17,13 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
         MatchController.delegate = self
         MatchController.currentUserHasNewMatches = false
+        
+        let oldRenterMatchCount = UserDefaults.standard.integer(forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
+        
+        if MatchController.matchedProperties.count > oldRenterMatchCount {
+            UserDefaults.standard.set(MatchController.matchedProperties.count, forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
+            MatchController.currentUserHasNewMatches = false
+        }
     }
     
     func currentUserHasMatches() {
@@ -32,7 +39,6 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         self.present(emailComposeVC, animated: true, completion: nil)
     }
     
-    
     func present(emailErrorAlert: UIAlertController) {
         self.present(emailErrorAlert, animated: true, completion: nil)
     }
@@ -41,25 +47,22 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         controller.dismiss(animated: true, completion: nil)
     }
     
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if UserController.currentUserType == "landlord" {
-            return MatchController.matchedRenters.count
-        } else if UserController.currentUserType == "renter" {
+        if UserController.currentUserType == "renter" {
             return MatchController.matchedProperties.count
         } else {
             return 0
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "matchCell", for: indexPath) as? MatchTableViewCell else { return UITableViewCell() }
         
-        
-        if UserController.currentUserType == "landlord" {
-            let matchingRenter = MatchController.matchedRenters[indexPath.row]
-            cell.updateWith(renter: matchingRenter)
-        } else if UserController.currentUserType == "renter" {
+        if UserController.currentUserType == "renter" {
             let matchingProperty = MatchController.matchedProperties[indexPath.row]
             cell.updateWith(property: matchingProperty)
         }

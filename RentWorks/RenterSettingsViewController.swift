@@ -82,6 +82,11 @@ class RenterSettingsViewController: SettingsViewController {
                 log("no filters")
             }
         }
+        
+        guard let profileImages = UserController.currentRenter!.profileImages?.array as? [ProfileImage] else { return }
+        
+        lblUserName.text = "\(UserController.currentRenter!.firstName!) \(UserController.currentRenter!.lastName!)"
+        imgviewProfilePic.image = UIImage(data: profileImages[0].imageData as! Data)
     }
     
     // MARK: actions
@@ -94,13 +99,15 @@ class RenterSettingsViewController: SettingsViewController {
     }
     
     @IBAction func sldRent_TouchedUpInsideAndOutside(_ sender: UISlider) {
-        let price = "\(Int(sender.value))"
+        let price = Int64(sender.value)
         if UserController.currentUserID == nil {
             return
         }
-        UserController.currentRenter?.wantedPayment = Int64(sender.value)
+//        let priceString = "\(Int(sender.value))"
+        UserController.currentRenter?.wantedPayment = price
         UserController.updateCurrentRenterInFirebase(id: UserController.currentUserID!, attributeToUpdate: filterKeys.kMonthlyPayment.rawValue, newValue: price)
-        UserController.saveToPersistentStore()
+        updateSettingsChanged()
+        // UserController.saveToPersistentStore()
     }
     
     // steppers
@@ -112,8 +119,9 @@ class RenterSettingsViewController: SettingsViewController {
         let countString = "\(bedroomCount)"
         lblBedroomCount.text = countString
         renter?.wantedBedroomCount = bedroomCount
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBedroomCount.rawValue, newValue: countString)
-        UserController.saveToPersistentStore()
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBedroomCount.rawValue, newValue: bedroomCount)
+        updateSettingsChanged()
+        // UserController.saveToPersistentStore()
     }
     
     @IBAction func stpBathrooms_ValueChanged(_ sender: UIStepper) {
@@ -123,8 +131,9 @@ class RenterSettingsViewController: SettingsViewController {
         let countString = "\(bathroomCount)"
         lblBathroomCount.text = countString
         renter?.wantedBathroomCount = bathroomCount
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: countString)
-        UserController.saveToPersistentStore()
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: bathroomCount)
+        updateSettingsChanged()
+        // UserController.saveToPersistentStore()
     }
     
     // switches
@@ -133,20 +142,22 @@ class RenterSettingsViewController: SettingsViewController {
         let petsAllowed = sender.isOn
         guard let id = UserController.currentUserID else { return }
         
-        let boolString = "\(petsAllowed)"
+//        let boolString = "\(petsAllowed)"
         renter?.wantsPetFriendly = petsAllowed
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: boolString)
-        UserController.saveToPersistentStore()
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: petsAllowed)
+        updateSettingsChanged()
+        // UserController.saveToPersistentStore()
     }
     
     @IBAction func swtSmoking_ValueChanged(_ sender: UISwitch) {
         let smokingAllowed = sender.isOn
         guard let id = UserController.currentUserID else { return }
         
-        let boolString = "\(smokingAllowed)"
+//        let boolString = "\(smokingAllowed)"
         renter?.wantsSmoking = smokingAllowed
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: boolString)
-        UserController.saveToPersistentStore()
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: smokingAllowed)
+        updateSettingsChanged()
+        // UserController.saveToPersistentStore()
     }
     
     // buttons
@@ -161,6 +172,15 @@ class RenterSettingsViewController: SettingsViewController {
         renter?.wantedZipCode = zipcode
         UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPropertyFeatures.rawValue, newValue: propertyFeatures)
         UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kZipCode.rawValue, newValue: zipcode)
-        UserController.saveToPersistentStore()
+        updateSettingsChanged()
+        // UserController.saveToPersistentStore()
+    }
+    
+    // MARK: helper functions
+    
+    private func updateSettingsChanged() {
+        SettingsViewController.settingsDidChange = true
+        UserController.propertyFetchCount = 0
+        UserController.resetStartAtForRenterInFirebase(renterID: renter!.id!)
     }
 }

@@ -25,15 +25,7 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateSettingsChanged), name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
-        if UserController.currentUserType == "renter" {
-            guard let profileImages = UserController.currentRenter!.profileImages?.array as? [ProfileImage] else { return }
-            
-            lblUserName.text = "\(UserController.currentRenter!.firstName!) \(UserController.currentRenter!.lastName!)"
-            imgviewProfilePic.image = UIImage(data: profileImages[0].imageData as! Data)
-        } else {
-            lblUserName.text = "\(UserController.currentLandlord!.firstName!) \(UserController.currentLandlord!.lastName!)"
-        }
+//        NotificationCenter.default.addObserver(self, selector: #selector(updateSettingsChanged), name: Notification.Name.NSManagedObjectContextDidSave, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -42,9 +34,18 @@ class SettingsViewController: UIViewController {
     }
     
     // MARK: actions
-    
+    // needs work: there should be a global function that clears global data upon sign outs
     @IBAction func signOutButtonTapped(_ sender: Any) {
         manager.logOut()
+        for renter in MatchController.matchedRentersForProperties {
+            UserDefaults.standard.set(0, forKey: "\(Identifiers.UserDefaults.propertyMatchCount.rawValue)/\(renter.key)")
+        }
+        UserDefaults.standard.set(0, forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
+        MatchController.isObservingCurrentUserLikeEndpoint = false
+        MatchController.matchedProperties = []
+        MatchController.matchedRentersForProperties = [:]
+        UserController.propertyFetchCount = 0
+        UserController.renterFetchCount = 0
         
         let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "loginVC")
         self.present(loginVC, animated: true, completion: nil)
@@ -56,7 +57,7 @@ class SettingsViewController: UIViewController {
 
     // MARK: helper functions
     
-    @objc private func updateSettingsChanged() {
-        SettingsViewController.settingsDidChange = true
-    }
+//    @objc private func updateSettingsChanged() {
+//        SettingsViewController.settingsDidChange = true
+//    }
 }

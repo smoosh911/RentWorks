@@ -12,15 +12,16 @@ pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
 pod 'Firebase/Storage'
+pod 'Firebase/Crash'
 
-target 'RentWorksTests' do
-  inherit! :search_paths
-  # Pods for testing
-end
+#target 'RentWorksTests' do
+#  inherit! :search_paths
+#  # Pods for testing
+#end
 
-target 'RentWorksUITests' do
-  inherit! :search_paths
-  # Pods for testing
-end
+#target 'RentWorksUITests' do
+#  inherit! :search_paths
+#  # Pods for testing
+#end
 
 end

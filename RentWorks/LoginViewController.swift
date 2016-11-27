@@ -137,7 +137,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     // MARK: alerts
     
     func displayNoAccountCreatedAlert() {
-        let alert = UIAlertController(title: "Hold on a second!", message: "Thanks for logging into Facebook, but you haven't created an account yet. Please tap the 'Create account' button below to begin creating your RentMatch account!", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Hold on a second!", message: "Thanks for logging into Facebook, but you haven't created an account yet. Please tap the 'Create account' button below to begin creating your Venga account!", preferredStyle: .alert)
         
         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
         

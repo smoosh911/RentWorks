@@ -65,6 +65,7 @@ extension PropertiesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         selectedCell = tableView.cellForRow(at: indexPath) as? PropertyTableViewCell
         
         performSegue(withIdentifier: Identifiers.Segues.ToPropertyDetailsVC.rawValue, sender: self)

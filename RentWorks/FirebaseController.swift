@@ -17,6 +17,7 @@ class FirebaseController {
     static let ref = FIRDatabase.database().reference()
     static let allUsersRef = ref.child("users")
     static let landlordsRef = ref.child("landlords")
+    static let landlordHasViewedRef = FirebaseController.landlordsRef.child("hasViewed")
     static let rentersRef = ref.child("renters")
     static let propertiesRef = ref.child("properties")
     static let likesRef = ref.child("likes")
@@ -24,19 +25,14 @@ class FirebaseController {
     static let storageRef = FIRStorage.storage().reference()
     static let profileImagesRef = storageRef.child("profileImages")
     
-    static weak var delegate: FirebaseUserDelegate?
+    static var isFetchingNewRenters = false
+    static var isFetchingNewProperties = false
     
-    static var properties: [Property] = [] {
-        didSet {
-            delegate?.propertiesWereUpdated()
-        }
-    }
+    static let cardDownloadCount: UInt = 6
     
-    static var renters: [Renter] = [] {
-        didSet {
-            delegate?.rentersWereUpdated()
-        }
-    }
+    static var properties: [Property] = []
+    
+    static var renters: [Renter] = []
     
     // MARK: - Image storage/downloading
     
@@ -78,7 +74,7 @@ class FirebaseController {
                 _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property, context: property.managedObjectContext)
                 
                 if property.managedObjectContext != nil {
-                    UserController.saveToPersistentStore()
+//                    UserController.saveToPersistentStore()
                 }
                 group.leave()
             }
@@ -103,7 +99,7 @@ class FirebaseController {
                 _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil)
                 
                 if context != nil {
-                    UserController.saveToPersistentStore()
+//                    UserController.saveToPersistentStore()
                 }
                 group.leave()
             }
@@ -129,7 +125,7 @@ class FirebaseController {
                 guard let imageData = imageData, error == nil else { completion(false); return }
                 
                 _ = ProfileImage(userID: userID, imageData: imageData as NSData, renter: renter, property: nil)
-                UserController.saveToPersistentStore()
+//                UserController.saveToPersistentStore()
             }
         } else if let propertyID = property?.propertyID, let landlordID = property?.landlord?.id, user as? Renter == nil {
             
@@ -140,7 +136,7 @@ class FirebaseController {
                 guard let imageData = imageData, error == nil else { completion(false); return }
                 
                 _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
-                UserController.saveToPersistentStore()
+//                UserController.saveToPersistentStore()
             }
             completion(true)
         }
@@ -373,97 +369,6 @@ class FirebaseController {
         })
     }
     
-    // MARK: - Mock data related functions
-    
-    static func createMockRenters() {
-        
-        for i in 1...10 {
-            let userRef =  FirebaseController.rentersRef.child("\(i)")
-            
-            
-            
-            UserController.saveMockRenterProfileImagesToCoreDataAndFirebase(forRenterID: "\(i)", completion: { (imageURL) in
-                let dict: [String: Any] = [UserController.kEmail: "test@testing.com",
-                                           UserController.kZipCode: "84321",
-                                           UserController.kPropertyFeatures: "Gym",
-                                           UserController.kCreditRating: "A",
-                                           UserController.kPetsAllowed: true,
-                                           UserController.kSmokingAllowed: false,
-                                           UserController.kFirstName: "test",
-                                           UserController.kLastName: "account",
-                                           UserController.kMonthlyPayment: 1234,
-                                           UserController.kID: "\(i)",
-                    UserController.kBedroomCount: 2,
-                    UserController.kBathroomCount: 1.5,
-                    UserController.kAddress: "1234 Testing Road, TestTown, UT",
-                    UserController.kBio: "No bio available",
-                    UserController.kImageURLS: [imageURL]]
-                
-                userRef.setValue(dict)
-            })
-            
-            
-        }
-    }
-    
-    static func createMockLandlordsAndProperties() {
-        
-        for i in 11...20 {
-            let landlordRef = FirebaseController.landlordsRef.child("\(i)")
-            
-            let landlordDict = [UserController.kFirstName: "test", UserController.kLastName: "landlord", UserController.kEmail: "test@rentworks.com"]
-            
-            landlordRef.setValue(landlordDict)
-            
-            let propertyID = UUID().uuidString
-            
-            guard let landlord = Landlord(email: "test@rentworks.com", firstName: "test", lastName: "landlord", id: "\(i)") else { return }
-            
-            UserController.saveMockPropertyProfileImagesToCoreDataAndFirebase(for: propertyID, landlord: landlord, completion: { (imageURL) in
-                
-                
-                
-                let propertyDict: [String: Any] = [UserController.kAddress: "1234 Testing Road, TestTown, UT",
-                                                   UserController.kZipCode: "84321",
-                                                   UserController.kAvailableDate: NSDate().timeIntervalSince1970,
-                                                   UserController.kBathroomCount: 1.0,
-                                                   UserController.kBedroomCount: 1,
-                                                   UserController.kMonthlyPayment: 1,
-                                                   UserController.kPetsAllowed: true,
-                                                   UserController.kSmokingAllowed: false,
-                                                   UserController.kPropertyDescription: "No description available",
-                                                   UserController.kStarRating: 5,
-                                                   UserController.kPropertyID: propertyID,
-                                                   UserController.kImageURLS: [imageURL],
-                                                   UserController.kLandlordID: "\(i)"]
-                
-                let propertyRef = FirebaseController.propertiesRef.child(propertyID)
-                FirebaseController.likesRef.child(propertyID).child("0").setValue(true)
-                propertyRef.setValue(propertyDict)
-                
-            })
-            
-        }
-    }
-    
-    
-    static func createAddressesForMockUsers() {
-        for i in 1...15 {
-            let addressRef =  FirebaseController.allUsersRef.child("\(i)").child("address")
-            addressRef.setValue("1234 S Testing Road, MockTown, UT, 84321")
-        }
-    }
-    
-    //    static func uploadAndStoreMockPhotos() {
-    //
-    //        for i in 1...15 {
-    //            guard let image = UIImage(named: "\(i)") else { print("could not find image"); return }
-    //            storeMock(profileImage: image, forUser: "\(i)", completion: { (_, error) in
-    //                if error != nil { print(error?.localizedDescription); return }
-    //            })
-    //        }
-    //    }
-    
     static func store(profileImage: UIImage, forUserID userID: String, and property: Property?, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?, Data?) -> Void) {
         
         var profileImageRef = profileImagesRef.child(userID)
@@ -498,7 +403,7 @@ class FirebaseController {
             }
         }
     }
-    
+
     static func checkAndResizeImageToBeAMaximumOf(megabytes: Int, image: UIImage?, withCompressionQuality compressionQuality: CGFloat, temporaryData: Data? = nil, completion: (Data?) -> Void) {
         
         let megabyteCount = megabytes * 1024 * 1024
@@ -518,7 +423,6 @@ class FirebaseController {
             checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality, temporaryData: imageData, completion: completion)
         }
     }
-    
     
     static func store(profileImage: UIImage, forUserID userID: String, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?, Data?) -> Void) {
         
@@ -553,9 +457,4 @@ class FirebaseController {
         }
     }
     
-}
-
-protocol FirebaseUserDelegate: class {
-    func propertiesWereUpdated()
-    func rentersWereUpdated()
 }

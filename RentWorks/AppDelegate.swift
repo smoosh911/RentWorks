@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FIRApp.configure()
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
 
         if FBSDKAccessToken.current() == nil {
