@@ -16,11 +16,15 @@ class MatchController {
     
     static var isObservingCurrentUserLikeEndpoint = false
     
-    static var matchedRenters: [Renter] = []
+//    static var matchedRenters: [Renter] = []
+    
+    static var matchedRentersForProperties: [String: [Renter]] = [:] // the string is the property id
     
     static var matchedProperties: [Property] = []
     
     static var firstMatch = false
+    
+    static var propertyIDsWithMatches: [String] = [] // the strings are property IDs
     
     static var currentUserHasMatches = false
     
@@ -116,30 +120,38 @@ class MatchController {
                             UserController.getRenterWithID(renterID: id, completion: { (renterResult) in
                                 guard let renter = renterResult else { return }
                                 matches.append(renter)
+                                
                                 subgroup.leave()
                             })
                         }
                         subgroup.notify(queue: DispatchQueue.main, execute: {
-                            
-                            if matchedRenters.count > 0 {
+                            var currentRentersForProperty = matchedRentersForProperties[propertyID]
+                            if currentRentersForProperty == nil {
+                                currentRentersForProperty = []
+                            }
+                            if currentRentersForProperty!.count > 0 {
                                 for match in matches {
-                                    if !matchedRenters.contains(match) {
-                                        matchedRenters.append(match)
-                                        currentUserHasMatches = true
+                                    if !currentRentersForProperty!.contains(match) {
+                                        currentRentersForProperty!.append(match)
+                                        matchedRentersForProperties[propertyID] = currentRentersForProperty!
+                                        currentUserHasNewMatches = true
+                                        propertyIDsWithMatches.append(propertyID)
                                         delegate?.currentUserHasMatches()
                                     }
                                 }
                             } else {
-                                matchedRenters = matches
+                                currentRentersForProperty! = matches
+                                matchedRentersForProperties[propertyID] = currentRentersForProperty!
                                 matches = []
-                                if matchedRenters.count > 0 {
+                                if currentRentersForProperty!.count > 0 {
                                     currentUserHasMatches = true
                                     delegate?.currentUserHasMatches()
                                 }
                             }
-                            let oldLandlordMatchCount = UserDefaults.standard.integer(forKey: Identifiers.UserDefaults.landlordMatchCount.rawValue)
-                            if oldLandlordMatchCount < matchedRenters.count {
+                            let oldPropertyMatchCount = UserDefaults.standard.integer(forKey: "\(Identifiers.UserDefaults.propertyMatchCount.rawValue)/\(propertyID)")
+                            if oldPropertyMatchCount < currentRentersForProperty!.count {
                                 currentUserHasNewMatches = true
+                                propertyIDsWithMatches.append(propertyID)
                             } else {
                                 currentUserHasNewMatches = false
                             }
@@ -174,7 +186,6 @@ class MatchController {
     static func checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: [String: Any], completion: @escaping (_ matchingIDs: [String]) -> Void) {
         var matchingUsersIDArray: [String] = []
         let group = DispatchGroup()
-        print(otherUserDictionary)
         if UserController.currentUserType == "renter" {
             
             for id in otherUserDictionary.keys {

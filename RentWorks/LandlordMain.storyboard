@@ -829,7 +829,7 @@ more results.</string>
                                             <color key="titleColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
-                                            <segue destination="G7r-hE-7SL" kind="show" id="7mQ-YP-oZd"/>
+                                            <segue destination="G7r-hE-7SL" kind="show" identifier="segueToPropertyMatchesVC" id="7mQ-YP-oZd"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1172,10 +1172,10 @@ more results.</string>
             </objects>
             <point key="canvasLocation" x="3692" y="757.87106446776613"/>
         </scene>
-        <!--Matches View Controller-->
+        <!--Property Matches View Controller-->
         <scene sceneID="TYt-lE-UWF">
             <objects>
-                <viewController id="G7r-hE-7SL" customClass="MatchesViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="G7r-hE-7SL" customClass="PropertyMatchesViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pN2-qI-6DL"/>
                         <viewControllerLayoutGuide type="bottom" id="vHu-aA-RAw"/>

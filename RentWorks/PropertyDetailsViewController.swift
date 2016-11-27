@@ -192,7 +192,7 @@ class PropertyDetailsViewController: UIViewController {
     
     func setMatchesButtonImage() {
         DispatchQueue.main.async {
-            MatchController.currentUserHasNewMatches ? self.btnMessages.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.btnMessages.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
+            MatchController.propertyIDsWithMatches.contains(self.property.propertyID!) ? self.btnMessages.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.btnMessages.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
         }
     }
     
@@ -240,6 +240,15 @@ class PropertyDetailsViewController: UIViewController {
         
     }
 
+    // MARK: segues
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Identifiers.Segues.propertyMatchesVC.rawValue {
+            if let destinationVC = segue.destination as? PropertyMatchesViewController {
+                destinationVC.property = property
+            }
+        }
+    }
 }
 
 extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource {

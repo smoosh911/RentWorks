@@ -84,6 +84,7 @@
 		C748D8CB1DE4D12E009EC662 /* NotificationObservers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C748D8CA1DE4D12E009EC662 /* NotificationObservers.swift */; };
 		C748D8CE1DE50C01009EC662 /* PropertyImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C748D8CD1DE50C01009EC662 /* PropertyImageCollectionViewCell.swift */; };
 		C77666271DE928D900F2A8EF /* HasBeenViewedBy + Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77666261DE928D900F2A8EF /* HasBeenViewedBy + Convenience.swift */; };
+		C776662E1DEA43A400F2A8EF /* PropertyMatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C776662D1DEA43A400F2A8EF /* PropertyMatchesViewController.swift */; };
 		C77C13A41DCE6290003D75DD /* CoreLibraryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */; };
 		C7F93B701DE61624004F54F4 /* CreateFakeFireBaseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */; };
 		C7F93B841DE79571004F54F4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7F93B831DE79571004F54F4 /* Info.plist */; };
@@ -178,6 +179,7 @@
 		C748D8CA1DE4D12E009EC662 /* NotificationObservers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationObservers.swift; sourceTree = "<group>"; };
 		C748D8CD1DE50C01009EC662 /* PropertyImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		C77666261DE928D900F2A8EF /* HasBeenViewedBy + Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HasBeenViewedBy + Convenience.swift"; sourceTree = "<group>"; };
+		C776662D1DEA43A400F2A8EF /* PropertyMatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyMatchesViewController.swift; sourceTree = "<group>"; };
 		C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreLibraryExtensions.swift; sourceTree = "<group>"; };
 		C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFakeFireBaseDataController.swift; sourceTree = "<group>"; };
 		C7F93B831DE79571004F54F4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -244,22 +246,14 @@
 		468ABC3A1DB5EA89009B105B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C776662B1DEA3B2400F2A8EF /* Shared View Controllers */,
+				C776662A1DEA3B0300F2A8EF /* Super Class View Controllers */,
+				C77666291DEA3A4800F2A8EF /* Main storyboard view controllers */,
+				C748D8BA1DE28683009EC662 /* Renter Main View Controllers */,
+				C748D8B91DE28679009EC662 /* Landlord Main View Controllers */,
 				460D72391DB7448D00853402 /* Renter Creation View Controllers */,
 				468ABC391DB5EA76009B105B /* Landlord Creation View Controllers */,
 				460D72361DB742E000853402 /* Photo Selector VIew Controllers */,
-				C748D8BA1DE28683009EC662 /* Renter */,
-				C748D8B91DE28679009EC662 /* Landlord */,
-				460D72441DB74D5A00853402 /* AccountCreationFacebookLoginViewController.swift */,
-				46EB96831DD26A57006546E8 /* CardLoadingViewController.swift */,
-				467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */,
-				466E22F41DB0692900E592F0 /* LandlordOrUserViewController.swift */,
-				46EB96851DD27060006546E8 /* LaunchScreenCopyViewController.swift */,
-				46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */,
-				C73E10881D8E417D008E475F /* MainViewController.swift */,
-				467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */,
-				C748D8C61DE2C584009EC662 /* NoCardsLeftViewController.swift */,
-				C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */,
-				46BD661A1DBD43E0007170AE /* SettingsViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -309,16 +303,8 @@
 		C73E10B71D8E4303008E475F /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				C776662C1DEA3B7900F2A8EF /* Controllers */,
 				468ABC3A1DB5EA89009B105B /* View Controllers */,
-				46CBAA1F1DCE453400DAE5B6 /* AccountCreationController.swift */,
-				4698FE221DB030AF00AD65E5 /* AppearanceController.swift */,
-				465E968F1DA980FD000B36AF /* AuthenticationController.swift */,
-				468828CD1DAAFD110011985F /* FacebookRequestController.swift */,
-				465E96911DA981E1000B36AF /* FirebaseController.swift */,
-				468828CF1DAAFDF00011985F /* ImageController.swift */,
-				468828CB1DA996730011985F /* MatchController.swift */,
-				468828D11DAAFE350011985F /* NetworkController.swift */,
-				461E5CCE1DB561AF00AD4509 /* UserController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -390,24 +376,25 @@
 			name = Storyboards;
 			sourceTree = "<group>";
 		};
-		C748D8B91DE28679009EC662 /* Landlord */ = {
+		C748D8B91DE28679009EC662 /* Landlord Main View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				C748D8B71DE280B9009EC662 /* LandlordMainViewController.swift */,
 				C748D8BB1DE2869A009EC662 /* LandlordSettingsViewController.swift */,
 				C748D8BD1DE2A259009EC662 /* PropertiesViewController.swift */,
 				C748D8C21DE2AC94009EC662 /* PropertyDetailsViewController.swift */,
+				C776662D1DEA43A400F2A8EF /* PropertyMatchesViewController.swift */,
 			);
-			name = Landlord;
+			name = "Landlord Main View Controllers";
 			sourceTree = "<group>";
 		};
-		C748D8BA1DE28683009EC662 /* Renter */ = {
+		C748D8BA1DE28683009EC662 /* Renter Main View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				C748D8B51DE27F40009EC662 /* RenterMainViewController.swift */,
 				C748D8C81DE398FF009EC662 /* RenterSettingsViewController.swift */,
 			);
-			name = Renter;
+			name = "Renter Main View Controllers";
 			sourceTree = "<group>";
 		};
 		C748D8BF1DE2A616009EC662 /* TableViewCells */ = {
@@ -425,6 +412,54 @@
 				C748D8CD1DE50C01009EC662 /* PropertyImageCollectionViewCell.swift */,
 			);
 			name = CollectionViewCells;
+			sourceTree = "<group>";
+		};
+		C77666291DEA3A4800F2A8EF /* Main storyboard view controllers */ = {
+			isa = PBXGroup;
+			children = (
+				467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */,
+				466E22F41DB0692900E592F0 /* LandlordOrUserViewController.swift */,
+				46EB96851DD27060006546E8 /* LaunchScreenCopyViewController.swift */,
+				46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */,
+			);
+			name = "Main storyboard view controllers";
+			sourceTree = "<group>";
+		};
+		C776662A1DEA3B0300F2A8EF /* Super Class View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C73E10881D8E417D008E475F /* MainViewController.swift */,
+				46BD661A1DBD43E0007170AE /* SettingsViewController.swift */,
+			);
+			name = "Super Class View Controllers";
+			sourceTree = "<group>";
+		};
+		C776662B1DEA3B2400F2A8EF /* Shared View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				460D72441DB74D5A00853402 /* AccountCreationFacebookLoginViewController.swift */,
+				46EB96831DD26A57006546E8 /* CardLoadingViewController.swift */,
+				467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */,
+				C748D8C61DE2C584009EC662 /* NoCardsLeftViewController.swift */,
+				C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */,
+			);
+			name = "Shared View Controllers";
+			sourceTree = "<group>";
+		};
+		C776662C1DEA3B7900F2A8EF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				46CBAA1F1DCE453400DAE5B6 /* AccountCreationController.swift */,
+				4698FE221DB030AF00AD65E5 /* AppearanceController.swift */,
+				465E968F1DA980FD000B36AF /* AuthenticationController.swift */,
+				468828CD1DAAFD110011985F /* FacebookRequestController.swift */,
+				465E96911DA981E1000B36AF /* FirebaseController.swift */,
+				468828CF1DAAFDF00011985F /* ImageController.swift */,
+				468828CB1DA996730011985F /* MatchController.swift */,
+				468828D11DAAFE350011985F /* NetworkController.swift */,
+				461E5CCE1DB561AF00AD4509 /* UserController.swift */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		C77C13A51DCE7331003D75DD /* Frameworks */ = {
@@ -662,6 +697,7 @@
 				46E887831DB82B0C00127D21 /* Renter + Firebase.swift in Sources */,
 				C77666271DE928D900F2A8EF /* HasBeenViewedBy + Convenience.swift in Sources */,
 				4695192D1DAD759500FF5891 /* RWKSwipeableView.swift in Sources */,
+				C776662E1DEA43A400F2A8EF /* PropertyMatchesViewController.swift in Sources */,
 				465E96901DA980FD000B36AF /* AuthenticationController.swift in Sources */,
 				460D72311DB6D84700853402 /* PhotoSelectorTwoViewController.swift in Sources */,
 				46F280271DCA9F040092E991 /* RenterPageViewController.swift in Sources */,

@@ -37,13 +37,16 @@ class SettingsViewController: UIViewController {
     // needs work: there should be a global function that clears global data upon sign outs
     @IBAction func signOutButtonTapped(_ sender: Any) {
         manager.logOut()
+        for renter in MatchController.matchedRentersForProperties {
+            UserDefaults.standard.set(0, forKey: "\(Identifiers.UserDefaults.propertyMatchCount.rawValue)/\(renter.key)")
+        }
+        UserDefaults.standard.set(0, forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
         MatchController.isObservingCurrentUserLikeEndpoint = false
         MatchController.matchedProperties = []
-        MatchController.matchedRenters = []
+        MatchController.matchedRentersForProperties = [:]
         UserController.propertyFetchCount = 0
         UserController.renterFetchCount = 0
-        UserDefaults.standard.set(0, forKey: Identifiers.UserDefaults.landlordMatchCount.rawValue)
-        UserDefaults.standard.set(0, forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
+        
         let loginVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "loginVC")
         self.present(loginVC, animated: true, completion: nil)
     }

@@ -14,6 +14,7 @@ class Identifiers {
         case MoreCardsVC = "segueShowNoMoreCardsVC"
         case MainSwipingVC = "toMainSwipingVC"
         case noInternetVC = "segueToNoInternetVC"
+        case propertyMatchesVC = "segueToPropertyMatchesVC"
     }
     
     enum StoryboardIDs: String {
@@ -31,5 +32,6 @@ class Identifiers {
     enum UserDefaults: String {
         case landlordMatchCount = "landlordMatchCount"
         case renterMatchCount = "renterMatchCount"
+        case propertyMatchCount = "propertyMatchCount"
     }
 }
