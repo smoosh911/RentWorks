@@ -271,7 +271,7 @@ class UserController {
             group.enter()
             backgroundQ.async(group: group, execute: {
                 let dict = propertyDict.value
-                guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = coreDataProperties.filter({$0.propertyID == propertyID}).first, let renterID = UserController.currentUserID else { group.leave(); return }
+                guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = coreDataProperties.filter({$0.propertyID == propertyID}).first else { group.leave(); return }
                 
                 let subGroup = DispatchGroup()
                 
@@ -303,7 +303,7 @@ class UserController {
             group.enter()
             backgroundQ.async(group: group, execute: {
                 let dict = propertyDict.value
-                guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = coreDataProperties.filter({$0.propertyID == propertyID}).first, let renterID = UserController.currentUserID else { group.leave(); return }
+                guard let propertyID = dict[UserController.kPropertyID] as? String, let imageURLArray = dict[UserController.kImageURLS] as? [String], let property = coreDataProperties.filter({$0.propertyID == propertyID}).first else { group.leave(); return }
                 
                 let subGroup = DispatchGroup()
                 

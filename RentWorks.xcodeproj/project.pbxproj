@@ -87,7 +87,6 @@
 		C776662E1DEA43A400F2A8EF /* PropertyMatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C776662D1DEA43A400F2A8EF /* PropertyMatchesViewController.swift */; };
 		C77C13A41DCE6290003D75DD /* CoreLibraryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */; };
 		C7F93B701DE61624004F54F4 /* CreateFakeFireBaseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */; };
-		C7F93B841DE79571004F54F4 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7F93B831DE79571004F54F4 /* Info.plist */; };
 		C7F93B861DE7D87E004F54F4 /* NoInternetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -576,7 +575,6 @@
 			files = (
 				C73E10941D8E417D008E475F /* LaunchScreen.storyboard in Resources */,
 				C748D8B21DE278CB009EC662 /* RenterMain.storyboard in Resources */,
-				C7F93B841DE79571004F54F4 /* Info.plist in Resources */,
 				C73E10911D8E417D008E475F /* Assets.xcassets in Resources */,
 				C748D8B01DE278BC009EC662 /* LandlordMain.storyboard in Resources */,
 				4625EF551DC3B1AA0055024F /* LandlordCreationViews.storyboard in Resources */,
@@ -645,7 +643,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=rentworks-da6b1:my:app:id\n\n# Replace the /Path/To/ServiceAccount.json with the path to the key you just downloaded\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"ServiceAccount.json\"";
+			shellScript = "# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=rentworks-da6b1\n\n# Replace the /Path/To/ServiceAccount.json with the path to the key you just downloaded\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"${PODS_ROOT}\"/FirebaseCrash/ServiceAccount.json";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -852,10 +850,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/RentWorks",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					/Users/SpencerCurtis/Documents/FacebookSDK,
-					"$(inherited)",
-				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = RentWorks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.RentWorks.Venga;
@@ -877,10 +872,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/RentWorks",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					/Users/SpencerCurtis/Documents/FacebookSDK,
-					"$(inherited)",
-				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = RentWorks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.RentWorks.Venga;
