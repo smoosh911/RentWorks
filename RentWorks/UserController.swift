@@ -348,12 +348,14 @@ class UserController {
                 currentRenter!.startAt = lastProperty.propertyID!
                 filteredProperties = getFilteredProperties(properties: landlordProperties)
             }
-            if !filteredProperties.isEmpty {
-                fetchImagesForProperties(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
+            if filteredProperties.isEmpty {
+                fetchProperties(numberOfProperties: numberOfProperties, completion: { 
                     completion()
                 })
             } else {
-                completion()
+                fetchImagesForProperties(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
+                    completion()
+                })
             }
         })
     }
@@ -759,10 +761,10 @@ class UserController {
             group.enter()
             backgroundQ.async(group: group, execute: {
                 let dict = renterDict.value
-                guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = coreDataRenters.filter({$0.id == "\(renterID)"}).first else { group.leave(); return }
+                guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = coreDataRenters.filter({$0.id == "\(renterID)"}).first else { print("no core data renter for \(dict[UserController.kID])"); group.leave(); return }
                 let imageURLArray = Array(imageDict.values)
                 FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
-                    print("renter image downloaded")
+                    log("renter image downloaded")
                     mainQ.async {
                         group.leave()
                     }
@@ -799,12 +801,14 @@ class UserController {
                 currentLandlord!.startAt = lastRenter.id!
                 filteredRenters = getFilteredRenters(renters: rentersArray)
             }
-            if !filteredRenters.isEmpty {
-                fetchOneImageForRentersCards(rentersDict: allRentersDict, coreDataRenters: filteredRenters, completion: {
+            if filteredRenters.isEmpty {
+                fetchRenters(numberOfRenters: numberOfRenters, completion: {
                     completion()
                 })
             } else {
-                completion()
+                fetchOneImageForRentersCards(rentersDict: allRentersDict, coreDataRenters: filteredRenters, completion: {
+                    completion()
+                })
             }
         })
     }

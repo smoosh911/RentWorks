@@ -169,6 +169,13 @@ class MainViewController: UIViewController {
 // MARK: - RWKSwipeableViewDelegate
 
 extension MainViewController: RWKSwipeableViewDelegate {
+    internal func updateCardUI() {
+        
+    }
+    
+    internal func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any) {
+        
+    }
 
     // MARK: - Animations
     

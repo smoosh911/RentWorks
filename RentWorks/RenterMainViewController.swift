@@ -89,9 +89,9 @@ class RenterMainViewController: MainViewController {
         })
     }
     
-    // MARK: UI fuctions
+    // MARK: Swipableview delegate
     
-    func updateCardUI() {
+    override func updateCardUI() {
         // needs work: should have to check usertype in future. Only doing this becasue this function is called by the firebasecontrolelr delegate when properties is updated and I update properties for other perposes as a land lord
         
         if filteredProperties.isEmpty {
@@ -103,8 +103,6 @@ class RenterMainViewController: MainViewController {
         
         let property = filteredProperties.removeFirst()
         swipeableView.property = property
-        
-        UserController.addHasBeenViewedByRenterToPropertyInFirebase(propertyID: property.propertyID!, renterID: UserController.currentUserID!)
         
         var backCardProperty: Property? = nil
         if !super.backgroundView.isHidden {
@@ -140,6 +138,11 @@ class RenterMainViewController: MainViewController {
         backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
         
         updateStars(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
+    }
+    
+    override func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any) {
+        guard let property = cardEntity as? Property, let propertyID = property.propertyID, let renterID = UserController.currentUserID else { return }
+        UserController.addHasBeenViewedByRenterToPropertyInFirebase(propertyID: propertyID, renterID: renterID)
     }
     
     func setMatchesButtonImage() {

@@ -13,10 +13,10 @@ class LandlordMainViewController: MainViewController {
     // MARK: outlets
     
     @IBOutlet weak var lblFrontCardCreditRating: UILabel!
-    @IBOutlet weak var lblRenterBio: UILabel!
+    @IBOutlet weak var lblRenterOccupation: UILabel!
     
     @IBOutlet weak var lblBackCardCreditRating: UILabel!
-    @IBOutlet weak var lblBackCardRenterBio: UILabel!
+    @IBOutlet weak var lblBackCardRenterOccupation: UILabel!
     
     // MARK: variables
     
@@ -82,9 +82,9 @@ class LandlordMainViewController: MainViewController {
         })
     }
     
-    // MARK: helper methods
+    // MARK: rwkswipabelview delegate
     
-    func updateCardUI() {
+    override func updateCardUI() {
         
         // needs work: this if statement should be in the next if statement
         if filteredRenters.count < 1 {
@@ -101,8 +101,6 @@ class LandlordMainViewController: MainViewController {
         guard let renter = currentCardRenter else { return }
         swipeableView.renter = renter
         
-        UserController.addHasBeenViewedByLandlordToRenterInFirebase(renterID: renter.id!, landlordID: UserController.currentUserID!)
-        
         var backCardRenter: Renter? = nil
         if !super.backgroundView.isHidden {
             backCardRenter = filteredRenters.first
@@ -113,15 +111,22 @@ class LandlordMainViewController: MainViewController {
         lblFrontCardCreditRating.text = renter.creditRating
         imageView.image = profilePicture
         nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
-        lblRenterBio.text = renter.bio ?? "No bio yet!"
+        lblRenterOccupation.text = renter.occupation ?? "No listed occupation"
         
         guard let nextRenter = backCardRenter, let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
         backgroundImageView.image = backgroundProfilePicture
         backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
-        lblBackCardRenterBio.text = nextRenter.bio ?? "No bio yet!"
+        lblBackCardRenterOccupation.text = nextRenter.occupation ?? "No listed occupation"
         
         lblBackCardCreditRating.text = nextRenter.creditRating
     }
+    
+    override func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any) {
+        guard let renter = cardEntity as? Renter, let renterID = renter.id, let landlordID = UserController.currentUserID else { return }
+        UserController.addHasBeenViewedByLandlordToRenterInFirebase(renterID: renterID, landlordID: landlordID)
+    }
+    
+    // MARK: helper methods
     
     func downloadMoreCards() {
         if !FirebaseController.isFetchingNewRenters {
