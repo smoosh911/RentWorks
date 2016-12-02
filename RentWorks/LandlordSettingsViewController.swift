@@ -11,9 +11,16 @@ import CoreData
 
 class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
+    // MARK: outlets
+    
     @IBOutlet weak var pkrCreditRating: UIPickerView!
     
+    // MARK: variables
+    
     var creditRatingPickerViewContent = ["Any","A","B","C","D","F"]
+    
+    
+    // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()

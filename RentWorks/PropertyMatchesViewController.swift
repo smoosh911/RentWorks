@@ -10,12 +10,16 @@ import Foundation
 
 class PropertyMatchesViewController: MatchesViewController {
     
+    // MARK: variables
+    
     var property: Property!
     var matchedRentersForProperty: [Renter]! = [] {
         didSet {
             tableView.reloadData()
         }
     }
+    
+    // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +37,8 @@ class PropertyMatchesViewController: MatchesViewController {
             }
         }
     }
+    
+    // MARK: table view delegate
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         

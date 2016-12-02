@@ -17,26 +17,42 @@ class PropertiesViewController: UIViewController {
     var properties: [Property] = []
     var selectedCell: PropertyTableViewCell? = nil
     
+    let landlordID = UserController.currentUserID
+    
     // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let landlordID = UserController.currentUserID
         properties = FirebaseController.properties.filter({ $0.landlordID == landlordID})
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        properties = FirebaseController.properties.filter({ $0.landlordID == landlordID})
+        tblvwProperties.reloadData()
+    }
+    
+    // MARK: actions
+    
+    @IBAction func btnAdd_TouchedUpInside(_ sender: Any) {
+        self.performSegue(withIdentifier: Identifiers.Segues.addPropertyVC.rawValue, sender: self)
     }
     
     // MARK: segues
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Identifiers.Segues.ToPropertyDetailsVC.rawValue {
+        if segue.identifier == Identifiers.Segues.editPropertyDetailsVC.rawValue {
             guard let destinationVC = segue.destination as? PropertyDetailsViewController, let cell = selectedCell else { return }
-            
+            destinationVC.propertyTask = PropertyDetailsViewController.PropertyTask.editing
+            destinationVC.property = cell.property
+        } else if segue.identifier == Identifiers.Segues.addPropertyVC.rawValue {
+            guard let destinationVC = segue.destination as? PropertyDetailsViewController else { return }
+            destinationVC.propertyTask = PropertyDetailsViewController.PropertyTask.adding
+        } else if segue.identifier == Identifiers.Segues.mainVC.rawValue {
+            guard let destinationVC = segue.destination as? LandlordMainViewController, let cell = selectedCell else { return }
             destinationVC.property = cell.property
         }
-    }
-    
-    @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
-        _ = self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -66,9 +82,37 @@ extension PropertiesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        selectedCell = tableView.cellForRow(at: indexPath) as? PropertyTableViewCell
+        self.selectedCell = tableView.cellForRow(at: indexPath) as? PropertyTableViewCell
+        self.performSegue(withIdentifier: Identifiers.Segues.mainVC.rawValue, sender: self)
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         
-        performSegue(withIdentifier: Identifiers.Segues.ToPropertyDetailsVC.rawValue, sender: self)
+        let edit = UITableViewRowAction(style: .normal, title: "Edit", handler: { (action, index) in
+            self.selectedCell = tableView.cellForRow(at: index) as? PropertyTableViewCell
+            self.performSegue(withIdentifier: Identifiers.Segues.editPropertyDetailsVC.rawValue, sender: self)
+        })
+        
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete", handler: { (action, index) in
+            self.selectedCell = tableView.cellForRow(at: index) as? PropertyTableViewCell
+            guard let cell = self.selectedCell, let propertyID = cell.property.propertyID else { return }
+            UserController.deletePropertyInFirebase(propertyID: propertyID)
+            FirebaseController.properties = self.properties.filter({$0.propertyID != propertyID})
+            self.properties = FirebaseController.properties.filter({ $0.landlordID == self.landlordID})
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [index], with: .automatic)
+            tableView.endUpdates()
+        })
+        
+        return [delete, edit]
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
     }
     
     // MARK: datasource
@@ -76,6 +120,4 @@ extension PropertiesViewController: UITableViewDelegate, UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return properties.count
     }
-
-    
 }

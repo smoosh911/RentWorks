@@ -74,4 +74,23 @@ extension Property {
         guard let propertyID = dictionary[UserController.kPropertyID] as? String else { self.propertyID = UUID().uuidString; return}
         self.propertyID = propertyID
     }
+    
+    @discardableResult convenience init?(landlordID: String, landlord: Landlord, context: NSManagedObjectContext? = CoreDataStack.context) {
+        
+        self.init(entity: Property.entity(), insertInto: context)
+        
+        self.landlord = landlord
+        self.availableDate = NSDate()
+        self.bathroomCount = 1
+        self.bedroomCount = 1
+        self.monthlyPayment = 1500
+        self.petFriendly = false
+        self.smokingAllowed = false
+        self.rentalHistoryRating = 3.0
+        self.address = ""
+        self.zipCode = ""
+        self.landlordID = landlordID
+        self.propertyDescription = "No description yet!"
+        self.propertyID = UUID().uuidString
+    }
 }

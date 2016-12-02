@@ -18,9 +18,8 @@ class CardLoadingViewController: UIViewController {
                 self.propertiesWereUpdated()
             })
         } else if UserController.currentUserType == "landlord" {
-            UserController.fetchRenters(numberOfRenters: FirebaseController.cardDownloadCount, completion: {
-                self.rentersWereUpdated()
-                UserController.fetchPropertiesForLandlord(landlordID: UserController.currentUserID!)
+            UserController.fetchPropertiesForLandlord(landlordID: UserController.currentUserID!, completion: {
+                self.landlordPropertiesLoaded()
             })
         }
     }
@@ -30,7 +29,7 @@ class CardLoadingViewController: UIViewController {
         self.performSegue(withIdentifier: Identifiers.Segues.MainSwipingVC.rawValue, sender: nil)
     }
     
-    func rentersWereUpdated() {
+    func landlordPropertiesLoaded() {
         MatchController.observeLikesForCurrentLandlord()
         self.performSegue(withIdentifier: Identifiers.Segues.MainSwipingVC.rawValue, sender: nil)
     }
