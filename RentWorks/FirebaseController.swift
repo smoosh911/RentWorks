@@ -284,7 +284,7 @@ class FirebaseController {
         }
     }
     
-    static func handleUserInformationScenarios(completion: @escaping (_ success: Bool) -> Void) {
+    static func handleUserInformationScenarios(inViewController targetVC: UIViewController, completion: @escaping (_ success: Bool) -> Void) {
         
         FacebookRequestController.requestCurrentFacebookUserID { (userID) in
             
@@ -299,24 +299,33 @@ class FirebaseController {
                     
                     group.enter()
                     UserController.getCurrentRenterFromCoreData(completion: { (renterExists) in
+                        let walkthroughMismatch = UserController.userCreationType == UserController.UserCreationType.landlord.rawValue // this will be false if the user already has an account and tries to create an account as the wrong user type
                         
-                        if renterExists {
+                        if renterExists && walkthroughMismatch {
+                            UserController.userCreationType = UserController.UserCreationType.renter.rawValue
+                            let alertTitle = "Whoops"
+                            let alertMessage = "You already have an account as a \(UserController.userCreationType), we will log you in as a \(UserController.userCreationType). If you want a landlord account, please create a seperate account"
+                            AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, inViewController: targetVC)
                             success = true
-                            group.leave()
-                        } else {
-                            group.leave()
+                        } else if renterExists {
+                            success = true
                         }
+                        group.leave()
                     })
                     
                     group.enter()
                     UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
-                        if landlordExists {
+                        let walkthroughMismatch = UserController.userCreationType == UserController.UserCreationType.renter.rawValue // this will be false if the user already has an account and tries to create an account as the wrong user type
+                        if landlordExists && walkthroughMismatch {
+                            UserController.userCreationType = UserController.UserCreationType.landlord.rawValue
+                            let alertTitle = "Whoops"
+                            let alertMessage = "You already have an account as a \(UserController.userCreationType), we will log you in as a \(UserController.userCreationType). If you want a renter account, please create a seperate account"
+                            AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, inViewController: targetVC)
                             success = true
-                            group.leave()
-                        } else {
-                            group.leave()
+                        } else if landlordExists {
+                            success = true
                         }
-                        
+                        group.leave()
                     })
                     
                     group.notify(queue: DispatchQueue.main, execute: {

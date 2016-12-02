@@ -39,7 +39,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
             setUpAndDisplayLoadingScreen()
             AuthenticationController.attemptToSignInToFirebase { (success) in
                 
-                FirebaseController.handleUserInformationScenarios(completion: { (hasAccount) in
+                FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (hasAccount) in
                     if !hasAccount {
                         if UserController.userCreationType == "landlord" {
                             UserController.createLandlordAndPropertyForCurrentUser {
@@ -100,10 +100,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         setUpAndDisplayLoadingScreen()
         if FBSDKAccessToken.current() != nil {
             AuthenticationController.attemptToSignInToFirebase { (success) in
-                
-                
-                
-                FirebaseController.handleUserInformationScenarios(completion: { (hasAccount) in
+                FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (hasAccount) in
                     if !hasAccount {
                         if UserController.userCreationType == "landlord" {
                             UserController.createLandlordAndPropertyForCurrentUser {

@@ -14,7 +14,7 @@ class LaunchScreenCopyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        FirebaseController.handleUserInformationScenarios(completion: { (success) in
+        FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (success) in
             
             if !self.isInternetAvailable() {
                 self.performSegue(withIdentifier: Identifiers.Segues.noInternetVC.rawValue, sender: self)
