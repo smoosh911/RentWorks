@@ -18,8 +18,12 @@ class CardLoadingViewController: UIViewController {
                 self.propertiesWereUpdated()
             })
         } else if UserController.currentUserType == "landlord" {
-            UserController.fetchPropertiesForLandlord(landlordID: UserController.currentUserID!, completion: {
-                self.landlordPropertiesLoaded()
+            UserController.fetchPropertiesForLandlord(landlordID: UserController.currentUserID!, completion: { success in
+                if success {
+                    self.landlordPropertiesLoaded()
+                } else {
+                    
+                }
             })
         }
     }

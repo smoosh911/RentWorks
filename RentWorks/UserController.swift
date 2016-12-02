@@ -244,9 +244,9 @@ class UserController {
         })
     }
     
-    static func fetchPropertiesForLandlord(landlordID: String, completion: @escaping () -> Void) {
+    static func fetchPropertiesForLandlord(landlordID: String, completion: @escaping (_ success: Bool) -> Void) {
         FirebaseController.propertiesRef.queryOrdered(byChild: UserController.kLandlordID).queryEqual(toValue: landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { return }
+            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(false); return }
             
             let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
             
@@ -276,7 +276,7 @@ class UserController {
             
             group.notify(queue: DispatchQueue.main, execute: {
                 FirebaseController.properties = landlordProperties
-                completion()
+                completion(true)
             })
         })
     }
