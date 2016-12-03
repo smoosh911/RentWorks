@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2555" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2659" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="HasBeenViewedBy" representedClassName="HasBeenViewedBy" syncable="YES" codeGenerationType="class">
         <attribute name="viewerID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="property" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="hasBeenViewedBy" inverseEntity="Property" syncable="YES"/>
@@ -8,6 +8,10 @@
     <entity name="Landlord" representedClassName="Landlord" parentEntity="User" syncable="YES" codeGenerationType="class">
         <attribute name="wantsCreditRating" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="property" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Property" inverseName="landlord" inverseEntity="Property" syncable="YES"/>
+    </entity>
+    <entity name="Occupation" representedClassName="Occupation" syncable="YES" codeGenerationType="class">
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="occupation" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="ProfileImage" representedClassName="ProfileImage" syncable="YES" codeGenerationType="class">
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
@@ -50,20 +54,23 @@
     </entity>
     <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
         <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="currentOccupation" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="occupation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="occupationHistory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="startAt" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="occupation" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Occupation" inverseName="user" inverseEntity="Occupation" syncable="YES"/>
     </entity>
     <elements>
+        <element name="HasBeenViewedBy" positionX="-38" positionY="486" width="128" height="88"/>
         <element name="Landlord" positionX="225" positionY="189" width="128" height="75"/>
         <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="118"/>
         <element name="Property" positionX="223" positionY="324" width="128" height="268"/>
-        <element name="Renter" positionX="-254" positionY="174" width="146" height="238"/>
-        <element name="User" positionX="-2" positionY="-52" width="128" height="165"/>
-        <element name="HasBeenViewedBy" positionX="-38" positionY="486" width="128" height="88"/>
+        <element name="Renter" positionX="-308" positionY="180" width="146" height="238"/>
+        <element name="User" positionX="-2" positionY="-52" width="128" height="193"/>
+        <element name="Occupation" positionX="-333" positionY="-0" width="128" height="73"/>
     </elements>
 </model>

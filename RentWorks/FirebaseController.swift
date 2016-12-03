@@ -305,7 +305,8 @@ class FirebaseController {
                             UserController.userCreationType = UserController.UserCreationType.renter.rawValue
                             let alertTitle = "Whoops"
                             let alertMessage = "You already have an account as a \(UserController.userCreationType), we will log you in as a \(UserController.userCreationType). If you want a landlord account, please create a seperate account"
-                            AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, inViewController: targetVC)
+                            let dismissTitle = "Okay"
+                            AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, dismissTitle: dismissTitle, inViewController: targetVC)
                             success = true
                         } else if renterExists {
                             success = true
@@ -320,7 +321,8 @@ class FirebaseController {
                             UserController.userCreationType = UserController.UserCreationType.landlord.rawValue
                             let alertTitle = "Whoops"
                             let alertMessage = "You already have an account as a \(UserController.userCreationType), we will log you in as a \(UserController.userCreationType). If you want a renter account, please create a seperate account"
-                            AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, inViewController: targetVC)
+                            let dismissTitle = "Okay"
+                            AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, dismissTitle: dismissTitle, inViewController: targetVC)
                             success = true
                         } else if landlordExists {
                             success = true

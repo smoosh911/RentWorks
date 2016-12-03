@@ -19,7 +19,6 @@ extension Landlord {
             self.init(entity: Landlord.entity(), insertInto: nil)
         }
         
-        
         self.birthday = birthday
         self.email = email
         self.firstName = firstName
@@ -31,8 +30,8 @@ extension Landlord {
     @discardableResult convenience init?(dictionary: [String: Any], id: String?, context: NSManagedObjectContext? = CoreDataStack.context) {
         guard let email = dictionary[UserController.kEmail] as? String,
             let firstName = dictionary[UserController.kFirstName] as? String,
-            let lastName = dictionary[UserController.kLastName] as? String,
-            let startAt = dictionary[UserController.kStartAt] as? String else { return nil }
+            let lastName = dictionary[UserController.kLastName] as? String
+            else { return nil }
 
         var wantsCreditRating: String = "Any"
         if let wantsCreditRatingFromDict = dictionary[UserController.kWantsCreditRating] as? String {
@@ -45,6 +44,12 @@ extension Landlord {
             self.init(entity: Landlord.entity(), insertInto: nil)
         }
         
+        if let startAt = dictionary[UserController.kStartAt] as? String {
+            self.startAt = startAt
+        } else {
+            self.startAt = ""
+        }
+        
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
@@ -52,7 +57,5 @@ extension Landlord {
         self.id = id
         // TODO: - Change this later
         self.starRating = 5.0
-        self.startAt = startAt
     }
-    
 }

@@ -48,36 +48,40 @@ class RenterSettingsViewController: SettingsViewController {
         for filter in filterSettings {
             switch filter.key {
             case filterKeys.kBedroomCount.rawValue:
-                let bedroomCount = filter.value as! Int
+                guard let bedroomCount = filter.value as? Int else { break }
                 stpBedrooms.value = Double(bedroomCount)
                 lblBedroomCount.text = "\(stpBedrooms.value)"
                 break
             case filterKeys.kBathroomCount.rawValue:
-                let bathroomCount = filter.value as! Double
+                guard let bathroomCount = filter.value as? Double else { break }
                 stpBathrooms.value = bathroomCount
                 lblBathroomCount.text = "\(stpBathrooms.value)"
                 break
             case filterKeys.kMonthlyPayment.rawValue:
-                sldRent.value = Float(filter.value as! Int)
-                let price = "\(Int(sldRent.value))"
-                lblPrice.text = price
+                guard let price = filter.value as? Int else { break }
+                sldRent.value = Float(price)
+                let priceString = "\(Int(sldRent.value))"
+                lblPrice.text = priceString
                 break
             case filterKeys.kPetsAllowed.rawValue:
-                let petsAllowed = filter.value as! Bool
+                guard let petsAllowed = filter.value as? Bool else { break }
                 swtPets.isOn = petsAllowed
                 break
             case filterKeys.kPropertyFeatures.rawValue:
-                let features = filter.value as! String
+                guard let features = filter.value as? String else { break }
                 txtfldFeatures.text = features
                 break
             case filterKeys.kSmokingAllowed.rawValue:
-                let smokingAllowed = filter.value as! Bool
+                guard let smokingAllowed = filter.value as? Bool else { break }
                 swtSmoking.isOn = smokingAllowed
                 break
             case filterKeys.kZipCode.rawValue:
-                let zipcode = filter.value as! String
+                guard let zipcode = filter.value as? String else { break }
                 txtfldZipCode.text = zipcode
                 break
+            case filterKeys.kCurrentOccupation.rawValue:
+                guard let occupation = filter.value as? String else { break }
+                lblOccupation.text = occupation
             default:
                 log("no filters")
             }

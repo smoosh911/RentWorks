@@ -118,12 +118,12 @@ class LandlordMainViewController: MainViewController {
         lblFrontCardCreditRating.text = renter.creditRating
         imageView.image = profilePicture
         nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
-        lblRenterOccupation.text = renter.occupation ?? "No listed occupation"
+        lblRenterOccupation.text = renter.currentOccupation ?? "No listed occupation"
         
         guard let nextRenter = backCardRenter, let firstBackgroundProfileImage = nextRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data) else { return }
         backgroundImageView.image = backgroundProfilePicture
         backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
-        lblBackCardRenterOccupation.text = nextRenter.occupation ?? "No listed occupation"
+        lblBackCardRenterOccupation.text = nextRenter.currentOccupation ?? "No listed occupation"
         
         lblBackCardCreditRating.text = nextRenter.creditRating
     }

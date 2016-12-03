@@ -350,9 +350,15 @@ class UserController {
     static func fetchProperties(numberOfProperties: UInt, completion: @escaping () -> Void) {
         if UserController.propertyFetchCount == 1 { // if fecth count is one then you are at the end of the database
             completion()
+            log("ERROR: out of properties")
             return
         }
-        FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: currentRenter!.startAt!).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
+        guard let renter = currentRenter, let startAt = renter.startAt else {
+            completion()
+            log("ERROR: couldn't retrieve either renter or startat")
+            return
+        }
+        FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: startAt).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
 
             UserController.propertyFetchCount = allPropertiesDict.count
@@ -684,7 +690,7 @@ class UserController {
     
     static func createRenterInCoreDataForCurrentUser(completion: @escaping ((_ renter: Renter?) -> Void) = { _ in }) {
         AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
-            FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email], completion: { (facebookDictionary) in
+            FacebookRequestController.requestCurrentUsers(information: [.first_name, .last_name, .email, .user_work_history], completion: { (facebookDictionary) in
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
                 getFirstPropertyID(completion: { (propertyID) -> Void in
                     temporaryUserCreationDictionary[UserController.kStartAt] = propertyID
@@ -1108,9 +1114,7 @@ class UserController {
         } catch {
             NSLog("Error saving to the managed object context \(error.localizedDescription)")
         }
-        
     }
-    
 }
 
 
@@ -1148,6 +1152,8 @@ extension UserController {
     static let kBio = "bio"
 //    static let kHasViewed = "hasViewed"
     static let kHasBeenViewedBy = "hasBeenViewedBy"
+    static let kOccupationHistory = "work"
+    static let kCurrentOccupation = "currentOccupation"
     
     static let kStartAt = "startAt"
     
@@ -1159,7 +1165,8 @@ extension UserController {
         case kPropertyFeatures = "propertyFeatures"
         case kSmokingAllowed = "smokingAllowed"
         case kZipCode = "zipCode"
-        static let allValues = [kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode]
+        case kCurrentOccupation = "currentOccupation"
+        static let allValues = [kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode, kCurrentOccupation]
     }
     
     enum LandlordFilters: String {

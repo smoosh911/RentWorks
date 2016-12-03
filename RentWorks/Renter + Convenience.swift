@@ -61,6 +61,28 @@ extension Renter {
             self.init(entity: Renter.entity(), insertInto: nil)
         }
         
+        if let occupation = dictionary[UserController.kCurrentOccupation] as? String {
+            self.currentOccupation = occupation
+        }
+
+        if let occupationHistoryFromFacebook = dictionary[UserController.kOccupationHistory] as? [[String: Any]] {
+            var occupationList: [String] = []
+            for occupation in occupationHistoryFromFacebook {
+                guard let position = occupation["position"] as? [String: Any], let positionName = position["name"], let employer = occupation["employer"] as? [String: Any], let employerName = employer["name"] else { continue }
+                let occupationString = "\(positionName) at \(employerName)"
+                Occupation(occupation: occupationString, landlordOrRenter: self, context: context)
+                occupationList.append(occupationString)
+            }
+            self.currentOccupation = occupationList[0]
+            self.occupationHistory = occupationList.joined(separator: "~")
+        }
+        
+        if let occupationHistory = dictionary[UserController.kOccupationHistory] as? [String] {
+            for occupation in occupationHistory {
+                Occupation(occupation: occupation, landlordOrRenter: self, context: context)
+            }
+        }
+        
         if let hasBeenViewedBy = dictionary[UserController.kHasBeenViewedBy] as? [String: Bool] {
             let hasBeenViewedByIDs = Array(hasBeenViewedBy.keys)
             
@@ -71,6 +93,8 @@ extension Renter {
         
         if let startAtVal = dictionary[UserController.kStartAt] as? String {
             self.startAt = startAtVal
+        } else {
+            self.startAt = ""
         }
         
         self.email = email
