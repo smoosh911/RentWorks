@@ -97,11 +97,9 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
         
         self.backgroundView.isHidden = true
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         swipeableView.delegate = self
         setupViews()

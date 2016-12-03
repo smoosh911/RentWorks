@@ -20,6 +20,7 @@ class LandlordMainViewController: MainViewController {
     
     // MARK: variables
     
+    var property: Property! = nil // set from previous VC segue
     var currentCardRenter: Renter? = nil
     
     var filteredRenters: [Renter] = [] {
@@ -48,13 +49,15 @@ class LandlordMainViewController: MainViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating {
-            filteredRenters = desiredCreditRating == "Any" ? FirebaseController.renters : FirebaseController.renters.filter({ $0.creditRating == desiredCreditRating})
-            if filteredRenters.isEmpty {
+        swipeableView.isHidden = true
+        backgroundView.isHidden = true
+        UserController.fetchRentersForProperty(numberOfRenters: FirebaseController.cardDownloadCount, property: property, completion: {
+            self.filteredRenters = self.getFilteredRenters()
+            if self.filteredRenters.isEmpty && UserController.renterFetchCount == 1 {
                 self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
             }
             self.updateCardUI()
-        }
+        })
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -80,6 +83,10 @@ class LandlordMainViewController: MainViewController {
         UserController.eraseAllHasBeenViewedByForLandlordFromRenters(landlordID: UserController.currentUserID!, completion: {
             self.downloadMoreCards()
         })
+    }
+    
+    @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
+        _ = self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: rwkswipabelview delegate
@@ -126,6 +133,16 @@ class LandlordMainViewController: MainViewController {
         UserController.addHasBeenViewedByLandlordToRenterInFirebase(renterID: renterID, landlordID: landlordID)
     }
     
+    // MARK: segues
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Identifiers.Segues.propertyMatchesVC.rawValue {
+            if let destinationVC = segue.destination as? PropertyMatchesViewController {
+                destinationVC.property = property
+            }
+        }
+    }
+    
     // MARK: helper methods
     
     func downloadMoreCards() {
@@ -135,7 +152,7 @@ class LandlordMainViewController: MainViewController {
                 return
             }
             FirebaseController.isFetchingNewRenters = true
-            UserController.fetchRenters(numberOfRenters: 6, completion: {
+            UserController.fetchRentersForProperty(numberOfRenters: 6, property: property, completion: {
                 FirebaseController.isFetchingNewRenters = false
                 let newFilteredRenters = self.getFilteredRenters()
                 let uniqueRenters = newFilteredRenters.filter({ !self.filteredRenters.contains($0) })

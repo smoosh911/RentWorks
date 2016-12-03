@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import CoreData
+import Photos
 
 class PropertyDetailsViewController: UIViewController {
     
     // MARK: outlets
     
-    @IBOutlet weak var btnMessages: UIButton!
+    @IBOutlet weak var lblPropertySaveResult: UILabel!
     
     @IBOutlet weak var txtfldPropertyAddress: UITextField!
     @IBOutlet weak var txtfldDateAvailable: UITextField!
@@ -45,68 +47,34 @@ class PropertyDetailsViewController: UIViewController {
     var property: Property! = nil
     var landlord: Landlord! = UserController.currentLandlord
     
+    var propertyTask: PropertyTask = PropertyTask.editing
+    
+    enum SaveResults: String {
+        case success = "Property Saved!"
+        case failure = "Property Couldn't Save"
+    }
+        
+    enum PropertyTask {
+        case adding
+        case editing
+    }
+    
     // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let propertyDetailKeys = UserController.PropertyDetailValues.self
-        let propertyDetailsDict = UserController.getPropertyDetailsDictionary(property: property)
-        
-        for detail in propertyDetailsDict {
-            switch detail.key {
-            case propertyDetailKeys.kAddress.rawValue:
-                let address = detail.value as! String
-                txtfldPropertyAddress.text = address
-                break
-            case propertyDetailKeys.kAvailableDate.rawValue:
-                let availableDate = detail.value as! Double
-                txtfldDateAvailable.text = "\(availableDate)"
-                break
-            case propertyDetailKeys.kBedroomCount.rawValue:
-                let bedroomCount = detail.value as! Int
-                stpBedrooms.value = Double(bedroomCount)
-                lblBedroomCount.text = "\(stpBedrooms.value)"
-                break
-            case propertyDetailKeys.kBathroomCount.rawValue:
-                let bathroomCount = detail.value as! Double
-                stpBathrooms.value = bathroomCount
-                lblBathroomCount.text = "\(stpBathrooms.value)"
-                break
-            case propertyDetailKeys.kMonthlyPayment.rawValue:
-                sldRent.value = Float(detail.value as! Int)
-                let price = "\(Int(sldRent.value))"
-                lblPrice.text = price
-                break
-            case propertyDetailKeys.kPetsAllowed.rawValue:
-                let petsAllowed = detail.value as! Bool
-                swtPets.isOn = petsAllowed
-                break
-//            case propertyDetailKeys.kPropertyFeatures.rawValue:
-//                let features = detail.value as! String
-//                txtfldFeatures.text = features
-//                break
-            case propertyDetailKeys.kSmokingAllowed.rawValue:
-                let smokingAllowed = detail.value as! Bool
-                swtSmoking.isOn = smokingAllowed
-                break
-            case propertyDetailKeys.kStarRating.rawValue:
-                let rating = detail.value as! Double
-                updateStars(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: rating)
-                break
-            case propertyDetailKeys.kZipCode.rawValue:
-                let zipcode = detail.value as! String
-                txtfldZipCode.text = zipcode
-                break
-            default:
-                log("no details")
-            }
+        if propertyTask == PropertyTask.adding {
+//            property = NSEntityDescription.insertNewObject(forEntityName: "Property", into: CoreDataStack.context) as! Property
+            guard let landlordID = UserController.currentUserID else { return }
+            property = Property(landlordID: landlordID, landlord: landlord)
         }
+        let propertyDetailsDict = UserController.getPropertyDetailsDictionary(property: property)
+        updatePropertyDetails(propertyDetailsDict: propertyDetailsDict)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        setMatchesButtonImage()
     }
 
     // MARK: actions
@@ -175,29 +143,91 @@ class PropertyDetailsViewController: UIViewController {
     // buttons
     
     @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: UIButton) {
-        guard let id = property.propertyID else { return }
-        
-        // needs work: add property features
-//        let propertyFeatures = txtfldFeatures.text!
-        let zipcode = txtfldZipCode.text!
-        
-//        property.wantedPropertyFeatures = propertyFeatures
+        guard let id = property.propertyID, let address = txtfldPropertyAddress.text, let zipcode = txtfldZipCode.text else { return }
+        property.address = address
         property.zipCode = zipcode
-//        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyFeatures, newValue: propertyFeatures)
-        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
-        // UserController.saveToPersistentStore()
+        if propertyTask == PropertyTask.editing {
+            // needs work: add property features
+            //        let propertyFeatures = txtfldFeatures.text!
+//            let zipcode = txtfldZipCode.text!
+            
+            //        property.wantedPropertyFeatures = propertyFeatures
+//            property.zipCode = zipcode
+            //        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyFeatures, newValue: propertyFeatures)
+            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
+            // UserController.saveToPersistentStore()
+        } else {
+            UserController.createPropertyInFirebase(property: property, completion: { success in
+                self.lblPropertySaveResult.text = success ? SaveResults.success.rawValue : SaveResults.failure.rawValue
+                self.lblPropertySaveResult.isHidden = false
+                FirebaseController.properties.append(self.property)
+                self.propertyTask = PropertyTask.editing
+            })
+        }
     }
     
     // MARK: helper methods
     
-    func setMatchesButtonImage() {
-        DispatchQueue.main.async {
-            MatchController.propertyIDsWithMatches.contains(self.property.propertyID!) ? self.btnMessages.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.btnMessages.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
-        }
+    @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: {
+            
+        })
     }
     
-    @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
-        _ = self.navigationController?.popViewController(animated: true)
+    private func updatePropertyDetails (propertyDetailsDict: [String: Any]) {
+        let propertyDetailKeys = UserController.PropertyDetailValues.self
+        
+        for detail in propertyDetailsDict {
+            switch detail.key {
+            case propertyDetailKeys.kAddress.rawValue:
+                let address = detail.value as! String
+                txtfldPropertyAddress.text = address
+                break
+            case propertyDetailKeys.kAvailableDate.rawValue:
+                guard let timeInterval = detail.value as? TimeInterval else { break }
+                let availableDate = Date(timeIntervalSince1970: timeInterval)
+                
+                txtfldDateAvailable.text = "\(availableDate.description)"
+                break
+            case propertyDetailKeys.kBedroomCount.rawValue:
+                let bedroomCount = detail.value as! Int
+                stpBedrooms.value = Double(bedroomCount)
+                lblBedroomCount.text = "\(stpBedrooms.value)"
+                break
+            case propertyDetailKeys.kBathroomCount.rawValue:
+                let bathroomCount = detail.value as! Double
+                stpBathrooms.value = bathroomCount
+                lblBathroomCount.text = "\(stpBathrooms.value)"
+                break
+            case propertyDetailKeys.kMonthlyPayment.rawValue:
+                sldRent.value = Float(detail.value as! Int)
+                let price = "\(Int(sldRent.value))"
+                lblPrice.text = price
+                break
+            case propertyDetailKeys.kPetsAllowed.rawValue:
+                let petsAllowed = detail.value as! Bool
+                swtPets.isOn = petsAllowed
+                break
+                //            case propertyDetailKeys.kPropertyFeatures.rawValue:
+                //                let features = detail.value as! String
+                //                txtfldFeatures.text = features
+            //                break
+            case propertyDetailKeys.kSmokingAllowed.rawValue:
+                let smokingAllowed = detail.value as! Bool
+                swtSmoking.isOn = smokingAllowed
+                break
+            case propertyDetailKeys.kStarRating.rawValue:
+                let rating = detail.value as! Double
+                updateStars(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: rating)
+                break
+            case propertyDetailKeys.kZipCode.rawValue:
+                let zipcode = detail.value as! String
+                txtfldZipCode.text = zipcode
+                break
+            default:
+                log("no details")
+            }
+        }
     }
     
     func updateStars(starImageViews: [UIImageView], for rating: Double) {
@@ -237,24 +267,16 @@ class PropertyDetailsViewController: UIViewController {
         default:
             _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
         }
-        
-    }
-
-    // MARK: segues
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == Identifiers.Segues.propertyMatchesVC.rawValue {
-            if let destinationVC = segue.destination as? PropertyMatchesViewController {
-                destinationVC.property = property
-            }
-        }
     }
 }
+
+// MARK: collection view
 
 extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return property.profileImages!.count
+        guard let profileImages = property.profileImages else { return 0 }
+        return profileImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -266,5 +288,84 @@ extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionV
         cell.imgProperty.image = image
         
         return cell
+    }
+}
+
+// MARK: add images
+
+extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    @IBAction func selectPhotoButtonTapped(_ sender: UIButton) {
+        checkPhotoLibraryPermission { (success) in
+            if success {
+                let imagePicker = UIImagePickerController()
+                imagePicker.delegate = self
+                
+                let alert = UIAlertController(title: "Select Photo Location", message: nil, preferredStyle: .actionSheet)
+                alert.view.tintColor = .black
+                
+                if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                    alert.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { (_) -> Void in
+                        imagePicker.sourceType = .photoLibrary
+                        DispatchQueue.main.async {
+                            self.present(imagePicker, animated: true, completion: nil)
+                        }
+                    }))
+                }
+                
+                if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                    alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (_) -> Void in
+                        imagePicker.sourceType = .camera
+                        DispatchQueue.main.async {
+                            self.present(imagePicker, animated: true, completion: nil)
+                        }
+                    }))
+                }
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func checkPhotoLibraryPermission(completion: @escaping (Bool) -> Void) {
+        let status = PHPhotoLibrary.authorizationStatus()
+        switch status {
+        case .authorized:
+            completion(true)
+        case .denied:
+            completion(false)
+        case .restricted :
+            completion(false)
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization() { status in
+                switch status {
+                case .authorized:
+                    completion(true)
+                case .denied, .restricted:
+                    completion(false)
+                default:
+                    completion(false)
+                    break
+                }
+            }
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        picker.dismiss(animated: true) {
+            guard let propertyID = self.property.propertyID, let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
+            UserController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: self.property, completion: { imageURL in
+                log("image uploaded to \(imageURL)")
+                guard let profileImageArray = self.property.profileImages?.array, let profileImages = profileImageArray as? [ProfileImage] else { return }
+                let imageURLs = profileImages.map({$0.imageURL!})
+                // needs work: update so you don't have to delete every time
+                UserController.deletePropertyImageURLsInFirebase(id: propertyID)
+                UserController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: imageURLs)
+                self.clctvwPropertyImages.reloadData()
+            })
+            
+//            UserController.userCreationPhotos.append(image) // I don't know what this was for so I'll leave it in case of errors
+        }
     }
 }

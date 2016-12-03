@@ -73,7 +73,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             }
             if validBirthday {
                 if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
-                FirebaseController.handleUserInformationScenarios { (success) in
+                FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (success) in
                     self.dismissLoadingScreen()
                     if success {
                         let storyboard: UIStoryboard!
@@ -88,7 +88,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                     } else {
                         self.displayNoAccountCreatedAlert()
                     }
-                }
+                })
             }
         })
     }

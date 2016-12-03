@@ -86,6 +86,7 @@
 		C77666271DE928D900F2A8EF /* HasBeenViewedBy + Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77666261DE928D900F2A8EF /* HasBeenViewedBy + Convenience.swift */; };
 		C776662E1DEA43A400F2A8EF /* PropertyMatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C776662D1DEA43A400F2A8EF /* PropertyMatchesViewController.swift */; };
 		C77C13A41DCE6290003D75DD /* CoreLibraryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */; };
+		C79CE22B1DF1E50C00C57378 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CE22A1DF1E50C00C57378 /* AlertManager.swift */; };
 		C7F93B701DE61624004F54F4 /* CreateFakeFireBaseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */; };
 		C7F93B861DE7D87E004F54F4 /* NoInternetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */; };
 /* End PBXBuildFile section */
@@ -180,6 +181,7 @@
 		C77666261DE928D900F2A8EF /* HasBeenViewedBy + Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "HasBeenViewedBy + Convenience.swift"; sourceTree = "<group>"; };
 		C776662D1DEA43A400F2A8EF /* PropertyMatchesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyMatchesViewController.swift; sourceTree = "<group>"; };
 		C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreLibraryExtensions.swift; sourceTree = "<group>"; };
+		C79CE22A1DF1E50C00C57378 /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFakeFireBaseDataController.swift; sourceTree = "<group>"; };
 		C7F93B831DE79571004F54F4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoInternetViewController.swift; sourceTree = "<group>"; };
@@ -245,14 +247,14 @@
 		468ABC3A1DB5EA89009B105B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				468ABC391DB5EA76009B105B /* Landlord Creation View Controllers */,
+				C748D8B91DE28679009EC662 /* Landlord Main View Controllers */,
+				C77666291DEA3A4800F2A8EF /* Main storyboard view controllers */,
+				460D72361DB742E000853402 /* Photo Selector VIew Controllers */,
+				460D72391DB7448D00853402 /* Renter Creation View Controllers */,
+				C748D8BA1DE28683009EC662 /* Renter Main View Controllers */,
 				C776662B1DEA3B2400F2A8EF /* Shared View Controllers */,
 				C776662A1DEA3B0300F2A8EF /* Super Class View Controllers */,
-				C77666291DEA3A4800F2A8EF /* Main storyboard view controllers */,
-				C748D8BA1DE28683009EC662 /* Renter Main View Controllers */,
-				C748D8B91DE28679009EC662 /* Landlord Main View Controllers */,
-				460D72391DB7448D00853402 /* Renter Creation View Controllers */,
-				468ABC391DB5EA76009B105B /* Landlord Creation View Controllers */,
-				460D72361DB742E000853402 /* Photo Selector VIew Controllers */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -358,6 +360,7 @@
 				C748D8C41DE2AF01009EC662 /* Identifiers.swift */,
 				C748D8CA1DE4D12E009EC662 /* NotificationObservers.swift */,
 				C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */,
+				C79CE22A1DF1E50C00C57378 /* AlertManager.swift */,
 			);
 			name = "Helper Classes";
 			sourceTree = "<group>";
@@ -643,7 +646,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=rentworks-da6b1\n\n# Replace the /Path/To/ServiceAccount.json with the path to the key you just downloaded\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"${PODS_ROOT}\"/FirebaseCrash/ServiceAccount.json";
+			shellScript = "# Replace this with the GOOGLE_APP_ID from your GoogleService-Info.plist file\nGOOGLE_APP_ID=rentworks-da6b1\n\n# Replace the /Path/To/ServiceAccount.json with the path to the key you just downloaded\n\"${PODS_ROOT}\"/FirebaseCrash/upload-sym \"${PROJECT_DIR}\"/FirebaseCrashReporting/ServiceAccount.json";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -681,6 +684,7 @@
 				4625EF511DC3A74A0055024F /* UIButtonExtensions.swift in Sources */,
 				46E8877F1DB7F17900127D21 /* Property+Firebase.swift in Sources */,
 				C748D8C71DE2C584009EC662 /* NoCardsLeftViewController.swift in Sources */,
+				C79CE22B1DF1E50C00C57378 /* AlertManager.swift in Sources */,
 				468ABC3E1DB5EAC6009B105B /* LandlordAllowedViewController.swift in Sources */,
 				C73E10891D8E417D008E475F /* MainViewController.swift in Sources */,
 				4698FE231DB030AF00AD65E5 /* AppearanceController.swift in Sources */,

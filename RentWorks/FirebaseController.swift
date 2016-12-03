@@ -36,54 +36,32 @@ class FirebaseController {
     
     // MARK: - Image storage/downloading
     
-    static func store(profileImage: UIImage, forUser user: TestUser, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
-        
-        let profileImageRef = profileImagesRef.child(user.id)
-        guard let imageData = UIImageJPEGRepresentation(profileImage, 1.0) else { return }
-        
-        let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
-        
-        uploadTask.resume()
-        
-        uploadTask.observe(.progress) { (snapshot) in
-            if let progress = snapshot.progress {
-                let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
-                print("Upload percentage: \(percentComplete)%")
-            }
-        }
-        
-        uploadTask.observe(.failure) { (snapshot) in
-            guard let storageError = snapshot.error else { return }
-            print(storageError.localizedDescription)
-        }
-    }
-    
-    static func downloadAndAddImagesFor(property: Property, completion: @escaping (_ success: Bool) -> Void) {
-        guard let propertyProfileImages = property.profileImages?.array as? [ProfileImage] else { return }
-        let profileImageURLs = propertyProfileImages.flatMap({$0.imageURL})
-        
-        let group = DispatchGroup()
-        
-        for imageURL in profileImageURLs {
-            group.enter()
-            let imageRef = FIRStorage.storage().reference(forURL: imageURL)
-            
-            imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
-                guard let imageData = imageData, error == nil, let propertyID = property.propertyID else { group.leave(); completion(false); return }
-                
-                _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property, context: property.managedObjectContext)
-                
-                if property.managedObjectContext != nil {
-//                    UserController.saveToPersistentStore()
-                }
-                group.leave()
-            }
-        }
-        
-        group.notify(queue: DispatchQueue.main) {
-            completion(true)
-        }
-    }
+//    static func downloadAndAddImagesFor(property: Property, completion: @escaping (_ success: Bool) -> Void) {
+//        guard let propertyProfileImages = property.profileImages?.array as? [ProfileImage] else { return }
+//        let profileImageURLs = propertyProfileImages.flatMap({$0.imageURL})
+//        
+//        let group = DispatchGroup()
+//        
+//        for imageURL in profileImageURLs {
+//            group.enter()
+//            let imageRef = FIRStorage.storage().reference(forURL: imageURL)
+//            
+//            imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
+//                guard let imageData = imageData, error == nil, let propertyID = property.propertyID else { group.leave(); completion(false); return }
+//                
+//                _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property, imageURL: imageURL, context: property.managedObjectContext)
+//                
+//                if property.managedObjectContext != nil {
+////                    UserController.saveToPersistentStore()
+//                }
+//                group.leave()
+//            }
+//        }
+//        
+//        group.notify(queue: DispatchQueue.main) {
+//            completion(true)
+//        }
+//    }
     
     static func downloadAndAddImagesFor(renter: Renter, insertInto context: NSManagedObjectContext?, profileImageURLs: [String], completion: @escaping (_ success: Bool) -> Void) {
         
@@ -96,7 +74,7 @@ class FirebaseController {
             imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
                 guard let imageData = imageData, error == nil, let renterID = renter.id else { group.leave(); completion(false); return }
                 
-                _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil)
+                _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil, imageURL: imageURL)
                 
                 if context != nil {
 //                    UserController.saveToPersistentStore()
@@ -112,67 +90,67 @@ class FirebaseController {
     
     
     
-    static func downloadProfileImage(forUser user: User, and property: Property?, completion: @escaping (_ success: Bool) -> Void) {
-        
-        var profileImageRef = profileImagesRef
-        
-        
-        if let renter = user as? Renter {
-            guard let userID = user.id else { completion(false); return }
-            profileImageRef = profileImageRef.child(userID)
-            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
-                
-                guard let imageData = imageData, error == nil else { completion(false); return }
-                
-                _ = ProfileImage(userID: userID, imageData: imageData as NSData, renter: renter, property: nil)
-//                UserController.saveToPersistentStore()
-            }
-        } else if let propertyID = property?.propertyID, let landlordID = property?.landlord?.id, user as? Renter == nil {
-            
-            profileImageRef = profileImageRef.child(landlordID).child(propertyID)
-            
-            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
-                
-                guard let imageData = imageData, error == nil else { completion(false); return }
-                
-                _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
-//                UserController.saveToPersistentStore()
-            }
-            completion(true)
-        }
-    }
+//    static func downloadProfileImage(forUser user: User, and property: Property?, completion: @escaping (_ success: Bool) -> Void) {
+//        
+//        var profileImageRef = profileImagesRef
+//        
+//        
+//        if let renter = user as? Renter {
+//            guard let userID = user.id else { completion(false); return }
+//            profileImageRef = profileImageRef.child(userID)
+//            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
+//                
+//                guard let imageData = imageData, let imageURL = renter.profile, error == nil else { completion(false); return }
+//                
+//                _ = ProfileImage(userID: userID, imageData: imageData as NSData, renter: renter, property: nil)
+////                UserController.saveToPersistentStore()
+//            }
+//        } else if let propertyID = property?.propertyID, let landlordID = property?.landlord?.id, user as? Renter == nil {
+//            
+//            profileImageRef = profileImageRef.child(landlordID).child(propertyID)
+//            
+//            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
+//                
+//                guard let imageData = imageData, error == nil else { completion(false); return }
+//                
+//                _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
+////                UserController.saveToPersistentStore()
+//            }
+//            completion(true)
+//        }
+//    }
     
-    static func downloadAndAddProfileImages(forUsers users: [User], andProperties properties: [Property]?, completion: (() -> Void)? = nil) {
-        
-        let group = DispatchGroup()
-        
-        for user in users {
-            group.enter()
-            downloadProfileImage(forUser: user, and: nil, completion: { (success) in
-                
-                
-                //                user.profilePic = image
-                group.leave()
-            })
-        }
-        
-        
-        group.notify(queue: DispatchQueue.main) {
-            completion?()
-        }
-        
-    }
+//    static func downloadAndAddProfileImages(forUsers users: [User], andProperties properties: [Property]?, completion: (() -> Void)? = nil) {
+//        
+//        let group = DispatchGroup()
+//        
+//        for user in users {
+//            group.enter()
+//            downloadProfileImage(forUser: user, and: nil, completion: { (success) in
+//                
+//                
+//                //                user.profilePic = image
+//                group.leave()
+//            })
+//        }
+//        
+//        
+//        group.notify(queue: DispatchQueue.main) {
+//            completion?()
+//        }
+//        
+//    }
     
-    static func downloadProfileImageFor(id: String, completion: @escaping (UIImage?) -> Void) {
-        
-        let profileImageRef = profileImagesRef.child("\(id).jpg")
-        
-        profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
-            if let error = error { print(error.localizedDescription) }
-            guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
-            completion(image)
-        }
-    }
+//    static func downloadProfileImageFor(id: String, completion: @escaping (UIImage?) -> Void) {
+//        
+//        let profileImageRef = profileImagesRef.child("\(id).jpg")
+//        
+//        profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
+//            if let error = error { print(error.localizedDescription) }
+//            guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
+//            completion(image)
+//        }
+//    }
     
     static func downloadProfileImageFor(property: Property, withURL url: String, completion: @escaping () -> Void) {
         
@@ -181,7 +159,7 @@ class FirebaseController {
         profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
             if let error = error { print(error.localizedDescription) }
             guard let data = data, let propertyID = property.propertyID else { return }
-            let _ = ProfileImage(userID: propertyID, imageData: data as NSData, renter: nil, property: property)
+            let _ = ProfileImage(userID: propertyID, imageData: data as NSData, renter: nil, property: property, imageURL: url)
             completion()
         }
     }
@@ -306,7 +284,7 @@ class FirebaseController {
         }
     }
     
-    static func handleUserInformationScenarios(completion: @escaping (_ success: Bool) -> Void) {
+    static func handleUserInformationScenarios(inViewController targetVC: UIViewController, completion: @escaping (_ success: Bool) -> Void) {
         
         FacebookRequestController.requestCurrentFacebookUserID { (userID) in
             
@@ -321,24 +299,33 @@ class FirebaseController {
                     
                     group.enter()
                     UserController.getCurrentRenterFromCoreData(completion: { (renterExists) in
+                        let walkthroughMismatch = UserController.userCreationType == UserController.UserCreationType.landlord.rawValue // this will be false if the user already has an account and tries to create an account as the wrong user type
                         
-                        if renterExists {
+                        if renterExists && walkthroughMismatch {
+                            UserController.userCreationType = UserController.UserCreationType.renter.rawValue
+                            let alertTitle = "Whoops"
+                            let alertMessage = "You already have an account as a \(UserController.userCreationType), we will log you in as a \(UserController.userCreationType). If you want a landlord account, please create a seperate account"
+                            AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, inViewController: targetVC)
                             success = true
-                            group.leave()
-                        } else {
-                            group.leave()
+                        } else if renterExists {
+                            success = true
                         }
+                        group.leave()
                     })
                     
                     group.enter()
                     UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
-                        if landlordExists {
+                        let walkthroughMismatch = UserController.userCreationType == UserController.UserCreationType.renter.rawValue // this will be false if the user already has an account and tries to create an account as the wrong user type
+                        if landlordExists && walkthroughMismatch {
+                            UserController.userCreationType = UserController.UserCreationType.landlord.rawValue
+                            let alertTitle = "Whoops"
+                            let alertMessage = "You already have an account as a \(UserController.userCreationType), we will log you in as a \(UserController.userCreationType). If you want a renter account, please create a seperate account"
+                            AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, inViewController: targetVC)
                             success = true
-                            group.leave()
-                        } else {
-                            group.leave()
+                        } else if landlordExists {
+                            success = true
                         }
-                        
+                        group.leave()
                     })
                     
                     group.notify(queue: DispatchQueue.main, execute: {
@@ -369,14 +356,32 @@ class FirebaseController {
         })
     }
     
+    static func checkAndResizeImageToBeAMaximumOf(megabytes: Int, image: UIImage?, withCompressionQuality compressionQuality: CGFloat, temporaryData: Data? = nil, completion: (Data?) -> Void) {
+        
+        let megabyteCount = megabytes * 1024 * 1024
+        if let temporaryData = temporaryData, let image = image {
+            
+            print(temporaryData.count)
+            
+            if temporaryData.count > megabyteCount {
+                let newTempData = UIImageJPEGRepresentation(image, compressionQuality)
+                checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality - 0.05, temporaryData: newTempData, completion: completion)
+            } else {
+                completion(temporaryData)
+            }
+        } else {
+            guard let image = image, let imageData = UIImageJPEGRepresentation(image, compressionQuality) else { completion(temporaryData); return }
+            
+            checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality, temporaryData: imageData, completion: completion)
+        }
+    }
+    
     static func store(profileImage: UIImage, forUserID userID: String, and property: Property?, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?, Data?) -> Void) {
         
         var profileImageRef = profileImagesRef.child(userID)
-        var countString: String?
-        
-        if count != nil { countString = "\(count!)" }
-        if let property = property, let propertyID = property.propertyID, let countString = countString {
-            profileImageRef = profileImageRef.child(propertyID).child(countString)
+        let imageFileName = "\(Date().timeIntervalSince1970)"
+        if let property = property, let propertyID = property.propertyID {
+            profileImageRef = profileImageRef.child(propertyID).child(imageFileName)
         }
         
         checkAndResizeImageToBeAMaximumOf(megabytes: 1, image: profileImage, withCompressionQuality: 1.0) { (imageData) in
@@ -403,24 +408,26 @@ class FirebaseController {
             }
         }
     }
-
-    static func checkAndResizeImageToBeAMaximumOf(megabytes: Int, image: UIImage?, withCompressionQuality compressionQuality: CGFloat, temporaryData: Data? = nil, completion: (Data?) -> Void) {
+    
+    static func store(profileImage: UIImage, forUser user: TestUser, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
         
-        let megabyteCount = megabytes * 1024 * 1024
-        if let temporaryData = temporaryData, let image = image {
-            
-            print(temporaryData.count)
-            
-            if temporaryData.count > megabyteCount {
-                let newTempData = UIImageJPEGRepresentation(image, compressionQuality)
-                checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality - 0.05, temporaryData: newTempData, completion: completion)
-            } else {
-                completion(temporaryData)
+        let profileImageRef = profileImagesRef.child(user.id)
+        guard let imageData = UIImageJPEGRepresentation(profileImage, 1.0) else { return }
+        
+        let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
+        
+        uploadTask.resume()
+        
+        uploadTask.observe(.progress) { (snapshot) in
+            if let progress = snapshot.progress {
+                let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
+                print("Upload percentage: \(percentComplete)%")
             }
-        } else {
-            guard let image = image, let imageData = UIImageJPEGRepresentation(image, compressionQuality) else { completion(temporaryData); return }
-            
-            checkAndResizeImageToBeAMaximumOf(megabytes: megabytes, image: image, withCompressionQuality: compressionQuality, temporaryData: imageData, completion: completion)
+        }
+        
+        uploadTask.observe(.failure) { (snapshot) in
+            guard let storageError = snapshot.error else { return }
+            print(storageError.localizedDescription)
         }
     }
     
@@ -456,5 +463,4 @@ class FirebaseController {
             }
         }
     }
-    
 }

@@ -10,11 +10,13 @@ import Foundation
 
 class Identifiers {
     enum Segues: String {
-        case ToPropertyDetailsVC = "segueShowPropertyDetails"
+        case editPropertyDetailsVC = "segueEditPropertyDetails"
+        case addPropertyVC = "segueAddProperty"
         case MoreCardsVC = "segueShowNoMoreCardsVC"
         case MainSwipingVC = "toMainSwipingVC"
         case noInternetVC = "segueToNoInternetVC"
         case propertyMatchesVC = "segueToPropertyMatchesVC"
+        case mainVC = "segueToMainVC"
     }
     
     enum StoryboardIDs: String {
