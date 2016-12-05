@@ -769,10 +769,9 @@ more results.</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hang tight, we're grabbing the latest cards for you..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5e4-fF-dlZ">
-                                <rect key="frame" x="20" y="60" width="339" height="137"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hang tight, we're grabbing your properties..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5e4-fF-dlZ">
+                                <rect key="frame" x="20" y="60" width="339" height="150.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="42"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -783,6 +782,11 @@ more results.</string>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="5e4-fF-dlZ" firstAttribute="trailing" secondItem="eDi-cn-gv6" secondAttribute="trailingMargin" id="7Jw-lV-Xjh"/>
+                            <constraint firstItem="5e4-fF-dlZ" firstAttribute="leading" secondItem="eDi-cn-gv6" secondAttribute="leadingMargin" constant="4" id="nv8-cX-Y6s"/>
+                            <constraint firstItem="5e4-fF-dlZ" firstAttribute="top" secondItem="uaH-3n-Eb8" secondAttribute="bottom" constant="40" id="zN6-gH-PRO"/>
+                        </constraints>
                     </view>
                     <connections>
                         <segue destination="wVr-7p-KMg" kind="presentation" identifier="toMainSwipingVC" modalTransitionStyle="crossDissolve" id="ddF-vf-MHW"/>

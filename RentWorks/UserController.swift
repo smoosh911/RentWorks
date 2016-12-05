@@ -916,24 +916,34 @@ class UserController {
             }
             let lastRenter = rentersArray.removeLast()
             var filteredRenters: [Renter] = []
+            let group = DispatchGroup()
+            group.enter()
             if UserController.renterFetchCount < 2 {
-                filteredRenters = getFilteredRentersForProperty(renters: [lastRenter], property: property)
+                getFilteredRentersForProperty(renters: [lastRenter], property: property, completion: { filtered in
+                    filteredRenters = filtered
+                    group.leave()
+                })
             } else {
-                filteredRenters = getFilteredRentersForProperty(renters: rentersArray, property: property)
-                if filteredRenters.count == 0 {
-                    updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kStartAt, newValue: lastRenter.id!)
-                    property.startAt = lastRenter.id!
+                getFilteredRentersForProperty(renters: rentersArray, property: property, completion: { filtered in
+                    filteredRenters = filtered
+                    if filteredRenters.count == 0 {
+                        updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kStartAt, newValue: lastRenter.id!)
+                        property.startAt = lastRenter.id!
+                    }
+                    group.leave()
+                })
+            }
+            group.notify(queue: .main, execute: { 
+                if filteredRenters.isEmpty {
+                    fetchRentersForProperty(numberOfRenters: numberOfRenters, property: property, completion: {
+                        completion()
+                    })
+                } else {
+                    fetchOneImageForRentersCards(rentersDict: allRentersDict, coreDataRenters: filteredRenters, completion: {
+                        completion()
+                    })
                 }
-            }
-            if filteredRenters.isEmpty {
-                fetchRentersForProperty(numberOfRenters: numberOfRenters, property: property, completion: {
-                    completion()
-                })
-            } else {
-                fetchOneImageForRentersCards(rentersDict: allRentersDict, coreDataRenters: filteredRenters, completion: {
-                    completion()
-                })
-            }
+            })
         })
     }
     
@@ -961,7 +971,7 @@ class UserController {
 //        return finalFiltered
 //    }
     
-    static func getFilteredRentersForProperty(renters: [Renter], property: Property) -> [Renter] {
+    static func getFilteredRentersForProperty(renters: [Renter], property: Property, completion: @escaping (_ renterArray: [Renter]) -> Void) {
         let filterSettingsDict = UserController.getLandlordsFiltersDictionary()
         
         // get property details
@@ -973,35 +983,49 @@ class UserController {
         
         //            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
         guard let zipcode = property.zipCode else {
-                log("couldn't retrieve property details")
-                return [Renter]()
+            log("couldn't retrieve property details")
+            completion([Renter]())
+            return
         }
         
         // get landlord details
         guard let creditDesired = filterSettingsDict[LandlordFilters.kWantsCreditRating.rawValue] as? String,
             let landlordID = currentUserID else {
-                log("couldn't retrieve landlord details")
-                return [Renter]()
+            log("couldn't retrieve landlord details")
+            completion([Renter]())
+            return
         }
         
         // filter landlord details
         let filteredWithLandlordDetails = renters.filter({ $0.creditRating! <= creditDesired || creditDesired == "Any"})
         
         // filter property details
-        let filteredWithPropertyDetails = filteredWithLandlordDetails.filter({ $0.wantedBedroomCount == bedroomCount && $0.wantedBathroomCount == bathroomCount && $0.wantedPayment >= monthlyPayment && $0.wantsPetFriendly == petsAllowed && $0.wantsSmoking == smokingallowed && $0.wantedZipCode == zipcode})
+        let filteredWithPropertyDetails = filteredWithLandlordDetails.filter({ $0.wantedBedroomCount == bedroomCount && $0.wantedBathroomCount == bathroomCount && $0.wantedPayment >= monthlyPayment && $0.wantsPetFriendly == petsAllowed && $0.wantsSmoking == smokingallowed })
         
         // get renters they haven't viewed
-        var finalFiltered: [Renter] = []
+        var filteredByHasBeenViewedBy: [Renter] = []
         for renter in filteredWithPropertyDetails {
             if let hasBeenViewedByObjects = renter.hasBeenViewedBy?.flatMap({$0 as? HasBeenViewedBy}) {
                 let hasBeenViewedByIDs = hasBeenViewedByObjects.map{$0.viewerID} as! [String]
                 if !hasBeenViewedByIDs.contains(landlordID) {
-                    finalFiltered.append(renter)
+                    filteredByHasBeenViewedBy.append(renter)
                 }
             }
         }
         
-        return finalFiltered
+        var finalFiltered: [Renter] = []
+        // needs work: the distances and renters won't neccessarily match up. Make more deterministic
+        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingZipcode: zipcode, completion: { distanceArray in
+            for i in 0 ..< distanceArray.count {
+                let renter = filteredByHasBeenViewedBy[i]
+                let distance = distanceArray[i]
+                let withinRange = distance < 5 // needs work: this should be a setting in the landlords setting page
+                if withinRange {
+                    finalFiltered.append(renter)
+                }
+            }
+            completion(finalFiltered)
+        })
     }
     
     /* OLD fetch rents where it gets by hasbeenviewedby. Might be useful  */
