@@ -27,12 +27,12 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         pkrCreditRating.dataSource = self
         pkrCreditRating.delegate = self
         
-        guard let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating, let currentLandlord = UserController.currentLandlord, let firstName = currentLandlord.firstName, let lastName = currentLandlord.lastName else {
+        guard let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating, let currentLandlord = UserController.currentLandlord, let firstName = currentLandlord.firstName, let lastName = currentLandlord.lastName, let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating) else {
             return
         }
         lblUserName.text = "\(firstName) \(lastName)"
-        let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating)
-        pkrCreditRating.selectRow(ratingIndex!, inComponent: 0, animated: false)
+        
+        pkrCreditRating.selectRow(ratingIndex, inComponent: 0, animated: false)
     }
     
     // MARK: picker view delegate
@@ -62,18 +62,9 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         return 1
     }
     
-//    @IBAction func txtfldCreditRating_EditingChanged(_ sender: Any) {
-//        let context = CoreDataStack.context
-//        if UserController.currentLandlord == nil {
-//            UserController.getCurrentLandlordFromCoreData(completion: { (landLordExists) in
-//                
-//            })
-//        }
-//        UserController.currentLandlord?.wantsCreditRating = txtfldCreditRating.text!
-//    }
     private func updateSettingsChanged() {
         SettingsViewController.settingsDidChange = true
         UserController.renterFetchCount = 0
-        UserController.resetStartAtForLandlordInFirebase(landlordID: UserController.currentUserID!)
+        UserController.resetStartAtForAllPropertiesInFirebase()
     }
 }

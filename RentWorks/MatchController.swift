@@ -51,7 +51,7 @@ class MatchController {
                     
                     for id in matchingIDArray {
                         group.enter()
-                        UserController.getPropertyWithID(propertyID: id, completion: { (propertyResult) in
+                        UserController.getPropertyWithIDWithOneImage(propertyID: id, completion: { (propertyResult) in
                             guard let property = propertyResult else { return }
                             matches.append(property)
                             group.leave()
@@ -117,7 +117,7 @@ class MatchController {
                         
                         for id in matchingIDArray {
                             subgroup.enter()
-                            UserController.getRenterWithID(renterID: id, completion: { (renterResult) in
+                            UserController.getRenterWithIDWithOneImage(renterID: id, completion: { (renterResult) in
                                 guard let renter = renterResult else { return }
                                 matches.append(renter)
                                 
@@ -166,8 +166,8 @@ class MatchController {
     
     // TODO: - For observing like endpoints, take landlord's propertyIDs and observe each one.
     
-    static func addCurrentRenter(toLikelistOf likedProperty: Property, completion: (() -> Void)? = nil) {
-        guard let propertyID = likedProperty.propertyID, let currentRenterID = UserController.currentRenter?.id else { completion?(); return }
+    static func addCurrentRenter(renter: Renter, toLikelistOf likedProperty: Property, completion: (() -> Void)? = nil) {
+        guard let propertyID = likedProperty.propertyID, let currentRenterID = renter.id else { completion?(); return }
         
         FirebaseController.likesRef.child(propertyID).child(currentRenterID).setValue(true)
         
@@ -175,10 +175,10 @@ class MatchController {
     }
     
     // Change this function/Firebase endpoints later to support adding a specific property?
-    static func addCurrentLandlord(toLikelistOf likedRenter: Renter, completion: (() -> Void)? = nil) {
-        guard let renterID = likedRenter.id, let firstProperty = UserController.currentLandlord?.property?.firstObject as? Property, let firstPropertyID = firstProperty.propertyID else { completion?(); return }
+    static func addCurrentProperty(property: Property, toLikelistOf likedRenter: Renter, completion: (() -> Void)? = nil) {
+        guard let renterID = likedRenter.id, let propertyID = property.propertyID else { completion?(); return }
         
-        FirebaseController.likesRef.child(renterID).child(firstPropertyID).setValue(true)
+        FirebaseController.likesRef.child(renterID).child(propertyID).setValue(true)
         
         completion?()
     }

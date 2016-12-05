@@ -94,7 +94,9 @@ extension Renter {
         if let startAtVal = dictionary[UserController.kStartAt] as? String {
             self.startAt = startAtVal
         } else {
-            self.startAt = ""
+            UserController.getFirstPropertyID(completion: { (propertyID) in
+                self.startAt = propertyID
+            })
         }
         
         self.email = email
