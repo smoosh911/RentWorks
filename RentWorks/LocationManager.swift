@@ -33,17 +33,18 @@ class LocationManager {
     }
     
     // needs work: there is some repetitive code in this function
-    static public func getDistancesArrayFor(entities: [Any], usingZipcode desiredLocation: String, completion: @escaping (_ distanceArray: [Int]) -> Void) {
+    static public func getDistancesArrayFor(entities: [Any], usingZipcode desiredLocation: String, completion: @escaping (_ distanceDict: [String: Int]) -> Void) {
         let group = DispatchGroup()
-        var distanceArray: [Int] = []
-        if let renters = entities as? [Renter] {            for renter in renters {
+        var distanceDict: [String: Int] = [:]
+        if let renters = entities as? [Renter] {
+            for renter in renters {
                 group.enter()
                 distanceBetweenTwoLocations(source: renter.wantedZipCode!, destination: desiredLocation, completion: { (distance) in
-                    if distance == nil {
+                    if distance == nil, renter.email == nil {
                         group.leave()
                         return
                     }
-                    distanceArray.insert(distance!, at: 0)
+                    distanceDict[renter.email!] = distance!
                     group.leave()
                 })
             }
@@ -51,17 +52,17 @@ class LocationManager {
             for property in properties {
                 group.enter()
                 distanceBetweenTwoLocations(source: property.zipCode!, destination: desiredLocation, completion: { (distance) in
-                    if distance == nil {
+                    if distance == nil, property.propertyID == nil {
                         group.leave()
                         return
                     }
-                    distanceArray.insert(distance!, at: 0)
+                    distanceDict[property.propertyID!] = distance!
                     group.leave()
                 })
             }
         }
         group.notify(queue: .main, execute: {
-            completion(distanceArray)
+            completion(distanceDict)
         })
     }
 }

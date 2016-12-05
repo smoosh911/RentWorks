@@ -102,6 +102,7 @@ class PropertyDetailsViewController: UIViewController {
         property.monthlyPayment = Int64(sender.value)
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
         // UserController.saveToPersistentStore()
+        self.updateSettingsChanged()
     }
     
     // steppers
@@ -115,6 +116,7 @@ class PropertyDetailsViewController: UIViewController {
         property.bedroomCount = bedroomCount
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBedroomCount, newValue: bedroomCount)
         // UserController.saveToPersistentStore()
+        self.updateSettingsChanged()
     }
     
     @IBAction func stpBathrooms_ValueChanged(_ sender: UIStepper) {
@@ -125,6 +127,7 @@ class PropertyDetailsViewController: UIViewController {
         property.bathroomCount = bathroomCount
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBathroomCount, newValue: bathroomCount)
         // UserController.saveToPersistentStore()
+        self.updateSettingsChanged()
     }
     
     // switches
@@ -137,6 +140,7 @@ class PropertyDetailsViewController: UIViewController {
         property.petFriendly = petsAllowed
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPetsAllowed, newValue: petsAllowed)
         // UserController.saveToPersistentStore()
+        self.updateSettingsChanged()
     }
     
     @IBAction func swtSmoking_ValueChanged(_ sender: UISwitch) {
@@ -147,6 +151,7 @@ class PropertyDetailsViewController: UIViewController {
         property.smokingAllowed = smokingAllowed
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: smokingAllowed)
         // UserController.saveToPersistentStore()
+        self.updateSettingsChanged()
     }
     
     // buttons
@@ -176,6 +181,7 @@ class PropertyDetailsViewController: UIViewController {
                 self.propertyTask = PropertyTask.editing
             })
         }
+        self.updateSettingsChanged()
     }
     
     @IBAction func btnDeletePictures_TouchedUpInside(_ sender: UIButton) {
@@ -207,6 +213,7 @@ class PropertyDetailsViewController: UIViewController {
         clctvwPropertyImages.deleteItems(at: selectedCellIndexPaths)
         selectedCellIndexPaths = []
         log("succesfully deleted images \(selectedCellIndexPaths)")
+        self.updateSettingsChanged()
     }
     
     // MARK: helper methods
@@ -310,6 +317,12 @@ class PropertyDetailsViewController: UIViewController {
         default:
             _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
         }
+    }
+    
+    internal func updateSettingsChanged() {
+        SettingsViewController.settingsDidChange = true
+        UserController.renterFetchCount = 0
+        UserController.resetStartAtForAllPropertiesInFirebase()
     }
 }
 
@@ -423,8 +436,8 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
                 UserController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: imageURLs)
                 self.propertyImages = profileImages
                 self.clctvwPropertyImages.reloadData()
+                self.updateSettingsChanged()
             })
-            
 //            UserController.userCreationPhotos.append(image) // I don't know what this was for so I'll leave it in case of errors
         }
     }

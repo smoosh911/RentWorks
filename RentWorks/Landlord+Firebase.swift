@@ -13,7 +13,7 @@ extension Landlord {
     var dictionaryRepresentation: [String: Any]? {
         guard let firstName = firstName, let lastName = lastName, let email = email, let wantsCreditRating = wantsCreditRating /*, let id = id, let birthday = birthday */ else { return nil }
         
-        return [UserController.kFirstName: firstName, UserController.kLastName: lastName, UserController.kEmail: email, UserController.kWantsCreditRating: wantsCreditRating]
+        return [UserController.kFirstName: firstName, UserController.kLastName: lastName, UserController.kEmail: email, UserController.kWantsCreditRating: wantsCreditRating, UserController.kWithinRangeMiles: withinRangeMiles]
     }
     
     

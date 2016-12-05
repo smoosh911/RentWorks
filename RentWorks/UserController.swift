@@ -981,7 +981,7 @@ class UserController {
         let petsAllowed = property.petFriendly
         let smokingallowed = property.smokingAllowed
         
-        //            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
+        // let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
         guard let zipcode = property.zipCode else {
             log("couldn't retrieve property details")
             completion([Renter]())
@@ -990,6 +990,7 @@ class UserController {
         
         // get landlord details
         guard let creditDesired = filterSettingsDict[LandlordFilters.kWantsCreditRating.rawValue] as? String,
+            let withinRangeMiles = filterSettingsDict[LandlordFilters.kWithinRangeMiles.rawValue] as? Int16,
             let landlordID = currentUserID else {
             log("couldn't retrieve landlord details")
             completion([Renter]())
@@ -1015,11 +1016,10 @@ class UserController {
         
         var finalFiltered: [Renter] = []
         // needs work: the distances and renters won't neccessarily match up. Make more deterministic
-        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingZipcode: zipcode, completion: { distanceArray in
-            for i in 0 ..< distanceArray.count {
-                let renter = filteredByHasBeenViewedBy[i]
-                let distance = distanceArray[i]
-                let withinRange = distance < 5 // needs work: this should be a setting in the landlords setting page
+        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingZipcode: zipcode, completion: { distanceDict in
+            for distance in distanceDict {
+                guard let renter = filteredByHasBeenViewedBy.filter({$0.email! == distance.key}).first else { log("ERROR: no renters who matched distance dictionary key"); completion(finalFiltered); return }
+                let withinRange = distance.value < Int(withinRangeMiles) // needs work: this should be a setting in the landlords setting page
                 if withinRange {
                     finalFiltered.append(renter)
                 }
@@ -1274,6 +1274,8 @@ extension UserController {
     static let kOccupationHistory = "work"
     static let kCurrentOccupation = "currentOccupation"
     
+    static let kWithinRangeMiles = "within_range_miles"
+    
     static let kStartAt = "startAt"
     
     enum RenterFilters: String {
@@ -1285,12 +1287,14 @@ extension UserController {
         case kSmokingAllowed = "smokingAllowed"
         case kZipCode = "zipCode"
         case kCurrentOccupation = "currentOccupation"
-        static let allValues = [kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode, kCurrentOccupation]
+        case kWithinRangeMiles = "within_range_miles"
+        static let allValues = [kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode, kCurrentOccupation, kWithinRangeMiles]
     }
     
     enum LandlordFilters: String {
         case kWantsCreditRating = "wants_credit_rating"
-        static let allValues = [kWantsCreditRating]
+        case kWithinRangeMiles = "within_range_miles"
+        static let allValues = [kWantsCreditRating, kWithinRangeMiles]
     }
     
     enum PropertyDetailValues: String {

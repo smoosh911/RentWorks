@@ -32,11 +32,6 @@ extension Landlord {
             let firstName = dictionary[UserController.kFirstName] as? String,
             let lastName = dictionary[UserController.kLastName] as? String
             else { return nil }
-
-        var wantsCreditRating: String = "Any"
-        if let wantsCreditRatingFromDict = dictionary[UserController.kWantsCreditRating] as? String {
-            wantsCreditRating = wantsCreditRatingFromDict
-        }
         
         if let context = context {
             self.init(context: context)
@@ -44,12 +39,23 @@ extension Landlord {
             self.init(entity: Landlord.entity(), insertInto: nil)
         }
         
+        var wantsCreditRating: String = "Any"
+        if let wantsCreditRatingFromDict = dictionary[UserController.kWantsCreditRating] as? String {
+            wantsCreditRating = wantsCreditRatingFromDict
+        }
+        
+        if let withinRangeMiles = dictionary[UserController.kWithinRangeMiles] as? Int {
+            self.withinRangeMiles = Int16(withinRangeMiles)
+        } else {
+            self.withinRangeMiles = 5
+        }
+        
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
         self.wantsCreditRating = wantsCreditRating
         self.id = id
-        // TODO: - Change this later
+        // needs work: need to figure out what the defult star rating is
         self.starRating = 5.0
     }
 }
