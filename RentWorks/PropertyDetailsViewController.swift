@@ -68,14 +68,16 @@ class PropertyDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
-        propertyImages = profileImages
         
         if propertyTask == PropertyTask.adding {
 //            property = NSEntityDescription.insertNewObject(forEntityName: "Property", into: CoreDataStack.context) as! Property
             guard let landlordID = UserController.currentUserID else { return }
             property = Property(landlordID: landlordID, landlord: landlord)
         }
+        
+        guard let property = property, let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
+        propertyImages = profileImages
+        
         let propertyDetailsDict = UserController.getPropertyDetailsDictionary(property: property)
         updatePropertyDetails(propertyDetailsDict: propertyDetailsDict)
     }
@@ -163,6 +165,8 @@ class PropertyDetailsViewController: UIViewController {
             //        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyFeatures, newValue: propertyFeatures)
             UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
             UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kAddress, newValue: address)
+            self.lblPropertySaveResult.text = SaveResults.success.rawValue
+            self.lblPropertySaveResult.isHidden = false
             // UserController.saveToPersistentStore()
         } else {
             UserController.createPropertyInFirebase(property: property, completion: { success in

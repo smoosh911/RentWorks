@@ -62,15 +62,6 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         return 1
     }
     
-//    @IBAction func txtfldCreditRating_EditingChanged(_ sender: Any) {
-//        let context = CoreDataStack.context
-//        if UserController.currentLandlord == nil {
-//            UserController.getCurrentLandlordFromCoreData(completion: { (landLordExists) in
-//                
-//            })
-//        }
-//        UserController.currentLandlord?.wantsCreditRating = txtfldCreditRating.text!
-//    }
     private func updateSettingsChanged() {
         SettingsViewController.settingsDidChange = true
         UserController.renterFetchCount = 0
