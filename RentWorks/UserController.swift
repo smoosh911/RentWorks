@@ -735,6 +735,7 @@ class UserController {
             guard let renter = renter else { print("Renter returned in completion closure is nil"); return }
             self.saveRenterProfileImagesToCoreDataAndFirebase(forRenter: renter, completion: {
                 self.createRenterInFirebase(renter: renter, completion: {
+                    UserController.currentRenter = renter
                     completion()
                 })
             })

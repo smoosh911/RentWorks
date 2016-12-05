@@ -21,8 +21,6 @@ class CardLoadingViewController: UIViewController {
             UserController.fetchPropertiesForLandlord(landlordID: UserController.currentUserID!, completion: { success in
                 if success {
                     self.landlordPropertiesLoaded()
-                } else {
-                    
                 }
             })
         }
