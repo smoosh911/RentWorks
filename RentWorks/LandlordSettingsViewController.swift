@@ -27,12 +27,12 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         pkrCreditRating.dataSource = self
         pkrCreditRating.delegate = self
         
-        guard let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating, let currentLandlord = UserController.currentLandlord, let firstName = currentLandlord.firstName, let lastName = currentLandlord.lastName else {
+        guard let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating, let currentLandlord = UserController.currentLandlord, let firstName = currentLandlord.firstName, let lastName = currentLandlord.lastName, let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating) else {
             return
         }
         lblUserName.text = "\(firstName) \(lastName)"
-        let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating)
-        pkrCreditRating.selectRow(ratingIndex!, inComponent: 0, animated: false)
+        
+        pkrCreditRating.selectRow(ratingIndex, inComponent: 0, animated: false)
     }
     
     // MARK: picker view delegate
