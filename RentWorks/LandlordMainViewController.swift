@@ -12,6 +12,8 @@ class LandlordMainViewController: MainViewController {
     
     // MARK: outlets
     
+    @IBOutlet weak var vwLoadingNewCards: UIView!
+    
     @IBOutlet weak var lblFrontCardCreditRating: UILabel!
     @IBOutlet weak var lblRenterOccupation: UILabel!
     
@@ -38,9 +40,9 @@ class LandlordMainViewController: MainViewController {
     var cardsAreLoading = false {
         didSet {
             if cardsAreLoading {
-                let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
-                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
-                self.present(mainVC, animated: true, completion: nil)
+                vwLoadingNewCards.isHidden = false
+            } else {
+                vwLoadingNewCards.isHidden = true
             }
         }
     }
@@ -52,31 +54,8 @@ class LandlordMainViewController: MainViewController {
         UserController.renterFetchCount = 0 // renter fetch count is shared between properties so we need to restart it when we switch to a new property
         swipeableView.isHidden = true
         backgroundView.isHidden = true
-        UserController.fetchRentersForProperty(numberOfRenters: FirebaseController.cardDownloadCount, property: property, completion: {
-            self.filteredRenters = self.getFilteredRenters()
-            if self.filteredRenters.isEmpty && UserController.renterFetchCount == 1 {
-                self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
-            }
-            self.updateCardUI()
-        })
+        updateCardUI()
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        
-//        if super.previousVCWasCardsLoadingVC {
-//            super.previousVCWasCardsLoadingVC = false
-//        } else {
-//            if SettingsViewController.settingsDidChange {
-//                SettingsViewController.settingsDidChange = false
-//                filteredRenters = getFilteredRenters()
-//                if filteredRenters.isEmpty && UserController.renterFetchCount == 1 {
-//                    self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
-//                }
-//                self.updateCardUI()
-//            }
-//        }
-//    }
     
     // MARK: actions
     
@@ -155,13 +134,17 @@ class LandlordMainViewController: MainViewController {
     
     func downloadMoreCards() {
         if !FirebaseController.isFetchingNewRenters {
-            if UserController.renterFetchCount == 1 { // if fetch count is one here then the last card in the database has already been pulled
+            if super.previousVCWasCardsLoadingVC {
+                super.previousVCWasCardsLoadingVC = false
+            } else if UserController.renterFetchCount == 1 { // if fetch count is one here then the last card in the database has already been pulled
                 performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
                 return
             }
             FirebaseController.isFetchingNewRenters = true
+            cardsAreLoading = true
             UserController.fetchRentersForProperty(numberOfRenters: 6, property: property, completion: {
                 FirebaseController.isFetchingNewRenters = false
+                self.cardsAreLoading = false
                 let newFilteredRenters = self.getFilteredRenters()
                 let uniqueRenters = newFilteredRenters.filter({ !self.filteredRenters.contains($0) })
                 if uniqueRenters.count > 0 {

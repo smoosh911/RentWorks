@@ -12,6 +12,8 @@ class RenterMainViewController: MainViewController {
     
     // MARK: outlets
     
+    @IBOutlet weak var vwLoadingNewCards: UIView!
+    
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var bedroomCountLabel: UILabel!
     @IBOutlet weak var bedroomImageView: UIImageView!
@@ -45,9 +47,9 @@ class RenterMainViewController: MainViewController {
     var cardsAreLoading = false {
         didSet {
             if cardsAreLoading {
-                let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
-                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
-                self.present(mainVC, animated: true, completion: nil)
+                vwLoadingNewCards.isHidden = false
+            } else {
+                vwLoadingNewCards.isHidden = true
             }
         }
     }
@@ -56,12 +58,6 @@ class RenterMainViewController: MainViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UserController.propertyFetchCount = 0 // renter fetch count is shared between properties so we need to restart it when we switch to a new property
-        filteredProperties = getFilteredProperties()
-        
-        if filteredProperties.isEmpty {
-            self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
-        }
         self.updateCardUI()
     }
     
@@ -169,13 +165,17 @@ class RenterMainViewController: MainViewController {
     
     func downloadMoreCards() {
         if !FirebaseController.isFetchingNewProperties {
-            if UserController.propertyFetchCount == 1 { // if fetch count is one here then the last card in the database has already been pulled
+            if super.previousVCWasCardsLoadingVC {
+                super.previousVCWasCardsLoadingVC = false
+            } else if UserController.propertyFetchCount == 1 { // if fetch count is one here then the last card in the database has already been pulled
                 performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
                 return
             }
             FirebaseController.isFetchingNewProperties = true
+            cardsAreLoading = true
             UserController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: {
                 FirebaseController.isFetchingNewProperties = false
+                self.cardsAreLoading = false
                 
                 let newFilteredProperties = self.getFilteredProperties()
                 let uniqueProperties = newFilteredProperties.filter({ !self.filteredProperties.contains($0) })
