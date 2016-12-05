@@ -302,12 +302,12 @@ class FirebaseController {
                         let walkthroughMismatch = UserController.userCreationType == UserController.UserCreationType.landlord.rawValue // this will be false if the user already has an account and tries to create an account as the wrong user type
                         
                         if renterExists && walkthroughMismatch {
+                            success = true
                             UserController.userCreationType = UserController.UserCreationType.renter.rawValue
                             let alertTitle = "Whoops"
                             let alertMessage = "You already have an account as a \(UserController.userCreationType), we will log you in as a \(UserController.userCreationType). If you want a landlord account, please create a seperate account"
                             let dismissTitle = "Okay"
                             AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, dismissTitle: dismissTitle, inViewController: targetVC)
-                            success = true
                         } else if renterExists {
                             success = true
                         }
@@ -318,12 +318,12 @@ class FirebaseController {
                     UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
                         let walkthroughMismatch = UserController.userCreationType == UserController.UserCreationType.renter.rawValue // this will be false if the user already has an account and tries to create an account as the wrong user type
                         if landlordExists && walkthroughMismatch {
+                            success = true
                             UserController.userCreationType = UserController.UserCreationType.landlord.rawValue
                             let alertTitle = "Whoops"
                             let alertMessage = "You already have an account as a \(UserController.userCreationType), we will log you in as a \(UserController.userCreationType). If you want a renter account, please create a seperate account"
                             let dismissTitle = "Okay"
                             AlertManager.alert(withTitle: alertTitle, withMessage: alertMessage, dismissTitle: dismissTitle, inViewController: targetVC)
-                            success = true
                         } else if landlordExists {
                             success = true
                         }
@@ -334,7 +334,6 @@ class FirebaseController {
                         if success == true {
                             completion(true)
                         } else {
-                            
                             UserController.fetchLoggedInUserFromFirebase(completion: { (user) in
                                 guard user != nil else { completion(false); return }
                                 

@@ -32,6 +32,7 @@
         <attribute name="propertyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rentalHistoryRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="smokingAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="startAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="hasBeenViewedBy" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HasBeenViewedBy" inverseName="property" inverseEntity="HasBeenViewedBy" syncable="YES"/>
         <relationship name="landlord" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Landlord" inverseName="property" inverseEntity="Landlord" syncable="YES"/>
@@ -42,6 +43,7 @@
         <attribute name="bio" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creditRating" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="maritalStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wantedBathroomCount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="wantedBedroomCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="wantedPayment" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
@@ -61,16 +63,15 @@
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="occupationHistory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="startAt" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="occupation" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Occupation" inverseName="user" inverseEntity="Occupation" syncable="YES"/>
     </entity>
     <elements>
         <element name="HasBeenViewedBy" positionX="-38" positionY="486" width="128" height="88"/>
         <element name="Landlord" positionX="225" positionY="189" width="128" height="75"/>
-        <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="118"/>
-        <element name="Property" positionX="223" positionY="324" width="128" height="268"/>
-        <element name="Renter" positionX="-308" positionY="180" width="146" height="238"/>
-        <element name="User" positionX="-2" positionY="-52" width="128" height="193"/>
         <element name="Occupation" positionX="-333" positionY="-0" width="128" height="73"/>
+        <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="118"/>
+        <element name="Property" positionX="223" positionY="324" width="128" height="283"/>
+        <element name="Renter" positionX="-308" positionY="180" width="146" height="253"/>
+        <element name="User" positionX="-2" positionY="-52" width="128" height="178"/>
     </elements>
 </model>

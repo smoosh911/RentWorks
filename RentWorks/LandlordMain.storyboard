@@ -1111,7 +1111,14 @@ more results.</string>
                                 <rect key="frame" x="279" y="513" width="80" height="30"/>
                                 <state key="normal" title="Add Picture"/>
                                 <connections>
-                                    <action selector="selectPhotoButtonTapped:" destination="z2y-ul-bUZ" eventType="touchUpInside" id="PTe-f7-Udq"/>
+                                    <action selector="addPhotoButtonTapped:" destination="z2y-ul-bUZ" eventType="touchUpInside" id="ekz-QD-jAt"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UUe-ZB-NYq">
+                                <rect key="frame" x="166" y="513" width="105" height="30"/>
+                                <state key="normal" title="Delete Pictures"/>
+                                <connections>
+                                    <action selector="btnDeletePictures_TouchedUpInside:" destination="z2y-ul-bUZ" eventType="touchUpInside" id="IAa-Sq-zUb"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1128,6 +1135,7 @@ more results.</string>
                             <constraint firstItem="OM3-jJ-3iO" firstAttribute="leading" secondItem="yz9-2g-te5" secondAttribute="leadingMargin" id="Dbj-gX-2WV"/>
                             <constraint firstItem="ZCX-2a-Guc" firstAttribute="trailing" secondItem="yz9-2g-te5" secondAttribute="trailingMargin" id="G90-Ha-rBj"/>
                             <constraint firstItem="kAP-jk-s90" firstAttribute="trailing" secondItem="hpf-9Q-Hx4" secondAttribute="trailing" id="I8j-WB-MJf"/>
+                            <constraint firstItem="kAP-jk-s90" firstAttribute="top" secondItem="UUe-ZB-NYq" secondAttribute="bottom" constant="20" id="Ly9-iN-MDq"/>
                             <constraint firstItem="mXI-P4-ATh" firstAttribute="leading" secondItem="yz9-2g-te5" secondAttribute="leadingMargin" constant="32" id="NCa-Oc-4pX"/>
                             <constraint firstItem="lmK-b6-oFr" firstAttribute="top" secondItem="A6Z-kT-bK1" secondAttribute="bottom" constant="8" id="NJ3-cN-L8R"/>
                             <constraint firstItem="iU9-SF-lO8" firstAttribute="top" secondItem="2Vz-eF-UH7" secondAttribute="bottom" constant="67" id="Pin-Td-73u"/>
@@ -1136,6 +1144,7 @@ more results.</string>
                             <constraint firstAttribute="bottom" secondItem="OtT-L2-yTI" secondAttribute="bottom" constant="171" id="Wcw-Pu-2AU"/>
                             <constraint firstAttribute="bottom" secondItem="kAP-jk-s90" secondAttribute="bottom" constant="20" symbolic="YES" id="bxQ-kR-x2G"/>
                             <constraint firstItem="kAP-jk-s90" firstAttribute="leading" secondItem="OtT-L2-yTI" secondAttribute="leading" id="gjx-Fj-6y4"/>
+                            <constraint firstItem="hpf-9Q-Hx4" firstAttribute="leading" secondItem="UUe-ZB-NYq" secondAttribute="trailing" constant="8" id="jIV-27-NdH"/>
                             <constraint firstItem="A6Z-kT-bK1" firstAttribute="leading" secondItem="iU9-SF-lO8" secondAttribute="trailing" constant="8" id="kJH-Ef-bQz"/>
                             <constraint firstItem="OM3-jJ-3iO" firstAttribute="top" secondItem="iU9-SF-lO8" secondAttribute="bottom" constant="17.5" id="le8-HV-etC"/>
                             <constraint firstItem="kAP-jk-s90" firstAttribute="trailing" secondItem="OtT-L2-yTI" secondAttribute="trailing" id="mRx-Oh-Ovj"/>

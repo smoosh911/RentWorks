@@ -9,6 +9,7 @@
 import UIKit
 import CoreData
 import Photos
+import FirebaseStorage
 
 class PropertyDetailsViewController: UIViewController {
     
@@ -47,7 +48,11 @@ class PropertyDetailsViewController: UIViewController {
     var property: Property! = nil
     var landlord: Landlord! = UserController.currentLandlord
     
+    var propertyImages: [ProfileImage] = []
+    
     var propertyTask: PropertyTask = PropertyTask.editing
+    
+    var selectedCellIndexPaths: [IndexPath] = []
     
     enum SaveResults: String {
         case success = "Property Saved!"
@@ -63,6 +68,8 @@ class PropertyDetailsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
+        propertyImages = profileImages
         
         if propertyTask == PropertyTask.adding {
 //            property = NSEntityDescription.insertNewObject(forEntityName: "Property", into: CoreDataStack.context) as! Property
@@ -155,6 +162,7 @@ class PropertyDetailsViewController: UIViewController {
 //            property.zipCode = zipcode
             //        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyFeatures, newValue: propertyFeatures)
             UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
+            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kAddress, newValue: address)
             // UserController.saveToPersistentStore()
         } else {
             UserController.createPropertyInFirebase(property: property, completion: { success in
@@ -164,6 +172,37 @@ class PropertyDetailsViewController: UIViewController {
                 self.propertyTask = PropertyTask.editing
             })
         }
+    }
+    
+    @IBAction func btnDeletePictures_TouchedUpInside(_ sender: UIButton) {
+        print("should delete \(selectedCellIndexPaths)")
+        
+        let imagesAtIndexPaths = selectedCellIndexPaths.flatMap({ propertyImages[$0.row] })
+        propertyImages = propertyImages.filter({ !imagesAtIndexPaths.contains($0) })
+        for i in 0 ..< imagesAtIndexPaths.count {
+            let propertyImage = imagesAtIndexPaths[i]
+            guard let imageURL = propertyImage.imageURL, let propertyID = property.propertyID else { return }
+            let profileImageRef = FIRStorage.storage().reference(forURL: imageURL)
+            
+            let context: NSManagedObjectContext = CoreDataStack.context
+            context.delete(propertyImage)
+            
+            if i == (imagesAtIndexPaths.count - 1) {
+                let newimageURLs = propertyImages.map({$0.imageURL!})
+                UserController.deletePropertyImageURLsInFirebase(id: propertyID)
+                UserController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: newimageURLs)
+            }
+            
+            profileImageRef.delete(completion: { (error) in
+                if (error != nil) {
+                    log("ERROR: Couldn't delete image. \(error)")
+                }
+            })
+        }
+        
+        clctvwPropertyImages.deleteItems(at: selectedCellIndexPaths)
+        selectedCellIndexPaths = []
+        log("succesfully deleted images \(selectedCellIndexPaths)")
     }
     
     // MARK: helper methods
@@ -275,31 +314,42 @@ class PropertyDetailsViewController: UIViewController {
 extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let profileImages = property.profileImages else { return 0 }
-        return profileImages.count
+        
+        return propertyImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.CollectionViewCells.PropertyImageCell.rawValue, for: indexPath) as! PropertyImageCollectionViewCell
+        let profileImage = propertyImages[indexPath.row]
         
-        guard let profileImage = property.profileImages?[indexPath.row] as? ProfileImage, let image = UIImage(data: profileImage.imageData as! Data) else { return cell }
+        guard let image = UIImage(data: profileImage.imageData as! Data) else { return cell }
         
         cell.imgProperty.image = image
+        cell.indexPath = indexPath
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! PropertyImageCollectionViewCell
-        
+        if selectedCellIndexPaths.contains(indexPath) {
+            cell.layer.borderWidth = 0
+            selectedCellIndexPaths = selectedCellIndexPaths.filter({$0 != indexPath})
+            print(selectedCellIndexPaths)
+        } else {
+            cell.layer.borderWidth = 5
+            cell.layer.borderColor = UIColor.purple.cgColor
+            selectedCellIndexPaths.append(indexPath)
+            print(selectedCellIndexPaths)
+        }
     }
 }
 
 // MARK: add images
 
 extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    @IBAction func selectPhotoButtonTapped(_ sender: UIButton) {
+    @IBAction func addPhotoButtonTapped(_ sender: UIButton) {
         checkPhotoLibraryPermission { (success) in
             if success {
                 let imagePicker = UIImagePickerController()
@@ -367,6 +417,7 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
                 // needs work: update so you don't have to delete every time
                 UserController.deletePropertyImageURLsInFirebase(id: propertyID)
                 UserController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: imageURLs)
+                self.propertyImages = profileImages
                 self.clctvwPropertyImages.reloadData()
             })
             

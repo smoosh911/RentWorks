@@ -15,9 +15,8 @@ import Foundation
     func beingDragged(gesture: UIPanGestureRecognizer)
     func updateCardUI()
     @objc optional func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any)
-    @objc optional func swipableView(_ swipableView: RWKSwipeableView, didAcceptRenter cardEntity: Any)
-    @objc optional func swipableView(_ swipableView: RWKSwipeableView, didRejectRenter cardEntity: Any)
-    func likeUser()
+    @objc optional func swipableView(_ swipableView: RWKSwipeableView, didAccept cardEntity: Any)
+    @objc optional func swipableView(_ swipableView: RWKSwipeableView, didReject cardEntity: Any)
 }
 
 class RWKSwipeableView: UIView {
@@ -70,9 +69,9 @@ class RWKSwipeableView: UIView {
             if label.center.x < swipeDistanceFromEdgeRequired {
                 acceptedOrRejected = "rejected"
                 if let renter = self.renter {
-                    if let swipped = delegate.swipableView?(self, didSwipeOn: renter), let rejected = delegate.swipableView?(self, didRejectRenter: renter) { swipped; rejected}
+                    if let swipped = delegate.swipableView?(self, didSwipeOn: renter), let rejected = delegate.swipableView?(self, didReject: renter) { swipped; rejected}
                 } else if let property = self.property {
-                    if let swipped = delegate.swipableView?(self, didSwipeOn: property), let rejected = delegate.swipableView?(self, didRejectRenter: property) { swipped; rejected }
+                    if let swipped = delegate.swipableView?(self, didSwipeOn: property), let rejected = delegate.swipableView?(self, didReject: property) { swipped; rejected }
                 }
                 
                 UIView.animate(withDuration: 0.2, animations: {
@@ -84,9 +83,9 @@ class RWKSwipeableView: UIView {
             } else if label.center.x > superView.bounds.width - swipeDistanceFromEdgeRequired {
                 acceptedOrRejected = "accepted"
                 if let renter = self.renter {
-                    if let swipped = delegate.swipableView?(self, didSwipeOn: renter), let accepted = delegate.swipableView?(self, didAcceptRenter: renter) { swipped; accepted}
+                    if let swipped = delegate.swipableView?(self, didSwipeOn: renter), let accepted = delegate.swipableView?(self, didAccept: renter) { swipped; accepted}
                 } else if let property = self.property {
-                    if let swipped = delegate.swipableView?(self, didSwipeOn: property), let accepted = delegate.swipableView?(self, didAcceptRenter: property) { swipped; accepted }
+                    if let swipped = delegate.swipableView?(self, didSwipeOn: property), let accepted = delegate.swipableView?(self, didAccept: property) { swipped; accepted }
                 }
                 UIView.animate(withDuration: 0.2, animations: {
                     delegate.swipeRightCompleteTransform(view: label)

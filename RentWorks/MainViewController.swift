@@ -223,7 +223,7 @@ extension MainViewController: RWKSwipeableViewDelegate {
         
         view.transform = anitransform
         
-        likeUser()
+//        likeUser()
     }
     
     func resetFrontCardTransform(view: UIView) {
@@ -241,15 +241,16 @@ extension MainViewController: RWKSwipeableViewDelegate {
     
     // MARK: - update data
     
-    func likeUser() {
-        if UserController.currentUserType == "renter" {
-            guard let property = swipeableView.property else { return }
-            MatchController.addCurrentRenter(toLikelistOf: property)
-        } else if UserController.currentUserType == "landlord" {
-            guard let renter = swipeableView.renter else { return }
-            MatchController.addCurrentLandlord(toLikelistOf: renter)
-        }
-    }
+    // needs work: add to seperate landlord and renter mainVCs
+//    func likeUser() {
+//        if UserController.currentUserType == "renter" {
+//            guard let property = swipeableView.property else { return }
+//            MatchController.addCurrentRenter(toLikelistOf: property)
+//        } else if UserController.currentUserType == "landlord" {
+//            guard let renter = swipeableView.renter else { return }
+//            MatchController.addCurrentProperty(toLikelistOf: renter)
+//        }
+//    }
     
 //    func resetData() {
 //        if UserController.currentUserType == "renter" {

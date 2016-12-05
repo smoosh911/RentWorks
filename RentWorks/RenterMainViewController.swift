@@ -56,6 +56,7 @@ class RenterMainViewController: MainViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        UserController.propertyFetchCount = 0 // renter fetch count is shared between properties so we need to restart it when we switch to a new property
         filteredProperties = getFilteredProperties()
         
         if filteredProperties.isEmpty {
@@ -109,7 +110,9 @@ class RenterMainViewController: MainViewController {
             backCardProperty = filteredProperties.first
         }
         
-        guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address else { return }
+        guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address, let renterID = UserController.currentUserID, let propertyID = property.propertyID else { return }
+        
+        UserController.updateCurrentRenterInFirebase(id: renterID, attributeToUpdate: UserController.kStartAt, newValue: propertyID)
         
         imageView.image = profilePicture
         nameLabel.text = address
@@ -143,6 +146,11 @@ class RenterMainViewController: MainViewController {
     override func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any) {
         guard let property = cardEntity as? Property, let propertyID = property.propertyID, let renterID = UserController.currentUserID else { return }
         UserController.addHasBeenViewedByRenterToPropertyInFirebase(propertyID: propertyID, renterID: renterID)
+    }
+    
+    func swipableView(_ swipableView: RWKSwipeableView, didAccept cardEntity: Any) {
+        guard let renter = UserController.currentRenter, let property = cardEntity as? Property else { return }
+        MatchController.addCurrentRenter(renter: renter, toLikelistOf: property)
     }
     
     func setMatchesButtonImage() {

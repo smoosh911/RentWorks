@@ -24,7 +24,6 @@ class UserController {
         }
     }
     
-    
     static var canPage = false
     
     static var userCreationType = ""
@@ -39,7 +38,10 @@ class UserController {
     
     static var propertyFetchCount = 0
     
+    // needs work: there should be a different renterfetchcount for each property instead of sharing it
     static var renterFetchCount = 0
+    
+//    static var previousStartAt = ""
     
 //    static var currentUserHasBeenViewedByIDs: [String] = []
     
@@ -112,16 +114,7 @@ class UserController {
             completion()
         })
     }
-    
-    static func resetStartAtForLandlordInFirebase(landlordID: String) {
-        FirebaseController.rentersRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("landlord nil"); return }
-            let key = child.key
-            FirebaseController.landlordsRef.child(landlordID).child(UserController.kStartAt).setValue(key)
-            currentLandlord!.startAt = key
-        })
-    }
-    
+
 //    static func updateStartAtForLandlordInFirebase(landlordID: String, newStartAt: String) {
 //        FirebaseController.landlordsRef.child(landlordID).child(UserController.kStartAt).setValue(newStartAt)
 //    }
@@ -173,7 +166,7 @@ class UserController {
 //                landlordDict.removeValue(forKey: "propertyFeatures")
                 let id = facebookDictionary?[kID] as? String
                 getFirstRenterID(completion: { (renterID) in
-                    temporaryUserCreationDictionary[UserController.kStartAt] = renterID
+//                    temporaryUserCreationDictionary[UserController.kStartAt] = renterID
                     guard let landlord = Landlord(dictionary: facebookDictionary!, id: id) else { print("Landlord could not be initialized from dictionary"); completion(nil); return }
                     UserController.currentLandlord = landlord
                     completion(landlord)
@@ -187,7 +180,7 @@ class UserController {
         FirebaseController.landlordsRef.child(landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
             getFirstRenterID(completion: { (renterID) in
                 guard var landlordDictionary = snapshot.value as? [String: Any] else { log("couldn't create landlord"); completion(nil); return }
-                landlordDictionary[UserController.kStartAt] = renterID
+//                landlordDictionary[UserController.kStartAt] = renterID
                 guard let landlord = Landlord(dictionary: landlordDictionary, id: landlordID, context: context) else { log("couldn't create landlord"); completion(nil); return }
                 
                 FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -231,6 +224,37 @@ class UserController {
     }
     
     // MARK: - Property Functions
+    
+    // needs work: user getfirstRenter func
+    static func resetStartAtForPropertyInFirebase(property: Property) {
+        guard let propertyID = property.propertyID else { return }
+        FirebaseController.rentersRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("renter nil"); return }
+            let key = child.key
+            FirebaseController.propertiesRef.child(propertyID).child(UserController.kStartAt).setValue(key)
+            property.startAt = key
+        })
+    }
+    
+    // needs work: user getfirstRenter func
+    static func resetStartAtForAllPropertiesInFirebase() {
+        guard let landlord = currentLandlord, let landlordID = landlord.id else { return }
+        FirebaseController.propertiesRef.queryOrdered(byChild: UserController.kLandlordID).queryEqual(toValue: landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let children = snapshot.children.allObjects as? [FIRDataSnapshot] else { log("properties nil"); return }
+            FirebaseController.rentersRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
+                guard let renterChild = snapshot.children.nextObject() as? FIRDataSnapshot else { log("renter nil"); return }
+                let key = renterChild.key
+                for child in children {
+                    let propertyID = child.key
+                    let properties = FirebaseController.properties
+                    if let property = properties.filter({$0.propertyID == propertyID}).first {
+                        FirebaseController.propertiesRef.child(propertyID).child(UserController.kStartAt).setValue(key)
+                        property.startAt = key
+                    }
+                }
+            })
+        })
+    }
     
     static func deletePropertyInFirebase(propertyID: String) {
         FirebaseController.propertiesRef.child(propertyID).removeValue()
@@ -358,6 +382,7 @@ class UserController {
             log("ERROR: couldn't retrieve either renter or startat")
             return
         }
+        log(startAt)
         FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: startAt).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
 
@@ -370,16 +395,18 @@ class UserController {
             if UserController.propertyFetchCount < 2 {
                 filteredProperties = getFilteredProperties(properties: [lastProperty])
             } else {
-                updateCurrentRenterInFirebase(id: currentUserID!, attributeToUpdate: UserController.kStartAt, newValue: lastProperty.propertyID!)
-                currentRenter!.startAt = lastProperty.propertyID!
                 filteredProperties = getFilteredProperties(properties: landlordProperties)
+                if filteredProperties.count < 2 {
+                    updateCurrentRenterInFirebase(id: currentUserID!, attributeToUpdate: UserController.kStartAt, newValue: lastProperty.propertyID!)
+                    currentRenter!.startAt = lastProperty.propertyID!
+                }
             }
             if filteredProperties.isEmpty {
                 fetchProperties(numberOfProperties: numberOfProperties, completion: { 
                     completion()
                 })
             } else {
-                fetchImagesForProperties(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
+                fetchOneImageForPropertiesCards(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
                     completion()
                 })
             }
@@ -620,7 +647,7 @@ class UserController {
     }
     
     // needs work: this method should check if there is something in the renters before it goes to the internet
-    static func getPropertyWithID(propertyID: String, completion: @escaping (_ renter: Property?) -> Void) {
+    static func getPropertyWithIDWithOneImage(propertyID: String, completion: @escaping (_ renter: Property?) -> Void) {
         FirebaseController.propertiesRef.queryOrderedByKey().queryEqual(toValue: propertyID).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
             let properties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
@@ -633,8 +660,34 @@ class UserController {
                     let dict = propertyDict.value
                     guard let imageURLDict = (dict[UserController.kImageURLS] as? [String: String])?.values, let property = properties.first else { group.leave(); return }
                     let imageURLArray = Array(imageURLDict)
-                    
+                    guard let imageToDownload = imageURLArray.first else { group.leave(); return }
+                    FirebaseController.downloadProfileImageFor(property: property, withURL: imageToDownload, completion: {
+                        group.leave()
+                    })
+                })
+            }
+            
+            group.notify(queue: DispatchQueue.main, execute: {
+                completion(properties.first)
+            })
+        })
+    }
+    
+    // not currently in use but usefull if you need to get all images for a property
+    static func getPropertyWithID(propertyID: String, completion: @escaping (_ renter: Property?) -> Void) {
+        FirebaseController.propertiesRef.queryOrderedByKey().queryEqual(toValue: propertyID).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allPropertiesDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
+            let properties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+            let backgroundQ = DispatchQueue.global(qos: .background)
+            let group = DispatchGroup()
+            
+            for propertyDict in allPropertiesDict {
+                backgroundQ.async(group: group, execute: {
+                    let dict = propertyDict.value
+                    guard let imageURLDict = (dict[UserController.kImageURLS] as? [String: String])?.values, let property = properties.first else { group.leave(); return }
+                    let imageURLArray = Array(imageURLDict)
                     for imageURL in imageURLArray {
+                        group.enter()
                         FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
                             group.leave()
                         })
@@ -751,36 +804,36 @@ class UserController {
         
     }
     
-    static func fetchPropertiesfd(numberOfProperties: UInt, completion: @escaping () -> Void) {
-        if UserController.propertyFetchCount == 1 { // if fecth count is one then you are at the end of the database
-            completion()
-            return
-        }
-        FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: currentRenter!.startAt!).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
-            
-            UserController.propertyFetchCount = allPropertiesDict.count
-            var landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
-            landlordProperties.sort {$0.propertyID! < $1.propertyID!}
-            let lastProperty = landlordProperties.removeLast()
-            // needs work: only get once and store
-            var filteredProperties: [Property] = []
-            if UserController.propertyFetchCount < 2 {
-                filteredProperties = getFilteredProperties(properties: [lastProperty])
-            } else {
-                updateCurrentRenterInFirebase(id: currentUserID!, attributeToUpdate: UserController.kStartAt, newValue: lastProperty.propertyID!)
-                currentRenter!.startAt = lastProperty.propertyID!
-                filteredProperties = getFilteredProperties(properties: landlordProperties)
-            }
-            if !filteredProperties.isEmpty {
-                fetchImagesForProperties(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
-                    completion()
-                })
-            } else {
-                completion()
-            }
-        })
-    }
+//    static func fetchPropertiesfd(numberOfProperties: UInt, completion: @escaping () -> Void) {
+//        if UserController.propertyFetchCount == 1 { // if fecth count is one then you are at the end of the database
+//            completion()
+//            return
+//        }
+//        FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: currentRenter!.startAt!).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
+//            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
+//            
+//            UserController.propertyFetchCount = allPropertiesDict.count
+//            var landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+//            landlordProperties.sort {$0.propertyID! < $1.propertyID!}
+//            let lastProperty = landlordProperties.removeLast()
+//            // needs work: only get once and store
+//            var filteredProperties: [Property] = []
+//            if UserController.propertyFetchCount < 2 {
+//                filteredProperties = getFilteredProperties(properties: [lastProperty])
+//            } else {
+//                updateCurrentRenterInFirebase(id: currentUserID!, attributeToUpdate: UserController.kStartAt, newValue: lastProperty.propertyID!)
+//                currentRenter!.startAt = lastProperty.propertyID!
+//                filteredProperties = getFilteredProperties(properties: landlordProperties)
+//            }
+//            if !filteredProperties.isEmpty {
+//                fetchImagesForProperties(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
+//                    completion()
+//                })
+//            } else {
+//                completion()
+//            }
+//        })
+//    }
     
     static func fetchOneImageForRentersCards(rentersDict: [String: [String: Any]], coreDataRenters: [Renter], completion: @escaping () -> Void) {
         let backgroundQ = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
@@ -793,7 +846,8 @@ class UserController {
                 let dict = renterDict.value
                 guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = coreDataRenters.filter({$0.id == "\(renterID)"}).first else { print("no core data renter for \(dict[UserController.kID])"); group.leave(); return }
                 let imageURLArray = Array(imageDict.values)
-                FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
+                guard let imageToDownload = imageURLArray.first else { group.leave(); return }
+                FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: [imageToDownload], completion: { (success) in
                     log("renter image downloaded")
                     mainQ.async {
                         group.leave()
@@ -844,14 +898,16 @@ class UserController {
 //    }
     
     static func fetchRentersForProperty(numberOfRenters: UInt, property: Property, completion: @escaping () -> Void) {
+        guard let landlord = currentLandlord, let landlordID = landlord.id, let propertyID = property.propertyID, let startAt = property.startAt else { completion(); return }
         if UserController.renterFetchCount == 1 { // if fecth count is one then you are at the end of the database
+            log("WARNING: reached end of renter list on firebase")
             completion()
             return
         }
         
-        log(currentLandlord!.startAt!)
-        FirebaseController.rentersRef.queryOrdered(byChild: UserController.kID).queryStarting(atValue: currentLandlord!.startAt!).queryLimited(toFirst: numberOfRenters).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let allRentersDict = snapshot.valueInExportFormat() as? [String: [String: Any]], let landlordID = currentUserID else { completion(); return }
+        log(startAt)
+        FirebaseController.rentersRef.queryOrdered(byChild: UserController.kID).queryStarting(atValue: startAt).queryLimited(toFirst: numberOfRenters).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allRentersDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { completion(); return }
             UserController.renterFetchCount = allRentersDict.count
             var rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
             rentersArray.sort {
@@ -862,9 +918,11 @@ class UserController {
             if UserController.renterFetchCount < 2 {
                 filteredRenters = getFilteredRentersForProperty(renters: [lastRenter], property: property)
             } else {
-                updateCurrentLandlordInFirebase(id: landlordID, attributeToUpdate: UserController.kStartAt, newValue: lastRenter.id!)
-                currentLandlord!.startAt = lastRenter.id!
                 filteredRenters = getFilteredRentersForProperty(renters: rentersArray, property: property)
+                if filteredRenters.count == 0 {
+                    updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kStartAt, newValue: lastRenter.id!)
+                    property.startAt = lastRenter.id!
+                }
             }
             if filteredRenters.isEmpty {
                 fetchRentersForProperty(numberOfRenters: numberOfRenters, property: property, completion: {
@@ -926,7 +984,7 @@ class UserController {
         }
         
         // filter landlord details
-        let filteredWithLandlordDetails = renters.filter({ $0.creditRating! >= creditDesired || creditDesired == "Any"})
+        let filteredWithLandlordDetails = renters.filter({ $0.creditRating! <= creditDesired || creditDesired == "Any"})
         
         // filter property details
         let filteredWithPropertyDetails = filteredWithLandlordDetails.filter({ $0.wantedBedroomCount == bedroomCount && $0.wantedBathroomCount == bathroomCount && $0.wantedPayment >= monthlyPayment && $0.wantsPetFriendly == petsAllowed && $0.wantsSmoking == smokingallowed && $0.wantedZipCode == zipcode})
@@ -1072,7 +1130,7 @@ class UserController {
     }
     
     // needs work: this method should check if there is something in the renters before it goes to the internet
-    static func getRenterWithID(renterID: String, completion: @escaping (_ renter: Renter?) -> Void) {
+    static func getRenterWithIDWithOneImage(renterID: String, completion: @escaping (_ renter: Renter?) -> Void) {
         if let renterWithID = FirebaseController.renters.filter({$0.id! == renterID}).first {
             log("renter with id: \(renterID) retrieved")
             completion(renterWithID)
@@ -1089,12 +1147,48 @@ class UserController {
                         let dict = renterDict.value
                         guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = rentersArray.filter({$0.id == "\(renterID)"}).first else { group.leave(); return }
                         let imageURLArray = Array(imageDict.values)
-                        FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: imageURLArray, completion: { (success) in
+                        guard let imageToDownload = imageURLArray.first else { group.leave(); return }
+                        FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: [imageToDownload], completion: { (success) in
                             log("renter image downloaded")
                             mainQ.async {
                                 group.leave()
                             }
                         })
+                    })
+                }
+                group.notify(queue: DispatchQueue.main, execute: {
+                    completion(rentersArray.first)
+                })
+            })
+        }
+    }
+    
+    // not in use but usefull if we want to get all pictures for a user
+    static func getRenterWithID(renterID: String, completion: @escaping (_ renter: Renter?) -> Void) {
+        if let renterWithID = FirebaseController.renters.filter({$0.id! == renterID}).first {
+            log("renter with id: \(renterID) retrieved")
+            completion(renterWithID)
+        } else {
+            FirebaseController.rentersRef.queryOrderedByKey().queryEqual(toValue: renterID).observeSingleEvent(of: .value, with: { (snapshot) in
+                guard let rentersDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
+                let rentersArray = rentersDict.flatMap({Renter(dictionary: $0.value)})
+                let backgroundQ = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
+                let mainQ = DispatchQueue.main
+                let group = DispatchGroup()
+                for renterDict in rentersDict {
+                    backgroundQ.async(group: group, execute: {
+                        let dict = renterDict.value
+                        guard let renterID = dict[UserController.kID] as? String, let imageDict = dict[UserController.kImageURLS] as? [String: String], let renter = rentersArray.filter({$0.id == "\(renterID)"}).first else { group.leave(); return }
+                        let imageURLArray = Array(imageDict.values)
+                        for imageURL in imageURLArray {
+                            group.enter()
+                            FirebaseController.downloadAndAddImagesFor(renter: renter, insertInto: nil, profileImageURLs: [imageURL], completion: { (success) in
+                                log("renter image downloaded")
+                                mainQ.async {
+                                    group.leave()
+                                }
+                            })
+                        }
                     })
                 }
                 group.notify(queue: DispatchQueue.main, execute: {

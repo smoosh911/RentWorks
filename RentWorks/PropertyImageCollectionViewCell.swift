@@ -12,4 +12,5 @@ class PropertyImageCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imgProperty: UIImageView!
     
+    var indexPath: IndexPath!
 }

@@ -44,12 +44,6 @@ extension Landlord {
             self.init(entity: Landlord.entity(), insertInto: nil)
         }
         
-        if let startAt = dictionary[UserController.kStartAt] as? String {
-            self.startAt = startAt
-        } else {
-            self.startAt = ""
-        }
-        
         self.email = email
         self.firstName = firstName
         self.lastName = lastName

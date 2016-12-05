@@ -74,6 +74,6 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
     private func updateSettingsChanged() {
         SettingsViewController.settingsDidChange = true
         UserController.renterFetchCount = 0
-        UserController.resetStartAtForLandlordInFirebase(landlordID: UserController.currentUserID!)
+        UserController.resetStartAtForAllPropertiesInFirebase()
     }
 }

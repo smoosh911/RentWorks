@@ -50,14 +50,25 @@ extension Property {
         } else {
             self.init(entity: Property.entity(), insertInto: nil)
         }
+        
         // TODO: - Change this to not a static value
         
+        // needs work: this function is being repeated in code, refactor to static method
         if let hasBeenViewedBy = dictionary[UserController.kHasBeenViewedBy] as? [String: Bool] {
             let hasBeenViewedByIDs = Array(hasBeenViewedBy.keys)
             
             for id in hasBeenViewedByIDs {
                 HasBeenViewedBy(hasBeenViewedByID: id, propertyOrRenter: self)
             }
+        }
+        
+        // needs work: this function is being repeated in code, refactor to static method
+        if let startAtVal = dictionary[UserController.kStartAt] as? String {
+            self.startAt = startAtVal
+        } else {
+            UserController.getFirstRenterID(completion: { (propertyID) in
+                self.startAt = propertyID
+            })
         }
         
         self.availableDate = NSDate(timeIntervalSince1970: availableDate)
