@@ -39,7 +39,6 @@
 		46600C9E1DA2F91600A7FB4B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */; };
 		46600CA21DA2F9C400A7FB4B /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46600CA11DA2F9C400A7FB4B /* Bolts.framework */; };
 		466E22F51DB0692900E592F0 /* LandlordOrUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 466E22F41DB0692900E592F0 /* LandlordOrUserViewController.swift */; };
-		467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467629E71D96FD5800CE5596 /* CreateAccountViewController.swift */; };
 		467A49D01DB1F0AD001A0A12 /* MatchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A49CF1DB1F0AD001A0A12 /* MatchTableViewCell.swift */; };
 		467A49D21DB1F2E0001A0A12 /* MatchesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */; };
 		468828CC1DA996730011985F /* MatchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468828CB1DA996730011985F /* MatchController.swift */; };
@@ -659,7 +658,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C7F93B861DE7D87E004F54F4 /* NoInternetViewController.swift in Sources */,
-				467629E81D96FD5800CE5596 /* CreateAccountViewController.swift in Sources */,
 				465E96921DA981E1000B36AF /* FirebaseController.swift in Sources */,
 				460D72431DB7484F00853402 /* RenterCreditRatingViewController.swift in Sources */,
 				46E887811DB80AA400127D21 /* Landlord + Convenience.swift in Sources */,
@@ -886,6 +884,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.RentWorks.Venga;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "RentWorks/Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
