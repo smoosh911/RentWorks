@@ -50,7 +50,26 @@ extension Property {
         } else {
             self.init(entity: Property.entity(), insertInto: nil)
         }
+        
         // TODO: - Change this to not a static value
+        
+        // needs work: this function is being repeated in code, refactor to static method
+        if let hasBeenViewedBy = dictionary[UserController.kHasBeenViewedBy] as? [String: Bool] {
+            let hasBeenViewedByIDs = Array(hasBeenViewedBy.keys)
+            
+            for id in hasBeenViewedByIDs {
+                HasBeenViewedBy(hasBeenViewedByID: id, propertyOrRenter: self)
+            }
+        }
+        
+        // needs work: this function is being repeated in code, refactor to static method
+        if let startAtVal = dictionary[UserController.kStartAt] as? String {
+            self.startAt = startAtVal
+        } else {
+            UserController.getFirstRenterID(completion: { (propertyID) in
+                self.startAt = propertyID
+            })
+        }
         
         self.availableDate = NSDate(timeIntervalSince1970: availableDate)
         self.bathroomCount = bathroomCount
@@ -65,5 +84,24 @@ extension Property {
         self.propertyDescription = dictionary[UserController.kPropertyDescription] as? String ?? "No description yet!"
         guard let propertyID = dictionary[UserController.kPropertyID] as? String else { self.propertyID = UUID().uuidString; return}
         self.propertyID = propertyID
+    }
+    
+    @discardableResult convenience init?(landlordID: String, landlord: Landlord, context: NSManagedObjectContext? = CoreDataStack.context) {
+        
+        self.init(entity: Property.entity(), insertInto: context)
+        
+        self.landlord = landlord
+        self.availableDate = NSDate()
+        self.bathroomCount = 1
+        self.bedroomCount = 1
+        self.monthlyPayment = 1500
+        self.petFriendly = false
+        self.smokingAllowed = false
+        self.rentalHistoryRating = 3.0
+        self.address = ""
+        self.zipCode = ""
+        self.landlordID = landlordID
+        self.propertyDescription = "No description yet!"
+        self.propertyID = UUID().uuidString
     }
 }

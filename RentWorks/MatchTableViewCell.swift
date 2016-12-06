@@ -29,25 +29,26 @@ class MatchTableViewCell: UITableViewCell {
     
     @IBAction func contactButtonTapped(_ sender: AnyObject) {
         let mailComposeVC = MFMailComposeViewController()
-        mailComposeVC.view.tintColor = AppearanceController.vengaOrangeColor
+        
         //        mailComposeVC.navigationBar.barTintColor = UIColor.orange
         guard MFMailComposeViewController.canSendMail() else { /* present alert to say they can't send email */ return }
+        mailComposeVC.view.tintColor = AppearanceController.vengaYellowColor
         if let renter = renter {
             guard let email = renter.email else { return }
             mailComposeVC.setToRecipients([email])
-            mailComposeVC.setSubject("We matched on RentMatch!")
+            mailComposeVC.setSubject("We matched on Venga!")
             delegate?.present(emailComposeVC: mailComposeVC)
         } else if let property = property {
             // Fix this fetching later to pull the landlord from CoreData when they actually have that relationship.
             if let email = property.landlord?.email {
                 mailComposeVC.setToRecipients([email])
-                mailComposeVC.setSubject("We matched on RentMatch!")
+                mailComposeVC.setSubject("We matched on Venga!")
                 delegate?.present(emailComposeVC: mailComposeVC)
             } else {
                 FirebaseController.getLandlordFor(property: property, completion: { (landlord) in
                     guard let landlord = landlord, let email = landlord.email else { return }
                     mailComposeVC.setToRecipients([email])
-                    mailComposeVC.setSubject("We matched on RentMatch!")
+                    mailComposeVC.setSubject("We matched on Venga!")
                     self.delegate?.present(emailComposeVC: mailComposeVC)
                 })
             }
@@ -91,7 +92,7 @@ class MatchTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = 36.5
         profileImageView.clipsToBounds = true
         
-        contactButton.layer.borderColor = AppearanceController.vengaOrangeColor.cgColor
+        contactButton.layer.borderColor = AppearanceController.vengaYellowColor.cgColor
         contactButton.layer.cornerRadius = 4
         contactButton.layer.borderWidth = 0.4
     }

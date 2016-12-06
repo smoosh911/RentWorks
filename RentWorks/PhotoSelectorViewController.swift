@@ -8,7 +8,7 @@
 
 import UIKit
 import Photos
-
+// needs work: these could all be refactored into one file
 class PhotoSelectorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: Actions

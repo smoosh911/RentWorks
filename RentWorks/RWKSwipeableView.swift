@@ -6,17 +6,17 @@
 //  Copyright © 2016 Spencer Curtis. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-protocol RWKSwipeableViewDelegate {
+@objc protocol RWKSwipeableViewDelegate : NSObjectProtocol {
     func swipeLeftCompleteTransform(view: UIView)
     func swipeRightCompleteTransform(view: UIView)
     func resetFrontCardTransform(view: UIView)
     func beingDragged(gesture: UIPanGestureRecognizer)
-    func updateUIElementsForPropertyCards()
-    func updateUIElementsForRenterCards()
-    func resetData()
-    func likeUser()
+    func updateCardUI()
+    @objc optional func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any)
+    @objc optional func swipableView(_ swipableView: RWKSwipeableView, didAccept cardEntity: Any)
+    @objc optional func swipableView(_ swipableView: RWKSwipeableView, didReject cardEntity: Any)
 }
 
 class RWKSwipeableView: UIView {
@@ -54,49 +54,48 @@ class RWKSwipeableView: UIView {
     }
     
     func beingDragged() {
-        if delegate == nil {
-            return
-        }
-        
+        guard let delegate = delegate else { return }
         let gesture = panGestureRecognizer!
         
-        delegate!.beingDragged(gesture: gesture)
+        delegate.beingDragged(gesture: gesture)
         
         let label = gesture.view!
         
         if gesture.state == UIGestureRecognizerState.ended {
             guard let superView = self.superview else { return }
-            
             var acceptedOrRejected = ""
             let swipeDistanceFromEdgeRequired: CGFloat = 75
         
             if label.center.x < swipeDistanceFromEdgeRequired {
                 acceptedOrRejected = "rejected"
+                if let renter = self.renter {
+                    if let swipped = delegate.swipableView?(self, didSwipeOn: renter), let rejected = delegate.swipableView?(self, didReject: renter) { swipped; rejected}
+                } else if let property = self.property {
+                    if let swipped = delegate.swipableView?(self, didSwipeOn: property), let rejected = delegate.swipableView?(self, didReject: property) { swipped; rejected }
+                }
+                
                 UIView.animate(withDuration: 0.2, animations: {
-                    self.delegate!.swipeLeftCompleteTransform(view: label)
+                    delegate.swipeLeftCompleteTransform(view: label)
                 }, completion: { (true) in
-                    if UserController.currentUserType == "renter" {
-                        self.delegate!.updateUIElementsForPropertyCards()
-                    } else if UserController.currentUserType == "landlord" {
-                        self.delegate!.updateUIElementsForRenterCards()
-                    }
-                    self.delegate!.resetFrontCardTransform(view: label)
+                    delegate.updateCardUI()
+                    delegate.resetFrontCardTransform(view: label)
                 })
             } else if label.center.x > superView.bounds.width - swipeDistanceFromEdgeRequired {
                 acceptedOrRejected = "accepted"
+                if let renter = self.renter {
+                    if let swipped = delegate.swipableView?(self, didSwipeOn: renter), let accepted = delegate.swipableView?(self, didAccept: renter) { swipped; accepted}
+                } else if let property = self.property {
+                    if let swipped = delegate.swipableView?(self, didSwipeOn: property), let accepted = delegate.swipableView?(self, didAccept: property) { swipped; accepted }
+                }
                 UIView.animate(withDuration: 0.2, animations: {
-                    self.delegate!.swipeRightCompleteTransform(view: label)
+                    delegate.swipeRightCompleteTransform(view: label)
                 }, completion: { (true) in
-                    if UserController.currentUserType == "renter" {
-                        self.delegate!.updateUIElementsForPropertyCards()
-                    } else if UserController.currentUserType == "landlord" {
-                        self.delegate!.updateUIElementsForRenterCards()
-                    }
-                    self.delegate!.resetFrontCardTransform(view: label)
+                    delegate.updateCardUI()
+                    delegate.resetFrontCardTransform(view: label)
                 })
             } else {
                 UIView.animate(withDuration: 0.1, animations: {
-                    self.delegate!.resetFrontCardTransform(view: label)
+                    delegate.resetFrontCardTransform(view: label)
                 })
             }
             print(acceptedOrRejected)

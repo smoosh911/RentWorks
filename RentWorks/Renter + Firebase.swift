@@ -9,7 +9,6 @@
 import Foundation
 
 extension Renter {
-    
     var dictionaryRepresentation: [String: Any]? {
         guard let email = email,
             let address = address,
@@ -20,7 +19,6 @@ extension Renter {
             let lastName = lastName,
             let id = id
             else { return nil }
-        
         
         var dictionaryRepresentation: [String: Any] = [UserController.kEmail: email,
                 UserController.kZipCode: zipCode,
@@ -35,7 +33,9 @@ extension Renter {
                 UserController.kBedroomCount: Int(wantedBedroomCount),
                 UserController.kBathroomCount: wantedBathroomCount,
                 UserController.kAddress: address,
-                UserController.kBio: bio ?? "No bio available"]
+                UserController.kBio: bio ?? "No bio available",
+                UserController.kCurrentOccupation: currentOccupation ?? "No occupation yet",
+                UserController.kOccupationHistory: occupationHistory?.components(separatedBy: "~") ?? "No occupation history yet"]
         
         guard let profileImageArray = self.profileImages?.array as? [ProfileImage] else { return dictionaryRepresentation }
         

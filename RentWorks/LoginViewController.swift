@@ -8,9 +8,9 @@
 
 import UIKit
 import FBSDKLoginKit
-import FirebaseAuth
 import FirebaseDatabase
 import FirebaseStorage
+import FirebaseAuth
 
 class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
@@ -26,7 +26,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
 
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
-        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
+        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue, FacebookRequestController.FacebookPermissions.user_work_history_permission.rawValue]
         
         self.view.addSubview(facebookLoginButton)
         
@@ -36,21 +36,61 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        var validBirthday = false // Make sure user has birthday on facebook and they are older than 18
+        
         guard result.isCancelled != true else { return }
-
+        
         setUpAndDisplayLoadingScreen()
-        if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
-        FirebaseController.handleUserInformationScenarios { (success) in
-            self.dismissLoadingScreen()
-            if success {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
-                
-                self.present(mainVC, animated: true, completion: nil)
+        
+        FacebookRequestController.requestCurrentUsers(information: [.age_range], completion: { (facebookDictionary) in
+            
+            if facebookDictionary == nil {
+                self.displayInvalidBirthdayAlert()
+                let manager = FBSDKLoginManager()
+                manager.logOut()
+                self.dismissLoadingScreen()
             } else {
-                self.displayNoAccountCreatedAlert()
+                let ageRange = facebookDictionary!["age_range"]! as! [String: Any]
+                if let max = ageRange["max"] as? Int {
+                    if max < 18 {
+                        self.displayInvalidBirthdayAlert()
+                        let manager = FBSDKLoginManager()
+                        manager.logOut()
+                        self.dismissLoadingScreen()
+                    } else {
+                        validBirthday = true
+                    }
+                } else if let min = ageRange["min"] as? Int {
+                    if min < 18 {
+                        self.displayInvalidBirthdayAlert()
+                        let manager = FBSDKLoginManager()
+                        manager.logOut()
+                        self.dismissLoadingScreen()
+                    } else {
+                        validBirthday = true
+                    }
+                }
             }
-        }
+            if validBirthday {
+                if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
+                FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (success) in
+                    self.dismissLoadingScreen()
+                    if success {
+                        let storyboard: UIStoryboard!
+                        if UserController.userCreationType == "landlord" {
+                            storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                        } else {
+                            storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
+                        }
+                        let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                        
+                        self.present(mainVC, animated: true, completion: nil)
+                    } else {
+                        self.displayNoAccountCreatedAlert()
+                    }
+                })
+            }
+        })
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
@@ -94,8 +134,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
     }
     
+    // MARK: alerts
+    
     func displayNoAccountCreatedAlert() {
-        let alert = UIAlertController(title: "Hold on a second!", message: "Thanks for logging into Facebook, but you haven't created an account yet. Please tap the 'Create account' button below to begin creating your RentMatch account!", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Hold on a second!", message: "Thanks for logging into Facebook, but you haven't created an account yet. Please tap the 'Create account' button below to begin creating your Venga account!", preferredStyle: .alert)
         
         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
         
@@ -105,6 +147,18 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         alert.addAction(dismissAction)
         alert.addAction(createAccountAction)
+        
+        alert.view.tintColor = .black
+        
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func displayInvalidBirthdayAlert() {
+        let alert = UIAlertController(title: "Must be 18 or older", message: "You either don't have your age posted on facebook or you are under 18. We need you to be at least 18 to talk to landlords or potential renters", preferredStyle: .alert)
+        
+        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        
+        alert.addAction(dismissAction)
         
         alert.view.tintColor = .black
         

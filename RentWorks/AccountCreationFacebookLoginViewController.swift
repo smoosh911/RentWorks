@@ -29,7 +29,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
-        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue]
+        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue, FacebookRequestController.FacebookPermissions.user_work_history_permission.rawValue]
         constraintsForFacebookLoginButton()
         
     }
@@ -38,14 +38,13 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         if FBSDKAccessToken.current() != nil {
             setUpAndDisplayLoadingScreen()
             AuthenticationController.attemptToSignInToFirebase { (success) in
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 
-                
-                FirebaseController.handleUserInformationScenarios(completion: { (hasAccount) in
+                FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (hasAccount) in
                     if !hasAccount {
                         if UserController.userCreationType == "landlord" {
                             UserController.createLandlordAndPropertyForCurrentUser {
                                 self.dismissLoadingScreen()
+                                let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
                                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                                 self.present(mainVC, animated: true, completion: nil)
                                 print("Successfully created landlord for currentUser")
@@ -53,6 +52,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         } else if UserController.userCreationType == "renter" {
                             UserController.createRenterForCurrentUser {
                                 self.dismissLoadingScreen()
+                                let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
                                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                                 self.present(mainVC, animated: true, completion: nil)
                                 print("Successfuly created renter for current user.")
@@ -63,10 +63,25 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         
                         let alert = UIAlertController(title: "Hey there", message: "Looks like you've already got an account attached to this Facebook account. If you want to log in, tap the 'Log in' button below.", preferredStyle: .alert)
                         
-                        let loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
-                            let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
-                            self.present(mainVC, animated: true, completion: nil)
-                        })
+                        var loginAction: UIAlertAction!
+                        if UserController.userCreationType == "landlord" {
+                            let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                            loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                                self.present(mainVC, animated: true, completion: nil)
+                            })
+                        } else {
+                            let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
+                            loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                                self.present(mainVC, animated: true, completion: nil)
+                            })
+                        }
+                        
+                        if loginAction == nil {
+                            log("ERROR: loginAction nil")
+                            return
+                        }
                         
                         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
                         
@@ -85,13 +100,11 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         setUpAndDisplayLoadingScreen()
         if FBSDKAccessToken.current() != nil {
             AuthenticationController.attemptToSignInToFirebase { (success) in
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                
-                
-                FirebaseController.handleUserInformationScenarios(completion: { (hasAccount) in
+                FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (hasAccount) in
                     if !hasAccount {
                         if UserController.userCreationType == "landlord" {
                             UserController.createLandlordAndPropertyForCurrentUser {
+                                let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
                                 self.dismissLoadingScreen()
                                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                                 self.present(mainVC, animated: true, completion: nil)
@@ -99,6 +112,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                             }
                         } else if UserController.userCreationType == "renter" {
                             UserController.createRenterForCurrentUser {
+                                let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
                                 self.dismissLoadingScreen()
                                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                                 self.present(mainVC, animated: true, completion: nil)
@@ -112,10 +126,25 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         
                         alert.view.tintColor = .black
                         
-                        let loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
-                            let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
-                            self.present(mainVC, animated: true, completion: nil)
-                        })
+                        var loginAction: UIAlertAction!
+                        if UserController.userCreationType == "landlord" {
+                            let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                            loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                                self.present(mainVC, animated: true, completion: nil)
+                            })
+                        } else {
+                            let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
+                            loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                                self.present(mainVC, animated: true, completion: nil)
+                            })
+                        }
+                        
+                        if loginAction == nil {
+                            log("ERROR: loginAction nil")
+                            return
+                        }
                         
                         let dismissAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
                         
