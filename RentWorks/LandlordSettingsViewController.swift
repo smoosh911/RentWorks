@@ -29,7 +29,11 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         pkrCreditRating.dataSource = self
         pkrCreditRating.delegate = self
         
-        guard let landlord = UserController.currentLandlord, let desiredCreditRating = landlord.wantsCreditRating,  let firstName = landlord.firstName, let lastName = landlord.lastName, let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating) else {
+        guard let landlord = UserController.currentLandlord,
+            let desiredCreditRating = landlord.wantsCreditRating,
+            let firstName = landlord.firstName,
+            let lastName = landlord.lastName,
+            let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating) else {
             return
         }
         

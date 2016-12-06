@@ -392,28 +392,38 @@ class UserController {
             let lastProperty = landlordProperties.removeLast()
             // needs work: only get once and store
             var filteredProperties: [Property] = []
+            let group = DispatchGroup()
+            group.enter()
             if UserController.propertyFetchCount < 2 {
-                filteredProperties = getFilteredProperties(properties: [lastProperty])
+                getFilteredProperties(properties: [lastProperty], completion: { properties in
+                    filteredProperties = properties
+                    group.leave()
+                })
             } else {
-                filteredProperties = getFilteredProperties(properties: landlordProperties)
-                if filteredProperties.count < 2 {
-                    updateCurrentRenterInFirebase(id: currentUserID!, attributeToUpdate: UserController.kStartAt, newValue: lastProperty.propertyID!)
-                    currentRenter!.startAt = lastProperty.propertyID!
+                getFilteredProperties(properties: landlordProperties, completion: { properties in
+                    filteredProperties = properties
+                    if filteredProperties.count < 2 {
+                        updateCurrentRenterInFirebase(id: currentUserID!, attributeToUpdate: UserController.kStartAt, newValue: lastProperty.propertyID!)
+                        currentRenter!.startAt = lastProperty.propertyID!
+                    }
+                    group.leave()
+                })
+            }
+            group.notify(queue: .main, execute: { 
+                if filteredProperties.isEmpty {
+                    fetchProperties(numberOfProperties: numberOfProperties, completion: {
+                        completion()
+                    })
+                } else {
+                    fetchOneImageForPropertiesCards(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
+                        completion()
+                    })
                 }
-            }
-            if filteredProperties.isEmpty {
-                fetchProperties(numberOfProperties: numberOfProperties, completion: { 
-                    completion()
-                })
-            } else {
-                fetchOneImageForPropertiesCards(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
-                    completion()
-                })
-            }
+            })
         })
     }
     
-    static func getFilteredProperties(properties: [Property]) -> [Property] {
+    static func getFilteredProperties(properties: [Property], completion: @escaping (_ properties: [Property]) -> Void) {
         let filterSettingsDict = UserController.getRenterFiltersDictionary()
         
         guard let desiredBathroomCount = filterSettingsDict[RenterFilters.kBathroomCount.rawValue] as? Double,
@@ -423,23 +433,36 @@ class UserController {
             let desiredSmokingAllowed = filterSettingsDict[RenterFilters.kSmokingAllowed.rawValue] as? Bool,
             //            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
             let desiredZipcode = filterSettingsDict[RenterFilters.kZipCode.rawValue] as? String,
+            let withinRangeMiles = filterSettingsDict[LandlordFilters.kWithinRangeMiles.rawValue] as? Int16,
             let renterID = currentUserID else {
-                return [Property]()
+                completion([Property]())
+                return
         }
         
-        let filtered = properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == Int64(desiredBedroomCount) && $0.monthlyPayment <= Int64(desiredPayment) && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed && $0.zipCode == desiredZipcode})
+        let filtered = properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == Int64(desiredBedroomCount) && $0.monthlyPayment <= Int64(desiredPayment) && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed })
         
-        var finalFiltered: [Property] = []
+        var filteredByHasBeenViewedBy: [Property] = []
         for property in filtered {
             if let hasBeenViewedByObjects = property.hasBeenViewedBy?.flatMap({$0 as? HasBeenViewedBy}) {
                 let hasBeenViewedByIDs = hasBeenViewedByObjects.map{$0.viewerID} as! [String]
                 if !hasBeenViewedByIDs.contains(renterID) {
-                    finalFiltered.append(property)
+                    filteredByHasBeenViewedBy.append(property)
                 }
             }
         }
         
-        return finalFiltered
+        var finalFiltered: [Property] = []
+        // needs work: the distances and renters won't neccessarily match up. Make more deterministic
+        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingZipcode: desiredZipcode, completion: { distanceDict in
+            for distance in distanceDict {
+                guard let property = filteredByHasBeenViewedBy.filter({$0.propertyID == distance.key}).first else { log("ERROR: no renters who matched distance dictionary key"); completion(finalFiltered); return }
+                let withinRange = distance.value <= Int(withinRangeMiles) // needs work: this should be a setting in the landlords setting page
+                if withinRange {
+                    finalFiltered.append(property)
+                }
+            }
+            completion(finalFiltered)
+        })
     }
     
 //    static func fetchProperties(numberOfProperties: UInt) {

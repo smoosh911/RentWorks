@@ -23,6 +23,9 @@ class RenterSettingsViewController: SettingsViewController {
     @IBOutlet weak var stpBathrooms: UIStepper!
     @IBOutlet weak var lblBathroomCount: UILabel!
     
+    @IBOutlet weak var stpMaxDistance: UIStepper!
+    @IBOutlet weak var lblMaxDistanceCount: UILabel!
+    
     @IBOutlet weak var swtPets: UISwitch!
     @IBOutlet weak var swtSmoking: UISwitch!
     
@@ -41,56 +44,7 @@ class RenterSettingsViewController: SettingsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        filterSettingsDict = UserController.getRenterFiltersDictionary()
-        
-        guard let filterSettings = filterSettingsDict else { return }
-        
-        for filter in filterSettings {
-            switch filter.key {
-            case filterKeys.kBedroomCount.rawValue:
-                guard let bedroomCount = filter.value as? Int else { break }
-                stpBedrooms.value = Double(bedroomCount)
-                lblBedroomCount.text = "\(stpBedrooms.value)"
-                break
-            case filterKeys.kBathroomCount.rawValue:
-                guard let bathroomCount = filter.value as? Double else { break }
-                stpBathrooms.value = bathroomCount
-                lblBathroomCount.text = "\(stpBathrooms.value)"
-                break
-            case filterKeys.kMonthlyPayment.rawValue:
-                guard let price = filter.value as? Int else { break }
-                sldRent.value = Float(price)
-                let priceString = "\(Int(sldRent.value))"
-                lblPrice.text = priceString
-                break
-            case filterKeys.kPetsAllowed.rawValue:
-                guard let petsAllowed = filter.value as? Bool else { break }
-                swtPets.isOn = petsAllowed
-                break
-            case filterKeys.kPropertyFeatures.rawValue:
-                guard let features = filter.value as? String else { break }
-                txtfldFeatures.text = features
-                break
-            case filterKeys.kSmokingAllowed.rawValue:
-                guard let smokingAllowed = filter.value as? Bool else { break }
-                swtSmoking.isOn = smokingAllowed
-                break
-            case filterKeys.kZipCode.rawValue:
-                guard let zipcode = filter.value as? String else { break }
-                txtfldZipCode.text = zipcode
-                break
-            case filterKeys.kCurrentOccupation.rawValue:
-                guard let occupation = filter.value as? String else { break }
-                lblOccupation.text = occupation
-            default:
-                log("no filters")
-            }
-        }
-        
-        guard let profileImages = UserController.currentRenter!.profileImages?.array as? [ProfileImage] else { return }
-        
-        lblUserName.text = "\(UserController.currentRenter!.firstName!) \(UserController.currentRenter!.lastName!)"
-        imgviewProfilePic.image = UIImage(data: profileImages[0].imageData as! Data)
+        updateSettingsInformation()
     }
     
     // MARK: actions
@@ -140,6 +94,18 @@ class RenterSettingsViewController: SettingsViewController {
         // UserController.saveToPersistentStore()
     }
     
+    @IBAction func stpMaxDistance_ValueChanged(_ sender: UIStepper) {
+        let maxDistance = Int16(sender.value)
+        guard let renter = UserController.currentRenter, let id = renter.id else { return }
+        
+        let countString = "\(maxDistance)"
+        lblMaxDistanceCount.text = countString
+        renter.withinRangeMiles = maxDistance
+        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
+        // UserController.saveToPersistentStore()
+        updateSettingsChanged()
+    }
+    
     // switches
     
     @IBAction func swtPet_ValueChanged(_ sender: UISwitch) {
@@ -181,6 +147,64 @@ class RenterSettingsViewController: SettingsViewController {
     }
     
     // MARK: helper functions
+    
+    private func updateSettingsInformation() {
+        filterSettingsDict = UserController.getRenterFiltersDictionary()
+        
+        guard let filterSettings = filterSettingsDict else { return }
+        
+        for filter in filterSettings {
+            switch filter.key {
+            case filterKeys.kBedroomCount.rawValue:
+                guard let bedroomCount = filter.value as? Int else { break }
+                stpBedrooms.value = Double(bedroomCount)
+                lblBedroomCount.text = "\(stpBedrooms.value)"
+                break
+            case filterKeys.kBathroomCount.rawValue:
+                guard let bathroomCount = filter.value as? Double else { break }
+                stpBathrooms.value = bathroomCount
+                lblBathroomCount.text = "\(stpBathrooms.value)"
+                break
+            case filterKeys.kMonthlyPayment.rawValue:
+                guard let price = filter.value as? Int else { break }
+                sldRent.value = Float(price)
+                let priceString = "\(Int(sldRent.value))"
+                lblPrice.text = priceString
+                break
+            case filterKeys.kPetsAllowed.rawValue:
+                guard let petsAllowed = filter.value as? Bool else { break }
+                swtPets.isOn = petsAllowed
+                break
+            case filterKeys.kPropertyFeatures.rawValue:
+                guard let features = filter.value as? String else { break }
+                txtfldFeatures.text = features
+                break
+            case filterKeys.kSmokingAllowed.rawValue:
+                guard let smokingAllowed = filter.value as? Bool else { break }
+                swtSmoking.isOn = smokingAllowed
+                break
+            case filterKeys.kZipCode.rawValue:
+                guard let zipcode = filter.value as? String else { break }
+                txtfldZipCode.text = zipcode
+                break
+            case filterKeys.kCurrentOccupation.rawValue:
+                guard let occupation = filter.value as? String else { break }
+                lblOccupation.text = occupation
+            case filterKeys.kWithinRangeMiles.rawValue:
+                guard let maxDistance = filter.value as? Int16 else { break }
+                let maxDistanceString = "\(maxDistance)"
+                lblMaxDistanceCount.text = maxDistanceString
+                stpMaxDistance.value = Double(maxDistance)
+            default:
+                log("no filters")
+            }
+        }
+        
+        guard let profileImages = UserController.currentRenter!.profileImages?.array as? [ProfileImage] else { return }
+        
+        lblUserName.text = "\(UserController.currentRenter!.firstName!) \(UserController.currentRenter!.lastName!)"
+        imgviewProfilePic.image = UIImage(data: profileImages[0].imageData as! Data)
+    }
     
     private func updateSettingsChanged() {
         SettingsViewController.settingsDidChange = true
