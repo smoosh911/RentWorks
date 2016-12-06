@@ -61,6 +61,12 @@ extension Renter {
             self.init(entity: Renter.entity(), insertInto: nil)
         }
         
+        if let withinRangeMiles = dictionary[UserController.kWithinRangeMiles] as? Int {
+            self.withinRangeMiles = Int16(withinRangeMiles)
+        } else {
+            self.withinRangeMiles = 5
+        }
+        
         if let occupation = dictionary[UserController.kCurrentOccupation] as? String {
             self.currentOccupation = occupation
         }

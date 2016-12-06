@@ -63,6 +63,7 @@
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="occupationHistory" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="withinRangeMiles" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="occupation" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Occupation" inverseName="user" inverseEntity="Occupation" syncable="YES"/>
     </entity>
     <elements>
@@ -72,6 +73,6 @@
         <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="118"/>
         <element name="Property" positionX="223" positionY="324" width="128" height="283"/>
         <element name="Renter" positionX="-308" positionY="180" width="146" height="253"/>
-        <element name="User" positionX="-2" positionY="-52" width="128" height="178"/>
+        <element name="User" positionX="-2" positionY="-52" width="128" height="193"/>
     </elements>
 </model>

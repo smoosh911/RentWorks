@@ -35,7 +35,8 @@ extension Renter {
                 UserController.kAddress: address,
                 UserController.kBio: bio ?? "No bio available",
                 UserController.kCurrentOccupation: currentOccupation ?? "No occupation yet",
-                UserController.kOccupationHistory: occupationHistory?.components(separatedBy: "~") ?? "No occupation history yet"]
+                UserController.kOccupationHistory: occupationHistory?.components(separatedBy: "~") ?? "No occupation history yet",
+                UserController.kWithinRangeMiles: withinRangeMiles]
         
         guard let profileImageArray = self.profileImages?.array as? [ProfileImage] else { return dictionaryRepresentation }
         

@@ -15,10 +15,12 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
     
     @IBOutlet weak var pkrCreditRating: UIPickerView!
     
+    @IBOutlet weak var lblMaxDistance: UILabel!
+    @IBOutlet weak var stpMaxDistance: UIStepper!
+    
     // MARK: variables
     
     var creditRatingPickerViewContent = ["Any","A","B","C","D","F"]
-    
     
     // MARK: life cycle
     
@@ -27,12 +29,36 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         pkrCreditRating.dataSource = self
         pkrCreditRating.delegate = self
         
-        guard let desiredCreditRating = UserController.currentLandlord?.wantsCreditRating, let currentLandlord = UserController.currentLandlord, let firstName = currentLandlord.firstName, let lastName = currentLandlord.lastName, let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating) else {
+        guard let landlord = UserController.currentLandlord,
+            let desiredCreditRating = landlord.wantsCreditRating,
+            let firstName = landlord.firstName,
+            let lastName = landlord.lastName,
+            let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating) else {
             return
         }
+        
+        let maxDistance = landlord.withinRangeMiles
+        
         lblUserName.text = "\(firstName) \(lastName)"
+        lblMaxDistance.text = "\(maxDistance)"
+        
+        stpMaxDistance.value = Double(maxDistance)
         
         pkrCreditRating.selectRow(ratingIndex, inComponent: 0, animated: false)
+    }
+    
+    // MARK: actions
+    
+    @IBAction func stpMaxDistance_ValueChanged(_ sender: UIStepper) {
+        let maxDistance = Int16(sender.value)
+        guard let landlord = UserController.currentLandlord, let id = landlord.id else { return }
+        
+        let countString = "\(maxDistance)"
+        lblMaxDistance.text = countString
+        landlord.withinRangeMiles = maxDistance
+        UserController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
+        // UserController.saveToPersistentStore()
+        updateSettingsChanged()
     }
     
     // MARK: picker view delegate
