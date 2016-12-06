@@ -433,13 +433,15 @@ class UserController {
             let desiredSmokingAllowed = filterSettingsDict[RenterFilters.kSmokingAllowed.rawValue] as? Bool,
             //            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
             let desiredZipcode = filterSettingsDict[RenterFilters.kZipCode.rawValue] as? String,
-            let withinRangeMiles = filterSettingsDict[LandlordFilters.kWithinRangeMiles.rawValue] as? Int16,
+            let withinRangeMiles = filterSettingsDict[RenterFilters.kWithinRangeMiles.rawValue] as? Int16,
             let renterID = currentUserID else {
                 completion([Property]())
                 return
         }
         
-        let filtered = properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == Int64(desiredBedroomCount) && $0.monthlyPayment <= Int64(desiredPayment) && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed })
+        let today = Date()
+        
+        let filtered = properties.filter({ $0.bathroomCount == desiredBathroomCount && $0.bedroomCount == Int64(desiredBedroomCount) && $0.monthlyPayment <= Int64(desiredPayment) && $0.petFriendly == desiredPetsAllowed && $0.smokingAllowed == desiredSmokingAllowed && ($0.availableDate! as Date) < today })
         
         var filteredByHasBeenViewedBy: [Property] = []
         for property in filtered {
@@ -1302,6 +1304,7 @@ extension UserController {
     static let kStartAt = "startAt"
     
     enum RenterFilters: String {
+        case kAvailableDate = "availableDate"
         case kBathroomCount = "bathroomCount"
         case kBedroomCount = "bedroomCount"
         case kMonthlyPayment = "monthlyPayment"
@@ -1311,7 +1314,7 @@ extension UserController {
         case kZipCode = "zipCode"
         case kCurrentOccupation = "currentOccupation"
         case kWithinRangeMiles = "within_range_miles"
-        static let allValues = [kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode, kCurrentOccupation, kWithinRangeMiles]
+        static let allValues = [kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode, kCurrentOccupation, kWithinRangeMiles]
     }
     
     enum LandlordFilters: String {
