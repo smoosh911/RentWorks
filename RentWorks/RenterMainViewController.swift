@@ -151,7 +151,7 @@ class RenterMainViewController: MainViewController {
     
     func setMatchesButtonImage() {
         DispatchQueue.main.async {
-            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
+            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "NewChatV2"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleV2"), for: .normal)
         }
     }
     
