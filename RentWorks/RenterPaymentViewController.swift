@@ -33,9 +33,11 @@ class RenterPaymentViewController: UIViewController {
     }
     
     @IBAction func paymentSliderValueChanged(_ sender: UISlider) {
-        paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
+        let roundBy: Float = 25.0
+        let price = Int(round(value: sender.value, toNearest: roundBy))
+        paymentAmountLabel.text = "$\(price) per month"
         if paymentSlider.value >= 3000 {
-            paymentAmountLabel.text = "$\(Int(paymentSlider.value))+ per month"
+            paymentAmountLabel.text = "$\(price)+ per month"
             
         }
     }

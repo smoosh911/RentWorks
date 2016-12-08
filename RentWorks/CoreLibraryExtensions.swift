@@ -16,6 +16,10 @@ extension String {
     }
 }
 
+@inline(__always) public func round(value: Float, toNearest roundBy: Float) -> Float {
+    return roundBy * round(value / roundBy)
+}
+
 // makes logs to the console more informative
 @inline(__always) public func log(_ logMessage: String, fileName: String = #file, functionName: String = #function, lineNumber: Int = #line) {
     var indexOfLastForwardSlashInString = 0

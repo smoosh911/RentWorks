@@ -91,15 +91,18 @@ class PropertyDetailsViewController: UIViewController {
     // slider
 
     @IBAction func sldRent_ValueChanged(_ sender: UISlider) {
-        let price = "\(Int(sender.value))"
+        let roundBy: Float = 25.0
+        let roundedPrice = Int(round(value: sender.value, toNearest: roundBy))
+        let price = "\(roundedPrice)"
         lblPrice.text = price
     }
 
     @IBAction func sldRent_TouchedUpInsideAndOutside(_ sender: UISlider) {
-        let price = Int(sender.value)
+        let roundBy: Float = 25.0
+        let price = Int(round(value: sender.value, toNearest: roundBy))
         guard let id = property.propertyID else { return }
 //        let priceString = "\(Int(sender.value))"
-        property.monthlyPayment = Int64(sender.value)
+        property.monthlyPayment = Int64(price)
         UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
         // UserController.saveToPersistentStore()
         self.updateSettingsChanged()

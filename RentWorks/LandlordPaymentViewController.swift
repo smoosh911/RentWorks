@@ -24,7 +24,7 @@ class LandlordPaymentViewController: UIViewController {
         
         nextButton.slideFromRight()
         
-paymentSliderBackgroundView.layer.cornerRadius = 4
+        paymentSliderBackgroundView.layer.cornerRadius = 4
         
         paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
     }
@@ -34,12 +34,14 @@ paymentSliderBackgroundView.layer.cornerRadius = 4
     }
 
     @IBAction func paymentSliderValueChanged(_ sender: UISlider) {
-        paymentAmountLabel.text = "$\(Int(paymentSlider.value)) per month"
+        let roundBy: Float = 25.0
+        let price = Int(round(value: sender.value, toNearest: roundBy))
+        paymentAmountLabel.text = "$\(price) per month"
         if paymentSlider.value >= 3000 {
             
             // TODO: - Check if setViewControllers from PageVC calls
             
-            paymentAmountLabel.text = "$\(Int(paymentSlider.value))+ per month"
+            paymentAmountLabel.text = "$\(price)+ per month"
 
         }
     }
@@ -47,7 +49,7 @@ paymentSliderBackgroundView.layer.cornerRadius = 4
     @IBAction func nextButtonTapped(_ sender: UIButton) {
         AccountCreationController.pageRightFrom(landlordVC: self)
         
-savePaymentAmountInformationToUserCreationDictionary()
+        savePaymentAmountInformationToUserCreationDictionary()
     }
     
     func savePaymentAmountInformationToUserCreationDictionary() {

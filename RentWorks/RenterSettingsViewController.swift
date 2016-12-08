@@ -52,12 +52,15 @@ class RenterSettingsViewController: SettingsViewController {
     // slider
     
     @IBAction func sldRent_ValueChanged(_ sender: UISlider) {
-        let price = "\(Int(sender.value))"
-        lblPrice.text = price
+        let roundBy: Float = 25.0
+        let price = Int(round(value: sender.value, toNearest: roundBy))
+        let priceString = "\(price)"
+        lblPrice.text = priceString
     }
     
     @IBAction func sldRent_TouchedUpInsideAndOutside(_ sender: UISlider) {
-        let price = Int64(sender.value)
+        let roundBy: Float = 25.0
+        let price = Int64(round(value: sender.value, toNearest: roundBy))
         if UserController.currentUserID == nil {
             return
         }

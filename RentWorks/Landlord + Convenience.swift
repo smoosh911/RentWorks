@@ -50,12 +50,16 @@ extension Landlord {
             self.withinRangeMiles = 5
         }
         
+        if let starRating = dictionary[UserController.kStarRating] as? Double {
+            self.starRating = starRating
+        } else {
+            self.starRating = 0.0
+        }
+        
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
         self.wantsCreditRating = wantsCreditRating
         self.id = id
-        // needs work: need to figure out what the defult star rating is
-        self.starRating = 5.0
     }
 }

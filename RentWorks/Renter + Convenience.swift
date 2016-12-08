@@ -105,6 +105,12 @@ extension Renter {
             })
         }
         
+        if let starRating = dictionary[UserController.kStarRating] as? Double {
+            self.starRating = starRating
+        } else {
+            self.starRating = 0.0
+        }
+        
         self.email = email
         self.address = address
         self.wantedPropertyFeatures = wantedPropertyFeatures
