@@ -66,7 +66,7 @@ class RenterSettingsViewController: SettingsViewController {
         }
 //        let priceString = "\(Int(sender.value))"
         UserController.currentRenter?.wantedPayment = price
-        UserController.updateCurrentRenterInFirebase(id: UserController.currentUserID!, attributeToUpdate: filterKeys.kMonthlyPayment.rawValue, newValue: price)
+        RenterController.updateCurrentRenterInFirebase(id: UserController.currentUserID!, attributeToUpdate: filterKeys.kMonthlyPayment.rawValue, newValue: price)
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -80,7 +80,7 @@ class RenterSettingsViewController: SettingsViewController {
         let countString = "\(bedroomCount)"
         lblBedroomCount.text = countString
         renter?.wantedBedroomCount = bedroomCount
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBedroomCount.rawValue, newValue: bedroomCount)
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBedroomCount.rawValue, newValue: bedroomCount)
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -92,19 +92,19 @@ class RenterSettingsViewController: SettingsViewController {
         let countString = "\(bathroomCount)"
         lblBathroomCount.text = countString
         renter?.wantedBathroomCount = bathroomCount
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: bathroomCount)
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: bathroomCount)
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
     
     @IBAction func stpMaxDistance_ValueChanged(_ sender: UIStepper) {
         let maxDistance = Int16(sender.value)
-        guard let renter = UserController.currentRenter, let id = renter.id else { return }
+        guard let id = UserController.currentUserID else { return }
         
         let countString = "\(maxDistance)"
         lblMaxDistanceCount.text = countString
-        renter.withinRangeMiles = maxDistance
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
+        renter?.withinRangeMiles = maxDistance
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
         // UserController.saveToPersistentStore()
         updateSettingsChanged()
     }
@@ -117,7 +117,7 @@ class RenterSettingsViewController: SettingsViewController {
         
 //        let boolString = "\(petsAllowed)"
         renter?.wantsPetFriendly = petsAllowed
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: petsAllowed)
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: petsAllowed)
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -128,7 +128,7 @@ class RenterSettingsViewController: SettingsViewController {
         
 //        let boolString = "\(smokingAllowed)"
         renter?.wantsSmoking = smokingAllowed
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: smokingAllowed)
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: smokingAllowed)
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -136,15 +136,15 @@ class RenterSettingsViewController: SettingsViewController {
     // buttons
     
     @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: Any) {
-        guard let id = UserController.currentUserID else { return }
+        guard let id = UserController.currentUserID, let renter = renter else { return }
         
         let propertyFeatures = txtfldFeatures.text!
         let zipcode = txtfldZipCode.text!
         
-        renter?.wantedPropertyFeatures = propertyFeatures
-        renter?.wantedZipCode = zipcode
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPropertyFeatures.rawValue, newValue: propertyFeatures)
-        UserController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kZipCode.rawValue, newValue: zipcode)
+        renter.wantedPropertyFeatures = propertyFeatures
+        renter.wantedZipCode = zipcode
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPropertyFeatures.rawValue, newValue: propertyFeatures)
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kZipCode.rawValue, newValue: zipcode)
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -152,7 +152,7 @@ class RenterSettingsViewController: SettingsViewController {
     // MARK: helper functions
     
     private func updateSettingsInformation() {
-        filterSettingsDict = UserController.getRenterFiltersDictionary()
+        filterSettingsDict = RenterController.getRenterFiltersDictionary()
         
         guard let filterSettings = filterSettingsDict else { return }
         
@@ -212,6 +212,6 @@ class RenterSettingsViewController: SettingsViewController {
     private func updateSettingsChanged() {
         SettingsViewController.settingsDidChange = true
         UserController.propertyFetchCount = 0
-        UserController.resetStartAtForRenterInFirebase(renterID: renter!.id!)
+        RenterController.resetStartAtForRenterInFirebase(renterID: renter!.id!)
     }
 }

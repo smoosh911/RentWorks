@@ -78,8 +78,16 @@ class PropertyDetailsViewController: UIViewController {
         guard let property = property, let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
         propertyImages = profileImages
         
-        let propertyDetailsDict = UserController.getPropertyDetailsDictionary(property: property)
+        let propertyDetailsDict = PropertyController.getPropertyDetailsDictionary(property: property)
         updatePropertyDetails(propertyDetailsDict: propertyDetailsDict)
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(swipeDown)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -104,7 +112,7 @@ class PropertyDetailsViewController: UIViewController {
 //        let priceString = "\(Int(sender.value))"
         property.monthlyPayment = Int64(price)
         if propertyTask == PropertyTask.editing {
-            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
         }
@@ -120,7 +128,7 @@ class PropertyDetailsViewController: UIViewController {
         lblBedroomCount.text = countString
         property.bedroomCount = bedroomCount
         if propertyTask == PropertyTask.editing {
-            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBedroomCount, newValue: bedroomCount)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBedroomCount, newValue: bedroomCount)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
         }
@@ -133,7 +141,7 @@ class PropertyDetailsViewController: UIViewController {
         lblBathroomCount.text = countString
         property.bathroomCount = bathroomCount
         if propertyTask == PropertyTask.editing {
-            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBathroomCount, newValue: bathroomCount)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBathroomCount, newValue: bathroomCount)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
         }
@@ -149,7 +157,7 @@ class PropertyDetailsViewController: UIViewController {
 //        let boolString = "\(petsAllowed)"
         property.petFriendly = petsAllowed
         if propertyTask == PropertyTask.editing {
-            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPetsAllowed, newValue: petsAllowed)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPetsAllowed, newValue: petsAllowed)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
         }
@@ -163,7 +171,7 @@ class PropertyDetailsViewController: UIViewController {
 //        let boolString = "\(smokingAllowed)"
         property.smokingAllowed = smokingAllowed
         if propertyTask == PropertyTask.editing {
-            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: smokingAllowed)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: smokingAllowed)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
         }
@@ -184,13 +192,13 @@ class PropertyDetailsViewController: UIViewController {
             //        property.wantedPropertyFeatures = propertyFeatures
 //            property.zipCode = zipcode
             //        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyFeatures, newValue: propertyFeatures)
-            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
-            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kAddress, newValue: address)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kAddress, newValue: address)
             self.lblPropertySaveResult.text = SaveResults.success.rawValue
             self.lblPropertySaveResult.isHidden = false
             // UserController.saveToPersistentStore()
         } else {
-            UserController.createPropertyInFirebase(property: property, completion: { success in
+            PropertyController.createPropertyInFirebase(property: property, completion: { success in
                 self.lblPropertySaveResult.text = success ? SaveResults.success.rawValue : SaveResults.failure.rawValue
                 self.lblPropertySaveResult.isHidden = false
                 FirebaseController.properties.append(self.property)
@@ -217,8 +225,8 @@ class PropertyDetailsViewController: UIViewController {
             
             if i == (imagesAtIndexPaths.count - 1) {
                 let newimageURLs = propertyImages.map({$0.imageURL!})
-                UserController.deletePropertyImageURLsInFirebase(id: propertyID)
-                UserController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: newimageURLs)
+                PropertyController.deletePropertyImageURLsInFirebase(id: propertyID)
+                PropertyController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: newimageURLs)
             }
             
             profileImageRef.delete(completion: { (error) in
@@ -340,7 +348,64 @@ class PropertyDetailsViewController: UIViewController {
     internal func updateSettingsChanged() {
         SettingsViewController.settingsDidChange = true
         UserController.renterFetchCount = 0
-        UserController.resetStartAtForAllPropertiesInFirebase()
+        PropertyController.resetStartAtForAllPropertiesInFirebase()
+    }
+    
+    // MARK: gestures
+    
+    func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.right:
+                print("Swiped right")
+            case UISwipeGestureRecognizerDirection.down:
+                print("Swiped down")
+                
+                self.view.endEditing(true)
+                
+            case UISwipeGestureRecognizerDirection.left:
+                print("Swiped left")
+            case UISwipeGestureRecognizerDirection.up:
+                print("Swiped up")
+            default:
+                break
+            }
+        }
+    }
+    
+    // MARK: keyboard functions
+    
+    // needs work: content should be put in a scroll view and when you click on something it should activate the scroll view
+    func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
+            return
+        }
+        
+        let keyboardSize = keyboardSizeValue.cgRectValue.size
+        
+        if self.view.frame.origin.y == 0 && txtfldZipCode.isEditing {
+            UIView.animate(withDuration: 0.1, animations: { 
+                self.view.frame.origin.y -= keyboardSize.height
+                self.view.layoutIfNeeded()
+            })
+        }
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
+            return
+        }
+        
+        let keyboardSize = keyboardSizeValue.cgRectValue.size
+        
+        if self.view.frame.origin.y != 0 {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.view.frame.origin.y += keyboardSize.height
+                self.view.layoutIfNeeded()
+                
+            })
+        }
     }
 }
 
@@ -445,13 +510,13 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true) {
             guard let propertyID = self.property.propertyID, let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
-            UserController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: self.property, completion: { imageURL in
+            PropertyController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: self.property, completion: { imageURL in
                 log("image uploaded to \(imageURL)")
                 guard let profileImageArray = self.property.profileImages?.array, let profileImages = profileImageArray as? [ProfileImage] else { return }
                 let imageURLs = profileImages.map({$0.imageURL!})
                 // needs work: update so you don't have to delete every time
-                UserController.deletePropertyImageURLsInFirebase(id: propertyID)
-                UserController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: imageURLs)
+                PropertyController.deletePropertyImageURLsInFirebase(id: propertyID)
+                PropertyController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: imageURLs)
                 self.propertyImages = profileImages
                 self.clctvwPropertyImages.reloadData()
                 self.updateSettingsChanged()

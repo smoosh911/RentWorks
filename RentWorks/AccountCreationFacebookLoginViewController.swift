@@ -42,7 +42,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                 FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (hasAccount) in
                     if !hasAccount {
                         if UserController.userCreationType == "landlord" {
-                            UserController.createLandlordAndPropertyForCurrentUser {
+                            LandlordController.createLandlordAndPropertyForCurrentUser {
                                 self.dismissLoadingScreen()
                                 let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
                                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
@@ -50,7 +50,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                                 print("Successfully created landlord for currentUser")
                             }
                         } else if UserController.userCreationType == "renter" {
-                            UserController.createRenterForCurrentUser {
+                            RenterController.createRenterForCurrentUser {
                                 self.dismissLoadingScreen()
                                 let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
                                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
@@ -103,7 +103,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                 FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (hasAccount) in
                     if !hasAccount {
                         if UserController.userCreationType == "landlord" {
-                            UserController.createLandlordAndPropertyForCurrentUser {
+                            LandlordController.createLandlordAndPropertyForCurrentUser {
                                 let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
                                 self.dismissLoadingScreen()
                                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
@@ -111,7 +111,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                                 print("Successfully created landlord for currentUser")
                             }
                         } else if UserController.userCreationType == "renter" {
-                            UserController.createRenterForCurrentUser {
+                            RenterController.createRenterForCurrentUser {
                                 let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
                                 self.dismissLoadingScreen()
                                 let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")

@@ -96,7 +96,7 @@ extension PropertiesViewController: UITableViewDelegate, UITableViewDataSource {
         let delete = UITableViewRowAction(style: .destructive, title: "Delete", handler: { (action, index) in
             self.selectedCell = tableView.cellForRow(at: index) as? PropertyTableViewCell
             guard let cell = self.selectedCell, let propertyID = cell.property.propertyID else { return }
-            UserController.deletePropertyInFirebase(propertyID: propertyID)
+            PropertyController.deletePropertyInFirebase(propertyID: propertyID)
             FirebaseController.properties = self.properties.filter({$0.propertyID != propertyID})
             self.properties = FirebaseController.properties.filter({ $0.landlordID == self.landlordID})
             tableView.beginUpdates()

@@ -14,11 +14,11 @@ class CardLoadingViewController: UIViewController {
         super.viewDidLoad()
         
         if UserController.currentUserType == "renter" {
-            UserController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: { 
+            PropertyController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: {
                 self.propertiesWereUpdated()
             })
         } else if UserController.currentUserType == "landlord" {
-            UserController.fetchPropertiesForLandlord(landlordID: UserController.currentUserID!, completion: { success in
+            PropertyController.fetchPropertiesForLandlord(landlordID: UserController.currentUserID!, completion: { success in
                 if success {
                     self.landlordPropertiesLoaded()
                 }

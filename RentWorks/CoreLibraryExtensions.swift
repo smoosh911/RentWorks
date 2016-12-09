@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 extension String {
     
@@ -29,7 +30,25 @@ extension String {
         }
     }
     let className = fileName.substring(from: fileName.characters.index(fileName.startIndex, offsetBy: indexOfLastForwardSlashInString + 1))
-    print("\(className) - line \(lineNumber): \(functionName): \(logMessage)")
+    let message = "\(className) - line \(lineNumber): \(functionName): \(logMessage)"
+    print(message)
+    
+    if logMessage.contains("ERROR") {
+        FIRAnalytics.logEvent(withName: ErrorManager.customError, parameters: [
+            ErrorManager.ErrorFields.name: ErrorManager.LogType.error as NSObject,
+            ErrorManager.ErrorFields.message: message as NSObject
+            ])
+    } else if logMessage.contains("WARNING") {
+        FIRAnalytics.logEvent(withName: ErrorManager.customError, parameters: [
+            ErrorManager.ErrorFields.name: ErrorManager.LogType.warning as NSObject,
+            ErrorManager.ErrorFields.message: message as NSObject
+            ])
+    } else {
+//        FIRAnalytics.logEvent(withName: ErrorManager.customError, parameters: [
+//            ErrorManager.ErrorFields.name: ErrorManager.LogType.print as NSObject,
+//            ErrorManager.ErrorFields.message: message as NSObject
+//            ])
+    }
 }
 @inline(__always) public func log(_ logMessage: Error, fileName: String = #file, functionName: String = #function, lineNumber: Int = #line) {
     var indexOfLastForwardSlashInString = 0
@@ -39,5 +58,11 @@ extension String {
         }
     }
     let className = fileName.substring(from: fileName.characters.index(fileName.startIndex, offsetBy: indexOfLastForwardSlashInString + 1))
-    print("\(className): \(lineNumber) \(functionName): \(logMessage)")
+    let message = "\(className): \(lineNumber) \(functionName): \(logMessage)"
+    print(message)
+    
+    FIRAnalytics.logEvent(withName: ErrorManager.customError, parameters: [
+        ErrorManager.ErrorFields.name: ErrorManager.LogType.error as NSObject,
+        ErrorManager.ErrorFields.message: message as NSObject
+        ])
 }

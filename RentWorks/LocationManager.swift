@@ -40,7 +40,7 @@ class LocationManager {
             for renter in renters {
                 group.enter()
                 distanceBetweenTwoLocations(source: renter.wantedZipCode!, destination: desiredLocation, completion: { (distance) in
-                    if distance == nil, renter.email == nil {
+                    if distance == nil || renter.email == nil {
                         group.leave()
                         return
                     }
@@ -52,7 +52,7 @@ class LocationManager {
             for property in properties {
                 group.enter()
                 distanceBetweenTwoLocations(source: property.zipCode!, destination: desiredLocation, completion: { (distance) in
-                    if distance == nil, property.propertyID == nil {
+                    if distance == nil || property.propertyID == nil {
                         group.leave()
                         return
                     }
