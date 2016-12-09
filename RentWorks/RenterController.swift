@@ -199,7 +199,7 @@ class RenterController: UserController {
     //    }
     
     static func fetchRentersForProperty(numberOfRenters: UInt, property: Property, completion: @escaping () -> Void) {
-        guard let landlord = currentLandlord, let landlordID = landlord.id, let propertyID = property.propertyID, let startAt = property.startAt else { completion(); return }
+        guard let propertyID = property.propertyID, let startAt = property.startAt else { completion(); return }
         if UserController.renterFetchCount == 1 { // if fecth count is one then you are at the end of the database
             log("WARNING: reached end of renter list on firebase")
             completion()

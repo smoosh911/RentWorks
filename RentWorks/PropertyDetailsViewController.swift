@@ -80,6 +80,14 @@ class PropertyDetailsViewController: UIViewController {
         
         let propertyDetailsDict = PropertyController.getPropertyDetailsDictionary(property: property)
         updatePropertyDetails(propertyDetailsDict: propertyDetailsDict)
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        self.view.addGestureRecognizer(swipeDown)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -341,6 +349,63 @@ class PropertyDetailsViewController: UIViewController {
         SettingsViewController.settingsDidChange = true
         UserController.renterFetchCount = 0
         PropertyController.resetStartAtForAllPropertiesInFirebase()
+    }
+    
+    // MARK: gestures
+    
+    func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.right:
+                print("Swiped right")
+            case UISwipeGestureRecognizerDirection.down:
+                print("Swiped down")
+                
+                self.view.endEditing(true)
+                
+            case UISwipeGestureRecognizerDirection.left:
+                print("Swiped left")
+            case UISwipeGestureRecognizerDirection.up:
+                print("Swiped up")
+            default:
+                break
+            }
+        }
+    }
+    
+    // MARK: keyboard functions
+    
+    // needs work: content should be put in a scroll view and when you click on something it should activate the scroll view
+    func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
+            return
+        }
+        
+        let keyboardSize = keyboardSizeValue.cgRectValue.size
+        
+        if self.view.frame.origin.y == 0 && txtfldZipCode.isEditing {
+            UIView.animate(withDuration: 0.1, animations: { 
+                self.view.frame.origin.y -= keyboardSize.height
+                self.view.layoutIfNeeded()
+            })
+        }
+        
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
+            return
+        }
+        
+        let keyboardSize = keyboardSizeValue.cgRectValue.size
+        
+        if self.view.frame.origin.y != 0 {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.view.frame.origin.y += keyboardSize.height
+                self.view.layoutIfNeeded()
+                
+            })
+        }
     }
 }
 

@@ -134,7 +134,7 @@ class LandlordController: UserController {
         
         FirebaseController.landlordsRef.child(landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
             RenterController.getFirstRenterID(completion: { (renterID) in
-                guard var landlordDictionary = snapshot.value as? [String: Any] else { log("couldn't create landlord"); completion(nil); return }
+                guard let landlordDictionary = snapshot.value as? [String: Any] else { log("couldn't create landlord"); completion(nil); return }
                 //                landlordDictionary[UserController.kStartAt] = renterID
                 guard let landlord = Landlord(dictionary: landlordDictionary, id: landlordID, context: context) else { log("couldn't create landlord"); completion(nil); return }
                 

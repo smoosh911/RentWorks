@@ -99,11 +99,11 @@ class RenterSettingsViewController: SettingsViewController {
     
     @IBAction func stpMaxDistance_ValueChanged(_ sender: UIStepper) {
         let maxDistance = Int16(sender.value)
-        guard let renter = UserController.currentRenter, let id = renter.id else { return }
+        guard let id = UserController.currentUserID else { return }
         
         let countString = "\(maxDistance)"
         lblMaxDistanceCount.text = countString
-        renter.withinRangeMiles = maxDistance
+        renter?.withinRangeMiles = maxDistance
         RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
         // UserController.saveToPersistentStore()
         updateSettingsChanged()
