@@ -170,11 +170,6 @@ class PropertyController: UserController {
             completion()
             let errorMessage = "ERROR: couldn't retrieve either renter or startat"
             log(errorMessage)
-            FIRAnalytics.logEvent(withName: kFIREventSelectContent, parameters: [
-                kFIRParameterItemID: "id-\(ErrorManager.RenterErrors.errorID)" as NSObject,
-                kFIRParameterItemName: errorMessage as NSObject,
-                kFIRParameterContentType: ErrorManager.RenterErrors.errorContentType as NSObject
-                ])
             return
         }
         log(startAt)

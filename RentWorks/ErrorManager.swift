@@ -9,6 +9,22 @@
 import Foundation
 
 class ErrorManager {
+    
+    static let customError = "customError"
+    
+    enum LogType: String {
+        case logType = "logType"
+        static let error = "genericLogError"
+        static let warning = "genericLogWarning"
+        static let print = "genericLogPrint"
+    }
+    
+    enum ErrorFields: String {
+        case error = "Error Fileds"
+        static let name = "name"
+        static let message = "full_text"
+    }
+    
     enum RenterErrors: String {
         case error = "error"
         static let errorContentType = "error"
