@@ -103,9 +103,11 @@ class PropertyDetailsViewController: UIViewController {
         guard let id = property.propertyID else { return }
 //        let priceString = "\(Int(sender.value))"
         property.monthlyPayment = Int64(price)
-        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
-        // UserController.saveToPersistentStore()
-        self.updateSettingsChanged()
+        if propertyTask == PropertyTask.editing {
+            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
     }
     
     // steppers
@@ -117,9 +119,11 @@ class PropertyDetailsViewController: UIViewController {
         let countString = "\(bedroomCount)"
         lblBedroomCount.text = countString
         property.bedroomCount = bedroomCount
-        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBedroomCount, newValue: bedroomCount)
-        // UserController.saveToPersistentStore()
-        self.updateSettingsChanged()
+        if propertyTask == PropertyTask.editing {
+            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBedroomCount, newValue: bedroomCount)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
     }
     
     @IBAction func stpBathrooms_ValueChanged(_ sender: UIStepper) {
@@ -128,9 +132,12 @@ class PropertyDetailsViewController: UIViewController {
         let countString = "\(bathroomCount)"
         lblBathroomCount.text = countString
         property.bathroomCount = bathroomCount
-        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBathroomCount, newValue: bathroomCount)
-        // UserController.saveToPersistentStore()
-        self.updateSettingsChanged()
+        if propertyTask == PropertyTask.editing {
+            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBathroomCount, newValue: bathroomCount)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
+       
     }
     
     // switches
@@ -141,9 +148,12 @@ class PropertyDetailsViewController: UIViewController {
         
 //        let boolString = "\(petsAllowed)"
         property.petFriendly = petsAllowed
-        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPetsAllowed, newValue: petsAllowed)
-        // UserController.saveToPersistentStore()
-        self.updateSettingsChanged()
+        if propertyTask == PropertyTask.editing {
+            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPetsAllowed, newValue: petsAllowed)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
+        
     }
     
     @IBAction func swtSmoking_ValueChanged(_ sender: UISwitch) {
@@ -152,9 +162,12 @@ class PropertyDetailsViewController: UIViewController {
         
 //        let boolString = "\(smokingAllowed)"
         property.smokingAllowed = smokingAllowed
-        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: smokingAllowed)
-        // UserController.saveToPersistentStore()
-        self.updateSettingsChanged()
+        if propertyTask == PropertyTask.editing {
+            UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: smokingAllowed)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
+        
     }
     
     // buttons
@@ -187,6 +200,8 @@ class PropertyDetailsViewController: UIViewController {
         self.updateSettingsChanged()
     }
     
+    
+    // needs work: shouldn't add images till property has been saved in firebase
     @IBAction func btnDeletePictures_TouchedUpInside(_ sender: UIButton) {
         print("should delete \(selectedCellIndexPaths)")
         

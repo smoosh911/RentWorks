@@ -77,7 +77,7 @@ extension Property {
         self.monthlyPayment = Int64(monthlyPayment)
         self.petFriendly = petFriendly
         self.smokingAllowed = smokingAllowed
-        self.rentalHistoryRating = dictionary[UserController.kStarRating] as? Double ?? 5.0
+        self.rentalHistoryRating = dictionary[UserController.kStarRating] as? Double ?? 0.0
         self.address = address
         self.zipCode = zipCode
         self.landlordID = dictionary[UserController.kLandlordID] as? String ?? landlordID
@@ -97,7 +97,7 @@ extension Property {
         self.monthlyPayment = 1500
         self.petFriendly = false
         self.smokingAllowed = false
-        self.rentalHistoryRating = 3.0
+        self.rentalHistoryRating = 0.0
         self.address = ""
         self.zipCode = ""
         self.landlordID = landlordID
