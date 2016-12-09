@@ -87,6 +87,10 @@ extension Renter {
             for occupation in occupationHistory {
                 Occupation(occupation: occupation, landlordOrRenter: self, context: context)
             }
+        } else {
+            FacebookRequestController.requestImageForCurrentUserWith(height: 100, width: 100, completion: { (image) in
+                
+            })
         }
         
         if let hasBeenViewedBy = dictionary[UserController.kHasBeenViewedBy] as? [String: Bool] {
@@ -100,7 +104,7 @@ extension Renter {
         if let startAtVal = dictionary[UserController.kStartAt] as? String {
             self.startAt = startAtVal
         } else {
-            UserController.getFirstPropertyID(completion: { (propertyID) in
+            PropertyController.getFirstPropertyID(completion: { (propertyID) in
                 self.startAt = propertyID
             })
         }

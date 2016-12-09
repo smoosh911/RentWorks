@@ -11,7 +11,7 @@ import CoreData
 
 extension ProfileImage {
     
-    @discardableResult convenience init?(userID: String, imageData: NSData, renter: Renter?, property: Property?, imageURL: String, context: NSManagedObjectContext? = CoreDataStack.context) {
+    @discardableResult convenience init?(userID: String, imageData: NSData, user: Any?, property: Property?, imageURL: String, context: NSManagedObjectContext? = CoreDataStack.context) {
     
         if let context = context {
             self.init(context: context)
@@ -25,8 +25,12 @@ extension ProfileImage {
         
         if property != nil {
             self.property = property
-        } else if renter != nil {
+        } else if let renter = user as? Renter {
             self.renter = renter
+        } else if let landlord = user as? Landlord {
+            self.landlord = landlord
+        } else {
+            log("ERROR: couldn't create profile image")
         }
     }
 }

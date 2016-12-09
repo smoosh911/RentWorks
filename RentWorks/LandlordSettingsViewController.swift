@@ -56,7 +56,7 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         let countString = "\(maxDistance)"
         lblMaxDistance.text = countString
         landlord.withinRangeMiles = maxDistance
-        UserController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
+        LandlordController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
         // UserController.saveToPersistentStore()
         updateSettingsChanged()
     }
@@ -69,7 +69,7 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
             return
         }
         UserController.currentLandlord?.wantsCreditRating = rowValue
-        UserController.updateCurrentLandlordInFirebase(id: UserController.currentUserID!, attributeToUpdate: UserController.kWantsCreditRating, newValue: rowValue)
+        LandlordController.updateCurrentLandlordInFirebase(id: UserController.currentUserID!, attributeToUpdate: UserController.kWantsCreditRating, newValue: rowValue)
 //        UserController.saveToPersistentStore()
         updateSettingsChanged()
     }
@@ -91,6 +91,6 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
     private func updateSettingsChanged() {
         SettingsViewController.settingsDidChange = true
         UserController.renterFetchCount = 0
-        UserController.resetStartAtForAllPropertiesInFirebase()
+        PropertyController.resetStartAtForAllPropertiesInFirebase()
     }
 }

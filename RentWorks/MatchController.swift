@@ -51,7 +51,7 @@ class MatchController {
                     
                     for id in matchingIDArray {
                         group.enter()
-                        UserController.getPropertyWithIDWithOneImage(propertyID: id, completion: { (propertyResult) in
+                        PropertyController.getPropertyWithIDWithOneImage(propertyID: id, completion: { (propertyResult) in
                             guard let property = propertyResult else { return }
                             matches.append(property)
                             group.leave()
@@ -117,7 +117,7 @@ class MatchController {
                         
                         for id in matchingIDArray {
                             subgroup.enter()
-                            UserController.getRenterWithIDWithOneImage(renterID: id, completion: { (renterResult) in
+                            RenterController.getRenterWithIDWithOneImage(renterID: id, completion: { (renterResult) in
                                 guard let renter = renterResult else { return }
                                 matches.append(renter)
                                 

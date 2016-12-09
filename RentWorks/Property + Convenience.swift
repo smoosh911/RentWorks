@@ -66,9 +66,14 @@ extension Property {
         if let startAtVal = dictionary[UserController.kStartAt] as? String {
             self.startAt = startAtVal
         } else {
-            UserController.getFirstRenterID(completion: { (propertyID) in
+            RenterController.getFirstRenterID(completion: { (propertyID) in
                 self.startAt = propertyID
             })
+        }
+        
+        // needs work: should also grab landlord
+        if let landlordID = dictionary[UserController.kLandlordID] as? String ?? landlordID {
+            self.landlordID = landlordID
         }
         
         self.availableDate = NSDate(timeIntervalSince1970: availableDate)
@@ -80,7 +85,6 @@ extension Property {
         self.rentalHistoryRating = dictionary[UserController.kStarRating] as? Double ?? 0.0
         self.address = address
         self.zipCode = zipCode
-        self.landlordID = dictionary[UserController.kLandlordID] as? String ?? landlordID
         self.propertyDescription = dictionary[UserController.kPropertyDescription] as? String ?? "No description yet!"
         guard let propertyID = dictionary[UserController.kPropertyID] as? String else { self.propertyID = UUID().uuidString; return}
         self.propertyID = propertyID

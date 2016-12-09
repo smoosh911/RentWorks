@@ -74,7 +74,7 @@ class FirebaseController {
             imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
                 guard let imageData = imageData, error == nil, let renterID = renter.id else { group.leave(); completion(false); return }
                 
-                _ = ProfileImage(userID: renterID, imageData: imageData as NSData, renter: renter, property: nil, imageURL: imageURL)
+                _ = ProfileImage(userID: renterID, imageData: imageData as NSData, user: renter, property: nil, imageURL: imageURL)
                 
                 if context != nil {
 //                    UserController.saveToPersistentStore()
@@ -159,7 +159,7 @@ class FirebaseController {
         profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
             if let error = error { print(error.localizedDescription) }
             guard let data = data, let propertyID = property.propertyID else { return }
-            let _ = ProfileImage(userID: propertyID, imageData: data as NSData, renter: nil, property: property, imageURL: url)
+            let _ = ProfileImage(userID: propertyID, imageData: data as NSData, user: nil, property: property, imageURL: url)
             completion()
         }
     }
@@ -298,7 +298,7 @@ class FirebaseController {
                     var success = false
                     
                     group.enter()
-                    UserController.getCurrentRenterFromCoreData(completion: { (renterExists) in
+                    RenterController.getCurrentRenterFromCoreData(completion: { (renterExists) in
                         let walkthroughMismatch = UserController.userCreationType == UserController.UserCreationType.landlord.rawValue // this will be false if the user already has an account and tries to create an account as the wrong user type
                         
                         if renterExists && walkthroughMismatch {
@@ -315,7 +315,7 @@ class FirebaseController {
                     })
                     
                     group.enter()
-                    UserController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
+                    LandlordController.getCurrentLandlordFromCoreData(completion: { (landlordExists) in
                         let walkthroughMismatch = UserController.userCreationType == UserController.UserCreationType.renter.rawValue // this will be false if the user already has an account and tries to create an account as the wrong user type
                         if landlordExists && walkthroughMismatch {
                             success = true

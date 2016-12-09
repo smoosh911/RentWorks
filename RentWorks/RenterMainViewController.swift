@@ -81,7 +81,7 @@ class RenterMainViewController: MainViewController {
     // MARK: actions
     
     @IBAction func btnResetCards_TouchedUpInside(_ sender: UIButton) {
-        UserController.eraseAllHasBeenViewedByForRenterFromProperties(renterID: UserController.currentUserID!, completion: {
+        RenterController.eraseAllHasBeenViewedByForRenterFromProperties(renterID: UserController.currentUserID!, completion: {
             self.downloadMoreCards()
         })
     }
@@ -106,9 +106,20 @@ class RenterMainViewController: MainViewController {
             backCardProperty = filteredProperties.first
         }
         
-        guard let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePicture = UIImage(data: imageData as Data), let address = property.address, let renterID = UserController.currentUserID, let propertyID = property.propertyID else { return }
+        guard let address = property.address, let renterID = UserController.currentUserID, let propertyID = property.propertyID else {
+            filteredProperties = filteredProperties.filter({$0.propertyID! != property.propertyID!})
+            return
+        }
         
-        UserController.updateCurrentRenterInFirebase(id: renterID, attributeToUpdate: UserController.kStartAt, newValue: propertyID)
+        var profilePicture: UIImage?
+        if let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
+            profilePicture = profilePic
+        } else {
+            log("ERROR: couldn't load a profile image")
+            profilePicture = #imageLiteral(resourceName: "noImageProfile90x90")
+        }
+        
+        RenterController.updateCurrentRenterInFirebase(id: renterID, attributeToUpdate: UserController.kStartAt, newValue: propertyID)
         
         imageView.image = profilePicture
         nameLabel.text = address
@@ -122,7 +133,19 @@ class RenterMainViewController: MainViewController {
         
         updateStars(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
         
-        guard let nextProperty = backCardProperty, let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePicture = UIImage(data: backgroundImageData as Data)  else { return }
+        guard let nextProperty = backCardProperty else {
+            
+            filteredProperties = filteredProperties.filter({$0.propertyID! != backCardProperty?.propertyID!})
+            return
+        }
+        
+        var backgroundProfilePicture: UIImage?
+        if let firstBackgroundProfileImage = nextProperty.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePic = UIImage(data: backgroundImageData as Data) {
+            backgroundProfilePicture = backgroundProfilePic
+        } else {
+            log("ERROR: couldn't load a profile image")
+            backgroundProfilePicture = #imageLiteral(resourceName: "noImageProfile90x90")
+        }
         
         let backgroundPrice = "$\(nextProperty.monthlyPayment)"
         
@@ -141,7 +164,7 @@ class RenterMainViewController: MainViewController {
     
     override func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any) {
         guard let property = cardEntity as? Property, let propertyID = property.propertyID, let renterID = UserController.currentUserID else { return }
-        UserController.addHasBeenViewedByRenterToPropertyInFirebase(propertyID: propertyID, renterID: renterID)
+        PropertyController.addHasBeenViewedByRenterToPropertyInFirebase(propertyID: propertyID, renterID: renterID)
     }
     
     func swipableView(_ swipableView: RWKSwipeableView, didAccept cardEntity: Any) {
@@ -173,7 +196,7 @@ class RenterMainViewController: MainViewController {
             }
             FirebaseController.isFetchingNewProperties = true
             cardsAreLoading = true
-            UserController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: {
+            PropertyController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: {
                 FirebaseController.isFetchingNewProperties = false
                 self.cardsAreLoading = false
                 
