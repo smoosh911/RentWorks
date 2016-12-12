@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,20 +21,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV2" translatesAutoresizingMaskIntoConstraints="NO" id="yUM-mu-6r2">
-                                <rect key="frame" x="60" y="101" width="255" height="225"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="225" id="2Rh-zW-Fn4"/>
-                                    <constraint firstAttribute="width" constant="255" id="TaP-43-oXv"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="aln-kQ-J2P">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="yUM-mu-6r2" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailingMargin" constant="-44" id="ALh-3c-56h"/>
-                            <constraint firstItem="yUM-mu-6r2" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="44" id="Fhw-19-uv4"/>
-                            <constraint firstItem="yUM-mu-6r2" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="81" id="rcI-oB-GTm"/>
+                            <constraint firstItem="aln-kQ-J2P" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="JSL-7P-IFv"/>
+                            <constraint firstAttribute="trailing" secondItem="aln-kQ-J2P" secondAttribute="trailing" id="RJb-Kf-UIm"/>
+                            <constraint firstItem="aln-kQ-J2P" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="ahR-JU-xfX"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="aln-kQ-J2P" secondAttribute="bottom" id="nG7-96-4fR"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -45,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="VengaLogoV2" width="1000" height="1089"/>
+        <image name="LaunchScreen" width="375" height="667"/>
     </resources>
 </document>

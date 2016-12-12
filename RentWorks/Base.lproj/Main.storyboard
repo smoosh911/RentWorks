@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qq3-1I-Axi">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Bold.ttf">
+            <string>Roboto-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Login View Controller-->
         <scene sceneID="c5i-qi-9kL">
@@ -19,177 +24,46 @@
                         <viewControllerLayoutGuide type="top" id="Uva-PS-c7E"/>
                         <viewControllerLayoutGuide type="bottom" id="UqD-JY-oma"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="cdA-ib-g0p">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <view key="view" contentMode="scaleToFill" id="WhI-ay-VfP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV2" translatesAutoresizingMaskIntoConstraints="NO" id="qtK-ld-6a4">
-                                <rect key="frame" x="60" y="101" width="254" height="225"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="225" id="Zjj-M8-XVX"/>
-                                    <constraint firstAttribute="width" constant="254" id="jms-Fm-Utq"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Rar-Th-1YO">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Renting made smart" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XtU-Qw-Ehv">
-                                <rect key="frame" x="104" y="334" width="166" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VIm-UA-Uzb">
-                                <rect key="frame" x="303" y="547" width="56" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="1j9-eS-Xy0"/>
-                                    <constraint firstAttribute="width" secondItem="VIm-UA-Uzb" secondAttribute="height" multiplier="14:25" id="DOI-nf-xpu"/>
-                                    <constraint firstAttribute="width" constant="56" id="fex-6n-KfJ"/>
-                                </constraints>
-                                <state key="normal" image="NextArrowYellow">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dFX-DU-Ns1">
-                                <rect key="frame" x="16" y="547" width="343" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="DYq-mC-fWP"/>
-                                </constraints>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfg-mv-toB">
+                                <rect key="frame" x="21" y="471" width="278" height="57"/>
+                                <color key="backgroundColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
-                                <state key="normal" title="Get Started">
+                                <state key="normal" title="get started">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <segue destination="n6X-fL-rWf" kind="show" identifier="toAccountTypeVC" id="Jbg-FF-iWV"/>
+                                    <segue destination="60J-S5-KhB" kind="show" id="jwq-gX-w71"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="XtU-Qw-Ehv" firstAttribute="centerX" secondItem="cdA-ib-g0p" secondAttribute="centerX" id="5Fy-BR-fXG"/>
-                            <constraint firstItem="qtK-ld-6a4" firstAttribute="top" secondItem="Uva-PS-c7E" secondAttribute="bottom" constant="37" id="FnJ-rL-Xzy"/>
-                            <constraint firstItem="VIm-UA-Uzb" firstAttribute="trailing" secondItem="cdA-ib-g0p" secondAttribute="trailingMargin" id="Jxg-Vb-qLY"/>
-                            <constraint firstItem="qtK-ld-6a4" firstAttribute="centerX" secondItem="cdA-ib-g0p" secondAttribute="centerX" id="WJ7-Wm-QwR"/>
-                            <constraint firstItem="dFX-DU-Ns1" firstAttribute="leading" secondItem="cdA-ib-g0p" secondAttribute="leadingMargin" id="Xdj-jN-VAr"/>
-                            <constraint firstItem="XtU-Qw-Ehv" firstAttribute="top" secondItem="qtK-ld-6a4" secondAttribute="bottom" constant="8" id="bMP-0M-L3K"/>
-                            <constraint firstItem="dFX-DU-Ns1" firstAttribute="trailing" secondItem="cdA-ib-g0p" secondAttribute="trailingMargin" id="bPf-bp-UA1"/>
-                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="VIm-UA-Uzb" secondAttribute="bottom" constant="20" id="nVc-qJ-TKm"/>
-                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="dFX-DU-Ns1" secondAttribute="bottom" constant="20" id="rU9-wg-4iy"/>
+                            <constraint firstItem="cfg-mv-toB" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="5" id="6GD-t1-RIa"/>
+                            <constraint firstItem="cfg-mv-toB" firstAttribute="height" secondItem="WhI-ay-VfP" secondAttribute="height" multiplier="1/10" id="7mK-rv-ysm"/>
+                            <constraint firstItem="Rar-Th-1YO" firstAttribute="top" secondItem="WhI-ay-VfP" secondAttribute="top" id="BYz-TC-fjR"/>
+                            <constraint firstAttribute="trailing" secondItem="Rar-Th-1YO" secondAttribute="trailing" id="Bn5-zM-vse"/>
+                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="cfg-mv-toB" secondAttribute="bottom" constant="40" id="DQ4-Zw-c4w"/>
+                            <constraint firstAttribute="bottom" secondItem="Rar-Th-1YO" secondAttribute="bottom" id="Hqf-Q9-JIY"/>
+                            <constraint firstItem="cfg-mv-toB" firstAttribute="trailing" secondItem="WhI-ay-VfP" secondAttribute="trailingMargin" constant="-5" id="IhX-26-hJn"/>
+                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="Rar-Th-1YO" secondAttribute="bottom" id="OEC-kQ-AsE"/>
+                            <constraint firstItem="Rar-Th-1YO" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leading" id="fvk-28-AUj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="j1s-F7-pRL"/>
                     <connections>
-                        <outlet property="rentingMadeSmartLabel" destination="XtU-Qw-Ehv" id="4oY-hC-v9u"/>
+                        <outlet property="getStartedButton" destination="cfg-mv-toB" id="681-Oi-faK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YLq-Mj-cPN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1832.8" y="8.5457271364317844"/>
-        </scene>
-        <!--Landlord Or User View Controller-->
-        <scene sceneID="hSb-Cf-2QG">
-            <objects>
-                <viewController id="n6X-fL-rWf" customClass="LandlordOrUserViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="D0L-AO-6Th"/>
-                        <viewControllerLayoutGuide type="bottom" id="fbB-bn-UpE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="l1M-R3-NwG">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I am a..." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Yce-cu-vVk">
-                                <rect key="frame" x="30" y="59" width="314" height="302"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="75"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="BuQ-5M-K8N">
-                                <rect key="frame" x="57" y="457" width="260" height="65"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dKl-Q1-Hwm">
-                                        <rect key="frame" x="0.0" y="0.0" width="110" height="65"/>
-                                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="65" id="IT0-bz-UYL"/>
-                                            <constraint firstAttribute="width" constant="110" id="x9L-ob-hS4"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
-                                        <state key="normal" title="Renter">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
-                                                <real key="value" value="0.20000000000000001"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                                <real key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
-                                                <point key="value" x="0.0" y="0.0"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <segue destination="T7G-mW-4Wi" kind="presentation" identifier="toRenterPageVC" id="jA0-dO-i7v"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ec-oL-AsK">
-                                        <rect key="frame" x="150" y="0.0" width="110" height="65"/>
-                                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="110" id="Maa-Z1-dpL"/>
-                                            <constraint firstAttribute="height" constant="65" id="Qmj-6y-DOc"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
-                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <state key="normal" title="Landlord">
-                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
-                                                <real key="value" value="0.20000000000000001"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
-                                                <point key="value" x="0.0" y="0.0"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                                <real key="value" value="5"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <segue destination="yLP-gJ-WFg" kind="presentation" identifier="toLandlordPageVC" id="1gC-Zd-eNW"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstItem="dKl-Q1-Hwm" firstAttribute="width" secondItem="1ec-oL-AsK" secondAttribute="width" id="nso-nq-orC"/>
-                                </constraints>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="BuQ-5M-K8N" firstAttribute="leading" secondItem="l1M-R3-NwG" secondAttribute="leadingMargin" constant="41" id="Kh2-CQ-Ggx"/>
-                            <constraint firstItem="Yce-cu-vVk" firstAttribute="top" secondItem="l1M-R3-NwG" secondAttribute="topMargin" constant="59" id="LsU-Cr-kGH"/>
-                            <constraint firstItem="fbB-bn-UpE" firstAttribute="top" secondItem="BuQ-5M-K8N" secondAttribute="bottom" constant="145" id="NHE-lA-N3K"/>
-                            <constraint firstItem="BuQ-5M-K8N" firstAttribute="top" secondItem="Yce-cu-vVk" secondAttribute="bottom" constant="96" id="TUb-iV-Jzj"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="BuQ-5M-K8N" secondAttribute="trailing" constant="42" id="Vgm-jQ-9C0"/>
-                            <constraint firstItem="Yce-cu-vVk" firstAttribute="leading" secondItem="l1M-R3-NwG" secondAttribute="leadingMargin" constant="14" id="ZtN-UT-1iN"/>
-                            <constraint firstItem="BuQ-5M-K8N" firstAttribute="centerX" secondItem="l1M-R3-NwG" secondAttribute="centerX" id="i4j-6v-KAZ"/>
-                            <constraint firstItem="Yce-cu-vVk" firstAttribute="centerX" secondItem="BuQ-5M-K8N" secondAttribute="centerX" id="snk-i7-aOC"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="pU0-UX-wNM"/>
-                    <connections>
-                        <outlet property="landlordButton" destination="1ec-oL-AsK" id="01R-jG-OuS"/>
-                        <outlet property="renterButton" destination="dKl-Q1-Hwm" id="xw6-sU-N94"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GXl-Lz-q3P" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2618" y="9"/>
         </scene>
         <!--LandlordPageVC-->
         <scene sceneID="xXF-Kb-57g">
@@ -212,11 +86,10 @@
             <objects>
                 <navigationController storyboardIdentifier="loginVC" automaticallyAdjustsScrollViewInsets="NO" id="Qq3-1I-Axi" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="8G6-qI-0GL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="8G6-qI-0GL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -235,75 +108,216 @@
                         <viewControllerLayoutGuide type="top" id="0XM-I0-HZU"/>
                         <viewControllerLayoutGuide type="bottom" id="d2T-Eo-jYK"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="jMx-wR-Osf">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <view key="view" contentMode="scaleToFill" id="bhW-6a-N6m">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No internet connection" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6aR-2t-qUH">
-                                <rect key="frame" x="99" y="323" width="176" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sAM-eC-uoJ">
-                                <rect key="frame" x="164" y="352" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Retry"/>
-                                <connections>
-                                    <action selector="btnRetry_TouchedUpInside:" destination="cz9-i6-fhB" eventType="touchUpInside" id="4n9-Yn-6oR"/>
-                                    <segue destination="4bt-6e-eVg" kind="show" id="KMA-x1-M8D"/>
-                                </connections>
-                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenNoText" translatesAutoresizingMaskIntoConstraints="NO" id="ecK-vz-wKq">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="71U-Bd-b08">
+                                <rect key="frame" x="0.0" y="169" width="320" height="94.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No internet connection" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a23-k0-thP">
+                                        <rect key="frame" x="8" y="8" width="304" height="47"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="40"/>
+                                        <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bKC-RC-tFs">
+                                        <rect key="frame" x="106.5" y="54.5" width="107" height="32"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
+                                        <state key="normal" title="Retry">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="btnRetry_TouchedUpInside:" destination="cz9-i6-fhB" eventType="touchUpInside" id="5tY-hd-3PA"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="0.79805222600000003" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="a23-k0-thP" firstAttribute="leading" secondItem="71U-Bd-b08" secondAttribute="leading" constant="8" id="5GE-aC-uPw"/>
+                                    <constraint firstAttribute="bottom" secondItem="bKC-RC-tFs" secondAttribute="bottom" constant="8" id="6gh-IJ-nOJ"/>
+                                    <constraint firstItem="bKC-RC-tFs" firstAttribute="width" secondItem="71U-Bd-b08" secondAttribute="width" multiplier="1/3" id="PUf-QP-ohe"/>
+                                    <constraint firstItem="a23-k0-thP" firstAttribute="top" secondItem="71U-Bd-b08" secondAttribute="top" constant="8" id="PVv-bQ-ZHF"/>
+                                    <constraint firstAttribute="trailing" secondItem="a23-k0-thP" secondAttribute="trailing" constant="8" id="bFZ-kh-RPE"/>
+                                    <constraint firstItem="bKC-RC-tFs" firstAttribute="centerX" secondItem="71U-Bd-b08" secondAttribute="centerX" id="qGT-5Q-iP3"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="6aR-2t-qUH" firstAttribute="centerY" secondItem="jMx-wR-Osf" secondAttribute="centerY" id="EAe-QV-6f8"/>
-                            <constraint firstItem="6aR-2t-qUH" firstAttribute="centerX" secondItem="jMx-wR-Osf" secondAttribute="centerX" id="o10-TM-Rzs"/>
+                            <constraint firstAttribute="trailing" secondItem="ecK-vz-wKq" secondAttribute="trailing" id="0e8-d8-9O8"/>
+                            <constraint firstItem="ecK-vz-wKq" firstAttribute="top" secondItem="bhW-6a-N6m" secondAttribute="top" id="19k-vX-Y3u"/>
+                            <constraint firstAttribute="trailing" secondItem="ecK-vz-wKq" secondAttribute="trailing" id="6WB-KI-5FI"/>
+                            <constraint firstItem="ecK-vz-wKq" firstAttribute="leading" secondItem="bhW-6a-N6m" secondAttribute="leading" id="JO5-zk-8Cq"/>
+                            <constraint firstAttribute="trailing" secondItem="71U-Bd-b08" secondAttribute="trailing" id="PQQ-id-pFD"/>
+                            <constraint firstAttribute="bottom" secondItem="ecK-vz-wKq" secondAttribute="bottom" id="Spu-6t-deb"/>
+                            <constraint firstItem="ecK-vz-wKq" firstAttribute="leading" secondItem="bhW-6a-N6m" secondAttribute="leading" id="Sug-Gv-FmO"/>
+                            <constraint firstItem="71U-Bd-b08" firstAttribute="height" secondItem="bhW-6a-N6m" secondAttribute="height" multiplier="1/6" id="fWF-0V-Bky"/>
+                            <constraint firstItem="71U-Bd-b08" firstAttribute="top" secondItem="0XM-I0-HZU" secondAttribute="bottom" constant="149" id="gzp-RP-9OL"/>
+                            <constraint firstItem="ecK-vz-wKq" firstAttribute="top" secondItem="bhW-6a-N6m" secondAttribute="top" id="ksI-mq-AAT"/>
+                            <constraint firstItem="71U-Bd-b08" firstAttribute="leading" secondItem="bhW-6a-N6m" secondAttribute="leading" id="nzR-xb-KXa"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0um-Vx-crg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-158" y="847"/>
+            <point key="canvasLocation" x="37.5" y="809.15492957746483"/>
         </scene>
         <!--Launch Screen Copy View Controller-->
-        <scene sceneID="2Oe-cV-Wvv">
+        <scene sceneID="eF7-KR-Y84">
             <objects>
-                <viewController storyboardIdentifier="launchScreenCopy" id="4bt-6e-eVg" customClass="LaunchScreenCopyViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="launchScreenCopy" id="zXr-yx-YWu" customClass="LaunchScreenCopyViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Q18-7g-pqs"/>
-                        <viewControllerLayoutGuide type="bottom" id="wLT-nw-Okf"/>
+                        <viewControllerLayoutGuide type="top" id="EkJ-H5-19E"/>
+                        <viewControllerLayoutGuide type="bottom" id="tva-Zd-ymP"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="WQl-jt-3m5">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <view key="view" contentMode="scaleToFill" id="LOS-Uu-5tr">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV2" translatesAutoresizingMaskIntoConstraints="NO" id="axX-GM-oab">
-                                <rect key="frame" x="60" y="101" width="254" height="225"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="225" id="GKF-hf-PeV"/>
-                                    <constraint firstAttribute="width" constant="254" id="WJq-WA-eXh"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Vho-VV-lu4">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="axX-GM-oab" firstAttribute="top" secondItem="Q18-7g-pqs" secondAttribute="bottom" constant="81" id="8gj-48-9jH"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="axX-GM-oab" secondAttribute="trailing" constant="45" id="WgX-o5-mVj"/>
-                            <constraint firstItem="axX-GM-oab" firstAttribute="leading" secondItem="WQl-jt-3m5" secondAttribute="leadingMargin" constant="44" id="stc-fA-h9a"/>
+                            <constraint firstAttribute="trailing" secondItem="Vho-VV-lu4" secondAttribute="trailing" id="4Jl-ki-Y6F"/>
+                            <constraint firstItem="Vho-VV-lu4" firstAttribute="top" secondItem="LOS-Uu-5tr" secondAttribute="top" id="bOd-0L-g6W"/>
+                            <constraint firstAttribute="bottom" secondItem="Vho-VV-lu4" secondAttribute="bottom" id="mZP-KD-WWp"/>
+                            <constraint firstItem="Vho-VV-lu4" firstAttribute="leading" secondItem="LOS-Uu-5tr" secondAttribute="leading" id="wwH-sX-mHb"/>
                         </constraints>
                     </view>
                     <connections>
-                        <segue destination="cz9-i6-fhB" kind="show" identifier="segueToNoInternetVC" id="FyM-H9-k8l"/>
+                        <segue destination="cz9-i6-fhB" kind="show" identifier="segueToNoInternetVC" id="06G-iT-8Qw"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Lx1-Mr-KAS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QjK-Mh-fmG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="38" y="9"/>
+            <point key="canvasLocation" x="38" y="8"/>
+        </scene>
+        <!--Landlord Or User View Controller-->
+        <scene sceneID="vV9-8K-pVO">
+            <objects>
+                <viewController id="60J-S5-KhB" customClass="LandlordOrUserViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gye-Iv-fYv"/>
+                        <viewControllerLayoutGuide type="bottom" id="nMj-vv-ixm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cTA-Rb-6oE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LandlordOrUserViewControllerBackground" translatesAutoresizingMaskIntoConstraints="NO" id="Sxs-He-ST0">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="lvj-E7-Gyo">
+                                <rect key="frame" x="69" y="380" width="255" height="129"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfB-UU-hAm">
+                                        <rect key="frame" x="0.0" y="0.0" width="255" height="57"/>
+                                        <color key="backgroundColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="38"/>
+                                        <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="50" maxY="0.0"/>
+                                        <state key="normal" title="Renter">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                                <real key="value" value="0.20000000000000001"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
+                                                <point key="value" x="0.0" y="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="T7G-mW-4Wi" kind="presentation" identifier="toRenterPageVC" id="qtX-or-lXh"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cF8-N0-YSp">
+                                        <rect key="frame" x="0.0" y="72" width="255" height="57"/>
+                                        <color key="backgroundColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="38"/>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="13" maxY="0.0"/>
+                                        <state key="normal" title="Landlord">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                                                <real key="value" value="0.20000000000000001"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
+                                                <point key="value" x="0.0" y="0.0"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                                                <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="yLP-gJ-WFg" kind="presentation" identifier="toLandlordPageVC" id="wVO-Mc-cAZ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8hW-8w-oOG">
+                                <rect key="frame" x="0.0" y="161" width="320" height="57"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I'm a..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p8U-Bj-AZj">
+                                        <rect key="frame" x="72" y="8" width="104" height="41.5"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="35"/>
+                                        <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="0.5040667808" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="p8U-Bj-AZj" firstAttribute="centerY" secondItem="8hW-8w-oOG" secondAttribute="centerY" id="8iF-8F-94c"/>
+                                    <constraint firstItem="p8U-Bj-AZj" firstAttribute="leading" secondItem="8hW-8w-oOG" secondAttribute="leading" constant="72" id="xVn-Ep-lkc"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="lvj-E7-Gyo" secondAttribute="trailing" constant="-20" id="2Eg-7t-G7J"/>
+                            <constraint firstItem="Sxs-He-ST0" firstAttribute="top" secondItem="cTA-Rb-6oE" secondAttribute="top" id="JKM-eS-BX4"/>
+                            <constraint firstItem="8hW-8w-oOG" firstAttribute="height" secondItem="cTA-Rb-6oE" secondAttribute="height" multiplier="1/10" id="NtD-4i-2yf"/>
+                            <constraint firstItem="8hW-8w-oOG" firstAttribute="leading" secondItem="cTA-Rb-6oE" secondAttribute="leading" id="S0s-Qo-pEc"/>
+                            <constraint firstItem="nMj-vv-ixm" firstAttribute="top" secondItem="lvj-E7-Gyo" secondAttribute="bottom" multiplier="1.1" constant="8" symbolic="YES" id="SWN-AQ-tvD"/>
+                            <constraint firstItem="Sxs-He-ST0" firstAttribute="leading" secondItem="cTA-Rb-6oE" secondAttribute="leading" id="Tkb-5l-cKc"/>
+                            <constraint firstAttribute="trailing" secondItem="Sxs-He-ST0" secondAttribute="trailing" id="UHu-u9-ass"/>
+                            <constraint firstAttribute="trailing" secondItem="8hW-8w-oOG" secondAttribute="trailing" id="ZYi-lh-eiY"/>
+                            <constraint firstItem="Sxs-He-ST0" firstAttribute="top" secondItem="8hW-8w-oOG" secondAttribute="bottom" constant="-218" id="fDX-iK-8HC"/>
+                            <constraint firstItem="wfB-UU-hAm" firstAttribute="height" secondItem="cTA-Rb-6oE" secondAttribute="height" multiplier="1/10" id="gVz-Nl-7Ek"/>
+                            <constraint firstItem="nMj-vv-ixm" firstAttribute="top" secondItem="Sxs-He-ST0" secondAttribute="bottom" id="hac-PJ-3Be"/>
+                            <constraint firstItem="lvj-E7-Gyo" firstAttribute="leading" secondItem="cTA-Rb-6oE" secondAttribute="leadingMargin" multiplier="4/5" constant="56" id="yTK-U5-TjL"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="WYc-ti-vm9"/>
+                    <connections>
+                        <outlet property="landlordButton" destination="cF8-N0-YSp" id="4ex-lG-l0U"/>
+                        <outlet property="renterButton" destination="wfB-UU-hAm" id="nD9-tl-hms"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="e62-wZ-v53" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2595" y="7"/>
         </scene>
     </scenes>
     <resources>
-        <image name="NextArrowYellow" width="131" height="212"/>
-        <image name="VengaLogoV2" width="1000" height="1089"/>
+        <image name="LandlordOrUserViewControllerBackground" width="375" height="667"/>
+        <image name="LaunchScreen" width="375" height="667"/>
+        <image name="LaunchScreenNoText" width="375" height="667"/>
     </resources>
 </document>
