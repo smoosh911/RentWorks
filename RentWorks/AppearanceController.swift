@@ -29,7 +29,7 @@ class AppearanceController {
     static let vengaYellowColor = UIColor(red: 0.976, green: 0.937, blue: 0.110, alpha: 1.00)
     
     
-    static let viewButtonPressedColor = UIColor(red: 0.945, green: 0.902, blue: 0.132, alpha: 1.00)
+    static let viewButtonPressedColor = UIColor(red: 202/255, green: 173/255, blue: 100/255, alpha: 1.0)
     
     // For the credit rating labels, because the text isn't a part of the button, the slight change in color must be done manually.
     static let buttonPressedColor = UIColor(red: 0.911, green: 0.920, blue: 0.920, alpha: 1.00)

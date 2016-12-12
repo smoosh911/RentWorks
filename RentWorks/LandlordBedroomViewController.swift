@@ -14,18 +14,15 @@ class LandlordBedroomViewController: UIViewController {
     @IBOutlet weak var bathroomCountLabel: UILabel!
     @IBOutlet weak var bedroomStepper: UIStepper!
     @IBOutlet weak var bathroomStepper: UIStepper!
-    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
 
-        nextButton.isHidden = true
+//        nextButton.isHidden = true
 
-        nextButton.slideFromRight()
-        
-//        bedroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
-//        bathroomStepper.setIncrementImage(#imageLiteral(resourceName: "addStepper"), for: .normal)
+//        nextButton.slideFromRight()
         
         bedroomCountLabel.text = "1"
         bathroomCountLabel.text = "1"
@@ -69,11 +66,11 @@ class LandlordBedroomViewController: UIViewController {
         }
     }
     
-    @IBAction func nextButtonTapped(_ sender: UIButton) {
-        saveRoomInformationToUserCreationDictionary()
-        AccountCreationController.pageRightFrom(landlordVC: self)
-        
-    }
+//    @IBAction func nextButtonTapped(_ sender: UIButton) {
+//        saveRoomInformationToUserCreationDictionary()
+//        AccountCreationController.pageRightFrom(landlordVC: self)
+//        
+//    }
     
     func saveRoomInformationToUserCreationDictionary() {
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBedroomCount: bedroomStepper.value])

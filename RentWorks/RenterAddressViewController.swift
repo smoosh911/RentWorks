@@ -13,15 +13,15 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var zipCodeTextField: UITextField!
     @IBOutlet weak var addressTextField: UITextField!
-    @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var nextButtonCenterXConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButtonCenterXConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleView: UIView!
 
     var didSlide = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.nextButton.isHidden = true
+//        self.nextButton.isHidden = true
         
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
@@ -48,22 +48,22 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @IBAction func nextButtonTapped(_ sender: AnyObject) {
-        
-        if zipCodeTextField.text != "", zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" {
-            saveAddressInformationToAccountCreationDictionary()
-            
-            AccountCreationController.pageRightFrom(renterVC: self)
-        } else {
-            let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing.", preferredStyle: .alert)
-            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-            alert.addAction(dismissAction)
-            alert.view.tintColor = .black
-            
-            self.present(alert, animated: true, completion: nil)
-            
-        }
-    }
+//    @IBAction func nextButtonTapped(_ sender: AnyObject) {
+//        
+//        if zipCodeTextField.text != "", zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" {
+//            saveAddressInformationToAccountCreationDictionary()
+//            
+//            AccountCreationController.pageRightFrom(renterVC: self)
+//        } else {
+//            let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing.", preferredStyle: .alert)
+//            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+//            alert.addAction(dismissAction)
+//            alert.view.tintColor = .black
+//            
+//            self.present(alert, animated: true, completion: nil)
+//            
+//        }
+//    }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         self.parent?.dismiss(animated: true, completion: nil)
@@ -73,7 +73,7 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" && didSlide == false {
             didSlide = true
             AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
-            nextButton.slideFromRight()
+//            nextButton.slideFromRight()
         }
     }
     
