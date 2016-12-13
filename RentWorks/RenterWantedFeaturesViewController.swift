@@ -18,16 +18,16 @@ class RenterWantedFeaturesViewController: UIViewController {
     @IBOutlet weak var gymButton: UIButton!
     @IBOutlet weak var dishwasherButton: UIButton!
     @IBOutlet weak var backyardButton: UIButton!
-    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButton: UIButton!
     
     let buttonPressedColor = AppearanceController.buttonPressedColor
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        nextButton.isHidden = true
+//        nextButton.isHidden = true
         
-        nextButton.slideFromRight()
+//        nextButton.slideFromRight()
         
         AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
         
@@ -47,7 +47,7 @@ class RenterWantedFeaturesViewController: UIViewController {
         let laundry = UserController.PropertyFeatures.laundry.rawValue
         if features.contains(laundry), let index = features.index(of: laundry) {
             features.remove(at: index)
-                laundryButton.backgroundColor = AppearanceController.vengaYellowColor
+                laundryButton.backgroundColor = .clear
         } else {
             features.append(laundry)
             laundryButton.backgroundColor = AppearanceController.viewButtonPressedColor
@@ -59,7 +59,7 @@ class RenterWantedFeaturesViewController: UIViewController {
         let garage = UserController.PropertyFeatures.garage.rawValue
         if features.contains(garage), let index = features.index(of: garage) {
             features.remove(at: index)
-            garageButton.backgroundColor = AppearanceController.vengaYellowColor
+            garageButton.backgroundColor = .clear
         } else {
             features.append(garage)
             garageButton.backgroundColor = AppearanceController.viewButtonPressedColor
@@ -70,7 +70,7 @@ class RenterWantedFeaturesViewController: UIViewController {
         let pool = UserController.PropertyFeatures.pool.rawValue
         if features.contains(pool), let index = features.index(of: pool) {
             features.remove(at: index)
-            poolButton.backgroundColor = AppearanceController.vengaYellowColor
+            poolButton.backgroundColor = .clear
         } else {
             features.append(pool)
             poolButton.backgroundColor = AppearanceController.viewButtonPressedColor
@@ -81,7 +81,7 @@ class RenterWantedFeaturesViewController: UIViewController {
         let gym = UserController.PropertyFeatures.gym.rawValue
         if features.contains(gym), let index = features.index(of: gym) {
             features.remove(at: index)
-            gymButton.backgroundColor = AppearanceController.vengaYellowColor
+            gymButton.backgroundColor = .clear
         } else {
             features.append(gym)
             gymButton.backgroundColor = AppearanceController.viewButtonPressedColor
@@ -92,7 +92,7 @@ class RenterWantedFeaturesViewController: UIViewController {
         let dishwasher = UserController.PropertyFeatures.dishwasher.rawValue
         if features.contains(dishwasher), let index = features.index(of: dishwasher) {
             features.remove(at: index)
-            dishwasherButton.backgroundColor = AppearanceController.vengaYellowColor
+            dishwasherButton.backgroundColor = .clear
         } else {
             features.append(dishwasher)
             dishwasherButton.backgroundColor = AppearanceController.viewButtonPressedColor
@@ -103,7 +103,7 @@ class RenterWantedFeaturesViewController: UIViewController {
         let backyard = UserController.PropertyFeatures.backyard.rawValue
         if features.contains(backyard), let index = features.index(of: backyard) {
             features.remove(at: index)
-            backyardButton.backgroundColor = AppearanceController.vengaYellowColor
+            backyardButton.backgroundColor = .clear
         } else {
             features.append(backyard)
 
@@ -111,11 +111,11 @@ class RenterWantedFeaturesViewController: UIViewController {
         }
     }
 
-    @IBAction func nextButtonTapped(_ sender: UIButton) {
-    
-        saveWantedFeaturesToAccountCreationDictionary()
-        AccountCreationController.pageRightFrom(renterVC: self)
-    }
+//    @IBAction func nextButtonTapped(_ sender: UIButton) {
+//    
+//        saveWantedFeaturesToAccountCreationDictionary()
+//        AccountCreationController.pageRightFrom(renterVC: self)
+//    }
     
     
     func saveWantedFeaturesToAccountCreationDictionary() {
