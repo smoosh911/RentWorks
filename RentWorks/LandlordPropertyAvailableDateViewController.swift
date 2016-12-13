@@ -11,16 +11,16 @@ import UIKit
 class LandlordPropertyAvailableDateViewController: UIViewController {
     
     @IBOutlet weak var availableDatePicker: UIDatePicker!
-    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
         
-        nextButton.isHidden = true
+//        nextButton.isHidden = true
         
-        nextButton.slideFromRight()
+//        nextButton.slideFromRight()
         
         availableDatePicker.minimumDate = Date()
         availableDatePicker.setValue(UIColor.black, forKey: "textColor")
@@ -31,10 +31,10 @@ class LandlordPropertyAvailableDateViewController: UIViewController {
     }
     
     
-    @IBAction func nextButtonTapped(_ sender: UIButton) {
-        AccountCreationController.pageRightFrom(landlordVC: self)
-        savePropertyAvailableDateInformationToAccountCreationDictionary()
-    }
+//    @IBAction func nextButtonTapped(_ sender: UIButton) {
+//        AccountCreationController.pageRightFrom(landlordVC: self)
+//        savePropertyAvailableDateInformationToAccountCreationDictionary()
+//    }
     
     func savePropertyAvailableDateInformationToAccountCreationDictionary() {
         UserController.addAttributeToUserDictionary(attribute: [UserController.kAvailableDate: availableDatePicker.date.timeIntervalSince1970])

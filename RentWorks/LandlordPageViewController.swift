@@ -31,7 +31,7 @@ class LandlordPageViewController: UIPageViewController {
             myView.canCancelContentTouches = false
         }
         dataSource = self
-        self.view.backgroundColor = AppearanceController.vengaYellowColor
+        self.view.backgroundColor = .black
         if let vc1 = landlordVCs.first {
             setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
         }

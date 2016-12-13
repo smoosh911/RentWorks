@@ -20,7 +20,7 @@ class LandlordPropertyFeaturesViewController: UIViewController {
     @IBOutlet weak var gymButton: UIButton!
     @IBOutlet weak var dishwasherButton: UIButton!
     @IBOutlet weak var backyardButton: UIButton!
-    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButton: UIButton!
     
     
     override func viewDidLoad() {
@@ -28,9 +28,9 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         
         AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
         
-        nextButton.isHidden = true
+//        nextButton.isHidden = true
         
-        nextButton.slideFromRight()
+//        nextButton.slideFromRight()
         
         laundryButton.layer.cornerRadius = 15
         garageButton.layer.cornerRadius = 15
@@ -111,10 +111,10 @@ class LandlordPropertyFeaturesViewController: UIViewController {
         }
     }
 
-    @IBAction func nextButtonTapped(_ sender: UIButton) {
-        saveWantedFeaturesToAccountCreationDictionary()
-        AccountCreationController.pageRightFrom(landlordVC: self)
-    }
+//    @IBAction func nextButtonTapped(_ sender: UIButton) {
+//        saveWantedFeaturesToAccountCreationDictionary()
+//        AccountCreationController.pageRightFrom(landlordVC: self)
+//    }
     
     func saveWantedFeaturesToAccountCreationDictionary() {
         let featureString = features.joined(separator: ", ")

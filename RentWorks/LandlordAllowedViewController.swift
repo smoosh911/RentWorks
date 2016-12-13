@@ -14,7 +14,7 @@ class LandlordAllowedViewController: UIViewController {
     @IBOutlet weak var noPetsAllowedButton: UIButton!
     @IBOutlet weak var smokingAllowedButton: UIButton!
     @IBOutlet weak var noSmokingButton: UIButton!
-    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButton: UIButton!
     
     var smokingAllowed: Bool?
     var petsAllowed: Bool?
@@ -24,7 +24,7 @@ class LandlordAllowedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        nextButton.isHidden = true
+//        nextButton.isHidden = true
         
         petsAllowedButton.layer.cornerRadius = 15
         noPetsAllowedButton.layer.cornerRadius = 15
@@ -70,21 +70,21 @@ class LandlordAllowedViewController: UIViewController {
         checkIfBothButtonsHaveBeenSelected()
     }
     
-    @IBAction func nextButtonTapped(_ sender: AnyObject) {
-        if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
-            
-            AccountCreationController.pageRightFrom(landlordVC: self)
-        } else {
-            presentAllowedAlert()
-        }
-    }
+//    @IBAction func nextButtonTapped(_ sender: AnyObject) {
+//        if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
+//            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
+//            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
+//            
+//            AccountCreationController.pageRightFrom(landlordVC: self)
+//        } else {
+//            presentAllowedAlert()
+//        }
+//    }
     
     func checkIfBothButtonsHaveBeenSelected() {
-        if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
-            nextButton.center.x += 200
-            nextButton.slideFromRight()
+        if smokingAllowed != nil, petsAllowed != nil /* , nextButton.isHidden == true */ {
+//            nextButton.center.x += 200
+//            nextButton.slideFromRight()
             
             
             AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
