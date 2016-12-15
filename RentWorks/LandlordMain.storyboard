@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Bold.ttf">
+            <string>Roboto-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Landlord Main View Controller-->
         <scene sceneID="c26-xC-jfG">
@@ -780,51 +786,12 @@ more results.</string>
             </objects>
             <point key="canvasLocation" x="1933.5999999999999" y="757.87106446776613"/>
         </scene>
-        <!--Card Loading View Controller-->
-        <scene sceneID="PcU-Br-hzI">
-            <objects>
-                <viewController storyboardIdentifier="cardLoadingVC" id="FPM-Cm-8EF" customClass="CardLoadingViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="uaH-3n-Eb8"/>
-                        <viewControllerLayoutGuide type="bottom" id="PjT-i2-EyT"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="eDi-cn-gv6">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hang tight, we're grabbing your properties..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5e4-fF-dlZ">
-                                <rect key="frame" x="20" y="60" width="339" height="150.5"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="42"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="2oT-xS-K11">
-                                <rect key="frame" x="169" y="315" width="37" height="37"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </activityIndicatorView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="5e4-fF-dlZ" firstAttribute="trailing" secondItem="eDi-cn-gv6" secondAttribute="trailingMargin" id="7Jw-lV-Xjh"/>
-                            <constraint firstItem="5e4-fF-dlZ" firstAttribute="leading" secondItem="eDi-cn-gv6" secondAttribute="leadingMargin" constant="4" id="nv8-cX-Y6s"/>
-                            <constraint firstItem="5e4-fF-dlZ" firstAttribute="top" secondItem="uaH-3n-Eb8" secondAttribute="bottom" constant="40" id="zN6-gH-PRO"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <segue destination="wVr-7p-KMg" kind="presentation" identifier="toMainSwipingVC" modalTransitionStyle="crossDissolve" id="ddF-vf-MHW"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gWO-M8-Qgc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="37.600000000000001" y="757.87106446776613"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="I9K-d2-9IP">
             <objects>
                 <navigationController storyboardIdentifier="mainVC" automaticallyAdjustsScrollViewInsets="NO" id="wVr-7p-KMg" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Dgj-MR-B4d">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Dgj-MR-B4d">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1391,14 +1358,75 @@ more results.</string>
             </objects>
             <point key="canvasLocation" x="4116" y="759"/>
         </scene>
+        <!--Card Loading View Controller-->
+        <scene sceneID="hfb-tF-0LU">
+            <objects>
+                <viewController storyboardIdentifier="cardLoadingVC" id="a08-ES-VFm" customClass="CardLoadingViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WuA-Hr-4G3"/>
+                        <viewControllerLayoutGuide type="bottom" id="vOX-FX-eWM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="0Wu-kG-KSH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenNoText" translatesAutoresizingMaskIntoConstraints="NO" id="L68-PI-ZiO">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dFw-dg-hue">
+                                <rect key="frame" x="0.0" y="131" width="375" height="134"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hang tight, we're grabbing the latest cards for you..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.30000001192092896" translatesAutoresizingMaskIntoConstraints="NO" id="Sy8-TI-u12">
+                                        <rect key="frame" x="8" y="8" width="359" height="67"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="45"/>
+                                        <color key="textColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="mkp-Po-m0m">
+                                        <rect key="frame" x="170" y="88" width="37" height="37"/>
+                                        <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Sy8-TI-u12" firstAttribute="height" secondItem="dFw-dg-hue" secondAttribute="height" multiplier="1/2" id="6f5-mB-LQb"/>
+                                    <constraint firstItem="Sy8-TI-u12" firstAttribute="leading" secondItem="dFw-dg-hue" secondAttribute="leading" constant="8" id="A6G-Ir-2PC"/>
+                                    <constraint firstAttribute="bottom" secondItem="mkp-Po-m0m" secondAttribute="bottom" constant="8.5" id="JEy-Oq-dkW"/>
+                                    <constraint firstAttribute="trailing" secondItem="Sy8-TI-u12" secondAttribute="trailing" constant="8" id="ceS-gQ-OrW"/>
+                                    <constraint firstItem="mkp-Po-m0m" firstAttribute="centerX" secondItem="dFw-dg-hue" secondAttribute="centerX" id="g12-Jv-eJr"/>
+                                    <constraint firstItem="Sy8-TI-u12" firstAttribute="top" secondItem="dFw-dg-hue" secondAttribute="top" constant="8" id="rnE-zd-TkX"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                        <constraints>
+                            <constraint firstItem="dFw-dg-hue" firstAttribute="leading" secondItem="0Wu-kG-KSH" secondAttribute="leading" id="2k7-fM-MkB"/>
+                            <constraint firstAttribute="trailing" secondItem="dFw-dg-hue" secondAttribute="trailing" id="6hz-tw-KlB"/>
+                            <constraint firstItem="dFw-dg-hue" firstAttribute="top" secondItem="WuA-Hr-4G3" secondAttribute="bottom" constant="111" id="Ey2-R1-KKK"/>
+                            <constraint firstItem="L68-PI-ZiO" firstAttribute="top" secondItem="0Wu-kG-KSH" secondAttribute="top" id="Nwb-pv-dYt"/>
+                            <constraint firstItem="vOX-FX-eWM" firstAttribute="top" secondItem="L68-PI-ZiO" secondAttribute="bottom" id="Rbw-G1-mW6"/>
+                            <constraint firstItem="L68-PI-ZiO" firstAttribute="leading" secondItem="0Wu-kG-KSH" secondAttribute="leading" id="hsu-7p-KFd"/>
+                            <constraint firstItem="dFw-dg-hue" firstAttribute="height" secondItem="L68-PI-ZiO" secondAttribute="height" multiplier="1/5" id="qGg-eA-0e2"/>
+                            <constraint firstAttribute="trailing" secondItem="L68-PI-ZiO" secondAttribute="trailing" id="u8v-rV-9my"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <segue destination="wVr-7p-KMg" kind="presentation" id="lIQ-QL-Yit"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gVS-2j-5e9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="37.5" y="757.3943661971831"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ChatBubble" width="1600" height="1545"/>
+        <image name="LaunchScreenNoText" width="375" height="667"/>
         <image name="Paw" width="1600" height="1490"/>
         <image name="SettingGear" width="1600" height="1596"/>
         <image name="SmokingAllowed" width="1600" height="1368"/>
         <image name="Star" width="2048" height="1947"/>
-        <image name="VengaLogoV1" width="1000" height="1050"/>
+        <image name="VengaLogoV1" width="286" height="286"/>
         <image name="noImageProfile90x90" width="90" height="90"/>
     </resources>
     <inferredMetricsTieBreakers>
