@@ -36,10 +36,5 @@ extension Property {
         dictionaryRepresentation[UserController.kLandlordID] = landlordID
         
         return dictionaryRepresentation
-        
-        
     }
-
-    
-    
 }

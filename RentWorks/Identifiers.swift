@@ -19,6 +19,7 @@ class Identifiers {
         case mainVC = "segueToMainVC"
         case reportUserVC = "segueToReportUserVC"
         case renterMatchesVC = "segueToRenterMatchesVC"
+        case appInfoSelectionVC = "segueToAppInformationSelectionVC"
     }
     
     enum StoryboardIDs: String {
@@ -28,6 +29,7 @@ class Identifiers {
     enum TableViewCells: String {
         case PropertyCell = "propertyCell"
         case ReportUser = "cellReportUser"
+        case AppInfo = "appInfoCell"
     }
     
     enum CollectionViewCells: String {
@@ -43,5 +45,7 @@ class Identifiers {
     enum RentWorksAdmin: String {
         case email = "rentworksdev@gmail.com"
         case complaintsEmail = "rentworkscomplaints@gmail.com"
+        case EULA_URL = ""
+        case PrivacyPolicyURL = "http://www.myrentworks.com/privacy-policy"
     }
 }
