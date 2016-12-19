@@ -44,7 +44,12 @@ class PropertyController: UserController {
         })
     }
     
+    static func deletePropertyRenterMatchInFirebase(propertyID: String, renterID: String) {
+        FirebaseController.likesRef.child(renterID).child(propertyID).removeValue()
+    }
+    
     static func deletePropertyInFirebase(propertyID: String) {
+        FirebaseController.likesRef.child(propertyID).removeValue()
         FirebaseController.propertiesRef.child(propertyID).removeValue()
     }
     
@@ -482,9 +487,15 @@ class PropertyController: UserController {
                 group.enter()
                 backgroundQ.async(group: group, execute: {
                     let dict = propertyDict.value
-                    guard let imageURLDict = (dict[UserController.kImageURLS] as? [String: String])?.values, let property = properties.first else { group.leave(); return }
+                    guard let imageURLDict = (dict[UserController.kImageURLS] as? [String: String])?.values, let property = properties.first else {
+                        group.leave()
+                        return
+                    }
                     let imageURLArray = Array(imageURLDict)
-                    guard let imageToDownload = imageURLArray.first else { group.leave(); return }
+                    guard let imageToDownload = imageURLArray.first else {
+                        group.leave()
+                        return
+                    }
                     FirebaseController.downloadProfileImageFor(property: property, withURL: imageToDownload, completion: {
                         group.leave()
                     })

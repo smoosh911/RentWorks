@@ -11,7 +11,17 @@ import Firebase
 import CoreData
 
 class LandlordController: UserController {
+    
     // MARK: - Landlord functions
+    
+    static func getLandlordWithID(landlordID: String, completion: @escaping (_ landlord: Landlord?) -> Void) {
+        FirebaseController.landlordsRef.queryOrderedByKey().queryEqual(toValue: landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allLandlordsDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
+            let landlords = allLandlordsDict.flatMap({Landlord(dictionary: $0.value)})
+            guard let landlord = landlords.first else { completion(nil); return }
+            completion(landlord)
+        })
+    }
     
     static func saveLandlordProfileImagesToCoreDataAndFirebase(forLandlord landlord: Landlord, completion: @escaping () -> Void) {
         var count = 0

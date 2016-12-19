@@ -12,7 +12,17 @@ import CoreData
 import Firebase
 
 class RenterController: UserController {
+    
     // MARK: - Renter functions
+    
+    static func deleteRenterPropertyMatchInFirebase(propertyID: String, renterID: String) {
+        FirebaseController.likesRef.child(propertyID).child(renterID).removeValue()
+    }
+    
+    static func deleteRenterInFirebase(renterID: String) {
+        FirebaseController.likesRef.child(renterID).removeValue()
+        FirebaseController.rentersRef.child(renterID).removeValue()
+    }
     
     static func resetStartAtForRenterInFirebase(renterID: String) {
         FirebaseController.propertiesRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in

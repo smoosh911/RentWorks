@@ -17,6 +17,8 @@ class Identifiers {
         case noInternetVC = "segueToNoInternetVC"
         case propertyMatchesVC = "segueToPropertyMatchesVC"
         case mainVC = "segueToMainVC"
+        case reportUserVC = "segueToReportUserVC"
+        case renterMatchesVC = "segueToRenterMatchesVC"
     }
     
     enum StoryboardIDs: String {
@@ -25,6 +27,7 @@ class Identifiers {
     
     enum TableViewCells: String {
         case PropertyCell = "propertyCell"
+        case ReportUser = "cellReportUser"
     }
     
     enum CollectionViewCells: String {
@@ -35,5 +38,10 @@ class Identifiers {
         case landlordMatchCount = "landlordMatchCount"
         case renterMatchCount = "renterMatchCount"
         case propertyMatchCount = "propertyMatchCount"
+    }
+    
+    enum RentWorksAdmin: String {
+        case email = "rentworksdev@gmail.com"
+        case complaintsEmail = "rentworkscomplaints@gmail.com"
     }
 }

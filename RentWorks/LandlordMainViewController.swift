@@ -144,6 +144,10 @@ class LandlordMainViewController: MainViewController {
             if let destinationVC = segue.destination as? PropertyMatchesViewController {
                 destinationVC.property = property
             }
+        } else if segue.identifier == Identifiers.Segues.reportUserVC.rawValue {
+            if let destinationVC = segue.destination as? ReportUserViewController {
+                destinationVC.userBeingReported = currentCardRenter
+            }
         }
     }
     

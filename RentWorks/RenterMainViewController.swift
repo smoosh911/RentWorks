@@ -31,6 +31,7 @@ class RenterMainViewController: MainViewController {
     // MARK: variables
     
     let filterKeys = UserController.RenterFilters.self
+    var currentCardProperty: Property? = nil
     
     var filteredProperties: [Property] = [] {
         didSet {
@@ -98,7 +99,8 @@ class RenterMainViewController: MainViewController {
             return
         }
         
-        let property = filteredProperties.removeFirst()
+        currentCardProperty = filteredProperties.removeFirst()
+        guard let property = currentCardProperty else { return }
         swipeableView.property = property
         
         var backCardProperty: Property? = nil
@@ -182,6 +184,24 @@ class RenterMainViewController: MainViewController {
     
     func currentUserHasMatches() {
         setMatchesButtonImage()
+    }
+    
+    // MARK: segues
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Identifiers.Segues.renterMatchesVC.rawValue {
+            if let destinationVC = segue.destination as? RenterMatchesViewController, let renter = UserController.currentRenter {
+                destinationVC.renter = renter
+            }
+        } else if segue.identifier == Identifiers.Segues.reportUserVC.rawValue {
+            if let destinationVC = segue.destination as? ReportUserViewController, let property = currentCardProperty, let landlordID = property.landlordID {
+                LandlordController.getLandlordWithID(landlordID: landlordID, completion: { (landlord) in
+                    guard let landlord = landlord else { return }
+                    destinationVC.userBeingReported = landlord
+                    destinationVC.propertyBeingReported = property
+                })
+            }
+        }
     }
     
     // MARK: helper methods

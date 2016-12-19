@@ -17,7 +17,6 @@ class MatchTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var contactButton: UIButton!
     
-    
     override func awakeFromNib() {
         super.awakeFromNib()
     }

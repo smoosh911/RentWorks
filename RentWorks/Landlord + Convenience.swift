@@ -27,7 +27,7 @@ extension Landlord {
         self.starRating = starRating
     }
     
-    @discardableResult convenience init?(dictionary: [String: Any], id: String?, context: NSManagedObjectContext? = CoreDataStack.context) {
+    @discardableResult convenience init?(dictionary: [String: Any], id: String? = nil, context: NSManagedObjectContext? = CoreDataStack.context) {
         guard let email = dictionary[UserController.kEmail] as? String,
             let firstName = dictionary[UserController.kFirstName] as? String,
             let lastName = dictionary[UserController.kLastName] as? String
