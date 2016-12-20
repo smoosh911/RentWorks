@@ -7,19 +7,35 @@
 //
 
 import UIKit
+import DropDown
 
+// needs work: a lot of this view and the renter view are the same. They should be inheriting
 class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
+    
+    // MARK: outlets
     
     @IBOutlet weak var zipCodeTextField: UITextField!
     @IBOutlet weak var addressTextField: UITextField!
+    @IBOutlet weak var vwAddress: UIView!
     @IBOutlet weak var titleView: UIView!
+    
+    // MARK: variables
+    
+    var dropDown: DropDown = DropDown()
+    
+    var cities: [City] = []
+    var selectedCity: City?
     
     var pageVC: LandlordPageViewController?
     
     var didSlide = false
     
+    // MARK: life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupDropDown()
         
         AccountCreationController.currenLandlordVCs.append(self)
         
@@ -41,6 +57,23 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // MARK: dropdown
+    
+    private func itemSelected(index: Int, item: String) {
+        addressTextField.text = item
+        selectedCity = cities[index]
+        saveAddressInformationToAccountCreationDictionary()
+    }
+    
+    private func setupDropDown() {
+        dropDown.anchorView = vwAddress
+        dropDown.cornerRadius = 0
+        dropDown.topOffset = CGPoint(x: 0, y: -vwAddress.frame.height)
+        dropDown.selectionAction = itemSelected
+    }
+    
+    // MARK: actions
+    
     @IBAction func zipCodeTextFieldDidChange(_ sender: Any) {
         
         if zipCodeTextField.text?.characters.count == 5 {
@@ -48,8 +81,19 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        self.parent?.dismiss(animated: true, completion: nil)
+    // text fields
+    
+    @IBAction func txtfldAdress_EditingChanged(_ sender: UITextView) {
+        guard let city = sender.text else { return }
+        if city.characters.count > 3 {
+            LocationManager.getCitiesWith(cityName: city, resultCount: 5) { (cityResults) in
+                guard let cityResults = cityResults else { return }
+                self.cities = cityResults
+                let cityStrings = self.cities.flatMap({ $0.getCityStateString() })
+                self.dropDown.dataSource = cityStrings
+                self.dropDown.show()
+            }
+        }
     }
     
     //    @IBAction func nextButtonTapped(_ sender: AnyObject) {
@@ -69,12 +113,25 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
     //        }
     //    }
     
-    func saveAddressInformationToAccountCreationDictionary() {
-        
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : addressTextField.text ?? "No address"])
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? "No zip code"])
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != ""  {
+            
+            AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
+            //            if didSlide == false {
+            //                nextButton.center.x += 200
+            //                nextButton.slideFromRight()
+            //                didSlide = true
+            //            }
+        }
     }
     
+    // buttons
+    
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        self.parent?.dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: text field delegate
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -90,17 +147,27 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != ""  {
-            
-            AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
-            //            if didSlide == false {
-            //                nextButton.center.x += 200
-            //                nextButton.slideFromRight()
-            //                didSlide = true
-            //            }
-        }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
+    
+    // MARK: helper functions
+    
+    private func saveAddressInformationToAccountCreationDictionary() {
+        guard let city = selectedCity else { return }
+        let cityName = city.name
+        let state = city.state
+        let country = city.country
+        
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kCity: cityName ?? ""])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kState: state ?? ""])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kCountry: country ?? ""])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress: ""])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? "No zip code"])
+    }
+    
+    // MARK: keyboard
     
     func keyboardWillShow(notification: NSNotification) {
         
@@ -118,12 +185,5 @@ class LandlordAddressViewController: UIViewController, UITextFieldDelegate {
                 self.view.frame.origin.y += keyboardSize.height
             }
         }
-    }
-    
-    
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
 }

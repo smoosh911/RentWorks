@@ -20,6 +20,7 @@ class Identifiers {
         case reportUserVC = "segueToReportUserVC"
         case renterMatchesVC = "segueToRenterMatchesVC"
         case appInfoSelectionVC = "segueToAppInformationSelectionVC"
+        case chooseAccountTypeVC = "toAccountTypeVC"
     }
     
     enum StoryboardIDs: String {

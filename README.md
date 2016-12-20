@@ -26,7 +26,7 @@ Whenever you start working on a new feature, create a new feature branch off of 
 **Merging to Developer Branch**
 Before you merge to developer branch make sure your code is working properly and there are no warnings or errors. Create a merge request and do your best to get a code review from someone else. Make sure you test your feature thoroghly before you submit a pull request.
 
-### Third party libraries
+### Third party libraries/APIs
 
 Facebook SDK for iOS: (version 4.17) (https://developers.facebook.com/docs/ios)
   - FBLogin?
@@ -37,6 +37,9 @@ Firebase SDK (version 3.8.0)
   - FirebaseDatabase (version 3.1.0)
   - FirebaseStorage (version 1.0.4)
   - FirebaseCore (version 3.4.4) (Pretty sure this is required to use the other Firebase frameworks, but there are no functions using it.)
+
+Geonames.org (http://www.geonames.org/export/web-services.html)
+  - I am getting city names and locations using this api
 
 ### Maintenance Notes
 

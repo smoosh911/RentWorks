@@ -25,6 +25,13 @@ class ErrorManager {
         static let message = "full_text"
     }
     
+    enum JsonErrors: String {
+        case error = "JSONError"
+        static let gettingJSON = "couldn't retrieve JSON"
+        static let reachingService = "couldn't reach service"
+        static let obtainingValuesFromJson = "couldn't retreivee JSON values"
+    }
+    
     enum RenterErrors: String {
         case error = "error"
         static let errorContentType = "error"

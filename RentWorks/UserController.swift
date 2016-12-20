@@ -105,6 +105,9 @@ extension UserController {
     static let kUserType = "userType"
     static let kAddress = "address"
     static let kZipCode = "zipCode"
+    static let kCity = "city"
+    static let kState = "state"
+    static let kCountry = "country"
     static let kBedroomCount = "bedroomCount"
     static let kBathroomCount = "bathroomCount"
     static let kPetsAllowed = "petsAllowed"
@@ -112,12 +115,18 @@ extension UserController {
     static let kMonthlyPayment = "monthlyPayment"
     static let kAvailableDate = "availableDate"
     static let kPropertyType = "propertyType"
-    static let kPropertyFeatures = "propertyFeatures"
     static let kPropertyDescription = "propertyDescription"
     static let kStarRating = "starRating"
     static let kID = "id"
     static let kLandlordID = "landlordID"
     static let kPropertyID = "propertyID"
+    
+    static let kWasherDryer = "washerDryer"
+    static let kGarage = "garage"
+    static let kDishwasher = "dishwasher"
+    static let kBackyard = "backyard"
+    static let kPool = "pool"
+    static let kGym = "gym"
     
     static let kImageURLS = "images"
     
@@ -145,12 +154,11 @@ extension UserController {
         case kBedroomCount = "bedroomCount"
         case kMonthlyPayment = "monthlyPayment"
         case kPetsAllowed = "petsAllowed"
-        case kPropertyFeatures = "propertyFeatures"
         case kSmokingAllowed = "smokingAllowed"
         case kZipCode = "zipCode"
         case kCurrentOccupation = "currentOccupation"
         case kWithinRangeMiles = "within_range_miles"
-        static let allValues = [kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kZipCode, kCurrentOccupation, kWithinRangeMiles]
+        static let allValues = [kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kZipCode, kCurrentOccupation, kWithinRangeMiles]
     }
     
     enum LandlordFilters: String {
@@ -166,11 +174,13 @@ extension UserController {
         case kBedroomCount = "bedroomCount"
         case kMonthlyPayment = "monthlyPayment"
         case kPetsAllowed = "petsAllowed"
-        case kPropertyFeatures = "propertyFeatures"
         case kSmokingAllowed = "smokingAllowed"
         case kStarRating = "starRating"
         case kZipCode = "zipCode"
-        static let allValues = [kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kPropertyFeatures, kSmokingAllowed, kStarRating, kZipCode]
+        case kCity = "city"
+        case kState = "state"
+        case kCountry = "country"
+        static let allValues = [kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kStarRating, kZipCode, kCity, kState, kCountry]
     }
     
     enum PropertyType: String {
@@ -178,15 +188,6 @@ extension UserController {
         case oneBedroom = "One Bedroom"
         case twoBedrooms = "Two Bedrooms"
         case threePlusBedrooms = "Three-Plus Bedrooms"
-    }
-    
-    enum PropertyFeatures: String {
-        case laundry = "Laundry"
-        case garage = "Garage"
-        case pool = "Pool"
-        case gym = "Gym"
-        case dishwasher = "Dishwasher"
-        case backyard = "Backyard"
     }
     
     enum CreditRating: String {

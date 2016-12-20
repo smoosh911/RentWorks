@@ -144,7 +144,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
         
         let createAccountAction = UIAlertAction(title: "Create account", style: .default) { (_) in
-            self.performSegue(withIdentifier: "toAccountTypeVC", sender: nil)
+            self.performSegue(withIdentifier: Identifiers.Segues.chooseAccountTypeVC.rawValue, sender: nil)
         }
         
         alert.addAction(dismissAction)

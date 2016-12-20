@@ -43,13 +43,9 @@ class RenterSettingsViewController: SettingsViewController {
     @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: Any) {
         guard let id = UserController.currentUserID, let renter = renter, let settingsTVC = settingsTVC else { return }
         
-        
-        let propertyFeatures = settingsTVC.txtfldFeatures.text!
         let zipcode = settingsTVC.txtfldZipCode.text!
         
-        renter.wantedPropertyFeatures = propertyFeatures
         renter.wantedZipCode = zipcode
-        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: settingsTVC.filterKeys.kPropertyFeatures.rawValue, newValue: propertyFeatures)
         RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: settingsTVC.filterKeys.kZipCode.rawValue, newValue: zipcode)
         self.delegate?.updateSettings()
         // UserController.saveToPersistentStore()
@@ -63,7 +59,6 @@ class RenterSettingsViewController: SettingsViewController {
             }
         }
     }
-    
 }
 
 

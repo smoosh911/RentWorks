@@ -12,6 +12,27 @@ import Firebase
 
 extension String {
     
+    func replace(string:String, replacement:String) -> String {
+        return self.replacingOccurrences(of: string, with: replacement, options: .literal, range: nil)
+    }
+    
+    func replaceWhitespaceWithURLSpaces() -> String {
+        return self.replace(string: " ", replacement: "%20")
+    }
+    
+    func removeWhitespace() -> String {
+        return self.replace(string: " ", replacement: "")
+    }
+    
+    func containsOnlyLetters() -> Bool {
+        for chr in self.characters {
+            if (!(chr >= "a" && chr <= "z") && !(chr >= "A" && chr <= "Z") ) {
+                return false
+            }
+        }
+        return true
+    }
+    
     subscript (i: Int) -> Character {
         return self[self.characters.index(self.startIndex, offsetBy: i)]
     }

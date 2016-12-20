@@ -28,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>12</string>
+	<string>14</string>
 	<key>FacebookAppID</key>
 	<string>582262005295376</string>
 	<key>FacebookDisplayName</key>
@@ -51,6 +51,16 @@
 		<true/>
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>api.geonames.org</key>
+			<dict>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>We need to access your camera so we can save them in the Venga database to show to renters/landlords</string>

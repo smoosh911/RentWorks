@@ -109,7 +109,7 @@
                                 <rect key="frame" x="0.0" y="131" width="375" height="95"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add photos of your property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="wrc-oK-iKk">
-                                        <rect key="frame" x="27" y="31.5" width="340" height="35.5"/>
+                                        <rect key="frame" x="27" y="32" width="340" height="35.5"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
                                         <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -450,7 +450,7 @@
                                 <rect key="frame" x="0.0" y="131" width="375" height="95"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where is your property?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="hBn-Qt-9tA">
-                                        <rect key="frame" x="27" y="31.5" width="340" height="35.5"/>
+                                        <rect key="frame" x="27" y="32" width="340" height="35.5"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
                                         <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -480,8 +480,9 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                <textInputTraits key="textInputTraits"/>
                                                 <connections>
+                                                    <action selector="txtfldAdress_EditingChanged:" destination="4Um-lA-nWq" eventType="editingChanged" id="82R-7D-4Bx"/>
                                                     <action selector="zipCodeTextFieldDidChange:" destination="4Um-lA-nWq" eventType="editingChanged" id="Tjc-WI-24b"/>
                                                 </connections>
                                             </textField>
@@ -553,6 +554,7 @@
                     <connections>
                         <outlet property="addressTextField" destination="gSK-kM-w0W" id="nHA-jA-Nrw"/>
                         <outlet property="titleView" destination="G0S-sf-iN2" id="gQ1-8Q-8PD"/>
+                        <outlet property="vwAddress" destination="7No-2k-qJX" id="b0X-SL-51Z"/>
                         <outlet property="zipCodeTextField" destination="uR6-yu-FLe" id="zKS-7Y-7ca"/>
                     </connections>
                 </viewController>
@@ -653,7 +655,7 @@
                                 <rect key="frame" x="0.0" y="131" width="375" height="95"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How many rooms are there?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="S5v-fp-PqR">
-                                        <rect key="frame" x="27" y="31.5" width="340" height="35"/>
+                                        <rect key="frame" x="27" y="31.5" width="340" height="35.5"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
                                         <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -945,7 +947,7 @@
                                 <rect key="frame" x="0.0" y="131" width="375" height="95"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Do you allow the following?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ifZ-p1-8Nl">
-                                        <rect key="frame" x="27" y="31.5" width="340" height="35"/>
+                                        <rect key="frame" x="27" y="31.5" width="340" height="35.5"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
                                         <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1189,7 +1191,7 @@
                                 <rect key="frame" x="0.0" y="131" width="375" height="95"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Does it have any of the following?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="RMI-GT-6Bz">
-                                        <rect key="frame" x="27" y="31.5" width="340" height="35"/>
+                                        <rect key="frame" x="27" y="31.5" width="340" height="35.5"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
                                         <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>

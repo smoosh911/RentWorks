@@ -43,7 +43,9 @@ extension Renter {
         guard let email = dictionary[UserController.kEmail] as? String,
             let address = dictionary[UserController.kAddress] as? String,
             let zipCode = dictionary[UserController.kZipCode] as? String,
-            let wantedPropertyFeatures = dictionary[UserController.kPropertyFeatures] as? String,
+            let city = dictionary[UserController.kCity] as? String,
+            let state = dictionary[UserController.kState] as? String,
+            let country = dictionary[UserController.kCountry] as? String,
             let creditRating = dictionary[UserController.kCreditRating] as? String,
             let firstName = dictionary[UserController.kFirstName] as? String,
             let lastName = dictionary[UserController.kLastName] as? String,
@@ -52,7 +54,13 @@ extension Renter {
             let wantedBedroomCount = dictionary[UserController.kBedroomCount] as? Double,
             let wantedBathroomCount = dictionary[UserController.kBathroomCount] as? Double,
             let wantsPetFriendly = dictionary[UserController.kPetsAllowed] as? Bool,
-            let wantsSmoking = dictionary[UserController.kSmokingAllowed] as? Bool
+            let wantsSmoking = dictionary[UserController.kSmokingAllowed] as? Bool,
+            let wantsWasherDryer = dictionary[UserController.kWasherDryer] as? Bool,
+            let wantsGarage = dictionary[UserController.kGarage] as? Bool,
+            let wantsDishwasher = dictionary[UserController.kBackyard] as? Bool,
+            let wantsBackyard = dictionary[UserController.kBackyard] as? Bool,
+            let wantsPool = dictionary[UserController.kPool] as? Bool,
+            let wantsGym = dictionary[UserController.kGym] as? Bool
             else { return nil }
         
         if let context = context {
@@ -117,9 +125,11 @@ extension Renter {
         
         self.email = email
         self.address = address
-        self.wantedPropertyFeatures = wantedPropertyFeatures
         self.creditRating = creditRating
         self.wantedZipCode = zipCode
+        self.wantedCity = city
+        self.wantedState = state
+        self.wantedCountry = country
         self.firstName = firstName
         self.lastName = lastName
         self.id = id
@@ -128,5 +138,11 @@ extension Renter {
         self.wantedBedroomCount = Int64(wantedBedroomCount)
         self.wantedBathroomCount = wantedBathroomCount
         self.wantsSmoking = wantsSmoking
+        self.wantsWasherDryer = wantsWasherDryer
+        self.wantsGarage = wantsGarage
+        self.wantsDishwasher = wantsDishwasher
+        self.wantsBackyard = wantsBackyard
+        self.wantsPool = wantsPool
+        self.wantsGym = wantsGym
     }
 }

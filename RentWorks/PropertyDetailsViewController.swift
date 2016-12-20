@@ -18,7 +18,7 @@ class PropertyDetailsViewController: UIViewController {
     @IBOutlet weak var lblPropertySaveResult: UILabel!
     
     @IBOutlet weak var txtfldPropertyAddress: UITextField!
-    @IBOutlet weak var txtfldDateAvailable: UITextField!
+    @IBOutlet weak var dtpckrDateAvailable: UIDatePicker!
     
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var sldRent: UISlider!
@@ -32,8 +32,9 @@ class PropertyDetailsViewController: UIViewController {
     @IBOutlet weak var swtPets: UISwitch!
     @IBOutlet weak var swtSmoking: UISwitch!
     
-//    @IBOutlet weak var txtfldFeatures: UITextField!
     @IBOutlet weak var txtfldZipCode: UITextField!
+    @IBOutlet weak var txtfldCity: UITextField!
+    @IBOutlet weak var txtfldState: UITextField!
     
     @IBOutlet weak var clctvwPropertyImages: UICollectionView!
     
@@ -70,7 +71,6 @@ class PropertyDetailsViewController: UIViewController {
         super.viewDidLoad()
         
         if propertyTask == PropertyTask.adding {
-//            property = NSEntityDescription.insertNewObject(forEntityName: "Property", into: CoreDataStack.context) as! Property
             guard let landlordID = UserController.currentUserID else { return }
             property = Property(landlordID: landlordID, landlord: landlord)
         }
@@ -109,7 +109,6 @@ class PropertyDetailsViewController: UIViewController {
         let roundBy: Float = 25.0
         let price = Int(round(value: sender.value, toNearest: roundBy))
         guard let id = property.propertyID else { return }
-//        let priceString = "\(Int(sender.value))"
         property.monthlyPayment = Int64(price)
         if propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
@@ -154,7 +153,6 @@ class PropertyDetailsViewController: UIViewController {
         let petsAllowed = sender.isOn
         guard let id = property.propertyID else { return }
         
-//        let boolString = "\(petsAllowed)"
         property.petFriendly = petsAllowed
         if propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPetsAllowed, newValue: petsAllowed)
@@ -168,7 +166,6 @@ class PropertyDetailsViewController: UIViewController {
         let smokingAllowed = sender.isOn
         guard let id = property.propertyID else { return }
         
-//        let boolString = "\(smokingAllowed)"
         property.smokingAllowed = smokingAllowed
         if propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: smokingAllowed)
@@ -181,19 +178,17 @@ class PropertyDetailsViewController: UIViewController {
     // buttons
     
     @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: UIButton) {
-        guard let id = property.propertyID, let address = txtfldPropertyAddress.text, let zipcode = txtfldZipCode.text else { return }
+        guard let id = property.propertyID, let address = txtfldPropertyAddress.text, let zipcode = txtfldZipCode.text, let city = txtfldCity.text, let state = txtfldState.text else { return }
         property.address = address
         property.zipCode = zipcode
+        property.city = city
+        property.state = state
+        
         if propertyTask == PropertyTask.editing {
-            // needs work: add property features
-            //        let propertyFeatures = txtfldFeatures.text!
-//            let zipcode = txtfldZipCode.text!
-            
-            //        property.wantedPropertyFeatures = propertyFeatures
-//            property.zipCode = zipcode
-            //        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyFeatures, newValue: propertyFeatures)
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kAddress, newValue: address)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kCity, newValue: city)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kState, newValue: state)
             self.lblPropertySaveResult.text = SaveResults.success.rawValue
             self.lblPropertySaveResult.isHidden = false
             // UserController.saveToPersistentStore()
@@ -263,7 +258,7 @@ class PropertyDetailsViewController: UIViewController {
                 guard let timeInterval = detail.value as? TimeInterval else { break }
                 let availableDate = Date(timeIntervalSince1970: timeInterval)
                 
-                txtfldDateAvailable.text = "\(availableDate.description)"
+                dtpckrDateAvailable.date = availableDate
                 break
             case propertyDetailKeys.kBedroomCount.rawValue:
                 let bedroomCount = detail.value as! Int
@@ -284,10 +279,6 @@ class PropertyDetailsViewController: UIViewController {
                 let petsAllowed = detail.value as! Bool
                 swtPets.isOn = petsAllowed
                 break
-                //            case propertyDetailKeys.kPropertyFeatures.rawValue:
-                //                let features = detail.value as! String
-                //                txtfldFeatures.text = features
-            //                break
             case propertyDetailKeys.kSmokingAllowed.rawValue:
                 let smokingAllowed = detail.value as! Bool
                 swtSmoking.isOn = smokingAllowed
@@ -299,6 +290,14 @@ class PropertyDetailsViewController: UIViewController {
             case propertyDetailKeys.kZipCode.rawValue:
                 let zipcode = detail.value as! String
                 txtfldZipCode.text = zipcode
+                break
+            case propertyDetailKeys.kCity.rawValue:
+                let city = detail.value as! String
+                txtfldCity.text = city
+                break
+            case propertyDetailKeys.kState.rawValue:
+                let state = detail.value as! String
+                txtfldState.text = state
                 break
             default:
                 log("no details")
@@ -383,7 +382,7 @@ class PropertyDetailsViewController: UIViewController {
         
         let keyboardSize = keyboardSizeValue.cgRectValue.size
         
-        if self.view.frame.origin.y == 0 && txtfldZipCode.isEditing {
+        if (self.view.frame.origin.y == 0 && (txtfldZipCode.isEditing || txtfldCity.isEditing || txtfldState.isEditing)) {
             UIView.animate(withDuration: 0.1, animations: { 
                 self.view.frame.origin.y -= keyboardSize.height
                 self.view.layoutIfNeeded()

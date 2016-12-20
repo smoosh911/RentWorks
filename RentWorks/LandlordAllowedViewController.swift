@@ -86,7 +86,8 @@ class LandlordAllowedViewController: UIViewController {
 //            nextButton.center.x += 200
 //            nextButton.slideFromRight()
             
-            
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed ?? false])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed ?? false])
             AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
         }
     }

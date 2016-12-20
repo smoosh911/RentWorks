@@ -162,10 +162,7 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
                 guard let petsAllowed = filter.value as? Bool else { break }
                 swtPets.isOn = petsAllowed
                 break
-            case filterKeys.kPropertyFeatures.rawValue:
-                guard let features = filter.value as? String else { break }
-                txtfldFeatures.text = features
-                break
+                
             case filterKeys.kSmokingAllowed.rawValue:
                 guard let smokingAllowed = filter.value as? Bool else { break }
                 swtSmoking.isOn = smokingAllowed

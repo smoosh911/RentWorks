@@ -88,9 +88,9 @@ class RenterController: UserController {
     
 
     
-    static func getFirstRenterID(completion: @escaping (_ renterID: String) -> Void) {
+    static func getFirstRenterID(completion: @escaping (_ renterID: String?) -> Void) {
         FirebaseController.rentersRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("renter nil"); return }
+            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("renter nil"); completion(nil); return }
             let key = child.key
             
             completion(key)
