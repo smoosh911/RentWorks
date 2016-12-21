@@ -668,7 +668,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="93"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Irl-nb-Iai">
+                                                <datePicker contentMode="scaleAspectFit" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="Irl-nb-Iai">
                                                     <rect key="frame" x="127.5" y="9" width="239.5" height="75"/>
                                                     <date key="date" timeIntervalSinceReferenceDate="503895581.14403802">
                                                         <!--2016-12-20 02:59:41 +0000-->
@@ -717,9 +717,8 @@
                                                                 <constraint firstAttribute="width" constant="234" id="oxt-AM-Tfn"/>
                                                             </constraints>
                                                             <connections>
-                                                                <action selector="sldRent_TouchedUpInsideAndOutside:" destination="z2y-ul-bUZ" eventType="touchUpInside" id="mQt-Ry-zwP"/>
-                                                                <action selector="sldRent_TouchedUpInsideAndOutside:" destination="z2y-ul-bUZ" eventType="touchUpOutside" id="rwu-l2-Pfn"/>
-                                                                <action selector="sldRent_ValueChanged:" destination="z2y-ul-bUZ" eventType="valueChanged" id="bx4-2F-Jeu"/>
+                                                                <action selector="sldRent_TouchedUpInsideAndOutside:" destination="eB7-Ag-Knx" eventType="touchUpInside" id="wfM-99-VEl"/>
+                                                                <action selector="sldRent_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="TDa-IN-jsZ"/>
                                                             </connections>
                                                         </slider>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1500" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="saC-XA-air">
@@ -757,7 +756,7 @@
                                                         <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="hIp-5X-dda">
                                                             <rect key="frame" x="205.5" y="0.0" width="94" height="29"/>
                                                             <connections>
-                                                                <action selector="stpBedrooms_ValueChanged:" destination="z2y-ul-bUZ" eventType="valueChanged" id="yuw-bm-iCP"/>
+                                                                <action selector="stpBedrooms_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="0rl-xO-VbX"/>
                                                             </connections>
                                                         </stepper>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6nU-AW-sZr">
@@ -795,7 +794,7 @@
                                                         <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="ihz-SX-N93">
                                                             <rect key="frame" x="205.5" y="0.0" width="94" height="29"/>
                                                             <connections>
-                                                                <action selector="stpBedrooms_ValueChanged:" destination="z2y-ul-bUZ" eventType="valueChanged" id="Iwn-n1-hj7"/>
+                                                                <action selector="stpBathrooms_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="hmP-rK-Amh"/>
                                                             </connections>
                                                         </stepper>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eJQ-nt-E6z">
@@ -833,7 +832,7 @@
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2mh-ic-8Og">
                                                             <rect key="frame" x="314" y="0.0" width="51" height="31"/>
                                                             <connections>
-                                                                <action selector="swtPet_ValueChanged:" destination="z2y-ul-bUZ" eventType="valueChanged" id="j3f-rr-w4O"/>
+                                                                <action selector="swtPet_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="Cb9-zg-pre"/>
                                                             </connections>
                                                         </switch>
                                                     </subviews>
@@ -865,7 +864,7 @@
                                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Be5-mU-RPg">
                                                             <rect key="frame" x="314" y="0.0" width="51" height="31"/>
                                                             <connections>
-                                                                <action selector="swtSmoking_ValueChanged:" destination="z2y-ul-bUZ" eventType="valueChanged" id="Pth-GM-VyK"/>
+                                                                <action selector="swtSmoking_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="WPN-o9-xyQ"/>
                                                             </connections>
                                                         </switch>
                                                     </subviews>
@@ -1476,23 +1475,7 @@ more results.</string>
                     </view>
                     <connections>
                         <outlet property="clctvwPropertyImages" destination="kAP-jk-s90" id="03s-GM-EG2"/>
-                        <outlet property="dtpckrDateAvailable" destination="Irl-nb-Iai" id="zbG-3g-ZaI"/>
-                        <outlet property="lblBedroomCount" destination="6nU-AW-sZr" id="GzE-04-ZBL"/>
-                        <outlet property="lblPrice" destination="saC-XA-air" id="ktA-t6-hg5"/>
                         <outlet property="lblPropertySaveResult" destination="WUB-7a-vdK" id="rSk-sT-2FR"/>
-                        <outlet property="sldRent" destination="umJ-8I-Ead" id="oeZ-5N-Os4"/>
-                        <outlet property="starImageView1" destination="NnH-lg-a07" id="WDJ-GE-w83"/>
-                        <outlet property="starImageView2" destination="W3W-26-LRH" id="XZY-rJ-6QC"/>
-                        <outlet property="starImageView3" destination="cSh-TM-VrY" id="2el-ri-CfM"/>
-                        <outlet property="starImageView4" destination="NMt-TI-dea" id="Hew-kp-dB6"/>
-                        <outlet property="starImageView5" destination="mg7-vr-jlK" id="Sbe-PP-jSa"/>
-                        <outlet property="stpBedrooms" destination="hIp-5X-dda" id="u28-8i-k5M"/>
-                        <outlet property="swtPets" destination="2mh-ic-8Og" id="T9H-ZX-hZw"/>
-                        <outlet property="swtSmoking" destination="Be5-mU-RPg" id="cad-65-5Vl"/>
-                        <outlet property="txtfldCity" destination="kxX-zK-bsC" id="xXb-Fl-Mlh"/>
-                        <outlet property="txtfldPropertyAddress" destination="A6Z-kT-bK1" id="Nab-EA-WY2"/>
-                        <outlet property="txtfldState" destination="LAV-8B-lHa" id="s2r-lO-tWl"/>
-                        <outlet property="txtfldZipCode" destination="rCy-Td-JY9" id="i2B-Rb-n7H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3On-S2-rVI" userLabel="First Responder" sceneMemberID="firstResponder"/>

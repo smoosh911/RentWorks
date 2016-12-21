@@ -58,12 +58,18 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     }
 
     
+    // buttons
+    
     
     @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: UIButton) {
         // Delegate submit changes
     }
     
-    // buttons
+    @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: {
+            
+        })
+    }
 
     // needs work: shouldn't add images till property has been saved in firebase
     @IBAction func btnDeletePictures_TouchedUpInside(_ sender: UIButton) {
@@ -248,7 +254,8 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
                 PropertyController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: imageURLs)
                 self.propertyImages = profileImages
                 self.clctvwPropertyImages.reloadData()
-                // delegate submit changes
+                // delegate submit changes?
+                
 //                self.updateSettingsChanged()
             })
 //            UserController.userCreationPhotos.append(image) // I don't know what this was for so I'll leave it in case of errors

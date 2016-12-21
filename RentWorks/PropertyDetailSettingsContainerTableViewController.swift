@@ -192,11 +192,6 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
     
     // MARK: helper methods
     
-    @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: {
-            
-        })
-    }
     
     private func updatePropertyDetails (propertyDetailsDict: [String: Any]) {
         let propertyDetailKeys = UserController.PropertyDetailValues.self
