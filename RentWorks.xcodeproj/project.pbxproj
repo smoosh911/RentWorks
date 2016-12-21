@@ -599,7 +599,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Michael Perry";
 				TargetAttributes = {
 					C73E10821D8E417D008E475F = {
@@ -926,6 +926,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B3A2BAEF422FCCB37454937F /* Pods-RentWorks.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RentWorks/RentWorks.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -948,6 +949,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 126C4A4AB9A5B61558179EA8 /* Pods-RentWorks.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = RentWorks/RentWorks.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";

@@ -330,7 +330,7 @@
                                             <constraint firstAttribute="width" constant="30" id="lGn-8L-WWs"/>
                                         </constraints>
                                         <state key="normal" title="Matches" image="ChatBubble">
-                                            <color key="titleColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <segue destination="G7r-hE-7SL" kind="show" identifier="segueToPropertyMatchesVC" id="eDv-nd-e5g"/>
@@ -342,7 +342,7 @@
                                             <constraint firstAttribute="height" constant="30" id="ot5-el-i3S"/>
                                         </constraints>
                                         <state key="normal" title="Back">
-                                            <color key="titleColor" red="0.94901960780000005" green="0.39607843139999999" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="backNavigationButtonTapped:" destination="TC0-Sv-OCk" eventType="touchUpInside" id="sU9-gZ-bZK"/>
@@ -473,7 +473,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="noImageProfile90x90" translatesAutoresizingMaskIntoConstraints="NO" id="twI-PN-CLc">
-                                <rect key="frame" x="137.5" y="66" width="100" height="100"/>
+                                <rect key="frame" x="138" y="66" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="Gg8-u5-5gf"/>
                                     <constraint firstAttribute="width" constant="100" id="e2L-B5-CSK"/>
@@ -493,14 +493,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vfw-Br-AQN">
-                                <rect key="frame" x="158.5" y="202.5" width="58" height="30"/>
+                                <rect key="frame" x="159" y="202.5" width="58" height="30"/>
                                 <state key="normal" title="App Info"/>
                                 <connections>
                                     <segue destination="aHg-bD-zkA" kind="show" id="h6E-eN-Fzg"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="oiS-uI-H1n">
-                                <rect key="frame" x="12" y="272.5" width="351" height="316.5"/>
+                                <rect key="frame" x="12" y="272" width="351" height="317"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credit:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PR4-E1-dSB">
                                         <rect key="frame" x="0.0" y="0.0" width="351" height="20.5"/>
@@ -509,10 +509,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <pickerView contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="ZUc-u0-TnP">
-                                        <rect key="frame" x="0.0" y="20.5" width="351" height="260.5"/>
+                                        <rect key="frame" x="0.0" y="20.5" width="351" height="261"/>
                                     </pickerView>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="17" translatesAutoresizingMaskIntoConstraints="NO" id="dqp-dt-w96">
-                                        <rect key="frame" x="0.0" y="281" width="351" height="35.5"/>
+                                        <rect key="frame" x="0.0" y="281.5" width="351" height="35.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Max Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lPP-84-bIY">
                                                 <rect key="frame" x="0.0" y="7.5" width="177" height="20.5"/>
@@ -1151,10 +1151,9 @@ more results.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="342" height="121.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NAx-bn-qkp">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NAx-bn-qkp">
                                                     <rect key="frame" x="8" y="24" width="73" height="73"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="73" id="Uty-hY-ePr"/>
                                                         <constraint firstAttribute="width" secondItem="NAx-bn-qkp" secondAttribute="height" multiplier="1:1" id="g36-xY-1gf"/>
                                                     </constraints>
                                                 </imageView>
@@ -1183,8 +1182,10 @@ more results.</string>
                                             <constraints>
                                                 <constraint firstItem="Lus-Na-NlC" firstAttribute="leading" secondItem="NAx-bn-qkp" secondAttribute="trailing" constant="8" id="49S-8F-UtQ"/>
                                                 <constraint firstItem="NAx-bn-qkp" firstAttribute="centerY" secondItem="oa3-6g-GP3" secondAttribute="centerY" id="IWh-lz-aX7"/>
+                                                <constraint firstItem="NAx-bn-qkp" firstAttribute="top" secondItem="oa3-6g-GP3" secondAttribute="topMargin" constant="16" id="Ja7-XN-RCm"/>
                                                 <constraint firstItem="hTL-ZQ-UF4" firstAttribute="leading" secondItem="NAx-bn-qkp" secondAttribute="trailing" constant="8" id="NNj-3O-X9O"/>
                                                 <constraint firstItem="Lus-Na-NlC" firstAttribute="top" secondItem="LYi-Ng-K7Y" secondAttribute="bottom" constant="1" id="PtV-FY-CKg"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="NAx-bn-qkp" secondAttribute="bottom" constant="16.5" id="WBo-lZ-Lm4"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Lus-Na-NlC" secondAttribute="trailing" constant="83" id="YjE-0r-Ogm"/>
                                                 <constraint firstAttribute="topMargin" secondItem="LYi-Ng-K7Y" secondAttribute="top" id="YjP-jN-4oK"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="LYi-Ng-K7Y" secondAttribute="trailing" constant="83" id="h8N-93-hPC"/>
@@ -1232,7 +1233,9 @@ more results.</string>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bzM-wt-dZg">
                                         <rect key="frame" x="345" y="21" width="30" height="30"/>
-                                        <state key="normal" title="Add"/>
+                                        <state key="normal" title="Add">
+                                            <color key="titleColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <connections>
                                             <action selector="btnAdd_TouchedUpInside:" destination="cHg-zd-084" eventType="touchUpInside" id="flu-bw-Jn0"/>
                                         </connections>
@@ -1529,7 +1532,7 @@ more results.</string>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SuY-8W-PgA">
                                                     <rect key="frame" x="89" y="8" width="195" height="24"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
-                                                    <color key="textColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="HeC-7d-Jfm">
@@ -1551,7 +1554,7 @@ more results.</string>
                                                     <rect key="frame" x="287" y="9" width="80" height="41"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                     <state key="normal" title="Contact">
-                                                        <color key="titleColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="contactButtonTapped:" destination="Kwh-Jc-5jC" eventType="touchUpInside" id="a0u-sQ-iic"/>
@@ -1604,7 +1607,7 @@ more results.</string>
                                         <rect key="frame" x="8" y="21" width="37" height="30"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                         <state key="normal" title="Back">
-                                            <color key="titleColor" red="0.97647058819999999" green="0.93725490199999995" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="backNavigationButtonTapped:" destination="G7r-hE-7SL" eventType="touchUpInside" id="UOy-aI-tpM"/>
@@ -1837,10 +1840,10 @@ more results.</string>
         <image name="SmokingAllowed" width="1600" height="1368"/>
         <image name="Star" width="2048" height="1947"/>
         <image name="VengaLogoV1" width="286" height="286"/>
-        <image name="noImageProfile90x90" width="90" height="90"/>
+        <image name="noImageProfile90x90" width="186" height="186"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Vi5-dR-ElZ"/>
-        <segue reference="eGf-Ok-PPi"/>
+        <segue reference="nMh-2Y-NIK"/>
     </inferredMetricsTieBreakers>
 </document>
