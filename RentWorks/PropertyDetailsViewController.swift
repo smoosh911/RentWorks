@@ -11,6 +11,11 @@ import CoreData
 import Photos
 import FirebaseStorage
 
+enum PropertyTask {
+    case adding
+    case editing
+}
+
 class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDelegate {
     
     // MARK: outlets
@@ -28,27 +33,22 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     
     var propertyImages: [ProfileImage] = []
     
-    var propertyTask: PropertyTask = PropertyTask.editing
+    var propertyTask = PropertyTask.editing
     
     enum SaveResults: String {
         case success = "Property Saved!"
         case failure = "Property Couldn't Save"
     }
     
-    enum PropertyTask {
-        case adding
-        case editing
-    }
-   
-    
     // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-                
+        guard let property = property, let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
+        propertyImages = profileImages
         
-               let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeDown.direction = UISwipeGestureRecognizerDirection.down
         self.view.addGestureRecognizer(swipeDown)
     }
@@ -56,7 +56,6 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
-
     
     // buttons
     
@@ -138,8 +137,11 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     // needs work: content should be put in a scroll view and when you click on something it should activate the scroll view
         
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "" {
-            propertyDetailSettingsContainerTVC = segue.destination as? PropertyDetailSettingsContainerTableViewController
+        if segue.identifier == Identifiers.Segues.propertyDetailContainterVC.rawValue {
+            guard let property = property, let propertyDetailSettingsContainerTVC = segue.destination as? PropertyDetailSettingsContainerTableViewController else { return }
+            
+            propertyDetailSettingsContainerTVC.property = property
+            propertyDetailSettingsContainerTVC.propertyTask = propertyTask
         }
     }
 }

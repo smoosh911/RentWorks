@@ -33,13 +33,19 @@ class LocationManager {
     }
     
     // needs work: there is some repetitive code in this function
-    static public func getDistancesArrayFor(entities: [Any], usingZipcode desiredLocation: String, completion: @escaping (_ distanceDict: [String: Int]) -> Void) {
+    static public func getDistancesArrayFor(entities: [Any], usingLocation desiredLocation: String, completion: @escaping (_ distanceDict: [String: Int]) -> Void) {
         let group = DispatchGroup()
         var distanceDict: [String: Int] = [:]
         if let renters = entities as? [Renter] {
             for renter in renters {
                 group.enter()
-                distanceBetweenTwoLocations(source: renter.wantedZipCode!, destination: desiredLocation, completion: { (distance) in
+                var renterLocation = ""
+                if renter.wantedZipCode == nil || renter.wantedZipCode == "" {
+                    renterLocation = "\(renter.wantedCity!), \(renter.wantedState!)"
+                } else {
+                    renterLocation = renter.wantedZipCode!
+                }
+                distanceBetweenTwoLocations(source: renterLocation, destination: desiredLocation, completion: { (distance) in
                     if distance == nil || renter.email == nil {
                         group.leave()
                         return
@@ -51,7 +57,13 @@ class LocationManager {
         } else if let properties = entities as? [Property] {
             for property in properties {
                 group.enter()
-                distanceBetweenTwoLocations(source: property.zipCode!, destination: desiredLocation, completion: { (distance) in
+                var propertyLocation = ""
+                if property.zipCode == nil || property.zipCode == "" {
+                    propertyLocation = "\(property.city!), \(property.state!)"
+                } else {
+                    propertyLocation = property.zipCode!
+                }
+                distanceBetweenTwoLocations(source: propertyLocation, destination: desiredLocation, completion: { (distance) in
                     if distance == nil || property.propertyID == nil {
                         group.leave()
                         return

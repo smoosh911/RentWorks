@@ -228,6 +228,8 @@ class PropertyController: UserController {
             let desiredSmokingAllowed = filterSettingsDict[RenterFilters.kSmokingAllowed.rawValue] as? Bool,
             //            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
             let desiredZipcode = filterSettingsDict[RenterFilters.kZipCode.rawValue] as? String,
+            let desiredCity = filterSettingsDict[RenterFilters.kCity.rawValue] as? String,
+            let desiredState = filterSettingsDict[RenterFilters.kState.rawValue] as? String,
             let withinRangeMiles = filterSettingsDict[RenterFilters.kWithinRangeMiles.rawValue] as? Int16,
             let renterID = currentUserID else {
                 completion([Property]())
@@ -249,8 +251,11 @@ class PropertyController: UserController {
         }
         
         var finalFiltered: [Property] = []
+        
+        let desiredLocation = desiredZipcode == "" ? "\(desiredCity), \(desiredState)" : desiredZipcode
+
         // needs work: the distances and renters won't neccessarily match up. Make more deterministic
-        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingZipcode: desiredZipcode, completion: { distanceDict in
+        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingLocation: desiredLocation) { (distanceDict) in
             for distance in distanceDict {
                 guard let property = filteredByHasBeenViewedBy.filter({$0.propertyID == distance.key}).first else { log("ERROR: no renters who matched distance dictionary key"); completion(finalFiltered); return }
                 let withinRange = distance.value <= Int(withinRangeMiles) // needs work: this should be a setting in the landlords setting page
@@ -259,7 +264,7 @@ class PropertyController: UserController {
                 }
             }
             completion(finalFiltered)
-        })
+        }
     }
     
     //    static func fetchProperties(numberOfProperties: UInt) {

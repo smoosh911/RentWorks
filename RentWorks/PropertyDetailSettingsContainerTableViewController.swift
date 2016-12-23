@@ -39,18 +39,11 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
     var property: Property! = nil
     var landlord: Landlord! = UserController.currentLandlord
     
-    var propertyImages: [ProfileImage] = []
-    
-    var propertyTask: PropertyTask = PropertyTask.editing
+    var propertyTask = PropertyTask.editing
     
     enum SaveResults: String {
         case success = "Property Saved!"
         case failure = "Property Couldn't Save"
-    }
-    
-    enum PropertyTask {
-        case adding
-        case editing
     }
     
     override func viewDidLoad() {
@@ -60,12 +53,10 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
             property = Property(landlordID: landlordID, landlord: landlord)
         }
         
-        guard let property = property, let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
-        propertyImages = profileImages
+        guard let property = property else { return }
         
         let propertyDetailsDict = PropertyController.getPropertyDetailsDictionary(property: property)
         updatePropertyDetails(propertyDetailsDict: propertyDetailsDict)
-        
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)

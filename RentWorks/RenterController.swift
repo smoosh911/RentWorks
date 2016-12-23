@@ -292,7 +292,7 @@ class RenterController: UserController {
         let smokingallowed = property.smokingAllowed
         
         // let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
-        guard let zipcode = property.zipCode else {
+        guard let zipcode = property.zipCode, let city = property.city, let state = property.state else {
             log("couldn't retrieve property details")
             completion([Renter]())
             return
@@ -325,8 +325,11 @@ class RenterController: UserController {
         }
         
         var finalFiltered: [Renter] = []
+        
+        let desiredLocation = zipcode == "" ? "\(city), \(state)" : zipcode
+        
         // needs work: the distances and renters won't neccessarily match up. Make more deterministic
-        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingZipcode: zipcode, completion: { distanceDict in
+        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingLocation: desiredLocation, completion: { distanceDict in
             for distance in distanceDict {
                 guard let renter = filteredByHasBeenViewedBy.filter({$0.email! == distance.key}).first else { log("ERROR: no renters who matched distance dictionary key"); completion(finalFiltered); return }
                 let withinRange = distance.value < Int(withinRangeMiles) // needs work: this should be a setting in the landlords setting page

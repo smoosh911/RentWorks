@@ -156,9 +156,11 @@ extension UserController {
         case kPetsAllowed = "petsAllowed"
         case kSmokingAllowed = "smokingAllowed"
         case kZipCode = "zipCode"
+        case kCity = "city"
+        case kState = "state"
         case kCurrentOccupation = "currentOccupation"
         case kWithinRangeMiles = "within_range_miles"
-        static let allValues = [kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kZipCode, kCurrentOccupation, kWithinRangeMiles]
+        static let allValues = [kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kZipCode, kCity, kState, kCurrentOccupation, kWithinRangeMiles]
     }
     
     enum LandlordFilters: String {

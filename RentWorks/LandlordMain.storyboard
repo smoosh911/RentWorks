@@ -57,7 +57,6 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2je-vg-03H">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="411"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="411" id="Iev-mS-isk"/>
                                             <constraint firstAttribute="width" constant="343" id="u0V-rL-qwk"/>
                                         </constraints>
                                     </imageView>
@@ -155,7 +154,6 @@
                                     <constraint firstItem="Crz-6k-t8D" firstAttribute="leading" secondItem="kQZ-na-LB7" secondAttribute="leading" constant="28" id="B99-hJ-rh8"/>
                                     <constraint firstAttribute="trailing" secondItem="wSn-dz-G14" secondAttribute="trailing" constant="28" id="TTM-JY-ep6"/>
                                     <constraint firstAttribute="bottom" secondItem="KpX-L2-c25" secondAttribute="bottom" constant="8" id="TzB-ay-IM1"/>
-                                    <constraint firstAttribute="bottom" secondItem="2je-vg-03H" secondAttribute="bottom" constant="128" id="d1y-Px-I1m"/>
                                     <constraint firstItem="2je-vg-03H" firstAttribute="top" secondItem="kQZ-na-LB7" secondAttribute="top" id="fY2-g8-eZs"/>
                                     <constraint firstAttribute="trailing" secondItem="Crz-6k-t8D" secondAttribute="trailing" constant="28" id="fbD-mi-TtO"/>
                                     <constraint firstItem="Crz-6k-t8D" firstAttribute="top" secondItem="2je-vg-03H" secondAttribute="bottom" constant="1" id="jwg-VR-ciI"/>
@@ -184,26 +182,25 @@
                                 <rect key="frame" x="16" y="108" width="343" height="539"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="upX-55-hoA">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="411"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="409.5"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="411" id="Y1h-dc-zkG"/>
                                             <constraint firstAttribute="width" constant="343" id="dxn-V8-wIl"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="y7r-eR-gFp">
-                                        <rect key="frame" x="28" y="412" width="318" height="36"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="y7r-eR-gFp">
+                                        <rect key="frame" x="28" y="417.5" width="287" height="36"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="Gme-SR-jh2">
-                                        <rect key="frame" x="155.5" y="499" width="32" height="32"/>
+                                        <rect key="frame" x="155.5" y="504.5" width="32" height="26.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ArF-pm-OXG">
-                                                <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="32" height="26.5"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="3db-aw-BSS" userLabel="D">
-                                                        <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="32" height="26.5"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="32" id="gnR-k9-4jq"/>
                                                         </constraints>
@@ -216,7 +213,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="OSC-RM-E3w">
-                                        <rect key="frame" x="115" y="472" width="114" height="22"/>
+                                        <rect key="frame" x="115" y="477.5" width="114" height="22"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Star" translatesAutoresizingMaskIntoConstraints="NO" id="YCh-gW-q9v">
                                                 <rect key="frame" x="0.0" y="0.0" width="22" height="22"/>
@@ -255,8 +252,8 @@
                                             </imageView>
                                         </subviews>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Occupation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dgz-1Z-1Yi">
-                                        <rect key="frame" x="28" y="450" width="318" height="18"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Occupation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="dgz-1Z-1Yi">
+                                        <rect key="frame" x="28" y="455.5" width="287" height="18"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -271,8 +268,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="upX-55-hoA" secondAttribute="bottom" constant="128" id="0WB-Wm-sD7"/>
-                                    <constraint firstItem="y7r-eR-gFp" firstAttribute="top" secondItem="upX-55-hoA" secondAttribute="bottom" constant="1" id="Afx-te-G3d"/>
+                                    <constraint firstItem="y7r-eR-gFp" firstAttribute="top" secondItem="upX-55-hoA" secondAttribute="bottom" constant="8" id="Afx-te-G3d"/>
                                     <constraint firstItem="OSC-RM-E3w" firstAttribute="centerX" secondItem="jTp-jL-qdN" secondAttribute="centerX" id="F5x-SF-pmU"/>
                                     <constraint firstAttribute="bottom" secondItem="Gme-SR-jh2" secondAttribute="bottom" constant="8" id="GI8-hb-vl9"/>
                                     <constraint firstItem="OSC-RM-E3w" firstAttribute="top" secondItem="dgz-1Z-1Yi" secondAttribute="bottom" constant="4" id="Gn1-nv-Nmb"/>
@@ -1418,7 +1414,7 @@ more results.</string>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rxx-5e-321">
                                 <rect key="frame" x="0.0" y="64" width="375" height="446.5"/>
                                 <connections>
-                                    <segue destination="eB7-Ag-Knx" kind="embed" identifier="SettingsTVCEmbed" id="isy-5u-pvU"/>
+                                    <segue destination="eB7-Ag-Knx" kind="embed" identifier="detailsContainerVC" id="isy-5u-pvU"/>
                                 </connections>
                             </containerView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Property save result" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WUB-7a-vdK">
@@ -1827,6 +1823,6 @@ more results.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Vi5-dR-ElZ"/>
-        <segue reference="nMh-2Y-NIK"/>
+        <segue reference="eGf-Ok-PPi"/>
     </inferredMetricsTieBreakers>
 </document>

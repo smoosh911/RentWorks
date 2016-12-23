@@ -43,7 +43,6 @@ class MatchController {
 
                 guard let likeDictionary = snapshot.value as? [String: Any] else { isObservingCurrentUserLikeEndpoint = false; return }
                 
-                
                 self.checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: likeDictionary, completion: { (matchingIDArray) in
                     
                     var matches: [Property] = []
@@ -109,7 +108,6 @@ class MatchController {
                 userLikesRef.observe(FIRDataEventType.value, with: { (snapshot) in
                     
                     guard let likeDictionary = snapshot.value as? [String: Any] else { isObservingCurrentUserLikeEndpoint = false; return }
-                    print(likeDictionary)
                     
                     self.checkForMatchesBetweenCurrentUserAnd(otherUserDictionary: likeDictionary, completion: { (matchingIDArray) in
                         
@@ -191,7 +189,6 @@ class MatchController {
             for id in otherUserDictionary.keys {
                 group.enter()
                 FirebaseController.likesRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
-                    print("Snapshot: \(snapshot.value)")
                     guard let matchDictionary = snapshot.value as? [String: Any], let currentRenter = UserController.currentRenter, let renterID = currentRenter.id else { group.leave(); return }
                     if matchDictionary.keys.contains(renterID) {
                         matchingUsersIDArray.append(id)
@@ -212,7 +209,6 @@ class MatchController {
                     subgroup.enter()
                     guard let propertyID = property.propertyID else { print("No propertyID to observe for"); return }
                     FirebaseController.likesRef.child(id).observeSingleEvent(of: .value, with: { (snapshot) in
-                        print("Snapshot: \(snapshot.value)")
                         guard let matchDictionary = snapshot.value as? [String: Any] else { subgroup.leave(); return }
                         if matchDictionary.keys.contains(propertyID) {
                             matchingUsersIDArray.append(id)
@@ -227,7 +223,6 @@ class MatchController {
                     group.leave()
                 })
             }
-            
         }
         group.notify(queue: DispatchQueue.main) {
             completion(matchingUsersIDArray)

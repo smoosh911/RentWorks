@@ -44,11 +44,11 @@ class PropertiesViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Identifiers.Segues.editPropertyDetailsVC.rawValue {
             guard let destinationVC = segue.destination as? PropertyDetailsViewController, let cell = selectedCell else { return }
-            destinationVC.propertyTask = PropertyDetailsViewController.PropertyTask.editing
+            destinationVC.propertyTask = PropertyTask.editing
             destinationVC.property = cell.property
         } else if segue.identifier == Identifiers.Segues.addPropertyVC.rawValue {
             guard let destinationVC = segue.destination as? PropertyDetailsViewController else { return }
-            destinationVC.propertyTask = PropertyDetailsViewController.PropertyTask.adding
+            destinationVC.propertyTask = PropertyTask.adding
         } else if segue.identifier == Identifiers.Segues.mainVC.rawValue {
             guard let destinationVC = segue.destination as? LandlordMainViewController, let cell = selectedCell else { return }
             destinationVC.property = cell.property
