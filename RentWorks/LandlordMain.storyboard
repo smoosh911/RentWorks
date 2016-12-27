@@ -969,6 +969,198 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="uSg-NQ-jpQ">
+                                        <rect key="frame" x="0.0" y="490" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uSg-NQ-jpQ" id="jkx-kG-p2f">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="arn-6j-bQu">
+                                                    <rect key="frame" x="6" y="7" width="363" height="31"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Washer/Dryer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tZ5-m0-8BR">
+                                                            <rect key="frame" x="0.0" y="0.0" width="314" height="31"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qgm-Kt-kGh">
+                                                            <rect key="frame" x="314" y="0.0" width="51" height="31"/>
+                                                            <connections>
+                                                                <action selector="swtWasherDryer_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="nKg-vh-gan"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="arn-6j-bQu" firstAttribute="centerY" secondItem="jkx-kG-p2f" secondAttribute="centerY" id="4jy-qJ-BfJ"/>
+                                                <constraint firstAttribute="trailing" secondItem="arn-6j-bQu" secondAttribute="trailing" constant="6" id="NCL-wY-eai"/>
+                                                <constraint firstItem="arn-6j-bQu" firstAttribute="leading" secondItem="jkx-kG-p2f" secondAttribute="leading" constant="6" id="QXt-1J-RLt"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="MxG-dT-Brw">
+                                        <rect key="frame" x="0.0" y="534" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MxG-dT-Brw" id="LMS-mh-XbB">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g8X-1H-0w8">
+                                                    <rect key="frame" x="6" y="7" width="363" height="31"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Garage" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8b-wY-wxO">
+                                                            <rect key="frame" x="0.0" y="0.0" width="314" height="31"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b5V-3k-eAi">
+                                                            <rect key="frame" x="314" y="0.0" width="51" height="31"/>
+                                                            <connections>
+                                                                <action selector="swtGarage_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="eXi-SD-zXf"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="g8X-1H-0w8" secondAttribute="trailing" constant="6" id="6vw-em-U3d"/>
+                                                <constraint firstItem="g8X-1H-0w8" firstAttribute="centerY" secondItem="LMS-mh-XbB" secondAttribute="centerY" id="WSF-wX-tr5"/>
+                                                <constraint firstItem="g8X-1H-0w8" firstAttribute="leading" secondItem="LMS-mh-XbB" secondAttribute="leading" constant="6" id="XDC-yX-xmJ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="91u-my-luY">
+                                        <rect key="frame" x="0.0" y="578" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="91u-my-luY" id="FaJ-wF-OAu">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4OZ-jJ-QyE">
+                                                    <rect key="frame" x="6" y="7" width="363" height="31"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dishwasher" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VaS-a7-lfw">
+                                                            <rect key="frame" x="0.0" y="0.0" width="314" height="31"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AOU-uT-FQ5">
+                                                            <rect key="frame" x="314" y="0.0" width="51" height="31"/>
+                                                            <connections>
+                                                                <action selector="swtDishwasher_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="ybd-pd-1qI"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="4OZ-jJ-QyE" firstAttribute="leading" secondItem="FaJ-wF-OAu" secondAttribute="leading" constant="6" id="RLq-zO-tsh"/>
+                                                <constraint firstAttribute="trailing" secondItem="4OZ-jJ-QyE" secondAttribute="trailing" constant="6" id="fAm-fU-6gQ"/>
+                                                <constraint firstItem="4OZ-jJ-QyE" firstAttribute="centerY" secondItem="FaJ-wF-OAu" secondAttribute="centerY" id="pl1-67-mLh"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="peb-TA-jHh">
+                                        <rect key="frame" x="0.0" y="622" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="peb-TA-jHh" id="hvD-C7-oOD">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nK5-Oa-dom">
+                                                    <rect key="frame" x="6" y="7" width="363" height="31"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pool" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2gG-px-cyx">
+                                                            <rect key="frame" x="0.0" y="0.0" width="314" height="31"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tDK-dn-tFw">
+                                                            <rect key="frame" x="314" y="0.0" width="51" height="31"/>
+                                                            <connections>
+                                                                <action selector="swtPool_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="ERF-qY-qbb"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="nK5-Oa-dom" firstAttribute="leading" secondItem="hvD-C7-oOD" secondAttribute="leading" constant="6" id="CpK-Cr-64Z"/>
+                                                <constraint firstAttribute="trailing" secondItem="nK5-Oa-dom" secondAttribute="trailing" constant="6" id="ZBZ-dd-sFL"/>
+                                                <constraint firstItem="nK5-Oa-dom" firstAttribute="centerY" secondItem="hvD-C7-oOD" secondAttribute="centerY" id="iAe-HD-hNK"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="UI0-fL-rVb">
+                                        <rect key="frame" x="0.0" y="666" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UI0-fL-rVb" id="sGQ-yj-Knh">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Om1-th-MI6">
+                                                    <rect key="frame" x="6" y="7" width="363" height="31"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gym" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OIL-8W-PoL">
+                                                            <rect key="frame" x="0.0" y="0.0" width="314" height="31"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iLx-GX-HoI">
+                                                            <rect key="frame" x="314" y="0.0" width="51" height="31"/>
+                                                            <connections>
+                                                                <action selector="swtGym_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="3L9-EL-zDw"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Om1-th-MI6" firstAttribute="centerY" secondItem="sGQ-yj-Knh" secondAttribute="centerY" id="IDb-xi-3yF"/>
+                                                <constraint firstAttribute="trailing" secondItem="Om1-th-MI6" secondAttribute="trailing" constant="6" id="Uzv-eK-kVc"/>
+                                                <constraint firstItem="Om1-th-MI6" firstAttribute="leading" secondItem="sGQ-yj-Knh" secondAttribute="leading" constant="6" id="lTD-K6-6YH"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="FDy-40-HCv">
+                                        <rect key="frame" x="0.0" y="710" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FDy-40-HCv" id="Smp-Pn-LZr">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iJi-Zc-NOf">
+                                                    <rect key="frame" x="6" y="7" width="363" height="31"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backyard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gMw-Fe-OPc">
+                                                            <rect key="frame" x="0.0" y="0.0" width="314" height="31"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UAn-0T-GeN">
+                                                            <rect key="frame" x="314" y="0.0" width="51" height="31"/>
+                                                            <connections>
+                                                                <action selector="swtBackyard_ValueChanged:" destination="eB7-Ag-Knx" eventType="valueChanged" id="nt4-hW-9Uv"/>
+                                                            </connections>
+                                                        </switch>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="iJi-Zc-NOf" firstAttribute="leading" secondItem="Smp-Pn-LZr" secondAttribute="leading" constant="6" id="JYG-NE-yxo"/>
+                                                <constraint firstItem="iJi-Zc-NOf" firstAttribute="centerY" secondItem="Smp-Pn-LZr" secondAttribute="centerY" id="QvE-p3-vRy"/>
+                                                <constraint firstAttribute="trailing" secondItem="iJi-Zc-NOf" secondAttribute="trailing" constant="6" id="v7c-WP-gVV"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -992,8 +1184,14 @@
                         <outlet property="starImageView5" destination="mg7-vr-jlK" id="hlN-e6-6fH"/>
                         <outlet property="stpBathrooms" destination="ihz-SX-N93" id="xcD-b3-3I5"/>
                         <outlet property="stpBedrooms" destination="hIp-5X-dda" id="bbW-dd-Ygc"/>
+                        <outlet property="swtBackyard" destination="UAn-0T-GeN" id="Xde-wT-xR8"/>
+                        <outlet property="swtDishwasher" destination="AOU-uT-FQ5" id="hul-aF-RCB"/>
+                        <outlet property="swtGarage" destination="b5V-3k-eAi" id="vhZ-X2-BNT"/>
+                        <outlet property="swtGym" destination="iLx-GX-HoI" id="J9g-Et-OE4"/>
                         <outlet property="swtPets" destination="2mh-ic-8Og" id="2V7-Z4-HT4"/>
+                        <outlet property="swtPool" destination="tDK-dn-tFw" id="T2O-wD-XJA"/>
                         <outlet property="swtSmoking" destination="Be5-mU-RPg" id="s3V-db-OsJ"/>
+                        <outlet property="swtWasherDryer" destination="Qgm-Kt-kGh" id="lcn-Yp-938"/>
                         <outlet property="txtfldCity" destination="kxX-zK-bsC" id="qBN-r2-4dU"/>
                         <outlet property="txtfldPropertyAddress" destination="A6Z-kT-bK1" id="V8q-z2-cJK"/>
                         <outlet property="txtfldState" destination="LAV-8B-lHa" id="lyi-B0-t7D"/>

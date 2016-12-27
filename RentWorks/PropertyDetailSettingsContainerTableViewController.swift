@@ -24,6 +24,12 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
     
     @IBOutlet weak var swtPets: UISwitch!
     @IBOutlet weak var swtSmoking: UISwitch!
+    @IBOutlet weak var swtWasherDryer: UISwitch!
+    @IBOutlet weak var swtGarage: UISwitch!
+    @IBOutlet weak var swtDishwasher: UISwitch!
+    @IBOutlet weak var swtPool: UISwitch!
+    @IBOutlet weak var swtGym: UISwitch!
+    @IBOutlet weak var swtBackyard: UISwitch!
     
     @IBOutlet weak var txtfldZipCode: UITextField!
     @IBOutlet weak var txtfldCity: UITextField!
@@ -76,9 +82,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
                 self.view.layoutIfNeeded()
             })
         }
-        
     }
-    
     
     func keyboardWillHide(notification: NSNotification) {
         guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
@@ -95,8 +99,6 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
             })
         }
     }
-    
-    
 
     // MARK: actions
     
@@ -148,7 +150,6 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
         }
-        
     }
     
     // switches
@@ -163,7 +164,6 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
         }
-        
     }
     
     @IBAction func swtSmoking_ValueChanged(_ sender: UISwitch) {
@@ -176,13 +176,81 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
         }
-        
     }
     
-   
+    @IBAction func swtWasherDryer_ValueChanged(_ sender: UISwitch) {
+        let hasWasherDryer = sender.isOn
+        guard let id = property.propertyID else { return }
+        
+        property.washerDryer = hasWasherDryer
+        if propertyTask == PropertyTask.editing {
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasWasherDryer)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
+    }
+    
+    @IBAction func swtGarage_ValueChanged(_ sender: UISwitch) {
+        let hasGarage = sender.isOn
+        guard let id = property.propertyID else { return }
+        
+        property.garage = hasGarage
+        if propertyTask == PropertyTask.editing {
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasGarage)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
+    }
+    
+    @IBAction func swtDishwasher_ValueChanged(_ sender: UISwitch) {
+        let hasDishwasher = sender.isOn
+        guard let id = property.propertyID else { return }
+        
+        property.dishwasher = hasDishwasher
+        if propertyTask == PropertyTask.editing {
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasDishwasher)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
+    }
+    
+    @IBAction func swtPool_ValueChanged(_ sender: UISwitch) {
+        let hasPool = sender.isOn
+        guard let id = property.propertyID else { return }
+        
+        property.pool = hasPool
+        if propertyTask == PropertyTask.editing {
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasPool)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
+    }
+    
+    @IBAction func swtGym_ValueChanged(_ sender: UISwitch) {
+        let hasGym = sender.isOn
+        guard let id = property.propertyID else { return }
+        
+        property.gym = hasGym
+        if propertyTask == PropertyTask.editing {
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasGym)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
+    }
+    
+    @IBAction func swtBackyard_ValueChanged(_ sender: UISwitch) {
+        let hasBackyard = sender.isOn
+        guard let id = property.propertyID else { return }
+        
+        property.backyard = hasBackyard
+        if propertyTask == PropertyTask.editing {
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasBackyard)
+            // UserController.saveToPersistentStore()
+            self.updateSettingsChanged()
+        }
+    }
     
     // MARK: helper methods
-    
     
     private func updatePropertyDetails (propertyDetailsDict: [String: Any]) {
         let propertyDetailKeys = UserController.PropertyDetailValues.self
@@ -196,7 +264,6 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
             case propertyDetailKeys.kAvailableDate.rawValue:
                 guard let timeInterval = detail.value as? TimeInterval else { break }
                 let availableDate = Date(timeIntervalSince1970: timeInterval)
-                
                 dtpckrDateAvailable.date = availableDate
                 break
             case propertyDetailKeys.kBedroomCount.rawValue:
@@ -237,6 +304,30 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
             case propertyDetailKeys.kState.rawValue:
                 let state = detail.value as! String
                 txtfldState.text = state
+                break
+            case propertyDetailKeys.kWasherDryer.rawValue:
+                let hasWasherDryer = detail.value as! Bool
+                swtWasherDryer.isOn = hasWasherDryer
+                break
+            case propertyDetailKeys.kGarage.rawValue:
+                let hasGarage = detail.value as! Bool
+                swtGarage.isOn = hasGarage
+                break
+            case propertyDetailKeys.kDishwasher.rawValue:
+                let hasDishwasher = detail.value as! Bool
+                swtDishwasher.isOn = hasDishwasher
+                break
+            case propertyDetailKeys.kPool.rawValue:
+                let hasPool = detail.value as! Bool
+                swtPool.isOn = hasPool
+                break
+            case propertyDetailKeys.kGym.rawValue:
+                let hasGym = detail.value as! Bool
+                swtGym.isOn = hasGym
+                break
+            case propertyDetailKeys.kBackyard.rawValue:
+                let hasBackyard = detail.value as! Bool
+                swtBackyard.isOn = hasBackyard
                 break
             default:
                 log("no details")
@@ -283,7 +374,6 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
         }
     }
     
-    
     func updateSettings() {
         guard let id = property.propertyID, let address = txtfldPropertyAddress.text, let zipcode = txtfldZipCode.text, let city = txtfldCity.text, let state = txtfldState.text else { return }
         property.address = address
@@ -308,14 +398,10 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
     }
     
     func updateSettingsChanged() {
-        
-        
-        
         SettingsViewController.settingsDidChange = true
         UserController.renterFetchCount = 0
         PropertyController.resetStartAtForAllPropertiesInFirebase()
     }
-
 }
 
 protocol UpdatePropertySettingsDelegate: class {

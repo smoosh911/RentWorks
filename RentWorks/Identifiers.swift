@@ -47,7 +47,7 @@ class Identifiers {
     enum RentWorksAdmin: String {
         case email = "rentworksdev@gmail.com"
         case complaintsEmail = "rentworkscomplaints@gmail.com"
-        case EULA_URL = ""
+        case EULA_URL = "http://www.myrentworks.com/copy-of-public-texts"
         case PrivacyPolicyURL = "http://www.myrentworks.com/privacy-policy"
     }
 }
