@@ -420,7 +420,7 @@
                         <outlet property="starImageView5" destination="wSC-j9-IZf" id="dIg-HG-fXU"/>
                         <outlet property="swipeableView" destination="jTp-jL-qdN" id="xJq-Ts-x8h"/>
                         <outlet property="vwLoadingNewCards" destination="LGf-Si-y9W" id="SQh-yS-2gl"/>
-                        <segue destination="6R0-id-HqY" kind="presentation" identifier="segueShowNoMoreCardsVC" id="uJX-5M-Qg3"/>
+                        <segue destination="9sA-HX-HIt" kind="presentation" identifier="segueShowNoMoreCardsVC" id="pWs-Iz-2RS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y1v-Ec-ob7" sceneMemberID="firstResponder"/>
@@ -1399,52 +1399,6 @@ available:</string>
             </objects>
             <point key="canvasLocation" x="1934" y="2457"/>
         </scene>
-        <!--No Cards Left View Controller-->
-        <scene sceneID="6r3-hp-Rvs">
-            <objects>
-                <viewController id="6R0-id-HqY" customClass="NoCardsLeftViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="z1d-GE-pfh"/>
-                        <viewControllerLayoutGuide type="bottom" id="6aa-05-Ivx"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="pIb-qb-B0M">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pqi-Q3-Z7O">
-                                <rect key="frame" x="38.5" y="234" width="243" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="hjs-vV-heR"/>
-                                </constraints>
-                                <string key="text">Sorry, there are no more 
-cards for you to swipe through. 
-Try modifying the filters to get 
-more results.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fia-LF-FeK">
-                                <rect key="frame" x="143" y="342" width="34" height="30"/>
-                                <state key="normal" title="Back"/>
-                                <connections>
-                                    <action selector="backNavigationButtonTapped:" destination="6R0-id-HqY" eventType="touchUpInside" id="mf0-Jg-BE0"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="Pqi-Q3-Z7O" firstAttribute="centerX" secondItem="pIb-qb-B0M" secondAttribute="centerX" id="0sC-Yr-Ph1"/>
-                            <constraint firstItem="fia-LF-FeK" firstAttribute="top" secondItem="Pqi-Q3-Z7O" secondAttribute="bottom" constant="8" id="8cf-j7-582"/>
-                            <constraint firstItem="fia-LF-FeK" firstAttribute="centerX" secondItem="pIb-qb-B0M" secondAttribute="centerX" id="j4h-3L-eDY"/>
-                            <constraint firstItem="Pqi-Q3-Z7O" firstAttribute="centerY" secondItem="pIb-qb-B0M" secondAttribute="centerY" id="wuC-n3-0YS"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="JYi-So-Vqq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3124" y="1538"/>
-        </scene>
         <!--Report User View Controller-->
         <scene sceneID="LKm-i3-HRD">
             <objects>
@@ -1712,7 +1666,7 @@ more results.</string>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t3G-XV-IZt">
-                                        <rect key="frame" x="8" y="21" width="35" height="30"/>
+                                        <rect key="frame" x="8" y="21" width="34" height="30"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="15"/>
                                         <state key="normal" title="Back">
                                             <color key="titleColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2156,6 +2110,73 @@ more results.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BJZ-3b-fgK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="234" y="1538"/>
+        </scene>
+        <!--No Cards Left View Controller-->
+        <scene sceneID="5f2-ps-OCu">
+            <objects>
+                <viewController id="9sA-HX-HIt" customClass="NoCardsLeftViewController" customModule="RentWorks" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6Xq-sH-isU"/>
+                        <viewControllerLayoutGuide type="bottom" id="GGc-d4-sCH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Htg-Cp-wsE">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenNoText" translatesAutoresizingMaskIntoConstraints="NO" id="9Wh-dE-Fbj">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LFj-bP-Hva">
+                                <rect key="frame" x="0.0" y="131" width="320" height="137"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="253" verticalCompressionResistancePriority="752" text="Sorry, there are no more cards for you to swipe through. Try modifying the filters to get more results." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="YKM-cT-fnN">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="92"/>
+                                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="17"/>
+                                        <color key="textColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7RW-VB-xiU">
+                                        <rect key="frame" x="140" y="101" width="40" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="7RW-VB-xiU" secondAttribute="height" multiplier="20:17" id="xay-sg-JC1"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <state key="normal" title="Back">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="backNavigationButtonTapped:" destination="9sA-HX-HIt" eventType="touchUpInside" id="MiD-le-qlw"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="YKM-cT-fnN" firstAttribute="height" secondItem="LFj-bP-Hva" secondAttribute="height" multiplier="2/3" id="0OB-G3-Gb6"/>
+                                    <constraint firstAttribute="bottom" secondItem="7RW-VB-xiU" secondAttribute="bottom" constant="2.5" id="3Bt-EO-jWn"/>
+                                    <constraint firstItem="YKM-cT-fnN" firstAttribute="leading" secondItem="LFj-bP-Hva" secondAttribute="leading" id="BWE-7j-ATG"/>
+                                    <constraint firstAttribute="height" constant="137" id="WbY-1D-dmb"/>
+                                    <constraint firstItem="YKM-cT-fnN" firstAttribute="centerX" secondItem="LFj-bP-Hva" secondAttribute="centerX" id="fGF-ej-cXe"/>
+                                    <constraint firstItem="7RW-VB-xiU" firstAttribute="centerX" secondItem="LFj-bP-Hva" secondAttribute="centerX" id="g0R-W4-tsR"/>
+                                    <constraint firstItem="YKM-cT-fnN" firstAttribute="top" secondItem="LFj-bP-Hva" secondAttribute="top" id="orm-wy-68l"/>
+                                    <constraint firstAttribute="trailing" secondItem="YKM-cT-fnN" secondAttribute="trailing" id="ulD-P0-Lii"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="9Wh-dE-Fbj" firstAttribute="top" secondItem="Htg-Cp-wsE" secondAttribute="top" id="2Vf-Sa-8db"/>
+                            <constraint firstItem="LFj-bP-Hva" firstAttribute="leading" secondItem="Htg-Cp-wsE" secondAttribute="leading" id="BLm-A9-jDE"/>
+                            <constraint firstItem="GGc-d4-sCH" firstAttribute="top" secondItem="9Wh-dE-Fbj" secondAttribute="bottom" id="CTR-OE-jbK"/>
+                            <constraint firstAttribute="trailing" secondItem="9Wh-dE-Fbj" secondAttribute="trailing" id="I8u-jJ-I4y"/>
+                            <constraint firstAttribute="trailing" secondItem="LFj-bP-Hva" secondAttribute="trailing" id="Qyj-e7-rpE"/>
+                            <constraint firstItem="LFj-bP-Hva" firstAttribute="top" secondItem="6Xq-sH-isU" secondAttribute="bottom" constant="111" id="Tg6-Cf-Cmz"/>
+                            <constraint firstItem="9Wh-dE-Fbj" firstAttribute="leading" secondItem="Htg-Cp-wsE" secondAttribute="leading" id="jCQ-XT-9DA"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pgW-PB-gL5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3124" y="1537"/>
         </scene>
     </scenes>
     <resources>
