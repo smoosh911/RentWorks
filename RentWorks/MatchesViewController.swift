@@ -36,7 +36,7 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     func present(emailErrorAlert: UIAlertController) {
         self.present(emailErrorAlert, animated: true, completion: nil)
     }
-
+    
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
@@ -54,12 +54,18 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        let emailComposeVC = MFMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            present(emailComposeVC: emailComposeVC)
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 122
     }
+    
+    
     
     // these two below functions enable the table view cell swipe to delete or report
     

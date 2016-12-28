@@ -35,7 +35,7 @@ class PropertyMatchesViewController: MatchesViewController {
             }
         }
     }
-    
+
     // MARK: segues
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

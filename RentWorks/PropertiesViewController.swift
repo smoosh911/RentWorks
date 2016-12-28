@@ -39,7 +39,8 @@ class PropertiesViewController: UIViewController {
     }
     
     @IBAction func editPropertyButtonTapped(_ sender: UIButton) {
-        guard let cell = sender.superview as? PropertyTableViewCell else { return }
+        guard let contentView = sender.superview, let cell = contentView.superview as? PropertyTableViewCell else { return }
+        
         self.selectedCell = cell
         
         self.performSegue(withIdentifier: Identifiers.Segues.editPropertyDetailsVC.rawValue, sender: self)
@@ -82,8 +83,8 @@ extension PropertiesViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.property = property
         cell.addressLabel.text = property.address
-        cell.availableDate.text = dateFormatter.string(from: property.availableDate as! Date)
-        cell.monthlyPayment.text = "\(property.monthlyPayment)"
+//        cell.availableDate.text = dateFormatter.string(from: property.availableDate as! Date)
+//        cell.monthlyPayment.text = "\(property.monthlyPayment)"
         
         guard let profileImage = property.profileImages?.firstObject as? ProfileImage, let image = UIImage(data: profileImage.imageData as! Data) else { return cell }
         

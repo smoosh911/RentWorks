@@ -53,6 +53,7 @@ class RenterSettingsViewController: SettingsViewController {
         renter.wantedZipCode = zipcode
         RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: settingsTVC.filterKeys.kZipCode.rawValue, newValue: zipcode)
         self.delegate?.updateSettings()
+        self.dismiss(animated: true, completion: nil)
         // UserController.saveToPersistentStore()
     }
     

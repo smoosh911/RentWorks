@@ -13,6 +13,7 @@ class MatchTableViewCell: UITableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var newChatBadge: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -85,8 +86,12 @@ class MatchTableViewCell: UITableViewCell {
     }
     
     func setupCell() {
-        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
+        profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
+        profileImageView.layer.masksToBounds = false
         profileImageView.clipsToBounds = true
+        profileImageView.contentMode = .scaleAspectFill
+        
+        newChatBadge.layer.cornerRadius = newChatBadge.frame.size.height / 2
         
 //        contactButton.layer.borderColor = AppearanceController.vengaYellowColor.cgColor
 //        contactButton.layer.cornerRadius = 4
