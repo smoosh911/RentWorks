@@ -88,9 +88,9 @@ class MatchTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
         profileImageView.clipsToBounds = true
         
-        contactButton.layer.borderColor = AppearanceController.vengaYellowColor.cgColor
-        contactButton.layer.cornerRadius = 4
-        contactButton.layer.borderWidth = 0.4
+//        contactButton.layer.borderColor = AppearanceController.vengaYellowColor.cgColor
+//        contactButton.layer.cornerRadius = 4
+//        contactButton.layer.borderWidth = 0.4
     }
 }
 

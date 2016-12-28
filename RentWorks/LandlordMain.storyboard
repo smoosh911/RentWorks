@@ -465,8 +465,8 @@
                                     <constraint firstAttribute="width" secondItem="twI-PN-CLc" secondAttribute="height" multiplier="1:1" id="1Dd-oW-3qc"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ft9-ti-0aU">
-                                <rect key="frame" x="72" y="66" width="177" height="33"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filter Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ft9-ti-0aU">
+                                <rect key="frame" x="71.5" y="66" width="177" height="33"/>
                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -544,42 +544,65 @@
                                             <constraint firstAttribute="height" constant="1" id="WgK-fl-fNB"/>
                                         </constraints>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="r5g-HM-bO2">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="r5g-HM-bO2">
                                         <rect key="frame" x="0.0" y="32.5" width="304" height="38"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credit:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="PR4-E1-dSB">
-                                                <rect key="frame" x="0.0" y="9" width="61" height="20"/>
+                                                <rect key="frame" x="0.0" y="9" width="66.5" height="20"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BKo-no-ewk">
+                                                <rect key="frame" x="66.5" y="0.0" width="49" height="38"/>
+                                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="22"/>
+                                                <state key="normal" title="Any">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="aPlusCreditButtonTapped:" destination="nBU-BM-dg2" eventType="touchUpInside" id="spj-GS-Y08"/>
+                                                    <action selector="anyCreditButtonTapped:" destination="nBU-BM-dg2" eventType="touchUpInside" id="MGN-yV-UJ6"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3d4-fw-270">
-                                                <rect key="frame" x="61" y="0.0" width="60.5" height="38"/>
+                                                <rect key="frame" x="115.5" y="0.0" width="39" height="38"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="22"/>
                                                 <state key="normal" title="A+">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="aPlusCreditButtonTapped:" destination="nBU-BM-dg2" eventType="touchUpInside" id="Lrr-rn-j2I"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jZi-Qe-DuB">
-                                                <rect key="frame" x="121.5" y="0.0" width="61" height="38"/>
+                                                <rect key="frame" x="154.5" y="0.0" width="39" height="38"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="22"/>
                                                 <state key="normal" title="A">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="aCreditButtonTapped:" destination="nBU-BM-dg2" eventType="touchUpInside" id="Vih-cA-XDl"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gW4-qf-PDc">
-                                                <rect key="frame" x="182.5" y="0.0" width="60.5" height="38"/>
+                                                <rect key="frame" x="193.5" y="0.0" width="39" height="38"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="22"/>
                                                 <state key="normal" title="B">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="bCreditButtonTapped:" destination="nBU-BM-dg2" eventType="touchUpInside" id="fXk-zs-wZW"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BGT-Td-JaB">
-                                                <rect key="frame" x="243" y="0.0" width="61" height="38"/>
+                                                <rect key="frame" x="232.5" y="0.0" width="71.5" height="38"/>
                                                 <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="22"/>
                                                 <state key="normal" title="Other">
                                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="otherCreditButtonTapped:" destination="nBU-BM-dg2" eventType="touchUpInside" id="Ll6-W4-FMi"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -677,9 +700,15 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="aCreditButton" destination="jZi-Qe-DuB" id="28o-kg-eTq"/>
+                        <outlet property="aPlusCreditButton" destination="3d4-fw-270" id="7IF-GT-EwX"/>
+                        <outlet property="anyCreditButton" destination="BKo-no-ewk" id="VN0-u3-1ra"/>
+                        <outlet property="bCreditButton" destination="gW4-qf-PDc" id="IWD-b6-dsp"/>
                         <outlet property="imgviewProfilePic" destination="twI-PN-CLc" id="mb9-Q4-bzA"/>
                         <outlet property="lblMaxDistance" destination="nrA-xo-eFQ" id="PLN-i4-Ug9"/>
                         <outlet property="lblUserName" destination="BUS-rO-tq9" id="KDt-Ar-gom"/>
+                        <outlet property="otherCreditButton" destination="BGT-Td-JaB" id="SdT-TL-b4Y"/>
+                        <outlet property="propertyCountLabel" destination="qkv-he-OSP" id="B96-LI-Oih"/>
                         <outlet property="sldrMaxDistance" destination="rbx-CR-Oe4" id="83J-fS-PnY"/>
                     </connections>
                 </viewController>
@@ -1523,8 +1552,8 @@ available:</string>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NAx-bn-qkp">
                                                     <rect key="frame" x="0.0" y="42" width="320" height="262"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LYi-Ng-K7Y">
-                                                    <rect key="frame" x="8" y="8" width="304" height="36"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="LYi-Ng-K7Y">
+                                                    <rect key="frame" x="8" y="8" width="304" height="26"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="22"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1550,7 +1579,6 @@ available:</string>
                                                 <constraint firstAttribute="topMargin" secondItem="LYi-Ng-K7Y" secondAttribute="top" id="YjP-jN-4oK"/>
                                                 <constraint firstAttribute="trailing" secondItem="NAx-bn-qkp" secondAttribute="trailing" id="a19-Ee-FdB"/>
                                                 <constraint firstItem="LYi-Ng-K7Y" firstAttribute="trailing" secondItem="oa3-6g-GP3" secondAttribute="trailingMargin" id="dZP-p4-wB4"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="LYi-Ng-K7Y" secondAttribute="trailing" constant="83" id="h8N-93-hPC"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="4Vd-hO-9FK" secondAttribute="bottom" constant="0.5" id="qhP-El-YCA"/>
                                                 <constraint firstAttribute="bottom" secondItem="NAx-bn-qkp" secondAttribute="bottom" id="rDL-sA-t6b"/>
                                                 <constraint firstItem="4Vd-hO-9FK" firstAttribute="trailing" secondItem="oa3-6g-GP3" secondAttribute="trailingMargin" id="t4a-BD-Oml"/>
@@ -1839,7 +1867,7 @@ available:</string>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="SuY-8W-PgA">
-                                                    <rect key="frame" x="99" y="29.5" width="196" height="28.5"/>
+                                                    <rect key="frame" x="99" y="30" width="196" height="28"/>
                                                     <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
