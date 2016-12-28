@@ -35,6 +35,18 @@ class PropertiesViewController: UIViewController {
     
     // MARK: actions
     
+    @IBAction func addNewPropertyButtonTapped(_ sender: UIButton) {
+    }
+    
+    @IBAction func editPropertyButtonTapped(_ sender: UIButton) {
+        guard let cell = sender.superview as? PropertyTableViewCell else { return }
+        self.selectedCell = cell
+        
+        self.performSegue(withIdentifier: Identifiers.Segues.editPropertyDetailsVC.rawValue, sender: self)
+        
+        
+    }
+    
     @IBAction func btnAdd_TouchedUpInside(_ sender: Any) {
         self.performSegue(withIdentifier: Identifiers.Segues.addPropertyVC.rawValue, sender: self)
     }

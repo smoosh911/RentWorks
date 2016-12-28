@@ -13,21 +13,18 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
     
     // MARK: outlets
     
-    @IBOutlet weak var pkrCreditRating: UIPickerView!
-    
     @IBOutlet weak var lblMaxDistance: UILabel!
     @IBOutlet weak var sldrMaxDistance: UISlider!
     
     // MARK: variables
     
-    var creditRatingPickerViewContent = ["Any","A","B","C","D","F"]
+    var creditRatingPickerViewContent = ["Any","A+", "A", "B","Other"]
     
     // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        pkrCreditRating.dataSource = self
-        pkrCreditRating.delegate = self
+
         
         guard let landlord = UserController.currentLandlord,
             let desiredCreditRating = landlord.wantsCreditRating,
@@ -43,8 +40,6 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         lblMaxDistance.text = "\(maxDistance)"
         
         sldrMaxDistance.value = Float(maxDistance)
-        
-        pkrCreditRating.selectRow(ratingIndex, inComponent: 0, animated: false)
     }
     
     // MARK: actions
@@ -66,32 +61,6 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         updateSettingsChanged()
     }
     
-    // MARK: picker view delegate
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let rowValue = creditRatingPickerViewContent[row]
-        if UserController.currentUserID == nil {
-            return
-        }
-        UserController.currentLandlord?.wantsCreditRating = rowValue
-        LandlordController.updateCurrentLandlordInFirebase(id: UserController.currentUserID!, attributeToUpdate: UserController.kWantsCreditRating, newValue: rowValue)
-//        UserController.saveToPersistentStore()
-        updateSettingsChanged()
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return creditRatingPickerViewContent[row]
-    }
-    
-    // MARK: picker view datasource
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return creditRatingPickerViewContent.count
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
     
     private func updateSettingsChanged() {
         SettingsViewController.settingsDidChange = true

@@ -10,6 +10,7 @@ import UIKit
 
 class PropertyDetailSettingsContainerTableViewController: UITableViewController {
         
+    @IBOutlet weak var propertyNameTextField: UITextField!
     @IBOutlet weak var txtfldPropertyAddress: UITextField!
     @IBOutlet weak var dtpckrDateAvailable: UIDatePicker!
     
@@ -101,6 +102,12 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
     }
 
     // MARK: actions
+    
+    // Buttons
+    
+    @IBAction func editPropertyNameButtonTapped(_ sender: Any) {
+        propertyNameTextField.isUserInteractionEnabled = !propertyNameTextField.isUserInteractionEnabled
+    }
     
     // slider
     
