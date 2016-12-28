@@ -10,13 +10,15 @@ import UIKit
 
 class RenterSettingsViewController: SettingsViewController {
     
+    // MARK: outlets
+    
     @IBOutlet weak var settingsTVCContainerView: UIView!
     @IBOutlet weak var lblOccupation: UILabel!
     
-    var settingsTVC: RenterSettingsContainerTableViewController?
-    // MARK: outlets
-    
     // MARK: variables
+    
+    var settingsTVC: RenterSettingsContainerTableViewController?
+    
     weak var delegate: UpdateSettingsDelegate?
     
     let renter = UserController.currentRenter
@@ -28,8 +30,11 @@ class RenterSettingsViewController: SettingsViewController {
         
         guard let profileImages = UserController.currentRenter? .profileImages?.array as? [ProfileImage] else { return }
         
+        if let imageData = profileImages[0].imageData as? Data, let image = UIImage(data: imageData) {
+            imgviewProfilePic.image = image
+        }
+        
         lblUserName.text = "\(UserController.currentRenter!.firstName!) \(UserController.currentRenter!.lastName!)"
-        imgviewProfilePic.image = UIImage(data: profileImages[0].imageData as! Data)
         
         let filterSettingsDict = RenterController.getRenterFiltersDictionary()
         let kCurrentOccupation = UserController.RenterFilters.kCurrentOccupation

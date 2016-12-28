@@ -10,6 +10,7 @@ import UIKit
 
 class RenterSettingsContainerTableViewController: UITableViewController, UpdateSettingsDelegate {
 
+    // MARK: outlets
     
     @IBOutlet weak var lblOccupation: UILabel!
     
@@ -22,7 +23,7 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
     @IBOutlet weak var stpBathrooms: UIStepper!
     @IBOutlet weak var lblBathroomCount: UILabel!
     
-    @IBOutlet weak var stpMaxDistance: UIStepper!
+    @IBOutlet weak var sldrMaxDistance: UISlider!
     @IBOutlet weak var lblMaxDistanceCount: UILabel!
     
     @IBOutlet weak var swtPets: UISwitch!
@@ -31,12 +32,15 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
     @IBOutlet weak var txtfldFeatures: UITextField!
     @IBOutlet weak var txtfldZipCode: UITextField!
 
+    // MARK: variables
     
     var filterSettingsDict: [String: Any]?
     let filterKeys = UserController.RenterFilters.self
 
     let renter = UserController.currentRenter
 
+    // MARK: life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -71,6 +75,23 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
         // UserController.saveToPersistentStore()
     }
     
+    @IBAction func sldMaxDistance_ValueChanged(_ sender: UISlider) {
+        let maxDistance = Int16(sender.value)
+        lblMaxDistanceCount.text = "\(maxDistance)"
+    }
+    
+    @IBAction func sldMaxDistance_TouchedUpInsideAndOutside(_ sender: UISlider) {
+        let maxDistance = Int16(sender.value)
+        guard let id = UserController.currentUserID else { return }
+        
+        let countString = "\(maxDistance)"
+        lblMaxDistanceCount.text = countString
+        renter?.withinRangeMiles = maxDistance
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
+        // UserController.saveToPersistentStore()
+        updateSettingsChanged()
+    }
+    
     // steppers
     
     @IBAction func stpBedrooms_ValueChanged(_ sender: UIStepper) {
@@ -95,18 +116,6 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
         RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: bathroomCount)
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
-    }
-    
-    @IBAction func stpMaxDistance_ValueChanged(_ sender: UIStepper) {
-        let maxDistance = Int16(sender.value)
-        guard let id = UserController.currentUserID else { return }
-        
-        let countString = "\(maxDistance)"
-        lblMaxDistanceCount.text = countString
-        renter?.withinRangeMiles = maxDistance
-        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
-        // UserController.saveToPersistentStore()
-        updateSettingsChanged()
     }
     
     // switches
@@ -178,7 +187,7 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
                 guard let maxDistance = filter.value as? Int16 else { break }
                 let maxDistanceString = "\(maxDistance)"
                 lblMaxDistanceCount.text = maxDistanceString
-                stpMaxDistance.value = Double(maxDistance)
+                sldrMaxDistance.value = Float(maxDistance)
             default:
                 log("no filters")
             }

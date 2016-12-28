@@ -511,26 +511,27 @@
                                         <rect key="frame" x="0.0" y="281.5" width="351" height="35.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Max Distance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lPP-84-bIY">
-                                                <rect key="frame" x="0.0" y="7.5" width="177" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="7.5" width="124.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="WTX-G6-Mo6">
-                                                <rect key="frame" x="194" y="3.5" width="94" height="29"/>
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minValue="1" maxValue="50" translatesAutoresizingMaskIntoConstraints="NO" id="rbx-CR-Oe4">
+                                                <rect key="frame" x="139.5" y="3" width="150" height="31"/>
                                                 <connections>
-                                                    <action selector="stpMaxDistance_ValueChanged:" destination="nBU-BM-dg2" eventType="valueChanged" id="mcC-y7-hlb"/>
+                                                    <action selector="sldMaxDistance_TouchedUpInsideAndOutside:" destination="nBU-BM-dg2" eventType="touchUpOutside" id="E3w-0x-d6w"/>
+                                                    <action selector="sldMaxDistance_TouchedUpInsideAndOutside:" destination="nBU-BM-dg2" eventType="touchUpInside" id="aJm-as-7oW"/>
+                                                    <action selector="sldMaxDistance_ValueChanged:" destination="nBU-BM-dg2" eventType="valueChanged" id="xUs-9K-vsY"/>
                                                 </connections>
-                                            </stepper>
+                                            </slider>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nrA-xo-eFQ">
-                                                <rect key="frame" x="305" y="7.5" width="46" height="20.5"/>
+                                                <rect key="frame" x="304.5" y="7.5" width="46.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="WTX-G6-Mo6" secondAttribute="trailing" constant="63" id="2DA-aH-k1k"/>
                                             <constraint firstAttribute="width" secondItem="dqp-dt-w96" secondAttribute="height" multiplier="288:29" id="cyw-1C-6be"/>
                                         </constraints>
                                     </stackView>
@@ -567,7 +568,7 @@
                         <outlet property="lblMaxDistance" destination="nrA-xo-eFQ" id="PLN-i4-Ug9"/>
                         <outlet property="lblUserName" destination="2OU-l5-IEH" id="Mzd-KR-Yf0"/>
                         <outlet property="pkrCreditRating" destination="ZUc-u0-TnP" id="lwP-gT-eXj"/>
-                        <outlet property="stpMaxDistance" destination="WTX-G6-Mo6" id="DpE-Jg-ZuY"/>
+                        <outlet property="sldrMaxDistance" destination="rbx-CR-Oe4" id="83J-fS-PnY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DZ3-tw-gwT" userLabel="First Responder" sceneMemberID="firstResponder"/>

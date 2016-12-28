@@ -16,7 +16,7 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
     @IBOutlet weak var pkrCreditRating: UIPickerView!
     
     @IBOutlet weak var lblMaxDistance: UILabel!
-    @IBOutlet weak var stpMaxDistance: UIStepper!
+    @IBOutlet weak var sldrMaxDistance: UISlider!
     
     // MARK: variables
     
@@ -42,14 +42,19 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         lblUserName.text = "\(firstName) \(lastName)"
         lblMaxDistance.text = "\(maxDistance)"
         
-        stpMaxDistance.value = Double(maxDistance)
+        sldrMaxDistance.value = Float(maxDistance)
         
         pkrCreditRating.selectRow(ratingIndex, inComponent: 0, animated: false)
     }
     
     // MARK: actions
     
-    @IBAction func stpMaxDistance_ValueChanged(_ sender: UIStepper) {
+    @IBAction func sldMaxDistance_ValueChanged(_ sender: UISlider) {
+        let maxDistance = Int16(sender.value)
+        lblMaxDistance.text = "\(maxDistance)"
+    }
+    
+    @IBAction func sldMaxDistance_TouchedUpInsideAndOutside(_ sender: UISlider) {
         let maxDistance = Int16(sender.value)
         guard let landlord = UserController.currentLandlord, let id = landlord.id else { return }
         
