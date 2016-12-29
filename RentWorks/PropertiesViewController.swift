@@ -35,6 +35,17 @@ class PropertiesViewController: UIViewController {
     
     // MARK: actions
     
+    @IBAction func addNewPropertyButtonTapped(_ sender: UIButton) {
+    }
+    
+    @IBAction func editPropertyButtonTapped(_ sender: UIButton) {
+        guard let contentView = sender.superview, let cell = contentView.superview as? PropertyTableViewCell else { return }
+        
+        self.selectedCell = cell
+        
+        self.performSegue(withIdentifier: Identifiers.Segues.editPropertyDetailsVC.rawValue, sender: self)
+    }
+    
     @IBAction func btnAdd_TouchedUpInside(_ sender: Any) {
         self.performSegue(withIdentifier: Identifiers.Segues.addPropertyVC.rawValue, sender: self)
     }
@@ -44,11 +55,11 @@ class PropertiesViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Identifiers.Segues.editPropertyDetailsVC.rawValue {
             guard let destinationVC = segue.destination as? PropertyDetailsViewController, let cell = selectedCell else { return }
-            destinationVC.propertyTask = PropertyDetailsViewController.PropertyTask.editing
+            destinationVC.propertyTask = PropertyTask.editing
             destinationVC.property = cell.property
         } else if segue.identifier == Identifiers.Segues.addPropertyVC.rawValue {
             guard let destinationVC = segue.destination as? PropertyDetailsViewController else { return }
-            destinationVC.propertyTask = PropertyDetailsViewController.PropertyTask.adding
+            destinationVC.propertyTask = PropertyTask.adding
         } else if segue.identifier == Identifiers.Segues.mainVC.rawValue {
             guard let destinationVC = segue.destination as? LandlordMainViewController, let cell = selectedCell else { return }
             destinationVC.property = cell.property
@@ -70,8 +81,8 @@ extension PropertiesViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.property = property
         cell.addressLabel.text = property.address
-        cell.availableDate.text = dateFormatter.string(from: property.availableDate as! Date)
-        cell.monthlyPayment.text = "\(property.monthlyPayment)"
+//        cell.availableDate.text = dateFormatter.string(from: property.availableDate as! Date)
+//        cell.monthlyPayment.text = "\(property.monthlyPayment)"
         
         guard let profileImage = property.profileImages?.firstObject as? ProfileImage, let image = UIImage(data: profileImage.imageData as! Data) else { return cell }
         

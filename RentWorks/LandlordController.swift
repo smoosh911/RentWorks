@@ -11,7 +11,17 @@ import Firebase
 import CoreData
 
 class LandlordController: UserController {
+    
     // MARK: - Landlord functions
+    
+    static func getLandlordWithID(landlordID: String, completion: @escaping (_ landlord: Landlord?) -> Void) {
+        FirebaseController.landlordsRef.queryOrderedByKey().queryEqual(toValue: landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let allLandlordsDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { return }
+            let landlords = allLandlordsDict.flatMap({Landlord(dictionary: $0.value)})
+            guard let landlord = landlords.first else { completion(nil); return }
+            completion(landlord)
+        })
+    }
     
     static func saveLandlordProfileImagesToCoreDataAndFirebase(forLandlord landlord: Landlord, completion: @escaping () -> Void) {
         var count = 0
@@ -75,6 +85,7 @@ class LandlordController: UserController {
     //    }
     
     static func createLandlordAndPropertyForCurrentUser(completion: @escaping (() -> Void)) {
+        NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.creatingLandlord.rawValue), object: nil)
         createLandlordForCurrentUser { (landlord) in
             guard let landlord = landlord else {
                 log("Landlord nil")
@@ -82,10 +93,15 @@ class LandlordController: UserController {
                 return
             }
             createLandlordInFirebase(landlord: landlord, completion: {
+                NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.finishedCreatingLandlord.rawValue), object: nil)
+                NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.creatingProperty.rawValue), object: nil)
                 PropertyController.createPropertyInCoreDataFor(landlord: landlord, completion: { (property) in
-                    guard let property = property else { print("Error creating property"); return }
+                    guard let property = property else { log("Error creating property"); return }
+                    NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageUploading.rawValue), object: nil)
                     PropertyController.savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {_ in
+                        NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageFinishedUploading.rawValue), object: nil)
                         PropertyController.createPropertyInFirebase(property: property) { success in
+                            NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.finishedCreatingProperty.rawValue), object: nil)
                             completion()
                         }
                     })

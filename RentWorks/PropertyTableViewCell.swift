@@ -13,8 +13,8 @@ class PropertyTableViewCell: UITableViewCell {
     // MARK: outlets
     
     @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var availableDate: UILabel!
-    @IBOutlet weak var monthlyPayment: UILabel!
+
+    @IBOutlet weak var editButton: UIButton!
     
     @IBOutlet weak var imgProperty: UIImageView!
     
@@ -26,5 +26,10 @@ class PropertyTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        setupEditButton()
+    }
+    
+    func setupEditButton() {
+        editButton.layer.cornerRadius = 17
     }
 }

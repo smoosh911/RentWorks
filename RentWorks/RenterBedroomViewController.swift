@@ -14,15 +14,15 @@ class RenterBedroomViewController: UIViewController {
     @IBOutlet weak var bathroomCountLabel: UILabel!
     @IBOutlet weak var bedroomStepper: UIStepper!
     @IBOutlet weak var bathroomStepper: UIStepper!
-    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButton: UIButton!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
-        nextButton.isHidden = true
+//        nextButton.isHidden = true
         
-        nextButton.slideFromRight()
+//        nextButton.slideFromRight()
         
         bedroomCountLabel.text = "1"
         bathroomCountLabel.text = "1"
@@ -66,11 +66,11 @@ class RenterBedroomViewController: UIViewController {
         }
     }
     
-    @IBAction func nextButtonTapped(_ sender: UIButton) {
-        saveRoomInformationToUserCreationDictionary()
-        AccountCreationController.pageRightFrom(renterVC: self)
-        
-    }
+//    @IBAction func nextButtonTapped(_ sender: UIButton) {
+//        saveRoomInformationToUserCreationDictionary()
+//        AccountCreationController.pageRightFrom(renterVC: self)
+//        
+//    }
     
     func saveRoomInformationToUserCreationDictionary() {
         UserController.addAttributeToUserDictionary(attribute: [UserController.kBedroomCount: bedroomStepper.value])

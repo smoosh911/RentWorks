@@ -10,27 +10,27 @@ import UIKit
 
 class LandlordAddPhotosViewController: UIViewController, PhotoSelectedDelegate {
 
-    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         UserController.photoSelectedDelegate = self
-        nextButton.isHidden = true
+//        nextButton.isHidden = true
         
     }
     
-    @IBAction func nextButtonTapped(_ sender: AnyObject) {
-        if UserController.userCreationPhotos.count > 0 {
-            AccountCreationController.pageRightFrom(landlordVC: self)
-        } else {
-            presentAddPhotoAlert()
-        }
-    }
+//    @IBAction func nextButtonTapped(_ sender: AnyObject) {
+//        if UserController.userCreationPhotos.count > 0 {
+//            AccountCreationController.pageRightFrom(landlordVC: self)
+//        } else {
+//            presentAddPhotoAlert()
+//        }
+//    }
     
     func photoWasSelected() {
-        nextButton.center.x += 200
-        nextButton.slideFromRight()
+//        nextButton.center.x += 200
+//        nextButton.slideFromRight()
     
         AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
     }

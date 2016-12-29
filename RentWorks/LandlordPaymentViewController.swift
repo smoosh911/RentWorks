@@ -12,7 +12,7 @@ class LandlordPaymentViewController: UIViewController {
 
     @IBOutlet weak var paymentSlider: UISlider!
     @IBOutlet weak var paymentAmountLabel: UILabel!
-    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var paymentSliderBackgroundView: UIView!
     
     override func viewDidLoad() {
@@ -20,9 +20,9 @@ class LandlordPaymentViewController: UIViewController {
         
         AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
         
-        nextButton.isHidden = true
-        
-        nextButton.slideFromRight()
+//        nextButton.isHidden = true
+//        
+//        nextButton.slideFromRight()
         
         paymentSliderBackgroundView.layer.cornerRadius = 4
         
@@ -46,11 +46,11 @@ class LandlordPaymentViewController: UIViewController {
         }
     }
 
-    @IBAction func nextButtonTapped(_ sender: UIButton) {
-        AccountCreationController.pageRightFrom(landlordVC: self)
-        
-        savePaymentAmountInformationToUserCreationDictionary()
-    }
+//    @IBAction func nextButtonTapped(_ sender: UIButton) {
+//        AccountCreationController.pageRightFrom(landlordVC: self)
+//        
+//        savePaymentAmountInformationToUserCreationDictionary()
+//    }
     
     func savePaymentAmountInformationToUserCreationDictionary() {
         UserController.addAttributeToUserDictionary(attribute: [UserController .kMonthlyPayment: Int(paymentSlider.value)])

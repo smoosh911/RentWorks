@@ -17,6 +17,11 @@ class Identifiers {
         case noInternetVC = "segueToNoInternetVC"
         case propertyMatchesVC = "segueToPropertyMatchesVC"
         case mainVC = "segueToMainVC"
+        case reportUserVC = "segueToReportUserVC"
+        case renterMatchesVC = "segueToRenterMatchesVC"
+        case appInfoSelectionVC = "segueToAppInformationSelectionVC"
+        case chooseAccountTypeVC = "toAccountTypeVC"
+        case propertyDetailContainterVC = "detailsContainerVC"
     }
     
     enum StoryboardIDs: String {
@@ -25,6 +30,8 @@ class Identifiers {
     
     enum TableViewCells: String {
         case PropertyCell = "propertyCell"
+        case ReportUser = "cellReportUser"
+        case AppInfo = "appInfoCell"
     }
     
     enum CollectionViewCells: String {
@@ -35,5 +42,24 @@ class Identifiers {
         case landlordMatchCount = "landlordMatchCount"
         case renterMatchCount = "renterMatchCount"
         case propertyMatchCount = "propertyMatchCount"
+    }
+    
+    enum RentWorksAdmin: String {
+        case email = "rentworksdev@gmail.com"
+        case complaintsEmail = "rentworkscomplaints@gmail.com"
+        case EULA_URL = "http://www.myrentworks.com/copy-of-public-texts"
+        case PrivacyPolicyURL = "http://www.myrentworks.com/privacy-policy"
+    }
+    
+    enum CreatingUserNotificationObserver: String {
+        case imageUploading = "Image Uploading"
+        case imageFinishedUploading = "Image Finished Uploading"
+        case creatingLandlord = "Creating Landlord"
+        case finishedCreatingLandlord = "Finished Creating Landlord"
+        case creatingRenter = "Creating Renter"
+        case finishedCreatingRenter = "Finished Creating Renter"
+        case creatingProperty = "Creating Property"
+        case finishedCreatingProperty = "Finished Creating Property"
+        static let allValues = [imageUploading, imageFinishedUploading, creatingLandlord, finishedCreatingLandlord, creatingRenter, finishedCreatingRenter, creatingProperty, finishedCreatingProperty]
     }
 }

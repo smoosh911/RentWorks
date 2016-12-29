@@ -9,47 +9,66 @@
 import UIKit
 import CoreData
 
-class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class LandlordSettingsViewController: SettingsViewController {
     
     // MARK: outlets
     
-    @IBOutlet weak var pkrCreditRating: UIPickerView!
-    
     @IBOutlet weak var lblMaxDistance: UILabel!
-    @IBOutlet weak var stpMaxDistance: UIStepper!
+    @IBOutlet weak var sldrMaxDistance: UISlider!
+    @IBOutlet weak var anyCreditButton: UIButton!
+    @IBOutlet weak var aPlusCreditButton: UIButton!
+    @IBOutlet weak var aCreditButton: UIButton!
+    @IBOutlet weak var bCreditButton: UIButton!
+    @IBOutlet weak var otherCreditButton: UIButton!
+    @IBOutlet weak var propertyCountLabel: UILabel!
+    
+    var creditButtons: [UIButton] = []
     
     // MARK: variables
     
-    var creditRatingPickerViewContent = ["Any","A","B","C","D","F"]
+    
+    // NOTE FOR MIKE: I changed the buttons names to match the credit rating options in the user creation process. It might mess up some of the logic in the viewDidLoad if you try to find the index of say 'D' credit rating as this array does not have it anymore.
+    
+    var creditRatings = ["Any","A+", "A", "B","Other"]
+    
     
     // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        pkrCreditRating.dataSource = self
-        pkrCreditRating.delegate = self
+        
+        self.creditButtons = [anyCreditButton, aPlusCreditButton, aCreditButton, bCreditButton, otherCreditButton]
         
         guard let landlord = UserController.currentLandlord,
             let desiredCreditRating = landlord.wantsCreditRating,
             let firstName = landlord.firstName,
             let lastName = landlord.lastName,
-            let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating) else {
+            let ratingIndex = creditRatings.index(of: desiredCreditRating),
+        let propertyCount = landlord.property?.count else {
             return
         }
         
+        let buttonToSelect = creditButtons[ratingIndex]
+        
+        buttonToSelect.backgroundColor = AppearanceController.buttonPressedColor
+        
+        propertyCountLabel.text = "Properties: \(propertyCount)"
         let maxDistance = landlord.withinRangeMiles
         
         lblUserName.text = "\(firstName) \(lastName)"
         lblMaxDistance.text = "\(maxDistance)"
         
-        stpMaxDistance.value = Double(maxDistance)
-        
-        pkrCreditRating.selectRow(ratingIndex, inComponent: 0, animated: false)
+        sldrMaxDistance.value = Float(maxDistance)
     }
     
     // MARK: actions
     
-    @IBAction func stpMaxDistance_ValueChanged(_ sender: UIStepper) {
+    @IBAction func sldMaxDistance_ValueChanged(_ sender: UISlider) {
+        let maxDistance = Int16(sender.value)
+        lblMaxDistance.text = "\(maxDistance)"
+    }
+    
+    @IBAction func sldMaxDistance_TouchedUpInsideAndOutside(_ sender: UISlider) {
         let maxDistance = Int16(sender.value)
         guard let landlord = UserController.currentLandlord, let id = landlord.id else { return }
         
@@ -61,31 +80,29 @@ class LandlordSettingsViewController: SettingsViewController, UIPickerViewDelega
         updateSettingsChanged()
     }
     
-    // MARK: picker view delegate
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let rowValue = creditRatingPickerViewContent[row]
-        if UserController.currentUserID == nil {
-            return
+    // NOTE FOR MIKE: I don't know how exactly you're changing these settings both locally and in Firebase, so I'll leave that up to you, instead of me probably messing something up.
+    
+    
+    @IBAction func creditButtonTapped(_ sender: UIButton) {
+        for button in creditButtons {
+            if button == sender {
+                button.backgroundColor = AppearanceController.buttonPressedColor
+                updateCreditRatingForButton(button: sender)
+            } else {
+                button.backgroundColor = UIColor.clear
+            }
         }
-        UserController.currentLandlord?.wantsCreditRating = rowValue
-        LandlordController.updateCurrentLandlordInFirebase(id: UserController.currentUserID!, attributeToUpdate: UserController.kWantsCreditRating, newValue: rowValue)
-//        UserController.saveToPersistentStore()
+    }
+    
+    // MARK: helper functions
+    
+    private func updateCreditRatingForButton(button: UIButton) {
+        guard let creditRating = button.titleLabel?.text, let landlord = UserController.currentLandlord, let id = landlord.id else { return }
+        
+        landlord.wantsCreditRating = creditRating
+        LandlordController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kWantsCreditRating, newValue: creditRating)
         updateSettingsChanged()
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return creditRatingPickerViewContent[row]
-    }
-    
-    // MARK: picker view datasource
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return creditRatingPickerViewContent.count
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
     }
     
     private func updateSettingsChanged() {

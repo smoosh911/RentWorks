@@ -12,8 +12,40 @@ import Firebase
 
 extension String {
     
+    func replace(string:String, replacement:String) -> String {
+        return self.replacingOccurrences(of: string, with: replacement, options: .literal, range: nil)
+    }
+    
+    func replaceWhitespaceWithURLSpaces() -> String {
+        return self.replace(string: " ", replacement: "%20")
+    }
+    
+    func removeWhitespace() -> String {
+        return self.replace(string: " ", replacement: "")
+    }
+    
+    func containsOnlyLetters() -> Bool {
+        for chr in self.characters {
+            if (!(chr >= "a" && chr <= "z") && !(chr >= "A" && chr <= "Z") ) {
+                return false
+            }
+        }
+        return true
+    }
+    
     subscript (i: Int) -> Character {
         return self[self.characters.index(self.startIndex, offsetBy: i)]
+    }
+}
+
+extension UIViewController {
+    func hideKeyboardWhenViewIsTapped() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 
@@ -31,7 +63,6 @@ extension String {
     }
     let className = fileName.substring(from: fileName.characters.index(fileName.startIndex, offsetBy: indexOfLastForwardSlashInString + 1))
     let message = "\(className) - line \(lineNumber): \(functionName): \(logMessage)"
-    print(message)
     
     if logMessage.contains("ERROR") {
         FIRAnalytics.logEvent(withName: ErrorManager.customError, parameters: [

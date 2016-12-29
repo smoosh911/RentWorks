@@ -15,8 +15,8 @@ class LandlordOrUserViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        landlordButton.layer.cornerRadius = 15
-        renterButton.layer.cornerRadius = 15
+//        landlordButton.layer.cornerRadius = 15
+//        renterButton.layer.cornerRadius = 15
         
     }
     

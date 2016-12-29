@@ -279,7 +279,7 @@ class FirebaseController {
             print(snapshot.value as! [String: Any])
         }) { (error) in
             
-            print(error.localizedDescription)
+            log(error.localizedDescription)
             
         }
     }

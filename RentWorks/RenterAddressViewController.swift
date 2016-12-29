@@ -7,20 +7,35 @@
 //
 
 import UIKit
+import DropDown
 
 class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     
+    // MARK: outlets
     
     @IBOutlet weak var zipCodeTextField: UITextField!
     @IBOutlet weak var addressTextField: UITextField!
-    @IBOutlet weak var nextButton: UIButton!
-    @IBOutlet weak var nextButtonCenterXConstraint: NSLayoutConstraint!
+//    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButtonCenterXConstraint: NSLayoutConstraint!
+    @IBOutlet weak var vwAddress: UIView!
+    @IBOutlet weak var titleView: UIView!
+
+    // MARK: variables
+    
+    var dropDown: DropDown = DropDown()
+    
+    var cities: [City] = []
+    var selectedCity: City?
     
     var didSlide = false
     
+    // MARK: life cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.nextButton.isHidden = true
+//        self.nextButton.isHidden = true
+        
+        setupDropDown()
         
         zipCodeTextField.delegate = self
         addressTextField.delegate = self
@@ -30,13 +45,16 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         hideKeyboardWhenViewIsTapped()
         
         AppearanceController.appearanceFor(textFields: [zipCodeTextField, addressTextField])
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if zipCodeTextField.text != "", zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" {
-            saveAddressInformationToAccountCreationDictionary()
-        }
+        saveAddressInformationToAccountCreationDictionary()
     }
+    
+    // MARK: actions
     
     @IBAction func zipCodeTextFieldDidChange(_ sender: Any) {
         if zipCodeTextField.text?.characters.count == 5 {
@@ -44,22 +62,35 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @IBAction func nextButtonTapped(_ sender: AnyObject) {
-        
-        if zipCodeTextField.text != "", zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" {
-            saveAddressInformationToAccountCreationDictionary()
-            
-            AccountCreationController.pageRightFrom(renterVC: self)
-        } else {
-            let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing.", preferredStyle: .alert)
-            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-            alert.addAction(dismissAction)
-            alert.view.tintColor = .black
-            
-            self.present(alert, animated: true, completion: nil)
-            
+    @IBAction func txtfldAddress_EditingChanged(_ sender: UITextField) {
+        guard let city = sender.text else { return }
+        if city.characters.count > 3 {
+            LocationManager.getCitiesWith(cityName: city, resultCount: 5) { (cityResults) in
+                guard let cityResults = cityResults else { return }
+                self.cities = cityResults
+                let cityStrings = self.cities.flatMap({ $0.getCityStateString() })
+                self.dropDown.dataSource = cityStrings
+                self.dropDown.show()
+            }
         }
     }
+    
+//    @IBAction func nextButtonTapped(_ sender: AnyObject) {
+//        
+//        if zipCodeTextField.text != "", zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" {
+//            saveAddressInformationToAccountCreationDictionary()
+//            
+//            AccountCreationController.pageRightFrom(renterVC: self)
+//        } else {
+//            let alert = UIAlertController(title: "Hold on a second!", message: "Please enter both a valid zip code and address before continuing.", preferredStyle: .alert)
+//            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+//            alert.addAction(dismissAction)
+//            alert.view.tintColor = .black
+//            
+//            self.present(alert, animated: true, completion: nil)
+//            
+//        }
+//    }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
         self.parent?.dismiss(animated: true, completion: nil)
@@ -69,16 +100,11 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         if zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" && didSlide == false {
             didSlide = true
             AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
-            nextButton.slideFromRight()
+//            nextButton.slideFromRight()
         }
     }
     
-    func saveAddressInformationToAccountCreationDictionary() {
-        
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : addressTextField.text ?? "No address"])
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? "No zip code"])
-    }
-    
+    // MARK: text field delegate
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -97,16 +123,59 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-}
-
-
-extension UIViewController {
-    func hideKeyboardWhenViewIsTapped() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
+    
+    // MARK: keyboard
+    
+    func keyboardWillShow(notification: NSNotification) {
+        
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+        
     }
     
-    func dismissKeyboard() {
-        view.endEditing(true)
+    func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += keyboardSize.height
+            }
+        }
+    }
+    
+    // MARK: helper functions
+    
+    func saveAddressInformationToAccountCreationDictionary() {
+        var cityName = ""
+        var state = ""
+        var country = ""
+        
+        if let city = selectedCity {
+            cityName = city.name
+            state = city.state
+            country = city.country
+        }
+        
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kCity: cityName])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kState: state])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kCountry: country])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : ""])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? ""])
+    }
+    
+    // MARK: dropdown
+    
+    private func itemSelected(index: Int, item: String) {
+        addressTextField.text = item
+        selectedCity = cities[index]
+        saveAddressInformationToAccountCreationDictionary()
+    }
+    
+    private func setupDropDown() {
+        dropDown.anchorView = vwAddress
+        dropDown.cornerRadius = 0
+        dropDown.topOffset = CGPoint(x: 0, y: -vwAddress.frame.height)
+        dropDown.selectionAction = itemSelected
     }
 }

@@ -44,7 +44,12 @@ class PropertyController: UserController {
         })
     }
     
+    static func deletePropertyRenterMatchInFirebase(propertyID: String, renterID: String) {
+        FirebaseController.likesRef.child(renterID).child(propertyID).removeValue()
+    }
+    
     static func deletePropertyInFirebase(propertyID: String) {
+        FirebaseController.likesRef.child(propertyID).removeValue()
         FirebaseController.propertiesRef.child(propertyID).removeValue()
     }
     
@@ -223,6 +228,8 @@ class PropertyController: UserController {
             let desiredSmokingAllowed = filterSettingsDict[RenterFilters.kSmokingAllowed.rawValue] as? Bool,
             //            let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
             let desiredZipcode = filterSettingsDict[RenterFilters.kZipCode.rawValue] as? String,
+            let desiredCity = filterSettingsDict[RenterFilters.kCity.rawValue] as? String,
+            let desiredState = filterSettingsDict[RenterFilters.kState.rawValue] as? String,
             let withinRangeMiles = filterSettingsDict[RenterFilters.kWithinRangeMiles.rawValue] as? Int16,
             let renterID = currentUserID else {
                 completion([Property]())
@@ -244,8 +251,11 @@ class PropertyController: UserController {
         }
         
         var finalFiltered: [Property] = []
+        
+        let desiredLocation = desiredZipcode == "" ? "\(desiredCity), \(desiredState)" : desiredZipcode
+
         // needs work: the distances and renters won't neccessarily match up. Make more deterministic
-        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingZipcode: desiredZipcode, completion: { distanceDict in
+        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingLocation: desiredLocation) { (distanceDict) in
             for distance in distanceDict {
                 guard let property = filteredByHasBeenViewedBy.filter({$0.propertyID == distance.key}).first else { log("ERROR: no renters who matched distance dictionary key"); completion(finalFiltered); return }
                 let withinRange = distance.value <= Int(withinRangeMiles) // needs work: this should be a setting in the landlords setting page
@@ -254,7 +264,7 @@ class PropertyController: UserController {
                 }
             }
             completion(finalFiltered)
-        })
+        }
     }
     
     //    static func fetchProperties(numberOfProperties: UInt) {
@@ -363,9 +373,9 @@ class PropertyController: UserController {
     }
     
     static func createPropertyInCoreDataFor(landlord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
-        guard let landlordID = landlord.id else { completion(nil); return }
+        guard let landlordID = landlord.id else { log(ErrorManager.LandlordErrors.retrievalError); completion(nil); return }
         let prop = Property(dictionary: temporaryUserCreationDictionary, landlordID: landlordID)
-        guard let property = prop else { NSLog("Property could not be initialized from dictionary"); completion(nil); return }
+        guard let property = prop else { log(ErrorManager.PropertyErrors.creationError); completion(nil); return }
         property.landlord = landlord
         //        saveToPersistentStore()
         completion(property)
@@ -482,9 +492,15 @@ class PropertyController: UserController {
                 group.enter()
                 backgroundQ.async(group: group, execute: {
                     let dict = propertyDict.value
-                    guard let imageURLDict = (dict[UserController.kImageURLS] as? [String: String])?.values, let property = properties.first else { group.leave(); return }
+                    guard let imageURLDict = (dict[UserController.kImageURLS] as? [String: String])?.values, let property = properties.first else {
+                        group.leave()
+                        return
+                    }
                     let imageURLArray = Array(imageURLDict)
-                    guard let imageToDownload = imageURLArray.first else { group.leave(); return }
+                    guard let imageToDownload = imageURLArray.first else {
+                        group.leave()
+                        return
+                    }
                     FirebaseController.downloadProfileImageFor(property: property, withURL: imageToDownload, completion: {
                         group.leave()
                     })

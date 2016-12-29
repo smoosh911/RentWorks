@@ -13,11 +13,9 @@ class PropertyMatchesViewController: MatchesViewController {
     // MARK: variables
     
     var property: Property!
-    var matchedRentersForProperty: [Renter]! = [] {
-        didSet {
-            tableView.reloadData()
-        }
-    }
+    var selectedCell: MatchTableViewCell?
+    
+    var matchedRentersForProperty: [Renter]! = []
     
     // MARK: life cycle
     
@@ -37,6 +35,16 @@ class PropertyMatchesViewController: MatchesViewController {
             }
         }
     }
+
+    // MARK: segues
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Identifiers.Segues.reportUserVC.rawValue {
+            if let destinationVC = segue.destination as? ReportUserViewController, let cell = selectedCell, let renter = cell.renter {
+                destinationVC.userBeingReported = renter
+            }
+        }
+    }
     
     // MARK: table view delegate
     
@@ -53,5 +61,26 @@ class PropertyMatchesViewController: MatchesViewController {
         cell.delegate = self
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let report = UITableViewRowAction(style: .normal, title: "Report", handler: { (action, index) in
+            self.selectedCell = tableView.cellForRow(at: index) as? MatchTableViewCell
+            self.performSegue(withIdentifier: Identifiers.Segues.reportUserVC.rawValue, sender: self)
+        })
+        
+        let delete = UITableViewRowAction(style: .destructive, title: "Delete", handler: { (action, index) in
+            self.selectedCell = tableView.cellForRow(at: index) as? MatchTableViewCell
+            guard let cell = self.selectedCell, let renter = cell.renter, let renterID = renter.id, let propertyID = self.property.propertyID else { return }
+            PropertyController.deletePropertyRenterMatchInFirebase(propertyID: propertyID, renterID: renterID)
+            MatchController.matchedRentersForProperties[propertyID] = self.matchedRentersForProperty.filter({$0.id != renterID})
+            self.matchedRentersForProperty = MatchController.matchedRentersForProperties[propertyID]
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [index], with: .automatic)
+            tableView.endUpdates()
+        })
+        
+        return [delete, report]
     }
 }

@@ -6,17 +6,20 @@
 //  Copyright © 2016 Michael Perry. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import FBSDKLoginKit
 
 class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     @IBOutlet weak var findLabel: UILabel!
+    @IBOutlet weak var lblLoading: UILabel!
     
     let facebookLoginButton = FBSDKLoginButton()
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
+    
+    // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +29,8 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         } else {
             findLabel.text = "Now find your new renter!"
         }
+        
+        addAccountCreationObservers()
         
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
@@ -92,6 +97,43 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                 })
             }
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: helper functions
+    
+    private func addAccountCreationObservers() {
+        for observer in Identifiers.CreatingUserNotificationObserver.allValues {
+            NotificationCenter.default.addObserver(self, selector: #selector(changeLoadingLabel), name: Notification.Name(observer.rawValue), object: nil)
+        }
+    }
+    
+    @objc private func changeLoadingLabel(notification: NSNotification) {
+        lblLoading.text = notification.name.rawValue
+        switch notification.name.rawValue {
+        case Identifiers.CreatingUserNotificationObserver.creatingLandlord.rawValue:
+            break
+        case Identifiers.CreatingUserNotificationObserver.finishedCreatingLandlord.rawValue:
+            break
+        case Identifiers.CreatingUserNotificationObserver.creatingProperty.rawValue:
+            break
+        case Identifiers.CreatingUserNotificationObserver.finishedCreatingProperty.rawValue:
+            break
+        case Identifiers.CreatingUserNotificationObserver.creatingRenter.rawValue:
+            break
+        case Identifiers.CreatingUserNotificationObserver.finishedCreatingRenter.rawValue:
+            break
+        case Identifiers.CreatingUserNotificationObserver.imageUploading.rawValue:
+            break
+        case Identifiers.CreatingUserNotificationObserver.imageFinishedUploading.rawValue:
+            break
+        default:
+            break
+        }
+        print(notification)
     }
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
@@ -202,9 +244,9 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
         facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(facebookLoginButton)
         let centerXConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-        let centerYConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: -170)
+        let topToLabelBottomConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .top, relatedBy: .equal, toItem: findLabel, attribute: .bottom, multiplier: 1, constant: 12)
         let widthConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal, toItem: findLabel, attribute: .width, multiplier: 1, constant: 0)
         let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: self.view, attribute: .height, multiplier: 0, constant: 40)
-        self.view.addConstraints([centerXConstraint, centerYConstraint, widthConstraint, heightConstraint])
+        self.view.addConstraints([centerXConstraint, topToLabelBottomConstraint, widthConstraint, heightConstraint])
     }
 }

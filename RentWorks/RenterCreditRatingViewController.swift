@@ -30,7 +30,7 @@ class RenterCreditRatingViewController: UIViewController {
     @IBOutlet weak var otherCreditScoreLabel: UILabel!
     @IBOutlet weak var otherCreditBackgroundView: UIView!
     
-    @IBOutlet weak var nextButton: UIButton!
+
     
     let buttonPressedColor = AppearanceController.buttonPressedColor
     
@@ -39,9 +39,7 @@ class RenterCreditRatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-        nextButton.isHidden = true
+    
         
         
         aPlusCreditBackgroundView.layer.cornerRadius = 15
@@ -79,7 +77,6 @@ class RenterCreditRatingViewController: UIViewController {
     
     
     func buttonPressedAppearanceFor(backgroundView: UIView, letterLabel: UILabel, and scoreLabel: UILabel) {
-        self.showAndAnimateNextButton()
         
         AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
         
@@ -90,34 +87,27 @@ class RenterCreditRatingViewController: UIViewController {
         }) { _ in
             
             UIView.transition(with: backgroundView, duration: 0.2, options: .transitionCrossDissolve, animations: {
-                buttonBackgroundViews.forEach({$0?.backgroundColor = AppearanceController.vengaYellowColor})
+                buttonBackgroundViews.forEach({$0?.backgroundColor = .clear})
             }, completion: { (_) in
             })
             
         }
     }
-    
-    
-    func showAndAnimateNextButton() {
-        if nextButton.isHidden {
-            nextButton.center.x += 200
-            nextButton.slideFromRight()
-        }
-    }
+
     
     func saveCreditRatingInformationToUserCreationDictionary() {
         UserController.addAttributeToUserDictionary(attribute: [UserController.kCreditRating : creditRating])
     }
     
-    @IBAction func nextButtonTapped(_ sender: AnyObject) {
-        if creditRating != "" {
-            saveCreditRatingInformationToUserCreationDictionary()
-            AccountCreationController.pageRightFrom(renterVC: self)
-        } else {
-            let alert = UIAlertController(title: "Hold on a second!", message: "Please select your current credit score.", preferredStyle: .alert)
-            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-            alert.addAction(dismissAction)
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
+//    @IBAction func nextButtonTapped(_ sender: AnyObject) {
+//        if creditRating != "" {
+//            saveCreditRatingInformationToUserCreationDictionary()
+//            AccountCreationController.pageRightFrom(renterVC: self)
+//        } else {
+//            let alert = UIAlertController(title: "Hold on a second!", message: "Please select your current credit score.", preferredStyle: .alert)
+//            let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+//            alert.addAction(dismissAction)
+//            self.present(alert, animated: true, completion: nil)
+//        }
+//    }
 }

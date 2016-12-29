@@ -11,57 +11,36 @@ import CoreData
 import Photos
 import FirebaseStorage
 
-class PropertyDetailsViewController: UIViewController {
+enum PropertyTask {
+    case adding
+    case editing
+}
+
+class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDelegate {
     
     // MARK: outlets
-    
     @IBOutlet weak var lblPropertySaveResult: UILabel!
-    
-    @IBOutlet weak var txtfldPropertyAddress: UITextField!
-    @IBOutlet weak var txtfldDateAvailable: UITextField!
-    
-    @IBOutlet weak var lblPrice: UILabel!
-    @IBOutlet weak var sldRent: UISlider!
-    
-    @IBOutlet weak var stpBedrooms: UIStepper!
-    @IBOutlet weak var lblBedroomCount: UILabel!
-    
-    @IBOutlet weak var stpBathrooms: UIStepper!
-    @IBOutlet weak var lblBathroomCount: UILabel!
-    
-    @IBOutlet weak var swtPets: UISwitch!
-    @IBOutlet weak var swtSmoking: UISwitch!
-    
-//    @IBOutlet weak var txtfldFeatures: UITextField!
-    @IBOutlet weak var txtfldZipCode: UITextField!
-    
     @IBOutlet weak var clctvwPropertyImages: UICollectionView!
+    @IBOutlet weak var actIndCollectionView: UIActivityIndicatorView!
     
-    @IBOutlet weak var starImageView1: UIImageView!
-    @IBOutlet weak var starImageView2: UIImageView!
-    @IBOutlet weak var starImageView3: UIImageView!
-    @IBOutlet weak var starImageView4: UIImageView!
-    @IBOutlet weak var starImageView5: UIImageView!
+    var propertyDetailSettingsContainerTVC: PropertyDetailSettingsContainerTableViewController?
     
     // MARK: variables
+    
+    var selectedCellIndexPaths: [IndexPath] = []
     
     var property: Property! = nil
     var landlord: Landlord! = UserController.currentLandlord
     
     var propertyImages: [ProfileImage] = []
     
-    var propertyTask: PropertyTask = PropertyTask.editing
+    var propertyTask = PropertyTask.editing
     
-    var selectedCellIndexPaths: [IndexPath] = []
+    var didSaveDetails = false
     
     enum SaveResults: String {
         case success = "Property Saved!"
         case failure = "Property Couldn't Save"
-    }
-        
-    enum PropertyTask {
-        case adding
-        case editing
     }
     
     // MARK: life cycle
@@ -69,21 +48,12 @@ class PropertyDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if propertyTask == PropertyTask.adding {
-//            property = NSEntityDescription.insertNewObject(forEntityName: "Property", into: CoreDataStack.context) as! Property
-            guard let landlordID = UserController.currentUserID else { return }
-            property = Property(landlordID: landlordID, landlord: landlord)
-        }
-        
         guard let property = property, let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
         propertyImages = profileImages
         
-        let propertyDetailsDict = PropertyController.getPropertyDetailsDictionary(property: property)
-        updatePropertyDetails(propertyDetailsDict: propertyDetailsDict)
+        self.hideKeyboardWhenViewIsTapped()
         
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
+        self.actIndCollectionView.layer.cornerRadius = self.actIndCollectionView.bounds.height / 4
         
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeDown.direction = UISwipeGestureRecognizerDirection.down
@@ -93,122 +63,20 @@ class PropertyDetailsViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
-
-    // MARK: actions
-
-    // slider
-
-    @IBAction func sldRent_ValueChanged(_ sender: UISlider) {
-        let roundBy: Float = 25.0
-        let roundedPrice = Int(round(value: sender.value, toNearest: roundBy))
-        let price = "\(roundedPrice)"
-        lblPrice.text = price
-    }
-
-    @IBAction func sldRent_TouchedUpInsideAndOutside(_ sender: UISlider) {
-        let roundBy: Float = 25.0
-        let price = Int(round(value: sender.value, toNearest: roundBy))
-        guard let id = property.propertyID else { return }
-//        let priceString = "\(Int(sender.value))"
-        property.monthlyPayment = Int64(price)
-        if propertyTask == PropertyTask.editing {
-            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
-            // UserController.saveToPersistentStore()
-            self.updateSettingsChanged()
-        }
-    }
-    
-    // steppers
-    
-    @IBAction func stpBedrooms_ValueChanged(_ sender: UIStepper) {
-        let bedroomCount = Int64(sender.value)
-        guard let id = property.propertyID else { return }
-        
-        let countString = "\(bedroomCount)"
-        lblBedroomCount.text = countString
-        property.bedroomCount = bedroomCount
-        if propertyTask == PropertyTask.editing {
-            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBedroomCount, newValue: bedroomCount)
-            // UserController.saveToPersistentStore()
-            self.updateSettingsChanged()
-        }
-    }
-    
-    @IBAction func stpBathrooms_ValueChanged(_ sender: UIStepper) {
-        let bathroomCount = sender.value
-        guard let id = property.propertyID else { return }
-        let countString = "\(bathroomCount)"
-        lblBathroomCount.text = countString
-        property.bathroomCount = bathroomCount
-        if propertyTask == PropertyTask.editing {
-            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBathroomCount, newValue: bathroomCount)
-            // UserController.saveToPersistentStore()
-            self.updateSettingsChanged()
-        }
-       
-    }
-    
-    // switches
-    
-    @IBAction func swtPet_ValueChanged(_ sender: UISwitch) {
-        let petsAllowed = sender.isOn
-        guard let id = property.propertyID else { return }
-        
-//        let boolString = "\(petsAllowed)"
-        property.petFriendly = petsAllowed
-        if propertyTask == PropertyTask.editing {
-            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPetsAllowed, newValue: petsAllowed)
-            // UserController.saveToPersistentStore()
-            self.updateSettingsChanged()
-        }
-        
-    }
-    
-    @IBAction func swtSmoking_ValueChanged(_ sender: UISwitch) {
-        let smokingAllowed = sender.isOn
-        guard let id = property.propertyID else { return }
-        
-//        let boolString = "\(smokingAllowed)"
-        property.smokingAllowed = smokingAllowed
-        if propertyTask == PropertyTask.editing {
-            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: smokingAllowed)
-            // UserController.saveToPersistentStore()
-            self.updateSettingsChanged()
-        }
-        
-    }
     
     // buttons
     
+    
     @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: UIButton) {
-        guard let id = property.propertyID, let address = txtfldPropertyAddress.text, let zipcode = txtfldZipCode.text else { return }
-        property.address = address
-        property.zipCode = zipcode
-        if propertyTask == PropertyTask.editing {
-            // needs work: add property features
-            //        let propertyFeatures = txtfldFeatures.text!
-//            let zipcode = txtfldZipCode.text!
-            
-            //        property.wantedPropertyFeatures = propertyFeatures
-//            property.zipCode = zipcode
-            //        UserController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyFeatures, newValue: propertyFeatures)
-            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
-            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kAddress, newValue: address)
-            self.lblPropertySaveResult.text = SaveResults.success.rawValue
-            self.lblPropertySaveResult.isHidden = false
-            // UserController.saveToPersistentStore()
-        } else {
-            PropertyController.createPropertyInFirebase(property: property, completion: { success in
-                self.lblPropertySaveResult.text = success ? SaveResults.success.rawValue : SaveResults.failure.rawValue
-                self.lblPropertySaveResult.isHidden = false
-                FirebaseController.properties.append(self.property)
-                self.propertyTask = PropertyTask.editing
-            })
-        }
-        self.updateSettingsChanged()
+        // Delegate submit changes
     }
     
-    
+    @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: {
+            
+        })
+    }
+
     // needs work: shouldn't add images till property has been saved in firebase
     @IBAction func btnDeletePictures_TouchedUpInside(_ sender: UIButton) {
         print("should delete \(selectedCellIndexPaths)")
@@ -239,116 +107,14 @@ class PropertyDetailsViewController: UIViewController {
         clctvwPropertyImages.deleteItems(at: selectedCellIndexPaths)
         selectedCellIndexPaths = []
         log("succesfully deleted images \(selectedCellIndexPaths)")
-        self.updateSettingsChanged()
-    }
-    
-    // MARK: helper methods
-    
-    @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: {
-            
-        })
-    }
-    
-    private func updatePropertyDetails (propertyDetailsDict: [String: Any]) {
-        let propertyDetailKeys = UserController.PropertyDetailValues.self
         
-        for detail in propertyDetailsDict {
-            switch detail.key {
-            case propertyDetailKeys.kAddress.rawValue:
-                let address = detail.value as! String
-                txtfldPropertyAddress.text = address
-                break
-            case propertyDetailKeys.kAvailableDate.rawValue:
-                guard let timeInterval = detail.value as? TimeInterval else { break }
-                let availableDate = Date(timeIntervalSince1970: timeInterval)
-                
-                txtfldDateAvailable.text = "\(availableDate.description)"
-                break
-            case propertyDetailKeys.kBedroomCount.rawValue:
-                let bedroomCount = detail.value as! Int
-                stpBedrooms.value = Double(bedroomCount)
-                lblBedroomCount.text = "\(stpBedrooms.value)"
-                break
-            case propertyDetailKeys.kBathroomCount.rawValue:
-                let bathroomCount = detail.value as! Double
-                stpBathrooms.value = bathroomCount
-                lblBathroomCount.text = "\(stpBathrooms.value)"
-                break
-            case propertyDetailKeys.kMonthlyPayment.rawValue:
-                sldRent.value = Float(detail.value as! Int)
-                let price = "\(Int(sldRent.value))"
-                lblPrice.text = price
-                break
-            case propertyDetailKeys.kPetsAllowed.rawValue:
-                let petsAllowed = detail.value as! Bool
-                swtPets.isOn = petsAllowed
-                break
-                //            case propertyDetailKeys.kPropertyFeatures.rawValue:
-                //                let features = detail.value as! String
-                //                txtfldFeatures.text = features
-            //                break
-            case propertyDetailKeys.kSmokingAllowed.rawValue:
-                let smokingAllowed = detail.value as! Bool
-                swtSmoking.isOn = smokingAllowed
-                break
-            case propertyDetailKeys.kStarRating.rawValue:
-                let rating = detail.value as! Double
-                updateStars(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: rating)
-                break
-            case propertyDetailKeys.kZipCode.rawValue:
-                let zipcode = detail.value as! String
-                txtfldZipCode.text = zipcode
-                break
-            default:
-                log("no details")
-            }
-        }
+    // delegate save changes
     }
     
-    func updateStars(starImageViews: [UIImageView], for rating: Double) {
+    func updatePropertySettingsWith(saveResult: String) {
         
-        switch rating {
-        case 1:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "Star")
-            starImageViews[2].image = #imageLiteral(resourceName: "Star")
-            starImageViews[3].image = #imageLiteral(resourceName: "Star")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
-            
-        case 2:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[2].image = #imageLiteral(resourceName: "Star")
-            starImageViews[3].image = #imageLiteral(resourceName: "Star")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
-        case 3:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[3].image = #imageLiteral(resourceName: "Star")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
-        case 4:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
-        case 5:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[4].image = #imageLiteral(resourceName: "StarFilled")
-        default:
-            _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
-        }
-    }
-    
-    internal func updateSettingsChanged() {
-        SettingsViewController.settingsDidChange = true
-        UserController.renterFetchCount = 0
-        PropertyController.resetStartAtForAllPropertiesInFirebase()
+        self.lblPropertySaveResult.text = saveResult
+        self.lblPropertySaveResult.isHidden = false
     }
     
     // MARK: gestures
@@ -376,35 +142,13 @@ class PropertyDetailsViewController: UIViewController {
     // MARK: keyboard functions
     
     // needs work: content should be put in a scroll view and when you click on something it should activate the scroll view
-    func keyboardWillShow(notification: NSNotification) {
-        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
-            return
-        }
         
-        let keyboardSize = keyboardSizeValue.cgRectValue.size
-        
-        if self.view.frame.origin.y == 0 && txtfldZipCode.isEditing {
-            UIView.animate(withDuration: 0.1, animations: { 
-                self.view.frame.origin.y -= keyboardSize.height
-                self.view.layoutIfNeeded()
-            })
-        }
-        
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
-            return
-        }
-        
-        let keyboardSize = keyboardSizeValue.cgRectValue.size
-        
-        if self.view.frame.origin.y != 0 {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.view.frame.origin.y += keyboardSize.height
-                self.view.layoutIfNeeded()
-                
-            })
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Identifiers.Segues.propertyDetailContainterVC.rawValue {
+            guard let property = property, let propertyDetailSettingsContainerTVC = segue.destination as? PropertyDetailSettingsContainerTableViewController else { return }
+            
+            propertyDetailSettingsContainerTVC.property = property
+            propertyDetailSettingsContainerTVC.propertyTask = propertyTask
         }
     }
 }
@@ -427,6 +171,13 @@ extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionV
         
         cell.imgProperty.image = image
         cell.indexPath = indexPath
+        
+        if selectedCellIndexPaths.contains(indexPath) {
+            cell.layer.borderWidth = 5
+            cell.layer.borderColor = UIColor.purple.cgColor
+        } else {
+            cell.layer.borderWidth = 0
+        }
         
         return cell
     }
@@ -508,6 +259,7 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        self.actIndCollectionView.startAnimating()
         picker.dismiss(animated: true) {
             guard let propertyID = self.property.propertyID, let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
             PropertyController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: self.property, completion: { imageURL in
@@ -519,7 +271,10 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
                 PropertyController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: imageURLs)
                 self.propertyImages = profileImages
                 self.clctvwPropertyImages.reloadData()
-                self.updateSettingsChanged()
+                self.actIndCollectionView.stopAnimating()
+                // delegate submit changes?
+                
+//                self.updateSettingsChanged()
             })
 //            UserController.userCreationPhotos.append(image) // I don't know what this was for so I'll leave it in case of errors
         }

@@ -15,15 +15,9 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         MatchController.delegate = self
         MatchController.currentUserHasNewMatches = false
-        
-        let oldRenterMatchCount = UserDefaults.standard.integer(forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
-        
-        if MatchController.matchedProperties.count > oldRenterMatchCount {
-            UserDefaults.standard.set(MatchController.matchedProperties.count, forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
-            MatchController.currentUserHasNewMatches = false
-        }
     }
     
     func currentUserHasMatches() {
@@ -42,35 +36,62 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     func present(emailErrorAlert: UIAlertController) {
         self.present(emailErrorAlert, animated: true, completion: nil)
     }
-
+    
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if UserController.currentUserType == "renter" {
-            return MatchController.matchedProperties.count
-        } else {
-            return 0
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "matchCell", for: indexPath) as? MatchTableViewCell else { return UITableViewCell() }
-        
-        if UserController.currentUserType == "renter" {
-            let matchingProperty = MatchController.matchedProperties[indexPath.row]
-            cell.updateWith(property: matchingProperty)
-        }
-        cell.delegate = self
-        return cell
-    }
+    // MARK: table view
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 122
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? MatchTableViewCell else { return }
+        let emailComposeVC = MFMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            emailComposeVC.view.tintColor = AppearanceController.vengaYellowColor
+            if let renter = cell.renter {
+                guard let email = renter.email else { return }
+                emailComposeVC.setToRecipients([email])
+                emailComposeVC.setSubject("We matched on Venga!")
+            } else if let property = cell.property {
+                // Fix this fetching later to pull the landlord from CoreData when they actually have that relationship.
+                if let email = property.landlord?.email {
+                    emailComposeVC.setToRecipients([email])
+                    emailComposeVC.setSubject("We matched on Venga!")
+                } else {
+                    FirebaseController.getLandlordFor(property: property, completion: { (landlord) in
+                        guard let landlord = landlord, let email = landlord.email else { return }
+                        emailComposeVC.setToRecipients([email])
+                        emailComposeVC.setSubject("We matched on Venga!")
+                    })
+                }
+            }
+
+            present(emailComposeVC: emailComposeVC)
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+    }
+    
+    // these two below functions enable the table view cell swipe to delete or report
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
     }
 }

@@ -12,7 +12,17 @@ import CoreData
 import Firebase
 
 class RenterController: UserController {
+    
     // MARK: - Renter functions
+    
+    static func deleteRenterPropertyMatchInFirebase(propertyID: String, renterID: String) {
+        FirebaseController.likesRef.child(propertyID).child(renterID).removeValue()
+    }
+    
+    static func deleteRenterInFirebase(renterID: String) {
+        FirebaseController.likesRef.child(renterID).removeValue()
+        FirebaseController.rentersRef.child(renterID).removeValue()
+    }
     
     static func resetStartAtForRenterInFirebase(renterID: String) {
         FirebaseController.propertiesRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -78,9 +88,9 @@ class RenterController: UserController {
     
 
     
-    static func getFirstRenterID(completion: @escaping (_ renterID: String) -> Void) {
+    static func getFirstRenterID(completion: @escaping (_ renterID: String?) -> Void) {
         FirebaseController.rentersRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("renter nil"); return }
+            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("renter nil"); completion(nil); return }
             let key = child.key
             
             completion(key)
@@ -282,7 +292,7 @@ class RenterController: UserController {
         let smokingallowed = property.smokingAllowed
         
         // let desiredPropertyFeatures = filterSettingsDict[filterKeys.kPropertyFeatures.rawValue] as? String,
-        guard let zipcode = property.zipCode else {
+        guard let zipcode = property.zipCode, let city = property.city, let state = property.state else {
             log("couldn't retrieve property details")
             completion([Renter]())
             return
@@ -315,8 +325,11 @@ class RenterController: UserController {
         }
         
         var finalFiltered: [Renter] = []
+        
+        let desiredLocation = zipcode == "" ? "\(city), \(state)" : zipcode
+        
         // needs work: the distances and renters won't neccessarily match up. Make more deterministic
-        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingZipcode: zipcode, completion: { distanceDict in
+        LocationManager.getDistancesArrayFor(entities: filteredByHasBeenViewedBy, usingLocation: desiredLocation, completion: { distanceDict in
             for distance in distanceDict {
                 guard let renter = filteredByHasBeenViewedBy.filter({$0.email! == distance.key}).first else { log("ERROR: no renters who matched distance dictionary key"); completion(finalFiltered); return }
                 let withinRange = distance.value < Int(withinRangeMiles) // needs work: this should be a setting in the landlords setting page

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="16B2659" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="16C67" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="HasBeenViewedBy" representedClassName="HasBeenViewedBy" syncable="YES" codeGenerationType="class">
         <attribute name="viewerID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="property" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="hasBeenViewedBy" inverseEntity="Property" syncable="YES"/>
@@ -25,16 +25,25 @@
     <entity name="Property" representedClassName="Property" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="availableDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="backyard" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="bathroomCount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="bedroomCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dishwasher" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="garage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="gym" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="landlordID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="monthlyPayment" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="petFriendly" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="pool" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="propertyDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="propertyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rentalHistoryRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="smokingAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="startAt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="washerDryer" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="hasBeenViewedBy" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HasBeenViewedBy" inverseName="property" inverseEntity="HasBeenViewedBy" syncable="YES"/>
         <relationship name="landlord" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Landlord" inverseName="property" inverseEntity="Landlord" syncable="YES"/>
@@ -48,11 +57,19 @@
         <attribute name="startAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wantedBathroomCount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="wantedBedroomCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="wantedCity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wantedCountry" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wantedPayment" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="wantedPropertyFeatures" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wantedState" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wantedZipCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="wantsBackyard" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="wantsDishwasher" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="wantsGarage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="wantsGym" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="wantsPetFriendly" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="wantsPool" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="wantsSmoking" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="wantsWasherDryer" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="hasBeenViewedBy" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HasBeenViewedBy" inverseName="renter" inverseEntity="HasBeenViewedBy" syncable="YES"/>
         <relationship name="profileImages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ProfileImage" inverseName="renter" inverseEntity="ProfileImage" syncable="YES"/>
     </entity>
@@ -73,8 +90,8 @@
         <element name="Landlord" positionX="225" positionY="189" width="128" height="88"/>
         <element name="Occupation" positionX="-333" positionY="-0" width="128" height="73"/>
         <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="133"/>
-        <element name="Property" positionX="223" positionY="324" width="128" height="283"/>
-        <element name="Renter" positionX="-308" positionY="180" width="146" height="253"/>
+        <element name="Property" positionX="223" positionY="324" width="128" height="418"/>
+        <element name="Renter" positionX="-308" positionY="180" width="146" height="373"/>
         <element name="User" positionX="-2" positionY="-52" width="128" height="193"/>
     </elements>
 </model>

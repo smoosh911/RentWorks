@@ -14,7 +14,7 @@ class LandlordAllowedViewController: UIViewController {
     @IBOutlet weak var noPetsAllowedButton: UIButton!
     @IBOutlet weak var smokingAllowedButton: UIButton!
     @IBOutlet weak var noSmokingButton: UIButton!
-    @IBOutlet weak var nextButton: UIButton!
+//    @IBOutlet weak var nextButton: UIButton!
     
     var smokingAllowed: Bool?
     var petsAllowed: Bool?
@@ -24,7 +24,7 @@ class LandlordAllowedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        nextButton.isHidden = true
+//        nextButton.isHidden = true
         
         petsAllowedButton.layer.cornerRadius = 15
         noPetsAllowedButton.layer.cornerRadius = 15
@@ -34,7 +34,7 @@ class LandlordAllowedViewController: UIViewController {
     }
     @IBAction func petsAllowedButtonTapped(_ sender: AnyObject) {
         petsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        noPetsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
+        noPetsAllowedButton.backgroundColor = .clear
         
         petsAllowed = true
         
@@ -44,7 +44,7 @@ class LandlordAllowedViewController: UIViewController {
     
     @IBAction func noPetsAllowedButtonTapped(_ sender: AnyObject) {
         noPetsAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        petsAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
+        petsAllowedButton.backgroundColor = .clear
         
         petsAllowed = false
         
@@ -54,7 +54,7 @@ class LandlordAllowedViewController: UIViewController {
     
     @IBAction func smokingAllowedButtonTapped(_ sender: AnyObject) {
         smokingAllowedButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        noSmokingButton.backgroundColor = AppearanceController.vengaYellowColor
+        noSmokingButton.backgroundColor = .clear
         
         smokingAllowed = true
         
@@ -63,30 +63,31 @@ class LandlordAllowedViewController: UIViewController {
     
     @IBAction func noSmokingButtonTapped(_ sender: AnyObject) {
         noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
-        smokingAllowedButton.backgroundColor = AppearanceController.vengaYellowColor
+        smokingAllowedButton.backgroundColor = .clear
         
         smokingAllowed = false
         
         checkIfBothButtonsHaveBeenSelected()
     }
     
-    @IBAction func nextButtonTapped(_ sender: AnyObject) {
-        if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
-            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
-            
-            AccountCreationController.pageRightFrom(landlordVC: self)
-        } else {
-            presentAllowedAlert()
-        }
-    }
+//    @IBAction func nextButtonTapped(_ sender: AnyObject) {
+//        if let petsAllowed = petsAllowed, let smokingAllowed = smokingAllowed {
+//            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed])
+//            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed])
+//            
+//            AccountCreationController.pageRightFrom(landlordVC: self)
+//        } else {
+//            presentAllowedAlert()
+//        }
+//    }
     
     func checkIfBothButtonsHaveBeenSelected() {
-        if smokingAllowed != nil, petsAllowed != nil, nextButton.isHidden == true {
-            nextButton.center.x += 200
-            nextButton.slideFromRight()
+        if smokingAllowed != nil, petsAllowed != nil /* , nextButton.isHidden == true */ {
+//            nextButton.center.x += 200
+//            nextButton.slideFromRight()
             
-            
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kPetsAllowed: petsAllowed ?? false])
+            UserController.addAttributeToUserDictionary(attribute: [UserController.kSmokingAllowed: smokingAllowed ?? false])
             AccountCreationController.addNextVCToLandlordPageVCDataSource(landlordVC: self)
         }
     }

@@ -96,7 +96,7 @@ class LandlordMainViewController: MainViewController {
         guard let renterID = renter.id, let propertyID = property.propertyID else { return }
         
         var profilePicture: UIImage?
-        if let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
+        if let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
             profilePicture = profilePic
         } else {
             log("ERROR: couldn't load a profile image")
@@ -113,7 +113,7 @@ class LandlordMainViewController: MainViewController {
         guard let nextRenter = backCardRenter else { return }
         
         var backgroundProfilePicture: UIImage?
-        if let firstBackgroundProfileImage = property.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePic = UIImage(data: backgroundImageData as Data) {
+        if let backCardRenter = backCardRenter, let firstBackgroundProfileImage = backCardRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePic = UIImage(data: backgroundImageData as Data) {
             backgroundProfilePicture = backgroundProfilePic
         } else {
             log("ERROR: couldn't load a profile image")
@@ -143,6 +143,10 @@ class LandlordMainViewController: MainViewController {
         if segue.identifier == Identifiers.Segues.propertyMatchesVC.rawValue {
             if let destinationVC = segue.destination as? PropertyMatchesViewController {
                 destinationVC.property = property
+            }
+        } else if segue.identifier == Identifiers.Segues.reportUserVC.rawValue {
+            if let destinationVC = segue.destination as? ReportUserViewController {
+                destinationVC.userBeingReported = currentCardRenter
             }
         }
     }
