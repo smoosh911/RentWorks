@@ -50,4 +50,16 @@ class Identifiers {
         case EULA_URL = "http://www.myrentworks.com/copy-of-public-texts"
         case PrivacyPolicyURL = "http://www.myrentworks.com/privacy-policy"
     }
+    
+    enum CreatingUserNotificationObserver: String {
+        case imageUploading = "Image Uploading"
+        case imageFinishedUploading = "Image Finished Uploading"
+        case creatingLandlord = "Creating Landlord"
+        case finishedCreatingLandlord = "Finished Creating Landlord"
+        case creatingRenter = "Creating Renter"
+        case finishedCreatingRenter = "Finished Creating Renter"
+        case creatingProperty = "Creating Property"
+        case finishedCreatingProperty = "Finished Creating Property"
+        static let allValues = [imageUploading, imageFinishedUploading, creatingLandlord, finishedCreatingLandlord, creatingRenter, finishedCreatingRenter, creatingProperty, finishedCreatingProperty]
+    }
 }

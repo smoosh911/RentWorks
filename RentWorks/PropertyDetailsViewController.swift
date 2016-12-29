@@ -53,7 +53,7 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
         
         self.hideKeyboardWhenViewIsTapped()
         
-        self.actIndCollectionView.layer.cornerRadius = self.actIndCollectionView.bounds.height / 2
+        self.actIndCollectionView.layer.cornerRadius = self.actIndCollectionView.bounds.height / 4
         
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeDown.direction = UISwipeGestureRecognizerDirection.down
@@ -172,6 +172,13 @@ extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionV
         cell.imgProperty.image = image
         cell.indexPath = indexPath
         
+        if selectedCellIndexPaths.contains(indexPath) {
+            cell.layer.borderWidth = 5
+            cell.layer.borderColor = UIColor.purple.cgColor
+        } else {
+            cell.layer.borderWidth = 0
+        }
+        
         return cell
     }
     
@@ -252,8 +259,8 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        self.actIndCollectionView.startAnimating()
         picker.dismiss(animated: true) {
-            self.actIndCollectionView.startAnimating()
             guard let propertyID = self.property.propertyID, let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
             PropertyController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: self.property, completion: { imageURL in
                 log("image uploaded to \(imageURL)")

@@ -37,7 +37,6 @@ class AuthenticationController {
         }
     }
     
-    
     static func checkFirebaseLoginStatus(completion: @escaping (_ status: Bool) -> Void) {
         if FIRAuth.auth()?.currentUser == nil {
             completion(false)

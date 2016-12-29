@@ -51,9 +51,7 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if zipCodeTextField.text != "", zipCodeTextField.text?.characters.count == 5 || addressTextField.text != "" {
-            saveAddressInformationToAccountCreationDictionary()
-        }
+        saveAddressInformationToAccountCreationDictionary()
     }
     
     // MARK: actions
@@ -149,16 +147,21 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
     // MARK: helper functions
     
     func saveAddressInformationToAccountCreationDictionary() {
-        guard let city = selectedCity else { return }
-        let cityName = city.name
-        let state = city.state
-        let country = city.country
+        var cityName = ""
+        var state = ""
+        var country = ""
         
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kCity: cityName ?? ""])
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kState: state ?? ""])
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kCountry: country ?? ""])
+        if let city = selectedCity {
+            cityName = city.name
+            state = city.state
+            country = city.country
+        }
+        
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kCity: cityName])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kState: state])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kCountry: country])
         UserController.addAttributeToUserDictionary(attribute: [UserController.kAddress : ""])
-        UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? "No zip code"])
+        UserController.addAttributeToUserDictionary(attribute: [UserController.kZipCode: zipCodeTextField.text ?? ""])
     }
     
     // MARK: dropdown

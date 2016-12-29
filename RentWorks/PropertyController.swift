@@ -373,9 +373,9 @@ class PropertyController: UserController {
     }
     
     static func createPropertyInCoreDataFor(landlord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
-        guard let landlordID = landlord.id else { completion(nil); return }
+        guard let landlordID = landlord.id else { log(ErrorManager.LandlordErrors.retrievalError); completion(nil); return }
         let prop = Property(dictionary: temporaryUserCreationDictionary, landlordID: landlordID)
-        guard let property = prop else { NSLog("Property could not be initialized from dictionary"); completion(nil); return }
+        guard let property = prop else { log(ErrorManager.PropertyErrors.creationError); completion(nil); return }
         property.landlord = landlord
         //        saveToPersistentStore()
         completion(property)
