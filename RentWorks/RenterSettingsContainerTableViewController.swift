@@ -181,13 +181,15 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
                 txtfldZipCode.text = zipcode
                 break
             case filterKeys.kCurrentOccupation.rawValue:
-                guard let occupation = filter.value as? String else { break }
+//                guard let occupation = filter.value as? String else { break }
 //                lblOccupation.text = occupation
+                break
             case filterKeys.kWithinRangeMiles.rawValue:
                 guard let maxDistance = filter.value as? Int16 else { break }
                 let maxDistanceString = "\(maxDistance)"
                 lblMaxDistanceCount.text = maxDistanceString
                 sldrMaxDistance.value = Float(maxDistance)
+                break
             default:
                 log("no filters")
             }

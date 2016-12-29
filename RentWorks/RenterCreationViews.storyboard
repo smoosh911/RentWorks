@@ -113,7 +113,7 @@
                                 <rect key="frame" x="0.0" y="131" width="320" height="81"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I'm looking for..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q9j-Kq-9Gr">
-                                        <rect key="frame" x="27" y="25" width="285" height="35.5"/>
+                                        <rect key="frame" x="27" y="24.5" width="285" height="35.5"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
                                         <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -651,7 +651,7 @@
                                 <rect key="frame" x="0.0" y="131" width="320" height="81"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It needs to allow..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2PY-z8-Inl">
-                                        <rect key="frame" x="27" y="24.5" width="285" height="35.5"/>
+                                        <rect key="frame" x="27" y="25" width="285" height="35.5"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
                                         <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -695,43 +695,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BuV-m4-tAy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4948.125" y="-493.3098591549296"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="3AP-pr-BW0">
-            <objects>
-                <viewController id="laa-4j-4qy" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="qPz-0J-1fa"/>
-                        <viewControllerLayoutGuide type="bottom" id="J3F-me-1lJ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="BZL-7P-Qkf">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g8e-L6-9K4">
-                                <rect key="frame" x="0.0" y="110" width="320" height="81"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="I want to live in..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I5D-hv-Gwm">
-                                        <rect key="frame" x="27" y="25.5" width="293" height="29.5"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="25"/>
-                                        <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.54901960780000003" green="0.54901960780000003" blue="0.54901960780000003" alpha="0.5040667808" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="I5D-hv-Gwm" secondAttribute="trailing" id="nwL-p8-yXr"/>
-                                    <constraint firstItem="I5D-hv-Gwm" firstAttribute="leading" secondItem="g8e-L6-9K4" secondAttribute="leading" constant="27" id="qAL-ZL-HiX"/>
-                                    <constraint firstItem="I5D-hv-Gwm" firstAttribute="centerY" secondItem="g8e-L6-9K4" secondAttribute="centerY" id="yUi-VU-MbJ"/>
-                                </constraints>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ACj-53-HKv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4687.5" y="236.61971830985917"/>
         </scene>
         <!--Renter Page View Controller-->
         <scene sceneID="vOr-Jv-8LO">
@@ -940,7 +903,7 @@
                                 <rect key="frame" x="0.0" y="131" width="320" height="81"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="...and have a..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="WLW-dI-Fne">
-                                        <rect key="frame" x="27" y="25" width="285" height="35.5"/>
+                                        <rect key="frame" x="27" y="24.5" width="285" height="35.5"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
                                         <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1180,7 +1143,7 @@
                                 <rect key="frame" x="0.0" y="131" width="320" height="81"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I want to live in..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HaM-bz-xxn">
-                                        <rect key="frame" x="27" y="25" width="285" height="35.5"/>
+                                        <rect key="frame" x="27" y="24.5" width="285" height="35.5"/>
                                         <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="30"/>
                                         <color key="textColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
