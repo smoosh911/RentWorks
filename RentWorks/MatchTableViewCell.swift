@@ -91,7 +91,7 @@ class MatchTableViewCell: UITableViewCell {
         profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
         
-        newChatBadge.layer.cornerRadius = newChatBadge.frame.size.height / 2
+        newChatBadge.layer.cornerRadius = 35
         
 //        contactButton.layer.borderColor = AppearanceController.vengaYellowColor.cgColor
 //        contactButton.layer.cornerRadius = 4

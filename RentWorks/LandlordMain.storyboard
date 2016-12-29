@@ -1514,36 +1514,11 @@ available:</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="304" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="vl4-vB-I0T">
-                                <rect key="frame" x="0.0" y="33" width="320" height="535"/>
+                                <rect key="frame" x="0.0" y="112" width="320" height="456"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <view key="tableHeaderView" contentMode="scaleToFill" id="RYO-DN-VoK">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o7f-D5-aPY">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="58"/>
-                                            <color key="backgroundColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="25"/>
-                                            <state key="normal" title="  Add New Property">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="addNewPropertyButtonTapped:" destination="cHg-zd-084" eventType="touchUpInside" id="Gq2-91-C57"/>
-                                                <action selector="btnAdd_TouchedUpInside:" destination="cHg-zd-084" eventType="touchUpInside" id="dJQ-Yu-TmC"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="o7f-D5-aPY" secondAttribute="bottom" id="2dQ-1X-OZx"/>
-                                        <constraint firstAttribute="trailing" secondItem="o7f-D5-aPY" secondAttribute="trailing" id="Jra-v4-eyM"/>
-                                        <constraint firstItem="o7f-D5-aPY" firstAttribute="top" secondItem="RYO-DN-VoK" secondAttribute="top" id="eXy-u3-Frf"/>
-                                        <constraint firstItem="o7f-D5-aPY" firstAttribute="leading" secondItem="RYO-DN-VoK" secondAttribute="leading" id="qEo-ON-Z4i"/>
-                                    </constraints>
-                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="propertyCell" rowHeight="304" id="0QL-xp-fug" customClass="PropertyTableViewCell" customModule="RentWorks" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="59" width="320" height="304"/>
+                                        <rect key="frame" x="0.0" y="1" width="320" height="304"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0QL-xp-fug" id="oa3-6g-GP3">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="303.5"/>
@@ -1587,6 +1562,7 @@ available:</string>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="addressLabel" destination="LYi-Ng-K7Y" id="C1q-yH-kg8"/>
+                                            <outlet property="editButton" destination="4Vd-hO-9FK" id="uYi-D9-YJW"/>
                                             <outlet property="imgProperty" destination="NAx-bn-qkp" id="Ocm-dT-q0Y"/>
                                         </connections>
                                     </tableViewCell>
@@ -1599,8 +1575,16 @@ available:</string>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CRK-SL-nns">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LbS-Ok-nbA">
+                                        <rect key="frame" x="8" y="16" width="32" height="32"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="LbS-Ok-nbA" secondAttribute="height" multiplier="1:1" id="5AN-1l-VFT"/>
+                                            <constraint firstAttribute="width" constant="32" id="cDA-ot-YKu"/>
+                                        </constraints>
+                                        <state key="normal" title="Button" image="SettingGear"/>
+                                    </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VengaLogoV1" translatesAutoresizingMaskIntoConstraints="NO" id="udr-Xh-r4q">
-                                        <rect key="frame" x="140.5" y="16" width="40" height="40"/>
+                                        <rect key="frame" x="140" y="16" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="NEH-vo-67i"/>
                                             <constraint firstAttribute="height" constant="40" id="uKc-Ui-Eq0"/>
@@ -1610,6 +1594,8 @@ available:</string>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="5Mr-GF-kdU"/>
+                                    <constraint firstItem="LbS-Ok-nbA" firstAttribute="top" secondItem="CRK-SL-nns" secondAttribute="top" constant="16" id="5T6-Ii-a26"/>
+                                    <constraint firstItem="LbS-Ok-nbA" firstAttribute="leading" secondItem="CRK-SL-nns" secondAttribute="leading" constant="8" id="LFq-qR-Meg"/>
                                     <constraint firstAttribute="bottom" secondItem="udr-Xh-r4q" secondAttribute="bottom" id="LkA-FI-raE"/>
                                     <constraint firstItem="udr-Xh-r4q" firstAttribute="centerX" secondItem="CRK-SL-nns" secondAttribute="centerX" id="T6q-lb-33l"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="e7F-aR-cC8"/>
@@ -1629,16 +1615,32 @@ available:</string>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o7f-D5-aPY">
+                                <rect key="frame" x="0.0" y="55" width="320" height="57"/>
+                                <color key="backgroundColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="25"/>
+                                <state key="normal" title="  Add New Property">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="addNewPropertyButtonTapped:" destination="cHg-zd-084" eventType="touchUpInside" id="Gq2-91-C57"/>
+                                    <action selector="btnAdd_TouchedUpInside:" destination="cHg-zd-084" eventType="touchUpInside" id="dJQ-Yu-TmC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="CRK-SL-nns" secondAttribute="trailing" id="EAG-A7-1UQ"/>
-                            <constraint firstItem="vl4-vB-I0T" firstAttribute="top" secondItem="CRK-SL-nns" secondAttribute="bottom" constant="-23" id="Plh-3f-3ka"/>
-                            <constraint firstItem="0Zo-cF-mk1" firstAttribute="top" secondItem="vl4-vB-I0T" secondAttribute="bottom" id="Sos-ab-i7x"/>
-                            <constraint firstItem="vl4-vB-I0T" firstAttribute="leading" secondItem="YrE-Yf-eN1" secondAttribute="leading" id="i2v-6W-4LA"/>
+                            <constraint firstItem="0Zo-cF-mk1" firstAttribute="top" secondItem="vl4-vB-I0T" secondAttribute="bottom" id="MGP-Wp-rw8"/>
+                            <constraint firstItem="o7f-D5-aPY" firstAttribute="height" secondItem="YrE-Yf-eN1" secondAttribute="height" multiplier="1/10" id="Mjw-eb-zGx"/>
+                            <constraint firstItem="vl4-vB-I0T" firstAttribute="top" secondItem="o7f-D5-aPY" secondAttribute="bottom" id="QGf-fI-aO6"/>
+                            <constraint firstItem="o7f-D5-aPY" firstAttribute="top" secondItem="YrE-Yf-eN1" secondAttribute="top" constant="55" id="VZc-oa-J4s"/>
+                            <constraint firstAttribute="trailing" secondItem="vl4-vB-I0T" secondAttribute="trailing" id="Wj3-qi-S9Z"/>
+                            <constraint firstItem="vl4-vB-I0T" firstAttribute="leading" secondItem="YrE-Yf-eN1" secondAttribute="leading" id="fTc-OE-66B"/>
+                            <constraint firstAttribute="trailing" secondItem="o7f-D5-aPY" secondAttribute="trailing" id="fq7-Kl-yg1"/>
                             <constraint firstItem="CRK-SL-nns" firstAttribute="leading" secondItem="YrE-Yf-eN1" secondAttribute="leading" id="j3d-qa-O0G"/>
                             <constraint firstItem="CRK-SL-nns" firstAttribute="top" secondItem="YrE-Yf-eN1" secondAttribute="top" id="jZh-DT-r2Z"/>
-                            <constraint firstAttribute="trailing" secondItem="vl4-vB-I0T" secondAttribute="trailing" id="uhx-nS-o3N"/>
+                            <constraint firstItem="o7f-D5-aPY" firstAttribute="leading" secondItem="YrE-Yf-eN1" secondAttribute="leading" id="zLq-JA-Z19"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="eUF-JA-FN5"/>
