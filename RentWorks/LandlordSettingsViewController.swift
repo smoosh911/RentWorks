@@ -29,8 +29,7 @@ class LandlordSettingsViewController: SettingsViewController {
     
     // NOTE FOR MIKE: I changed the buttons names to match the credit rating options in the user creation process. It might mess up some of the logic in the viewDidLoad if you try to find the index of say 'D' credit rating as this array does not have it anymore.
     
-    var creditRatingPickerViewContent = ["Any","A+", "A", "B","Other"]
-    
+    var creditRatings = ["Any","A+", "A", "B","Other"]
     
     
     // MARK: life cycle
@@ -44,7 +43,7 @@ class LandlordSettingsViewController: SettingsViewController {
             let desiredCreditRating = landlord.wantsCreditRating,
             let firstName = landlord.firstName,
             let lastName = landlord.lastName,
-            let ratingIndex = creditRatingPickerViewContent.index(of: desiredCreditRating),
+            let ratingIndex = creditRatings.index(of: desiredCreditRating),
         let propertyCount = landlord.property?.count else {
             return
         }
@@ -61,9 +60,6 @@ class LandlordSettingsViewController: SettingsViewController {
         
         sldrMaxDistance.value = Float(maxDistance)
     }
-    
-    
-    
     
     // MARK: actions
     
@@ -88,54 +84,25 @@ class LandlordSettingsViewController: SettingsViewController {
     // NOTE FOR MIKE: I don't know how exactly you're changing these settings both locally and in Firebase, so I'll leave that up to you, instead of me probably messing something up.
     
     
-    @IBAction func anyCreditButtonTapped(_ sender: UIButton) {
+    @IBAction func creditButtonTapped(_ sender: UIButton) {
         for button in creditButtons {
             if button == sender {
                 button.backgroundColor = AppearanceController.buttonPressedColor
+                updateCreditRatingForButton(button: sender)
             } else {
                 button.backgroundColor = UIColor.clear
             }
         }
     }
     
-    @IBAction func aPlusCreditButtonTapped(_ sender: UIButton) {
-        for button in creditButtons {
-            if button == sender {
-                button.backgroundColor = AppearanceController.buttonPressedColor
-            } else {
-                button.backgroundColor = UIColor.clear
-            }
-        }
-    }
-
-    @IBAction func aCreditButtonTapped(_ sender: UIButton) {
-        for button in creditButtons {
-            if button == sender {
-                button.backgroundColor = AppearanceController.buttonPressedColor
-            } else {
-                button.backgroundColor = UIColor.clear
-            }
-        }
-    }
+    // MARK: helper functions
     
-    @IBAction func bCreditButtonTapped(_ sender: UIButton) {
-        for button in creditButtons {
-            if button == sender {
-                button.backgroundColor = AppearanceController.buttonPressedColor
-            } else {
-                button.backgroundColor = UIColor.clear
-            }
-        }
-    }
-    
-    @IBAction func otherCreditButtonTapped(_ sender: UIButton) {
-        for button in creditButtons {
-            if button == sender {
-                button.backgroundColor = AppearanceController.buttonPressedColor
-            } else {
-                button.backgroundColor = UIColor.clear
-            }
-        }
+    private func updateCreditRatingForButton(button: UIButton) {
+        guard let creditRating = button.titleLabel?.text, let landlord = UserController.currentLandlord, let id = landlord.id else { return }
+        
+        landlord.wantsCreditRating = creditRating
+        LandlordController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kWantsCreditRating, newValue: creditRating)
+        updateSettingsChanged()
     }
     
     private func updateSettingsChanged() {

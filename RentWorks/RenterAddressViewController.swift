@@ -176,14 +176,3 @@ class RenterAddressViewController: UIViewController, UITextFieldDelegate {
         dropDown.selectionAction = itemSelected
     }
 }
-
-extension UIViewController {
-    func hideKeyboardWhenViewIsTapped() {
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
-    }
-    
-    func dismissKeyboard() {
-        view.endEditing(true)
-    }
-}

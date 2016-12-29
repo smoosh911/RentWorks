@@ -103,6 +103,7 @@
 		C77C13A41DCE6290003D75DD /* CoreLibraryExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */; };
 		C79CE22B1DF1E50C00C57378 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CE22A1DF1E50C00C57378 /* AlertManager.swift */; };
 		C79CE22D1DF2A0A500C57378 /* Occupation + Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CE22C1DF2A0A500C57378 /* Occupation + Convenience.swift */; };
+		C7A701371E14C1DF00A8615A /* AnimateLeftToRightSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A701361E14C1DF00A8615A /* AnimateLeftToRightSegue.swift */; };
 		C7F93B701DE61624004F54F4 /* CreateFakeFireBaseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */; };
 		C7F93B861DE7D87E004F54F4 /* NoInternetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */; };
 /* End PBXBuildFile section */
@@ -214,6 +215,7 @@
 		C77C13A31DCE628F003D75DD /* CoreLibraryExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreLibraryExtensions.swift; sourceTree = "<group>"; };
 		C79CE22A1DF1E50C00C57378 /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		C79CE22C1DF2A0A500C57378 /* Occupation + Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Occupation + Convenience.swift"; sourceTree = "<group>"; };
+		C7A701361E14C1DF00A8615A /* AnimateLeftToRightSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateLeftToRightSegue.swift; sourceTree = "<group>"; };
 		C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFakeFireBaseDataController.swift; sourceTree = "<group>"; };
 		C7F93B831DE79571004F54F4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoInternetViewController.swift; sourceTree = "<group>"; };
@@ -250,13 +252,13 @@
 		460D72391DB7448D00853402 /* Renter Creation View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				46F280261DCA9F040092E991 /* RenterPageViewController.swift */,
 				460D72371DB7448A00853402 /* RenterAddressViewController.swift */,
-				460D723A1DB7450800853402 /* RenterBedroomViewController.swift */,
 				460D72401DB7473400853402 /* RenterAllowedViewController.swift */,
-				460D723E1DB7470D00853402 /* RenterWantedFeaturesViewController.swift */,
-				460D723C1DB7455000853402 /* RenterPaymentViewController.swift */,
+				460D723A1DB7450800853402 /* RenterBedroomViewController.swift */,
 				460D72421DB7484F00853402 /* RenterCreditRatingViewController.swift */,
+				46F280261DCA9F040092E991 /* RenterPageViewController.swift */,
+				460D723C1DB7455000853402 /* RenterPaymentViewController.swift */,
+				460D723E1DB7470D00853402 /* RenterWantedFeaturesViewController.swift */,
 			);
 			name = "Renter Creation View Controllers";
 			sourceTree = "<group>";
@@ -433,10 +435,10 @@
 		C748D8BA1DE28683009EC662 /* Renter Main View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				4685F83E1E046824002B1CBE /* RenterSettingsContainerTableViewController.swift */,
 				C748D8B51DE27F40009EC662 /* RenterMainViewController.swift */,
-				C748D8C81DE398FF009EC662 /* RenterSettingsViewController.swift */,
 				C7648DA01E077A3400958E69 /* RenterMatchesViewController.swift */,
+				4685F83E1E046824002B1CBE /* RenterSettingsContainerTableViewController.swift */,
+				C748D8C81DE398FF009EC662 /* RenterSettingsViewController.swift */,
 			);
 			name = "Renter Main View Controllers";
 			sourceTree = "<group>";
@@ -473,6 +475,7 @@
 			isa = PBXGroup;
 			children = (
 				46CBAA1F1DCE453400DAE5B6 /* AccountCreationController.swift */,
+				C7A701361E14C1DF00A8615A /* AnimateLeftToRightSegue.swift */,
 				4698FE221DB030AF00AD65E5 /* AppearanceController.swift */,
 				465E968F1DA980FD000B36AF /* AuthenticationController.swift */,
 				468828CD1DAAFD110011985F /* FacebookRequestController.swift */,
@@ -799,6 +802,7 @@
 				468828D01DAAFDF00011985F /* ImageController.swift in Sources */,
 				461E5CDD1DB5839A00AD4509 /* ProfileImage + Convenience.swift in Sources */,
 				46CE7A5E1E09EA030049E40D /* PropertyDetailSettingsContainerTableViewController.swift in Sources */,
+				C7A701371E14C1DF00A8615A /* AnimateLeftToRightSegue.swift in Sources */,
 				461E5CD11DB5621E00AD4509 /* Renter + Convenience.swift in Sources */,
 				C748D8B61DE27F40009EC662 /* RenterMainViewController.swift in Sources */,
 				46F280251DCA7F770092E991 /* LandlordPageViewController.swift in Sources */,

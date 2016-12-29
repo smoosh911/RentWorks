@@ -44,8 +44,6 @@ class PropertiesViewController: UIViewController {
         self.selectedCell = cell
         
         self.performSegue(withIdentifier: Identifiers.Segues.editPropertyDetailsVC.rawValue, sender: self)
-        
-        
     }
     
     @IBAction func btnAdd_TouchedUpInside(_ sender: Any) {

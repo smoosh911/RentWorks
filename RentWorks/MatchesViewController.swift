@@ -43,6 +43,10 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     
     // MARK: table view
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 122
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         
@@ -54,18 +58,32 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? MatchTableViewCell else { return }
         let emailComposeVC = MFMailComposeViewController()
         if MFMailComposeViewController.canSendMail() {
+            emailComposeVC.view.tintColor = AppearanceController.vengaYellowColor
+            if let renter = cell.renter {
+                guard let email = renter.email else { return }
+                emailComposeVC.setToRecipients([email])
+                emailComposeVC.setSubject("We matched on Venga!")
+            } else if let property = cell.property {
+                // Fix this fetching later to pull the landlord from CoreData when they actually have that relationship.
+                if let email = property.landlord?.email {
+                    emailComposeVC.setToRecipients([email])
+                    emailComposeVC.setSubject("We matched on Venga!")
+                } else {
+                    FirebaseController.getLandlordFor(property: property, completion: { (landlord) in
+                        guard let landlord = landlord, let email = landlord.email else { return }
+                        emailComposeVC.setToRecipients([email])
+                        emailComposeVC.setSubject("We matched on Venga!")
+                    })
+                }
+            }
+
             present(emailComposeVC: emailComposeVC)
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 122
-    }
-    
-    
     
     // these two below functions enable the table view cell swipe to delete or report
     

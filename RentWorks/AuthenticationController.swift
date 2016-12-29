@@ -23,7 +23,7 @@ class AuthenticationController {
                 
                 FIRAuth.auth()?.signIn(with: credential, completion: { (user, error) in
                     if let error = error {
-                        print(error.localizedDescription)
+                        log(error.localizedDescription)
                         completion(false)
                     }
                     // Warning: Incomplete Implementation

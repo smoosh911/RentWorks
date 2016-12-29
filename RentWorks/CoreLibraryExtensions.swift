@@ -38,6 +38,17 @@ extension String {
     }
 }
 
+extension UIViewController {
+    func hideKeyboardWhenViewIsTapped() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+}
+
 @inline(__always) public func round(value: Float, toNearest roundBy: Float) -> Float {
     return roundBy * round(value / roundBy)
 }
@@ -52,7 +63,6 @@ extension String {
     }
     let className = fileName.substring(from: fileName.characters.index(fileName.startIndex, offsetBy: indexOfLastForwardSlashInString + 1))
     let message = "\(className) - line \(lineNumber): \(functionName): \(logMessage)"
-    print(message)
     
     if logMessage.contains("ERROR") {
         FIRAnalytics.logEvent(withName: ErrorManager.customError, parameters: [

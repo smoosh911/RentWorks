@@ -21,6 +21,7 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     // MARK: outlets
     @IBOutlet weak var lblPropertySaveResult: UILabel!
     @IBOutlet weak var clctvwPropertyImages: UICollectionView!
+    @IBOutlet weak var actIndCollectionView: UIActivityIndicatorView!
     
     var propertyDetailSettingsContainerTVC: PropertyDetailSettingsContainerTableViewController?
     
@@ -35,6 +36,8 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     
     var propertyTask = PropertyTask.editing
     
+    var didSaveDetails = false
+    
     enum SaveResults: String {
         case success = "Property Saved!"
         case failure = "Property Couldn't Save"
@@ -47,6 +50,10 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
         
         guard let property = property, let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
         propertyImages = profileImages
+        
+        self.hideKeyboardWhenViewIsTapped()
+        
+        self.actIndCollectionView.layer.cornerRadius = self.actIndCollectionView.bounds.height / 2
         
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
         swipeDown.direction = UISwipeGestureRecognizerDirection.down
@@ -246,6 +253,7 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         picker.dismiss(animated: true) {
+            self.actIndCollectionView.startAnimating()
             guard let propertyID = self.property.propertyID, let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
             PropertyController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: self.property, completion: { imageURL in
                 log("image uploaded to \(imageURL)")
@@ -256,6 +264,7 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
                 PropertyController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kImageURLS, newValue: imageURLs)
                 self.propertyImages = profileImages
                 self.clctvwPropertyImages.reloadData()
+                self.actIndCollectionView.stopAnimating()
                 // delegate submit changes?
                 
 //                self.updateSettingsChanged()

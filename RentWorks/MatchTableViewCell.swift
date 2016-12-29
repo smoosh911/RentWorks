@@ -86,12 +86,13 @@ class MatchTableViewCell: UITableViewCell {
     }
     
     func setupCell() {
-        profileImageView.layer.cornerRadius = profileImageView.frame.size.width / 2
-        profileImageView.layer.masksToBounds = false
-        profileImageView.clipsToBounds = true
         profileImageView.contentMode = .scaleAspectFill
+        profileImageView.layer.masksToBounds = false
+        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
         
-        newChatBadge.layer.cornerRadius = 35
+        profileImageView.clipsToBounds = true
+        
+        newChatBadge.layer.cornerRadius = newChatBadge.bounds.width / 2
         
 //        contactButton.layer.borderColor = AppearanceController.vengaYellowColor.cgColor
 //        contactButton.layer.cornerRadius = 4

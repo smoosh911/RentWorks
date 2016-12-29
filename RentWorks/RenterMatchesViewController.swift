@@ -53,7 +53,6 @@ class RenterMatchesViewController: MatchesViewController {
         
         let matchingProperty = MatchController.matchedProperties[indexPath.row]
         cell.updateWith(property: matchingProperty)
-        
         cell.delegate = self
         return cell
     }

@@ -26,6 +26,7 @@ class PropertyTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        setupEditButton()
     }
     
     func setupEditButton() {

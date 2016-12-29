@@ -51,10 +51,6 @@ class SettingsViewController: UIViewController {
         self.present(loginVC, animated: true, completion: nil)
     }
     
-    @IBAction func goBackButtonTapped(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: nil)
-    }
-
     // MARK: helper functions
     
 //    @objc private func updateSettingsChanged() {

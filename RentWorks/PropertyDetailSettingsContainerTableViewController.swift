@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PropertyDetailSettingsContainerTableViewController: UITableViewController {
+class PropertyDetailSettingsContainerTableViewController: UITableViewController, UITextFieldDelegate {
         
     @IBOutlet weak var propertyNameTextField: UITextField!
     @IBOutlet weak var txtfldPropertyAddress: UITextField!
@@ -67,40 +67,49 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController 
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
-
+        
+        self.hideKeyboardWhenViewIsTapped()
     }
+    
+    // MARK: keyboard
 
     func keyboardWillShow(notification: NSNotification) {
-        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
+        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue, let parent = self.parent else {
             return
         }
         
         let keyboardSize = keyboardSizeValue.cgRectValue.size
         
-        if (self.view.frame.origin.y == 0 && (txtfldZipCode.isEditing || txtfldCity.isEditing || txtfldState.isEditing)) {
+        if (parent.view.frame.origin.y == 0 && (txtfldZipCode.isEditing || txtfldCity.isEditing || txtfldState.isEditing)) {
             UIView.animate(withDuration: 0.1, animations: {
-                self.view.frame.origin.y -= keyboardSize.height
-                self.view.layoutIfNeeded()
+                parent.view.frame.origin.y -= keyboardSize.height
+                parent.view.layoutIfNeeded()
             })
         }
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue else {
+        guard let userInfo = notification.userInfo, let keyboardSizeValue = userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue, let parent = self.parent else {
             return
         }
         
         let keyboardSize = keyboardSizeValue.cgRectValue.size
         
-        if self.view.frame.origin.y != 0 {
+        if parent.view.frame.origin.y != 0 {
             UIView.animate(withDuration: 0.5, animations: {
-                self.view.frame.origin.y += keyboardSize.height
-                self.view.layoutIfNeeded()
-                
+                parent.view.frame.origin.y += keyboardSize.height
+                parent.view.layoutIfNeeded()
             })
         }
     }
-
+    
+    // MARK: text field delegate
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print("return")
+        return true
+    }
+    
     // MARK: actions
     
     // Buttons
