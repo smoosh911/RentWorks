@@ -150,7 +150,6 @@ class MainViewController: UIViewController {
         default:
             _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
         }
-        
     }
     
     // set corner radius of views and image views

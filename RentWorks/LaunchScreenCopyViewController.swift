@@ -20,13 +20,16 @@ class LaunchScreenCopyViewController: UIViewController {
                 self.performSegue(withIdentifier: Identifiers.Segues.noInternetVC.rawValue, sender: self)
             } else {
                 let storyboard: UIStoryboard!
+                let mainVC: UIViewController!
                 if success {
                     if UserController.userCreationType == "landlord" {
                         storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                        mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                     } else {
                         storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
+                        mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
                     }
-                    let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                    
                     self.present(mainVC, animated: true, completion: nil)
                     
                 } else {

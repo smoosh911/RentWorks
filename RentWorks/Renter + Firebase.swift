@@ -44,6 +44,7 @@ extension Renter {
                 UserController.kBathroomCount: wantedBathroomCount,
                 UserController.kAddress: address,
                 UserController.kBio: bio ?? "No bio available",
+                UserController.kStarRating: starRating,
                 UserController.kCurrentOccupation: currentOccupation ?? "No occupation yet",
                 UserController.kOccupationHistory: occupationHistory?.components(separatedBy: "~") ?? "No occupation history yet",
                 UserController.kWithinRangeMiles: withinRangeMiles]

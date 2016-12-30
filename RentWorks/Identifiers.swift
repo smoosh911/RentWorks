@@ -13,6 +13,8 @@ class Identifiers {
         case editPropertyDetailsVC = "segueEditPropertyDetails"
         case addPropertyVC = "segueAddProperty"
         case MoreCardsVC = "segueShowNoMoreCardsVC"
+        case CardDetailVC = "segueShowCardDetailsVC"
+        case cardDetailContainerVC = "segueCardDetailContainerVC"
         case MainSwipingVC = "toMainSwipingVC"
         case noInternetVC = "segueToNoInternetVC"
         case propertyMatchesVC = "segueToPropertyMatchesVC"

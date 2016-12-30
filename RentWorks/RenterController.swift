@@ -65,6 +65,7 @@ class RenterController: UserController {
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
                 PropertyController.getFirstPropertyID(completion: { (propertyID) -> Void in
                     temporaryUserCreationDictionary[UserController.kStartAt] = propertyID
+                    temporaryUserCreationDictionary[UserController.kStarRating] = 0.0
                     guard let renter = Renter(dictionary: temporaryUserCreationDictionary) else { log("Renter could not be initialized from dictionary"); completion(nil); return }
                     completion(renter)
                 })

@@ -9,7 +9,9 @@
 import UIKit
 
 class PropertyDetailSettingsContainerTableViewController: UITableViewController, UITextFieldDelegate {
-        
+    
+    // MARK: outlets
+    
     @IBOutlet weak var propertyNameTextField: UITextField!
     @IBOutlet weak var txtfldPropertyAddress: UITextField!
     @IBOutlet weak var dtpckrDateAvailable: UIDatePicker!
@@ -35,11 +37,14 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
     @IBOutlet weak var txtfldZipCode: UITextField!
     @IBOutlet weak var txtfldCity: UITextField!
     @IBOutlet weak var txtfldState: UITextField!
+    
     @IBOutlet weak var starImageView1: UIImageView!
     @IBOutlet weak var starImageView2: UIImageView!
     @IBOutlet weak var starImageView3: UIImageView!
     @IBOutlet weak var starImageView4: UIImageView!
     @IBOutlet weak var starImageView5: UIImageView!
+    
+    // MARK: variables
     
     weak var delegate: UpdatePropertySettingsDelegate?
     
@@ -52,6 +57,8 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         case success = "Property Saved!"
         case failure = "Property Couldn't Save"
     }
+    
+    // MARK: life cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()

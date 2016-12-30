@@ -60,6 +60,7 @@ class RenterMainViewController: MainViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateCardUI()
+        MatchController.observeLikesForCurrentRenter()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -85,6 +86,10 @@ class RenterMainViewController: MainViewController {
         RenterController.eraseAllHasBeenViewedByForRenterFromProperties(renterID: UserController.currentUserID!, completion: {
             self.downloadMoreCards()
         })
+    }
+    
+    @IBAction func btnViewDetails_TouchedUpInside(_ sender: Any) {
+//        performSegue(withIdentifier: Identifiers.Segues.CardDetailVC.rawValue, sender: self)
     }
     
     // MARK: Swipableview delegate
@@ -118,7 +123,6 @@ class RenterMainViewController: MainViewController {
             profilePicture = profilePic
         } else {
             log("ERROR: couldn't load a profile image")
-            profilePicture = #imageLiteral(resourceName: "noImageProfile90x90")
         }
         
         RenterController.updateCurrentRenterInFirebase(id: renterID, attributeToUpdate: UserController.kStartAt, newValue: propertyID)
@@ -146,7 +150,6 @@ class RenterMainViewController: MainViewController {
             backgroundProfilePicture = backgroundProfilePic
         } else {
             log("ERROR: couldn't load a profile image")
-            backgroundProfilePicture = #imageLiteral(resourceName: "noImageProfile90x90")
         }
         
         let backgroundPrice = "$\(nextProperty.monthlyPayment)"
@@ -200,6 +203,10 @@ class RenterMainViewController: MainViewController {
                     destinationVC.userBeingReported = landlord
                     destinationVC.propertyBeingReported = property
                 })
+            }
+        } else if segue.identifier == Identifiers.Segues.CardDetailVC.rawValue {
+            if let destinationVC = segue.destination as? RenterDetailCardViewController, let property = currentCardProperty {
+                destinationVC.property = property
             }
         }
     }

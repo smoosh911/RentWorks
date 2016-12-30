@@ -13,11 +13,11 @@ class CardLoadingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if UserController.currentUserType == "renter" {
-            PropertyController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: {
-                self.propertiesWereUpdated()
-            })
-        } else if UserController.currentUserType == "landlord" {
+//        if UserController.currentUserType == "renter" {
+//            PropertyController.fetchProperties(numberOfProperties: FirebaseController.cardDownloadCount, completion: {
+//                self.propertiesWereUpdated()
+//            })
+        if UserController.currentUserType == "landlord" {
             PropertyController.fetchPropertiesForLandlord(landlordID: UserController.currentUserID!, completion: { success in
                 if success {
                     self.landlordPropertiesLoaded()
@@ -26,10 +26,10 @@ class CardLoadingViewController: UIViewController {
         }
     }
     
-    func propertiesWereUpdated() {
-        MatchController.observeLikesForCurrentRenter()
-        self.performSegue(withIdentifier: Identifiers.Segues.MainSwipingVC.rawValue, sender: nil)
-    }
+//    func propertiesWereUpdated() {
+//        MatchController.observeLikesForCurrentRenter()
+//        self.performSegue(withIdentifier: Identifiers.Segues.MainSwipingVC.rawValue, sender: nil)
+//    }
     
     func landlordPropertiesLoaded() {
         MatchController.observeLikesForCurrentLandlord()
@@ -41,9 +41,10 @@ class CardLoadingViewController: UIViewController {
             if let desinationNav = segue.destination as? UINavigationController {
                 if let childVC = desinationNav.viewControllers[0] as? LandlordMainViewController {
                     childVC.previousVCWasCardsLoadingVC = true
-                } else if let childVC = desinationNav.viewControllers[0] as? RenterMainViewController {
-                    childVC.previousVCWasCardsLoadingVC = true
                 }
+//                else if let childVC = desinationNav.viewControllers[0] as? RenterMainViewController {
+//                    childVC.previousVCWasCardsLoadingVC = true
+//                }
             }
         }
     }
