@@ -144,6 +144,6 @@ extension Renter {
         self.wantsBackyard = wantsBackyard
         self.wantsPool = wantsPool
         self.wantsGym = wantsGym
-        self.maritalStatus = dictionary[UserController.kMaritalStatus] as? String ?? "No marital status specified yet"
+        self.maritalStatus = dictionary[UserController.kMaritalStatus] as? String ?? "Not specified"
     }
 }
