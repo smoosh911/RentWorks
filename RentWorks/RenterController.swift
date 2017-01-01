@@ -451,6 +451,21 @@ class RenterController: UserController {
         return filterDict
     }
     
+    static func getRenterDetailsDictionary(forRenter renter: Renter) -> [String: Any] {
+        var detailsDict = [String: Any]()
+        guard let renter = renter.dictionaryRepresentation else {
+            log("ERROR: renter is nil")
+            return detailsDict
+        }
+        
+        for detail in UserController.RenterDetails.allValues {
+            let detailString = detail.rawValue
+            detailsDict[detailString] = renter[detailString]
+        }
+        
+        return detailsDict
+    }
+    
     static func addHasBeenViewedByLandlordToRenterInFirebase(renterID: String, landlordID: String) {
         FirebaseController.rentersRef.child(renterID).child(UserController.kHasBeenViewedBy).child(landlordID).setValue(true)
     }

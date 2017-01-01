@@ -148,6 +148,14 @@ extension UserController {
     
     static let kStartAt = "startAt"
     
+    enum RenterDetails: String {
+        case kBio = "bio"
+        case kMaritalStatus = "maritalStatus"
+        case kPetsAllowed = "petsAllowed"
+        case kSmokingAllowed = "smokingAllowed"
+        static let allValues = [kBio, kMaritalStatus, kPetsAllowed, kSmokingAllowed]
+    }
+    
     enum RenterFilters: String {
         case kAvailableDate = "availableDate"
         case kBathroomCount = "bathroomCount"

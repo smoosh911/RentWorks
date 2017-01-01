@@ -70,6 +70,8 @@
 		46EB96861DD27060006546E8 /* LaunchScreenCopyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EB96851DD27060006546E8 /* LaunchScreenCopyViewController.swift */; };
 		46F280251DCA7F770092E991 /* LandlordPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F280241DCA7F770092E991 /* LandlordPageViewController.swift */; };
 		46F280271DCA9F040092E991 /* RenterPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F280261DCA9F040092E991 /* RenterPageViewController.swift */; };
+		C711AE041E18385F008D5A85 /* LandlordCardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C711AE031E18385F008D5A85 /* LandlordCardDetailViewController.swift */; };
+		C711AE061E1880F1008D5A85 /* LandlordCardDetailContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C711AE051E1880F1008D5A85 /* LandlordCardDetailContainerViewController.swift */; };
 		C714F0C81E15DD85008E39DC /* FadeSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C714F0C71E15DD85008E39DC /* FadeSegue.swift */; };
 		C714F0CA1E15DF62008E39DC /* DetailCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C714F0C91E15DF62008E39DC /* DetailCardViewController.swift */; };
 		C7188E801E15DAB6006622EA /* RevealSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7188E7F1E15DAB6006622EA /* RevealSegue.swift */; };
@@ -186,6 +188,8 @@
 		6AD73B99B2C58293311D31BC /* Pods_RentWorksTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RentWorksTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		85C81B37E212494061967D61 /* Pods-RentWorksUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RentWorksUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RentWorksUITests/Pods-RentWorksUITests.release.xcconfig"; sourceTree = "<group>"; };
 		B3A2BAEF422FCCB37454937F /* Pods-RentWorks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RentWorks.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RentWorks/Pods-RentWorks.debug.xcconfig"; sourceTree = "<group>"; };
+		C711AE031E18385F008D5A85 /* LandlordCardDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordCardDetailViewController.swift; sourceTree = "<group>"; };
+		C711AE051E1880F1008D5A85 /* LandlordCardDetailContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandlordCardDetailContainerViewController.swift; sourceTree = "<group>"; };
 		C714F0C71E15DD85008E39DC /* FadeSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FadeSegue.swift; sourceTree = "<group>"; };
 		C714F0C91E15DF62008E39DC /* DetailCardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailCardViewController.swift; sourceTree = "<group>"; };
 		C7188E7F1E15DAB6006622EA /* RevealSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevealSegue.swift; sourceTree = "<group>"; };
@@ -442,6 +446,8 @@
 		C748D8B91DE28679009EC662 /* Landlord Main View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C711AE031E18385F008D5A85 /* LandlordCardDetailViewController.swift */,
+				C711AE051E1880F1008D5A85 /* LandlordCardDetailContainerViewController.swift */,
 				C748D8B71DE280B9009EC662 /* LandlordMainViewController.swift */,
 				C748D8BB1DE2869A009EC662 /* LandlordSettingsViewController.swift */,
 				C748D8BD1DE2A259009EC662 /* PropertiesViewController.swift */,
@@ -515,6 +521,7 @@
 				466E22F41DB0692900E592F0 /* LandlordOrUserViewController.swift */,
 				46EB96851DD27060006546E8 /* LaunchScreenCopyViewController.swift */,
 				46600C9D1DA2F91600A7FB4B /* LoginViewController.swift */,
+				C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */,
 			);
 			name = "Main storyboard view controllers";
 			sourceTree = "<group>";
@@ -522,6 +529,7 @@
 		C776662A1DEA3B0300F2A8EF /* Super Class View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				C714F0C91E15DF62008E39DC /* DetailCardViewController.swift */,
 				C73E10881D8E417D008E475F /* MainViewController.swift */,
 				467A49D11DB1F2E0001A0A12 /* MatchesViewController.swift */,
 				46BD661A1DBD43E0007170AE /* SettingsViewController.swift */,
@@ -536,9 +544,7 @@
 				C7648DA41E07988100958E69 /* AppInformationSelectionViewController.swift */,
 				C7648DA21E0795D500958E69 /* AppInformationViewController.swift */,
 				46EB96831DD26A57006546E8 /* CardLoadingViewController.swift */,
-				C714F0C91E15DF62008E39DC /* DetailCardViewController.swift */,
 				C748D8C61DE2C584009EC662 /* NoCardsLeftViewController.swift */,
-				C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */,
 				C71C53F21E07401600A17147 /* ReportUserViewController.swift */,
 			);
 			name = "Shared View Controllers";
@@ -790,6 +796,7 @@
 				4698FE231DB030AF00AD65E5 /* AppearanceController.swift in Sources */,
 				C748D8C31DE2AC94009EC662 /* PropertyDetailsViewController.swift in Sources */,
 				468828CC1DA996730011985F /* MatchController.swift in Sources */,
+				C711AE061E1880F1008D5A85 /* LandlordCardDetailContainerViewController.swift in Sources */,
 				465E96951DA98230000B36AF /* LandlordAddressViewController.swift in Sources */,
 				C73E108F1D8E417D008E475F /* RentWorks.xcdatamodeld in Sources */,
 				46E8877D1DB7EF8D00127D21 /* Landlord+Firebase.swift in Sources */,
@@ -834,6 +841,7 @@
 				461E5CD11DB5621E00AD4509 /* Renter + Convenience.swift in Sources */,
 				C748D8B61DE27F40009EC662 /* RenterMainViewController.swift in Sources */,
 				46F280251DCA7F770092E991 /* LandlordPageViewController.swift in Sources */,
+				C711AE041E18385F008D5A85 /* LandlordCardDetailViewController.swift in Sources */,
 				468828D21DAAFE350011985F /* NetworkController.swift in Sources */,
 				C748D8BE1DE2A259009EC662 /* PropertiesViewController.swift in Sources */,
 			);

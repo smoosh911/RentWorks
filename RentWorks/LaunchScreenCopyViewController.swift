@@ -11,8 +11,8 @@ import SystemConfiguration
 
 class LaunchScreenCopyViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (success) in
             
@@ -38,7 +38,6 @@ class LaunchScreenCopyViewController: UIViewController {
                     self.present(loginVC, animated: true, completion: nil)
                 }
             }
-            
         })
     }
     
