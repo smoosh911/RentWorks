@@ -8,11 +8,11 @@
 
 import UIKit
 
-class PropertyDetailSettingsContainerTableViewController: UITableViewController, UITextFieldDelegate {
+class PropertyDetailSettingsContainerTableViewController: UITableViewController, PropertyDetailsContainerDelegate {
     
     // MARK: outlets
     
-    @IBOutlet weak var propertyNameTextField: UITextField!
+    @IBOutlet weak var txtfldDescription: UITextField!
     @IBOutlet weak var txtfldPropertyAddress: UITextField!
     @IBOutlet weak var dtpckrDateAvailable: UIDatePicker!
     
@@ -46,7 +46,9 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
     
     // MARK: variables
     
-    weak var delegate: UpdatePropertySettingsDelegate?
+    var parentVC: PropertyDetailsViewController?
+    
+    var propertySettingsDelegate: UpdatePropertySettingsDelegate?
     
     var property: Property! = nil
     var landlord: Landlord! = UserController.currentLandlord
@@ -76,6 +78,8 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: .UIKeyboardWillHide, object: nil)
         
         self.hideKeyboardWhenViewIsTapped()
+        
+        propertySettingsDelegate = parentVC
     }
     
     // MARK: keyboard
@@ -110,20 +114,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         }
     }
     
-    // MARK: text field delegate
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("return")
-        return true
-    }
-    
     // MARK: actions
-    
-    // Buttons
-    
-    @IBAction func editPropertyNameButtonTapped(_ sender: Any) {
-        propertyNameTextField.isUserInteractionEnabled = !propertyNameTextField.isUserInteractionEnabled
-    }
     
     // slider
     
@@ -397,19 +388,21 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         }
     }
     
-    func updateSettings() {
-        guard let id = property.propertyID, let address = txtfldPropertyAddress.text, let zipcode = txtfldZipCode.text, let city = txtfldCity.text, let state = txtfldState.text else { return }
+    func settingsUpdated() {
+        guard let id = property.propertyID, let address = txtfldPropertyAddress.text, let zipcode = txtfldZipCode.text, let city = txtfldCity.text, let state = txtfldState.text, let propertyDescription = txtfldDescription.text, let delegate = propertySettingsDelegate else { return }
         property.address = address
         property.zipCode = zipcode
         property.city = city
         property.state = state
+        property.propertyDescription = propertyDescription
         
         if propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kAddress, newValue: address)
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kCity, newValue: city)
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kState, newValue: state)
-            delegate?.updatePropertySettingsWith(saveResult: SaveResults.success.rawValue)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyDescription, newValue: propertyDescription)
+            delegate.updatePropertySettingsWith(saveResult: SaveResults.success.rawValue)
             // UserController.saveToPersistentStore()
         } else {
             PropertyController.createPropertyInFirebase(property: property, completion: { success in

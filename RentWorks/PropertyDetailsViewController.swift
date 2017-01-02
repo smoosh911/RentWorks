@@ -16,6 +16,10 @@ enum PropertyTask {
     case editing
 }
 
+protocol PropertyDetailsContainerDelegate: class {
+    func settingsUpdated()
+}
+
 class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDelegate {
     
     // MARK: outlets
@@ -26,6 +30,8 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     var propertyDetailSettingsContainerTVC: PropertyDetailSettingsContainerTableViewController?
     
     // MARK: variables
+    
+    var propertyDetailsContainerDelegate: PropertyDetailsContainerDelegate?
     
     var selectedCellIndexPaths: [IndexPath] = []
     
@@ -68,7 +74,8 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     
     
     @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: UIButton) {
-        // Delegate submit changes
+        guard let delegate = propertyDetailsContainerDelegate else { return }
+        delegate.settingsUpdated()
     }
     
     @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
@@ -146,7 +153,8 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Identifiers.Segues.propertyDetailContainterVC.rawValue {
             guard let property = property, let propertyDetailSettingsContainerTVC = segue.destination as? PropertyDetailSettingsContainerTableViewController else { return }
-            
+            propertyDetailsContainerDelegate = propertyDetailSettingsContainerTVC
+            propertyDetailSettingsContainerTVC.parentVC = self
             propertyDetailSettingsContainerTVC.property = property
             propertyDetailSettingsContainerTVC.propertyTask = propertyTask
         }
@@ -165,8 +173,8 @@ extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.CollectionViewCells.PropertyImageCell.rawValue, for: indexPath) as! PropertyImageCollectionViewCell
-        let profileImage = propertyImages[indexPath.row]
         
+        let profileImage = propertyImages[indexPath.row]
         guard let image = UIImage(data: profileImage.imageData as! Data) else { return cell }
         
         cell.imgProperty.image = image
