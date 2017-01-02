@@ -35,7 +35,7 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     
     var selectedCellIndexPaths: [IndexPath] = []
     
-    var property: Property! = nil
+    var property: Property? = nil
     var landlord: Landlord! = UserController.currentLandlord
     
     var propertyImages: [ProfileImage] = []
@@ -53,6 +53,11 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if propertyTask == PropertyTask.adding {
+            guard let landlordID = UserController.currentUserID else { return }
+            property = Property(landlordID: landlordID, landlord: landlord)
+        }
         
         guard let property = property, let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
         propertyImages = profileImages
@@ -92,7 +97,7 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
         propertyImages = propertyImages.filter({ !imagesAtIndexPaths.contains($0) })
         for i in 0 ..< imagesAtIndexPaths.count {
             let propertyImage = imagesAtIndexPaths[i]
-            guard let imageURL = propertyImage.imageURL, let propertyID = property.propertyID else { return }
+            guard let imageURL = propertyImage.imageURL, let property = property, let propertyID = property.propertyID else { return }
             let profileImageRef = FIRStorage.storage().reference(forURL: imageURL)
             
             let context: NSManagedObjectContext = CoreDataStack.context
@@ -156,7 +161,6 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
             propertyDetailsContainerDelegate = propertyDetailSettingsContainerTVC
             propertyDetailSettingsContainerTVC.parentVC = self
             propertyDetailSettingsContainerTVC.property = property
-            propertyDetailSettingsContainerTVC.propertyTask = propertyTask
         }
     }
 }
@@ -209,6 +213,9 @@ extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionV
 
 extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBAction func addPhotoButtonTapped(_ sender: UIButton) {
+        if propertyTask == .adding {
+            
+        }
         checkPhotoLibraryPermission { (success) in
             if success {
                 let imagePicker = UIImagePickerController()
@@ -269,10 +276,12 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         self.actIndCollectionView.startAnimating()
         picker.dismiss(animated: true) {
-            guard let propertyID = self.property.propertyID, let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
-            PropertyController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: self.property, completion: { imageURL in
+            guard let property = self.property, let propertyID = property.propertyID, let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+                return
+            }
+            PropertyController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: property, completion: { imageURL in
                 log("image uploaded to \(imageURL)")
-                guard let profileImageArray = self.property.profileImages?.array, let profileImages = profileImageArray as? [ProfileImage] else { return }
+                guard let profileImageArray = property.profileImages?.array, let profileImages = profileImageArray as? [ProfileImage] else { return }
                 let imageURLs = profileImages.map({$0.imageURL!})
                 // needs work: update so you don't have to delete every time
                 PropertyController.deletePropertyImageURLsInFirebase(id: propertyID)

@@ -46,14 +46,12 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
     
     // MARK: variables
     
-    var parentVC: PropertyDetailsViewController?
+    var parentVC: PropertyDetailsViewController!
     
     var propertySettingsDelegate: UpdatePropertySettingsDelegate?
     
-    var property: Property! = nil
+    var property: Property!
     var landlord: Landlord! = UserController.currentLandlord
-    
-    var propertyTask = PropertyTask.editing
     
     enum SaveResults: String {
         case success = "Property Saved!"
@@ -64,11 +62,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if propertyTask == PropertyTask.adding {
-            guard let landlordID = UserController.currentUserID else { return }
-            property = Property(landlordID: landlordID, landlord: landlord)
-        }
-        
+
         guard let property = property else { return }
         
         let propertyDetailsDict = PropertyController.getPropertyDetailsDictionary(property: property)
@@ -130,7 +124,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         let price = Int(round(value: sender.value, toNearest: roundBy))
         guard let id = property.propertyID else { return }
         property.monthlyPayment = Int64(price)
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kMonthlyPayment, newValue: price)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -146,7 +140,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         let countString = "\(bedroomCount)"
         lblBedroomCount.text = countString
         property.bedroomCount = bedroomCount
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBedroomCount, newValue: bedroomCount)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -159,7 +153,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         let countString = "\(bathroomCount)"
         lblBathroomCount.text = countString
         property.bathroomCount = bathroomCount
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kBathroomCount, newValue: bathroomCount)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -173,7 +167,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         guard let id = property.propertyID else { return }
         
         property.petFriendly = petsAllowed
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPetsAllowed, newValue: petsAllowed)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -185,7 +179,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         guard let id = property.propertyID else { return }
         
         property.smokingAllowed = smokingAllowed
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: smokingAllowed)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -197,7 +191,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         guard let id = property.propertyID else { return }
         
         property.washerDryer = hasWasherDryer
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasWasherDryer)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -209,7 +203,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         guard let id = property.propertyID else { return }
         
         property.garage = hasGarage
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasGarage)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -221,7 +215,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         guard let id = property.propertyID else { return }
         
         property.dishwasher = hasDishwasher
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasDishwasher)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -233,7 +227,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         guard let id = property.propertyID else { return }
         
         property.pool = hasPool
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasPool)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -245,7 +239,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         guard let id = property.propertyID else { return }
         
         property.gym = hasGym
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasGym)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -257,7 +251,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         guard let id = property.propertyID else { return }
         
         property.backyard = hasBackyard
-        if propertyTask == PropertyTask.editing {
+        if parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kSmokingAllowed, newValue: hasBackyard)
             // UserController.saveToPersistentStore()
             self.updateSettingsChanged()
@@ -396,7 +390,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         property.state = state
         property.propertyDescription = propertyDescription
         
-        if propertyTask == PropertyTask.editing {
+        if self.parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kAddress, newValue: address)
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kCity, newValue: city)
@@ -407,7 +401,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
         } else {
             PropertyController.createPropertyInFirebase(property: property, completion: { success in
                 FirebaseController.properties.append(self.property)
-                self.propertyTask = PropertyTask.editing
+                self.parentVC.propertyTask = PropertyTask.editing
             })
         }
         self.updateSettingsChanged()
