@@ -10,7 +10,7 @@ import UIKit
 
 class RenterWantedFeaturesViewController: UIViewController {
     
-    var features = [String]()
+    var features: [String] = [String]()
     
     @IBOutlet weak var laundryButton: UIButton!
     @IBOutlet weak var garageButton: UIButton!

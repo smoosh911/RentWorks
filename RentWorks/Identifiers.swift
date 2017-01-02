@@ -62,6 +62,6 @@ class Identifiers {
         case finishedCreatingRenter = "Finished Creating Renter"
         case creatingProperty = "Creating Property"
         case finishedCreatingProperty = "Finished Creating Property"
-        static let allValues = [imageUploading, imageFinishedUploading, creatingLandlord, finishedCreatingLandlord, creatingRenter, finishedCreatingRenter, creatingProperty, finishedCreatingProperty]
+        static let allValues: [CreatingUserNotificationObserver] = [imageUploading, imageFinishedUploading, creatingLandlord, finishedCreatingLandlord, creatingRenter, finishedCreatingRenter, creatingProperty, finishedCreatingProperty]
     }
 }

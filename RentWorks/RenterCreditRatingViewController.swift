@@ -39,9 +39,6 @@ class RenterCreditRatingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    
-        
-        
         aPlusCreditBackgroundView.layer.cornerRadius = 15
         aCreditBackgroundView.layer.cornerRadius = 15
         bCreditBackgroundView.layer.cornerRadius = 15
@@ -75,19 +72,18 @@ class RenterCreditRatingViewController: UIViewController {
         
     }
     
-    
     func buttonPressedAppearanceFor(backgroundView: UIView, letterLabel: UILabel, and scoreLabel: UILabel) {
         
         AccountCreationController.addNextVCToRenterPageVCDataSource(renterVC: self)
         
-        let buttonBackgroundViews = [aPlusCreditBackgroundView, aCreditBackgroundView, bCreditBackgroundView, otherCreditBackgroundView].filter({$0 != backgroundView})
+        let buttonBackgroundViews: [UIView] = [aPlusCreditBackgroundView, aCreditBackgroundView, bCreditBackgroundView, otherCreditBackgroundView].filter({$0 != backgroundView})
         
         UIView.transition(with: backgroundView, duration: 0.1, options: .transitionCrossDissolve, animations: {
             backgroundView.backgroundColor = AppearanceController.viewButtonPressedColor
         }) { _ in
             
             UIView.transition(with: backgroundView, duration: 0.2, options: .transitionCrossDissolve, animations: {
-                buttonBackgroundViews.forEach({$0?.backgroundColor = .clear})
+                buttonBackgroundViews.forEach({$0.backgroundColor = .clear})
             }, completion: { (_) in
             })
             

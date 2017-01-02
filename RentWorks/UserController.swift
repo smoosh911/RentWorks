@@ -14,9 +14,9 @@ class UserController {
     
     // MARK: - User creation properties and functions
     
-    static var temporaryUserCreationDictionary = [String: Any]()
+    static var temporaryUserCreationDictionary: [String: Any] = [String: Any]()
     
-    static var userCreationPhotos = [UIImage]() {
+    static var userCreationPhotos: [UIImage] = [UIImage]() {
         didSet {
             if userCreationPhotos.count == 1 {
                 photoSelectedDelegate?.photoWasSelected()
@@ -153,7 +153,7 @@ extension UserController {
         case kMaritalStatus = "maritalStatus"
         case kPetsAllowed = "petsAllowed"
         case kSmokingAllowed = "smokingAllowed"
-        static let allValues = [kBio, kMaritalStatus, kPetsAllowed, kSmokingAllowed]
+        static let allValues: [RenterDetails] = [kBio, kMaritalStatus, kPetsAllowed, kSmokingAllowed]
     }
     
     enum RenterFilters: String {
@@ -168,13 +168,13 @@ extension UserController {
         case kState = "state"
         case kCurrentOccupation = "currentOccupation"
         case kWithinRangeMiles = "within_range_miles"
-        static let allValues = [kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kZipCode, kCity, kState, kCurrentOccupation, kWithinRangeMiles]
+        static let allValues: [RenterFilters] = [kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kZipCode, kCity, kState, kCurrentOccupation, kWithinRangeMiles]
     }
     
     enum LandlordFilters: String {
         case kWantsCreditRating = "wants_credit_rating"
         case kWithinRangeMiles = "within_range_miles"
-        static let allValues = [kWantsCreditRating, kWithinRangeMiles]
+        static let allValues: [LandlordFilters] = [kWantsCreditRating, kWithinRangeMiles]
     }
     
     enum PropertyDetailValues: String {
@@ -196,7 +196,7 @@ extension UserController {
         case kBackyard = "backyard"
         case kPool = "pool"
         case kGym = "gym"
-        static let allValues = [kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kStarRating, kZipCode, kCity, kState, kCountry,kWasherDryer, kGarage, kDishwasher, kBackyard, kPool, kGym]
+        static let allValues: [PropertyDetailValues] = [kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kStarRating, kZipCode, kCity, kState, kCountry,kWasherDryer, kGarage, kDishwasher, kBackyard, kPool, kGym]
     }
     
     enum PropertyType: String {

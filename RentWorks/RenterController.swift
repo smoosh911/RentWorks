@@ -437,7 +437,7 @@ class RenterController: UserController {
     }
     
     static func getRenterFiltersDictionary() -> [String: Any] {
-        var filterDict = [String: Any]()
+        var filterDict: [String: Any] = [String: Any]()
         guard let renter = UserController.currentRenter?.dictionaryRepresentation else {
             log("ERROR: renter is nil")
             return filterDict
@@ -452,7 +452,7 @@ class RenterController: UserController {
     }
     
     static func getRenterDetailsDictionary(forRenter renter: Renter) -> [String: Any] {
-        var detailsDict = [String: Any]()
+        var detailsDict: [String: Any] = [String: Any]()
         guard let renter = renter.dictionaryRepresentation else {
             log("ERROR: renter is nil")
             return detailsDict

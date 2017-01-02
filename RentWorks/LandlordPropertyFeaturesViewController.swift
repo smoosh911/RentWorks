@@ -10,7 +10,7 @@ import UIKit
 
 class LandlordPropertyFeaturesViewController: UIViewController {
 
-    var features = [String]()
+    var features: [String] = [String]()
     
     let buttonPressedColor = AppearanceController.buttonPressedColor
     

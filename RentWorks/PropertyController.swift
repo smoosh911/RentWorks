@@ -465,7 +465,7 @@ class PropertyController: UserController {
     }
     
     static func getPropertyDetailsDictionary(property: Property) -> [String: Any] {
-        var propertyDic = [String: Any]()
+        var propertyDic: [String: Any] = [String: Any]()
         
         guard let propertyDicRep = property.dictionaryRepresentation else {
             log("ERROR: property is nil")
