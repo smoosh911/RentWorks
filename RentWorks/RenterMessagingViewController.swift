@@ -23,7 +23,12 @@ class RenterMessagingViewController: MessagingViewController {
     }
     
     override func sendMessage(messageText: String, completion: @escaping (_ success: Bool) -> Void) {
-        guard let property = self.property, let propertyID = property.propertyID, let landlordID = property.landlordID, let renter = self.renter, let renterID = renter.id else {
+        guard
+            let property = self.property,
+            let propertyID = property.propertyID,
+            let landlordID = property.landlordID,
+            let renter = self.renter,
+            let renterID = renter.id else {
             return
         }
         
@@ -38,5 +43,30 @@ class RenterMessagingViewController: MessagingViewController {
             log(e)
         }
         completion(true)
+    }
+    
+    // MARK: helper functions
+    
+    private func getMessages() -> [Message] {
+        
+        guard
+            let property = self.property,
+            let propertyID = property.propertyID,
+            let landlordID = property.landlordID else {
+            return []
+        }
+        
+        let allMessages = getAllMessages()
+        
+        messages = allMessages.filter({ $0.forPropertyID == propertyID && ($0.fromUserID == landlordID || $0.toUserID == landlordID) })
+        
+        return messages
+    }
+    
+    // MARK: collectionview
+    
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        self.messages = self.getMessages()
+        return messages.count
     }
 }

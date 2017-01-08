@@ -91,9 +91,9 @@ class MessagingViewController: UIViewController, NotificationControllerDelegate 
         clcvwMessages.reloadData()
         let lastItem = collectionView(clcvwMessages, numberOfItemsInSection: 0) - 1
         let lastItemIndex = NSIndexPath.init(item: lastItem, section: 0) as IndexPath
-        if viewJustLoaded {
+        if viewJustLoaded && lastItemIndex[1] != -1 {
             clcvwMessages.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: false)
-        } else {
+        } else if lastItemIndex[1] != -1 {
             clcvwMessages.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: true)
         }
         
@@ -122,8 +122,7 @@ class MessagingViewController: UIViewController, NotificationControllerDelegate 
 
 extension MessagingViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        self.messages = self.getMessages()
-        return messages.count
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -180,10 +179,12 @@ extension MessagingViewController: UICollectionViewDelegate, UICollectionViewDat
     
     // MARK: collectionview helper functions
     
-    private func getMessages() -> [Message] {
+    internal func getAllMessages() -> [Message] {
         do {
-            messages = try CoreDataStack.context.fetch(Message.fetchRequest())
-            return messages
+            guard let allMessages = try CoreDataStack.context.fetch(Message.fetchRequest()) as? [Message] else {
+                return []
+            }
+            return allMessages
         } catch let e {
             log(e)
         }
