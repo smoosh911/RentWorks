@@ -12,6 +12,10 @@ class ErrorManager {
     
     static let customError = "customError"
     
+    enum MessagingError: String {
+        case subscribingToUser = "ERROR: couldn't subscribe to user"
+    }
+    
     enum LogType: String {
         case logType = "logType"
         static let error = "genericLogError"

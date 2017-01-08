@@ -178,6 +178,7 @@ extension UserController {
     }
     
     enum PropertyDetailValues: String {
+        case kPropertyDescription = "propertyDescription"
         case kAddress = "address"
         case kAvailableDate = "availableDate"
         case kBathroomCount = "bathroomCount"
@@ -196,7 +197,7 @@ extension UserController {
         case kBackyard = "backyard"
         case kPool = "pool"
         case kGym = "gym"
-        static let allValues: [PropertyDetailValues] = [kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kStarRating, kZipCode, kCity, kState, kCountry,kWasherDryer, kGarage, kDishwasher, kBackyard, kPool, kGym]
+        static let allValues: [PropertyDetailValues] = [kPropertyDescription, kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kStarRating, kZipCode, kCity, kState, kCountry,kWasherDryer, kGarage, kDishwasher, kBackyard, kPool, kGym]
     }
     
     enum PropertyType: String {

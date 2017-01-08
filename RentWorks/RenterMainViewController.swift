@@ -26,8 +26,6 @@ class RenterMainViewController: MainViewController {
     @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
     @IBOutlet weak var backgroundBathroomImageView: UIImageView!
     
-    @IBOutlet weak var matchesButton: UIButton!
-    
     // MARK: variables
     
     let filterKeys = UserController.RenterFilters.self
@@ -59,8 +57,8 @@ class RenterMainViewController: MainViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.updateCardUI()
         MatchController.observeLikesForCurrentRenter()
+        self.updateCardUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -175,18 +173,6 @@ class RenterMainViewController: MainViewController {
     func swipableView(_ swipableView: RWKSwipeableView, didAccept cardEntity: Any) {
         guard let renter = UserController.currentRenter, let property = cardEntity as? Property else { return }
         MatchController.addCurrentRenter(renter: renter, toLikelistOf: property)
-    }
-    
-    func setMatchesButtonImage() {
-        DispatchQueue.main.async {
-            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
-        }
-    }
-    
-    // MARK: - UserMatchingDelegate
-    
-    func currentUserHasMatches() {
-        setMatchesButtonImage()
     }
     
     // MARK: segues

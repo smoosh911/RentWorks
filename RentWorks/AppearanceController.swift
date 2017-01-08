@@ -26,8 +26,7 @@ class AppearanceController {
         navigationController?.presentTransparentNavigationBar()
     }
     
-    static let vengaYellowColor = UIColor(red: 0.976, green: 0.937, blue: 0.110, alpha: 1.00)
-    
+    static let vengaYellowColor = UIColor(red: 232/255, green: 199/255, blue: 115/255, alpha: 1.00)
     
     static let viewButtonPressedColor = UIColor(red: 202/255, green: 173/255, blue: 100/255, alpha: 1.0)
     

@@ -9,63 +9,86 @@
 import UIKit
 import MessageUI
 
+protocol MatchTableViewCellDelegate {
+    func presentDetailView(selectedCell: MatchTableViewCell)
+}
+
 class MatchTableViewCell: UITableViewCell {
+    
+    // MARK: outlets
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var newChatBadge: UIView!
+    @IBOutlet weak var btnViewDetails: UIButton!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
+    // MARK: variables
     
     var renter: Renter?
     var property: Property?
     
-    weak var delegate: ContactEmailDelegate?
+    var matchesDelegate: Any?
     
-//    @IBAction func contactButtonTapped(_ sender: AnyObject) {
-//        let mailComposeVC = MFMailComposeViewController()
-//        
-//        //        mailComposeVC.navigationBar.barTintColor = UIColor.orange
-//        guard MFMailComposeViewController.canSendMail() else { /* present alert to say they can't send email */ return }
-//        mailComposeVC.view.tintColor = AppearanceController.vengaYellowColor
-//        if let renter = renter {
-//            guard let email = renter.email else { return }
-//            mailComposeVC.setToRecipients([email])
-//            mailComposeVC.setSubject("We matched on Venga!")
-//            delegate?.present(emailComposeVC: mailComposeVC)
-//        } else if let property = property {
-//            // Fix this fetching later to pull the landlord from CoreData when they actually have that relationship.
-//            if let email = property.landlord?.email {
-//                mailComposeVC.setToRecipients([email])
-//                mailComposeVC.setSubject("We matched on Venga!")
-//                delegate?.present(emailComposeVC: mailComposeVC)
-//            } else {
-//                FirebaseController.getLandlordFor(property: property, completion: { (landlord) in
-//                    guard let landlord = landlord, let email = landlord.email else { return }
-//                    mailComposeVC.setToRecipients([email])
-//                    mailComposeVC.setSubject("We matched on Venga!")
-//                    self.delegate?.present(emailComposeVC: mailComposeVC)
-//                })
-//            }
-//        }
-//    }
-//    
-//    func createEmailErrorAlert() {
-//        let sendMailErrorAlert = UIAlertController(title: "Could Not Send Email", message: "Your device could not send e-mail.  Please check e-mail configuration and try again.", preferredStyle: .alert)
-//        let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-//        sendMailErrorAlert.addAction(dismissAction)
-//        
-//        delegate?.present(emailErrorAlert: sendMailErrorAlert)
-//    }
+    // MARK: life cycle
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        newChatBadge.isHidden = hideNewChatBadge()
+    }
+    
+    // MARK: actions
+    
+    @IBAction func btnViewDetails_TouchedUpInside(_ sender: UIButton) {
+        if let matchesDelegate = matchesDelegate as? MatchTableViewCellDelegate {
+            matchesDelegate.presentDetailView(selectedCell: self)
+            self.matchViewed()
+        }
+    }
+    
+    // MARK: helper functions
+    
+    private func matchViewed() {
+        if let renter = renter, let renterID = renter.id {
+            var matchedRenterIDs: [String] = []
+            if let existingMatchedRenterIDs = UserDefaults.standard.array(forKey: Identifiers.UserDefaults.propertyMatchedRenterIDs.rawValue) as? [String] {
+                matchedRenterIDs.append(contentsOf: existingMatchedRenterIDs)
+            }
+            if !matchedRenterIDs.contains(renterID) {
+                matchedRenterIDs.append(renterID)
+            }
+            UserDefaults.standard.set(matchedRenterIDs, forKey: Identifiers.UserDefaults.propertyMatchedRenterIDs.rawValue)
+        } else if let property = property, let propertyID = property.propertyID {
+            var matchedPropertyIDs: [String] = []
+            if let existingMatchedPropertyIDs = UserDefaults.standard.array(forKey: Identifiers.UserDefaults.renterMatchedPropertiesIDs.rawValue) as? [String] {
+                matchedPropertyIDs.append(contentsOf: existingMatchedPropertyIDs)
+            }
+            if !matchedPropertyIDs.contains(propertyID){
+                matchedPropertyIDs.append(propertyID)
+            }
+            UserDefaults.standard.set(matchedPropertyIDs, forKey: Identifiers.UserDefaults.renterMatchedPropertiesIDs.rawValue)
+        }
+        newChatBadge.isHidden = hideNewChatBadge()
+    }
+    
+    private func hideNewChatBadge() -> Bool {
+        if let renter = renter, let renterID = renter.id {
+            guard let matchedRenterIDs: [String] = UserDefaults.standard.array(forKey: Identifiers.UserDefaults.propertyMatchedRenterIDs.rawValue) as? [String] else {
+                return false
+            }
+            return matchedRenterIDs.contains(renterID)
+        } else if let property = property, let propertyID = property.propertyID {
+            guard let matchedPropertyIDs: [String] = UserDefaults.standard.array(forKey: Identifiers.UserDefaults.renterMatchedPropertiesIDs.rawValue) as? [String] else {
+                return false
+            }
+            return matchedPropertyIDs.contains(propertyID)
+        }
+        return true
+    }
     
     func updateWith(renter: Renter) {
         self.renter = renter
         
-        
         self.nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
-//        self.addressLabel.text = renter.bio ?? "No bio yet!"
         
         guard let imageData = (renter.profileImages?.firstObject as? ProfileImage)?.imageData else { return }
         self.profileImageView.image = UIImage(data: imageData as Data)
@@ -77,7 +100,6 @@ class MatchTableViewCell: UITableViewCell {
         self.property = property
         
         self.nameLabel.text = property.propertyDescription ?? "No description available"
-//        self.addressLabel.text = property.address ?? "No address available."
         
         guard let imageData = (property.profileImages?.firstObject as? ProfileImage)?.imageData else { return }
         self.profileImageView.image = UIImage(data: imageData as Data)
@@ -89,18 +111,8 @@ class MatchTableViewCell: UITableViewCell {
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = false
         profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
-        
         profileImageView.clipsToBounds = true
         
         newChatBadge.layer.cornerRadius = newChatBadge.bounds.width / 2
-        
-//        contactButton.layer.borderColor = AppearanceController.vengaYellowColor.cgColor
-//        contactButton.layer.cornerRadius = 4
-//        contactButton.layer.borderWidth = 0.4
     }
-}
-
-protocol ContactEmailDelegate: class {
-    func present(emailComposeVC: MFMailComposeViewController)
-    func present(emailErrorAlert: UIAlertController)
 }

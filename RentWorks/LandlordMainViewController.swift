@@ -57,6 +57,11 @@ class LandlordMainViewController: MainViewController {
         updateCardUI()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setMatchesButtonImage()
+    }
+    
     // MARK: actions
     
     @IBAction func btnResetCards_TouchedUpInside(_ sender: Any) {

@@ -16,11 +16,11 @@ enum PropertyTask {
     case editing
 }
 
-protocol PropertyDetailsContainerDelegate: class {
-    func settingsUpdated()
+protocol PropertyDetailsDelegate {
+    func updatePropertySettingsWith(saveResult: String)
 }
 
-class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDelegate {
+class PropertyDetailsViewController: UIViewController, PropertyDetailsDelegate {
     
     // MARK: outlets
     @IBOutlet weak var lblPropertySaveResult: UILabel!
@@ -35,7 +35,12 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     
     var selectedCellIndexPaths: [IndexPath] = []
     
-    var property: Property? = nil
+    var property: Property? = nil {
+        didSet {
+            guard let delegate = propertyDetailsContainerDelegate else { return }
+            delegate.propertyUpdated()
+        }
+    }
     var landlord: Landlord! = UserController.currentLandlord
     
     var propertyImages: [ProfileImage] = []
@@ -81,17 +86,55 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: UIButton) {
         guard let delegate = propertyDetailsContainerDelegate else { return }
         delegate.settingsUpdated()
+        propertyTask = .editing
+        didSaveDetails = true
     }
     
     @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: {
+        if didSaveDetails {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Need to save?", message: "You haven't saved your property yet, if continue then changes will be lost.", preferredStyle: .alert)
             
-        })
+            alert.view.tintColor = .black
+            
+            let dismissAction = UIAlertAction(title: "Continue without Saving", style: .default) { (alertAction) in
+                self.dismiss(animated: true, completion: {
+                    if self.propertyTask == .adding {
+                        guard let property = self.property, let propertyID = property.propertyID else { return }
+                        PropertyController.deletePropertyInFirebase(propertyID: propertyID)
+                        
+                        log("should delete added images")
+                        
+                        for propertyImage in self.propertyImages {
+                            guard let imageURL = propertyImage.imageURL else { return }
+                            let profileImageRef = FIRStorage.storage().reference(forURL: imageURL)
+                            
+                            let context: NSManagedObjectContext = CoreDataStack.context
+                            context.delete(propertyImage)
+                            
+                            profileImageRef.delete(completion: { (error) in
+                                if (error != nil) {
+                                    log("ERROR: Couldn't delete image. \(error)")
+                                }
+                            })
+                        }
+                        
+                        log("succesfully deleted added images")
+                    }
+                })
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(dismissAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 
     // needs work: shouldn't add images till property has been saved in firebase
     @IBAction func btnDeletePictures_TouchedUpInside(_ sender: UIButton) {
-        print("should delete \(selectedCellIndexPaths)")
+        log("should delete \(selectedCellIndexPaths)")
         
         let imagesAtIndexPaths = selectedCellIndexPaths.flatMap({ propertyImages[$0.row] })
         propertyImages = propertyImages.filter({ !imagesAtIndexPaths.contains($0) })
@@ -157,10 +200,9 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
         
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Identifiers.Segues.propertyDetailContainterVC.rawValue {
-            guard let property = property, let propertyDetailSettingsContainerTVC = segue.destination as? PropertyDetailSettingsContainerTableViewController else { return }
+            guard let propertyDetailSettingsContainerTVC = segue.destination as? PropertyDetailSettingsContainerTableViewController else { return }
             propertyDetailsContainerDelegate = propertyDetailSettingsContainerTVC
             propertyDetailSettingsContainerTVC.parentVC = self
-            propertyDetailSettingsContainerTVC.property = property
         }
     }
 }
@@ -213,9 +255,6 @@ extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionV
 
 extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @IBAction func addPhotoButtonTapped(_ sender: UIButton) {
-        if propertyTask == .adding {
-            
-        }
         checkPhotoLibraryPermission { (success) in
             if success {
                 let imagePicker = UIImagePickerController()

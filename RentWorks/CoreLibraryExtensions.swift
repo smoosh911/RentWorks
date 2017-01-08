@@ -39,9 +39,14 @@ extension String {
 }
 
 extension UIViewController {
-    func hideKeyboardWhenViewIsTapped() {
+    func hideKeyboardWhenViewIsTapped(viewToDismissWhenTapped: UIView? = nil) {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
+        if viewToDismissWhenTapped == nil {
+            view.addGestureRecognizer(tap)
+        } else {
+            viewToDismissWhenTapped!.addGestureRecognizer(tap)
+        }
+        
         tap.cancelsTouchesInView = false
     }
     
@@ -80,6 +85,7 @@ extension UIViewController {
 //            ErrorManager.ErrorFields.name: ErrorManager.LogType.print as NSObject,
 //            ErrorManager.ErrorFields.message: message as NSObject
 //            ])
+        print(message)
     }
 }
 @inline(__always) public func log(_ logMessage: Error, fileName: String = #file, functionName: String = #function, lineNumber: Int = #line) {

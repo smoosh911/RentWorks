@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PropertyMatchesViewController: MatchesViewController {
+class PropertyMatchesViewController: MatchesViewController, MatchTableViewCellDelegate {
     
     // MARK: variables
     
@@ -43,6 +43,15 @@ class PropertyMatchesViewController: MatchesViewController {
             if let destinationVC = segue.destination as? ReportUserViewController, let cell = selectedCell, let renter = cell.renter {
                 destinationVC.userBeingReported = renter
             }
+        } else if segue.identifier == Identifiers.Segues.CardDetailVC.rawValue {
+            if let destinationVC = segue.destination as? LandlordCardDetailViewController, let cell = selectedCell, let renter = cell.renter {
+                destinationVC.renter = renter
+            }
+        } else if segue.identifier == Identifiers.Segues.messagingVC.rawValue {
+            if let destinationVC = segue.destination as? LandlordMessagingViewController, let cell = selectedCell, let renter = cell.renter {
+                destinationVC.renter = renter
+                destinationVC.property = property
+            }
         }
     }
     
@@ -58,7 +67,8 @@ class PropertyMatchesViewController: MatchesViewController {
         
         let matchingRenter = matchedRentersForProperty[indexPath.row]
         cell.updateWith(renter: matchingRenter)
-        cell.delegate = self
+        cell.matchesDelegate = self
+//        cell.delegate = self
         
         return cell
     }
@@ -82,5 +92,19 @@ class PropertyMatchesViewController: MatchesViewController {
         })
         
         return [delete, report]
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let cell = tableView.cellForRow(at: indexPath) as? MatchTableViewCell else { return }
+        self.selectedCell = cell
+        performSegue(withIdentifier: Identifiers.Segues.messagingVC.rawValue, sender: self)
+    }
+    
+    // MARK: match table view cell delegate
+    
+    func presentDetailView(selectedCell: MatchTableViewCell) {
+        self.selectedCell = selectedCell
+        performSegue(withIdentifier: Identifiers.Segues.CardDetailVC.rawValue, sender: self)
     }
 }

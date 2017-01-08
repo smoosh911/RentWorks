@@ -24,6 +24,11 @@ class Identifiers {
         case appInfoSelectionVC = "segueToAppInformationSelectionVC"
         case chooseAccountTypeVC = "toAccountTypeVC"
         case propertyDetailContainterVC = "detailsContainerVC"
+        case messagingVC = "segueToMessagingVC"
+    }
+    
+    enum Notifications: String {
+        case recievedMessage = "receivedMessageNotification"
     }
     
     enum StoryboardIDs: String {
@@ -38,12 +43,15 @@ class Identifiers {
     
     enum CollectionViewCells: String {
         case PropertyImageCell = "propertyImageCell"
+        case MessageCell = "messageCell"
     }
     
     enum UserDefaults: String {
         case landlordMatchCount = "landlordMatchCount"
         case renterMatchCount = "renterMatchCount"
+        case renterMatchedPropertiesIDs = "renterMatchedPropertyIDs"
         case propertyMatchCount = "propertyMatchCount"
+        case propertyMatchedRenterIDs = "propertyMatchedRenterIDs"
     }
     
     enum RentWorksAdmin: String {
