@@ -69,8 +69,8 @@ class MessagingViewController: UIViewController, NotificationControllerDelegate 
     
     // MARK: notficationcontroller delegate
     
-    func recievedNotification(message: String, toUser: String, fromUser: String, forProperty: String) {
-        Message(message: message, toUserID: toUser, fromUserID: fromUser, forPropertyID: forProperty)
+    func recievedNotification(message: String, toUser: String, fromUser: String, fromUserName: String, forProperty: String) {
+        Message(message: message, toUserID: toUser, fromUserID: fromUser, fromUserName: fromUserName, forPropertyID: forProperty)
         
         do {
             try CoreDataStack.messagingContext.save()

@@ -11,15 +11,16 @@ import Firebase
 import FirebaseDatabase
 
 protocol NotificationControllerDelegate {
-    func recievedNotification(message: String, toUser: String, fromUser: String, forProperty: String)
+    func recievedNotification(message: String, toUser: String, fromUser: String, fromUserName: String, forProperty: String)
 }
 
 class NotificationController {
     
-    public static func sendNotificationToUser(message: String, toUser: String, fromUser: String, forProperty: String) {
+    public static func sendNotificationToUser(message: String, toUser: String, fromUser: String, fromUserName: String, forProperty: String) {
         var notification: [String: String] = [:]
         notification["toUser"] = toUser
         notification["fromUser"] = fromUser
+        notification["fromUserName"] = fromUserName
         notification["forProperty"] = forProperty
         notification["message"] = message
         

@@ -43,7 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                                                selector: #selector(self.tokenRefreshNotification),
                                                name: .firInstanceIDTokenRefresh,
                                                object: nil)
-        
+
         return true
     }
     
@@ -114,7 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("APNs token retrieved: \(deviceToken)")
         
         // With swizzling disabled you must set the APNs token here.
-        // FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.sandbox)
+         FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.sandbox)
     }
     
     // MARK: firebase notification helper functions
@@ -196,7 +196,9 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        
+        if UIApplication.shared.applicationState == .active && AppDelegate.notificationDelegate != nil {
+            completionHandler([])
+        }
         
         // Change this to your preferred presentation option
         completionHandler([.alert, .sound])
@@ -210,6 +212,16 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
         
         if identifier == Identifiers.Notifications.recievedMessage.rawValue {
             log("go to messages view")
+//            if let renter = UserController.currentRenter {
+//                let storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+//                let mainVC = storyboard.instantiateViewController(withIdentifier: Identifiers.ViewControllers.messageVC.rawValue)
+//                self.present(mainVC, animated: true, completion: nil)
+//            } else if let landlord = UserController.currentLandlord {
+//                let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
+//                let mainVC = storyboard.instantiateViewController(withIdentifier: Identifiers.ViewControllers.messageVC.rawValue)
+//                self.present(mainVC, animated: true, completion: nil)
+//            }
+            
         }
         
         completionHandler()
@@ -224,15 +236,16 @@ extension AppDelegate : FIRMessagingDelegate {
         let data = remoteMessage.appData
         guard let toUserData = data["toUser"], let toUser = toUserData as? String,
             let fromUserData = data["fromUser"], let fromUser = fromUserData as? String,
+            let fromUserNameData = data["fromUserName"], let fromUserName = fromUserNameData as? String,
             let forPropertyData = data["forProperty"], let forProperty = forPropertyData as? String,
             let messageData = data["message"], let message = messageData as? String
         else {
             return
         }
         if let delegate = AppDelegate.notificationDelegate {
-            delegate.recievedNotification(message: message, toUser: toUser, fromUser: fromUser, forProperty: forProperty)
+            delegate.recievedNotification(message: message, toUser: toUser, fromUser: fromUser, fromUserName: fromUserName, forProperty: forProperty)
         } else {
-            Message(message: message, toUserID: toUser, fromUserID: fromUser, forPropertyID: forProperty)
+            Message(message: message, toUserID: toUser, fromUserID: fromUser, fromUserName: fromUserName, forPropertyID: forProperty)
             
             do {
                 try CoreDataStack.messagingContext.save()
@@ -240,7 +253,7 @@ extension AppDelegate : FIRMessagingDelegate {
                 log(e)
             }
             
-            showNotification(title: "Venga Message", subtitle: "", body: message, identifier: Identifiers.Notifications.recievedMessage.rawValue)
+//            showNotification(title: fromUserName, subtitle: "", body: message, identifier: Identifiers.Notifications.recievedMessage.rawValue)
         }
     }
 }

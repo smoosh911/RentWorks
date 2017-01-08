@@ -28,13 +28,17 @@ class RenterMessagingViewController: MessagingViewController {
             let propertyID = property.propertyID,
             let landlordID = property.landlordID,
             let renter = self.renter,
-            let renterID = renter.id else {
+            let renterID = renter.id,
+            let renterFName = renter.firstName,
+            let renterLName = renter.lastName else {
             return
         }
         
-        NotificationController.sendNotificationToUser(message: messageText, toUser: landlordID, fromUser: renterID, forProperty: propertyID)
+        let renterName = "\(renterFName) \(renterLName)"
         
-        Message(message: messageText, toUserID: landlordID, fromUserID: renterID, forPropertyID: propertyID)
+        NotificationController.sendNotificationToUser(message: messageText, toUser: landlordID, fromUser: renterID, fromUserName: renterName, forProperty: propertyID)
+        
+        Message(message: messageText, toUserID: landlordID, fromUserID: renterID, fromUserName: renterName, forPropertyID: propertyID)
         
         do {
             try CoreDataStack.messagingContext.save()

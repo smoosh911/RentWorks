@@ -27,6 +27,10 @@ class Identifiers {
         case messagingVC = "segueToMessagingVC"
     }
     
+    enum ViewControllers: String {
+        case messageVC = "messageVC"
+    }
+    
     enum Notifications: String {
         case recievedMessage = "receivedMessageNotification"
     }

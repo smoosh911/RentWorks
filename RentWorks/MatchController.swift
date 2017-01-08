@@ -134,7 +134,10 @@ class MatchController {
                             if currentRentersForProperty!.count > 0 {
                                 for match in matches {
                                     if !currentRentersForProperty!.contains(match) {
-                                        currentRentersForProperty!.append(match)
+                                        if currentRentersForProperty!.first(where: { $0.id! == match.id! }) == nil {
+                                            currentRentersForProperty!.append(match)
+                                        }
+                                        
                                         matchedRentersForProperties[propertyID] = currentRentersForProperty!
                                         currentUserHasNewMatches = true
                                         propertyIDsWithMatches.append(propertyID)
@@ -142,7 +145,12 @@ class MatchController {
                                     }
                                 }
                             } else {
-                                currentRentersForProperty! = matches
+                                for match in matches {
+                                    if currentRentersForProperty!.first(where: { $0.id! == match.id! }) == nil {
+                                        currentRentersForProperty!.append(match)
+                                    }
+                                }
+                                
                                 matchedRentersForProperties[propertyID] = currentRentersForProperty!
                                 matches = []
                                 if currentRentersForProperty!.count > 0 {

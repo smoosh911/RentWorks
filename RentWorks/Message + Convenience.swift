@@ -10,7 +10,7 @@ import Foundation
 import CoreData
 
 extension Message {
-    @discardableResult convenience init?(message: String, toUserID: String, fromUserID: String, forPropertyID: String, context: NSManagedObjectContext? = CoreDataStack.messagingContext) {
+    @discardableResult convenience init?(message: String, toUserID: String, fromUserID: String, fromUserName: String, forPropertyID: String, context: NSManagedObjectContext? = CoreDataStack.messagingContext) {
         
         if let context = context {
             self.init(context: context)

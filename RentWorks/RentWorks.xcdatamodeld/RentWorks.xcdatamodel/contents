@@ -13,6 +13,7 @@
     <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="class">
         <attribute name="forPropertyID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fromUserID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fromUserName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="message" attributeType="String" syncable="YES"/>
         <attribute name="timeDateSent" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="toUserID" attributeType="String" syncable="YES"/>
@@ -100,6 +101,6 @@
         <element name="Property" positionX="223" positionY="324" width="128" height="418"/>
         <element name="Renter" positionX="-308" positionY="180" width="146" height="373"/>
         <element name="User" positionX="-2" positionY="-52" width="128" height="193"/>
-        <element name="Message" positionX="207" positionY="-0" width="128" height="118"/>
+        <element name="Message" positionX="207" positionY="-0" width="128" height="133"/>
     </elements>
 </model>
