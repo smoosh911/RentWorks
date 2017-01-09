@@ -7,7 +7,7 @@
     </entity>
     <entity name="Landlord" representedClassName="Landlord" parentEntity="User" syncable="YES" codeGenerationType="class">
         <attribute name="wantsCreditRating" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="profileImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ProfileImage" inverseName="landlord" inverseEntity="ProfileImage" syncable="YES"/>
+        <relationship name="profileImages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ProfileImage" inverseName="landlord" inverseEntity="ProfileImage" syncable="YES"/>
         <relationship name="property" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Property" inverseName="landlord" inverseEntity="Property" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="class">
@@ -26,7 +26,7 @@
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="landlord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Landlord" inverseName="profileImage" inverseEntity="Landlord" syncable="YES"/>
+        <relationship name="landlord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Landlord" inverseName="profileImages" inverseEntity="Landlord" syncable="YES"/>
         <relationship name="property" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="profileImages" inverseEntity="Property" syncable="YES"/>
         <relationship name="renter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Renter" inverseName="profileImages" inverseEntity="Renter" syncable="YES"/>
     </entity>
@@ -96,11 +96,11 @@
     <elements>
         <element name="HasBeenViewedBy" positionX="-38" positionY="486" width="128" height="88"/>
         <element name="Landlord" positionX="225" positionY="189" width="128" height="88"/>
+        <element name="Message" positionX="207" positionY="-0" width="128" height="133"/>
         <element name="Occupation" positionX="-333" positionY="-0" width="128" height="73"/>
         <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="133"/>
         <element name="Property" positionX="223" positionY="324" width="128" height="418"/>
         <element name="Renter" positionX="-308" positionY="180" width="146" height="373"/>
         <element name="User" positionX="-2" positionY="-52" width="128" height="193"/>
-        <element name="Message" positionX="207" positionY="-0" width="128" height="133"/>
     </elements>
 </model>

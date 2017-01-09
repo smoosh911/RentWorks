@@ -15,11 +15,15 @@ class RenterMessagingViewController: MessagingViewController {
     var renter: Renter?
     var property: Property!
     
+    var landlordImage: UIImage?
+    
     // MARK: life cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        lblNameOfPersonMessging.text = property.propertyDescription
+        getLandlordImage()
     }
     
     override func sendMessage(messageText: String, completion: @escaping (_ success: Bool) -> Void) {
@@ -72,5 +76,44 @@ class RenterMessagingViewController: MessagingViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         self.messages = self.getMessages()
         return messages.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.CollectionViewCells.MessageCell.rawValue, for: indexPath) as! MessageCollectionViewCell
+        
+        let message = messages[indexPath.row]
+        
+        cell.txtvwMessage.text = message.message
+        styleMessageTextView(forCell: cell, withMessage: message)
+        setMessageImage(forCell: cell)
+        
+        if indexPath.row == (messages.count - 1) {
+            lastCollectionViewItemIndexPath = indexPath
+        }
+        
+        return cell
+    }
+    
+    // MARK: collectionview helper functions
+    // needs work: get landlord image from firebase
+    private func getLandlordImage() {
+        guard let landlordID = property.landlordID else {
+            return
+        }
+        LandlordController.getLandlordWithID(landlordID: landlordID) { (landlord) in
+            var profilePicture: UIImage?
+            if let landlord = landlord, let firstProfileImage = landlord.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
+                profilePicture = profilePic
+            } else {
+                log("ERROR: couldn't load a profile image")
+            }
+            self.landlordImage = profilePicture
+        }
+    }
+    
+    private func setMessageImage(forCell cell: MessageCollectionViewCell) {
+        if let image = landlordImage {
+            cell.imgSender.image = image
+        }
     }
 }

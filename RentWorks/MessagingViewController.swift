@@ -12,6 +12,8 @@ class MessagingViewController: UIViewController, NotificationControllerDelegate 
     
     // MARK: outlets
     
+    @IBOutlet weak var lblNameOfPersonMessging: UILabel!
+    
     @IBOutlet weak var clcvwMessages: UICollectionView!
     @IBOutlet weak var txtfldMessage: UITextField!
     
@@ -138,9 +140,33 @@ extension MessagingViewController: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.CollectionViewCells.MessageCell.rawValue, for: indexPath) as! MessageCollectionViewCell
         
-        let message = messages[indexPath.row]
+//        let message = messages[indexPath.row]
+//        
+//        cell.txtvwMessage.text = message.message
+//        styleMessageTextView(forCell: cell, withMessage: message)
+//        
+//        if indexPath.row == (messages.count - 1) {
+//            lastCollectionViewItemIndexPath = indexPath
+//        }
         
-        cell.txtvwMessage.text = message.message
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let message = messages[indexPath.row]
+        if let messageText = message.message {
+            let size = CGSize(width: 250, height: 1000)
+            let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+            let estimatedSize = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18)], context: nil)
+            
+            return CGSize(width: view.frame.width, height: estimatedSize.height + 20)
+        }
+        return CGSize(width: view.frame.width, height: 100)
+    }
+    
+    // MARK: collectionview helper functions
+    
+    internal func styleMessageTextView(forCell cell: MessageCollectionViewCell, withMessage message: Message) {
         cell.txtvwMessage.layer.cornerRadius = 15
         if let messageText = message.message {
             let size = CGSize(width: 250, height: 1000)
@@ -167,27 +193,7 @@ extension MessagingViewController: UICollectionViewDelegate, UICollectionViewDat
             cell.txtvwMessage.bounds.origin.x = -4
             cell.vwMessage.frame = CGRect(x: viewOrigin.x, y: viewOrigin.y, width: view.frame.width, height: estimatedSize.height + 20)
         }
-        
-        if indexPath.row == (messages.count - 1) {
-            lastCollectionViewItemIndexPath = indexPath
-        }
-        
-        return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let message = messages[indexPath.row]
-        if let messageText = message.message {
-            let size = CGSize(width: 250, height: 1000)
-            let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
-            let estimatedSize = NSString(string: messageText).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18)], context: nil)
-            
-            return CGSize(width: view.frame.width, height: estimatedSize.height + 20)
-        }
-        return CGSize(width: view.frame.width, height: 100)
-    }
-    
-    // MARK: collectionview helper functions
     
     internal func getAllMessages() -> [Message] {
         do {
