@@ -26,8 +26,6 @@ class RenterMainViewController: MainViewController {
     @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
     @IBOutlet weak var backgroundBathroomImageView: UIImageView!
     
-    @IBOutlet weak var matchesButton: UIButton!
-    
     // MARK: variables
     
     let filterKeys = UserController.RenterFilters.self
@@ -59,6 +57,7 @@ class RenterMainViewController: MainViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        MatchController.observeLikesForCurrentRenter()
         self.updateCardUI()
     }
     
@@ -85,6 +84,10 @@ class RenterMainViewController: MainViewController {
         RenterController.eraseAllHasBeenViewedByForRenterFromProperties(renterID: UserController.currentUserID!, completion: {
             self.downloadMoreCards()
         })
+    }
+    
+    @IBAction func btnViewDetails_TouchedUpInside(_ sender: Any) {
+//        performSegue(withIdentifier: Identifiers.Segues.CardDetailVC.rawValue, sender: self)
     }
     
     // MARK: Swipableview delegate
@@ -118,7 +121,6 @@ class RenterMainViewController: MainViewController {
             profilePicture = profilePic
         } else {
             log("ERROR: couldn't load a profile image")
-            profilePicture = #imageLiteral(resourceName: "noImageProfile90x90")
         }
         
         RenterController.updateCurrentRenterInFirebase(id: renterID, attributeToUpdate: UserController.kStartAt, newValue: propertyID)
@@ -146,7 +148,6 @@ class RenterMainViewController: MainViewController {
             backgroundProfilePicture = backgroundProfilePic
         } else {
             log("ERROR: couldn't load a profile image")
-            backgroundProfilePicture = #imageLiteral(resourceName: "noImageProfile90x90")
         }
         
         let backgroundPrice = "$\(nextProperty.monthlyPayment)"
@@ -174,18 +175,6 @@ class RenterMainViewController: MainViewController {
         MatchController.addCurrentRenter(renter: renter, toLikelistOf: property)
     }
     
-    func setMatchesButtonImage() {
-        DispatchQueue.main.async {
-            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
-        }
-    }
-    
-    // MARK: - UserMatchingDelegate
-    
-    func currentUserHasMatches() {
-        setMatchesButtonImage()
-    }
-    
     // MARK: segues
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -200,6 +189,10 @@ class RenterMainViewController: MainViewController {
                     destinationVC.userBeingReported = landlord
                     destinationVC.propertyBeingReported = property
                 })
+            }
+        } else if segue.identifier == Identifiers.Segues.CardDetailVC.rawValue {
+            if let destinationVC = segue.destination as? RenterDetailCardViewController, let property = currentCardProperty {
+                destinationVC.property = property
             }
         }
     }

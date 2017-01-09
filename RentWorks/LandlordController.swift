@@ -53,7 +53,7 @@ class LandlordController: UserController {
     }
     
     static func getLandlordsFiltersDictionary() -> [String: Any] {
-        var filterDict = [String: Any]()
+        var filterDict: [String: Any] = [String: Any]()
         guard let landlord = UserController.currentLandlord?.dictionaryRepresentation else {
             log("ERROR: renter is nil")
             return filterDict

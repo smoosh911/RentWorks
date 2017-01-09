@@ -15,7 +15,9 @@ class NoInternetViewController: UIViewController {
     }
     
     @IBAction func btnRetry_TouchedUpInside(_ sender: Any) {
-        
+        self.dismiss(animated: true) { 
+            
+        }
     }
     
 }

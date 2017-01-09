@@ -181,8 +181,8 @@ class PropertyController: UserController {
         FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: startAt).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
             guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
             
-            UserController.propertyFetchCount = allPropertiesDict.count
             var landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+            UserController.propertyFetchCount = landlordProperties.count
             landlordProperties.sort {$0.propertyID! < $1.propertyID!}
             let lastProperty = landlordProperties.removeLast()
             // needs work: only get once and store
@@ -465,7 +465,7 @@ class PropertyController: UserController {
     }
     
     static func getPropertyDetailsDictionary(property: Property) -> [String: Any] {
-        var propertyDic = [String: Any]()
+        var propertyDic: [String: Any] = [String: Any]()
         
         guard let propertyDicRep = property.dictionaryRepresentation else {
             log("ERROR: property is nil")

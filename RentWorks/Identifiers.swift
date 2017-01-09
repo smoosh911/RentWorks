@@ -13,6 +13,8 @@ class Identifiers {
         case editPropertyDetailsVC = "segueEditPropertyDetails"
         case addPropertyVC = "segueAddProperty"
         case MoreCardsVC = "segueShowNoMoreCardsVC"
+        case CardDetailVC = "segueShowCardDetailsVC"
+        case cardDetailContainerVC = "segueCardDetailContainerVC"
         case MainSwipingVC = "toMainSwipingVC"
         case noInternetVC = "segueToNoInternetVC"
         case propertyMatchesVC = "segueToPropertyMatchesVC"
@@ -22,6 +24,15 @@ class Identifiers {
         case appInfoSelectionVC = "segueToAppInformationSelectionVC"
         case chooseAccountTypeVC = "toAccountTypeVC"
         case propertyDetailContainterVC = "detailsContainerVC"
+        case messagingVC = "segueToMessagingVC"
+    }
+    
+    enum ViewControllers: String {
+        case messageVC = "messageVC"
+    }
+    
+    enum Notifications: String {
+        case recievedMessage = "receivedMessageNotification"
     }
     
     enum StoryboardIDs: String {
@@ -36,12 +47,15 @@ class Identifiers {
     
     enum CollectionViewCells: String {
         case PropertyImageCell = "propertyImageCell"
+        case MessageCell = "messageCell"
     }
     
     enum UserDefaults: String {
         case landlordMatchCount = "landlordMatchCount"
         case renterMatchCount = "renterMatchCount"
+        case renterMatchedPropertiesIDs = "renterMatchedPropertyIDs"
         case propertyMatchCount = "propertyMatchCount"
+        case propertyMatchedRenterIDs = "propertyMatchedRenterIDs"
     }
     
     enum RentWorksAdmin: String {
@@ -60,6 +74,6 @@ class Identifiers {
         case finishedCreatingRenter = "Finished Creating Renter"
         case creatingProperty = "Creating Property"
         case finishedCreatingProperty = "Finished Creating Property"
-        static let allValues = [imageUploading, imageFinishedUploading, creatingLandlord, finishedCreatingLandlord, creatingRenter, finishedCreatingRenter, creatingProperty, finishedCreatingProperty]
+        static let allValues: [CreatingUserNotificationObserver] = [imageUploading, imageFinishedUploading, creatingLandlord, finishedCreatingLandlord, creatingRenter, finishedCreatingRenter, creatingProperty, finishedCreatingProperty]
     }
 }

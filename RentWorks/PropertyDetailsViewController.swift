@@ -16,7 +16,11 @@ enum PropertyTask {
     case editing
 }
 
-class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDelegate {
+protocol PropertyDetailsDelegate {
+    func updatePropertySettingsWith(saveResult: String)
+}
+
+class PropertyDetailsViewController: UIViewController, PropertyDetailsDelegate {
     
     // MARK: outlets
     @IBOutlet weak var lblPropertySaveResult: UILabel!
@@ -27,9 +31,16 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     
     // MARK: variables
     
+    var propertyDetailsContainerDelegate: PropertyDetailsContainerDelegate?
+    
     var selectedCellIndexPaths: [IndexPath] = []
     
-    var property: Property! = nil
+    var property: Property? = nil {
+        didSet {
+            guard let delegate = propertyDetailsContainerDelegate else { return }
+            delegate.propertyUpdated()
+        }
+    }
     var landlord: Landlord! = UserController.currentLandlord
     
     var propertyImages: [ProfileImage] = []
@@ -47,6 +58,11 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if propertyTask == PropertyTask.adding {
+            guard let landlordID = UserController.currentUserID else { return }
+            property = Property(landlordID: landlordID, landlord: landlord)
+        }
         
         guard let property = property, let profileImages = property.profileImages?.array as? [ProfileImage] else { return }
         propertyImages = profileImages
@@ -68,24 +84,63 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
     
     
     @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: UIButton) {
-        // Delegate submit changes
+        guard let delegate = propertyDetailsContainerDelegate else { return }
+        delegate.settingsUpdated()
+        propertyTask = .editing
+        didSaveDetails = true
     }
     
     @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
-        self.dismiss(animated: true, completion: {
+        if didSaveDetails {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Need to save?", message: "You haven't saved your property yet, if continue then changes will be lost.", preferredStyle: .alert)
             
-        })
+            alert.view.tintColor = .black
+            
+            let dismissAction = UIAlertAction(title: "Continue without Saving", style: .default) { (alertAction) in
+                self.dismiss(animated: true, completion: {
+                    if self.propertyTask == .adding {
+                        guard let property = self.property, let propertyID = property.propertyID else { return }
+                        PropertyController.deletePropertyInFirebase(propertyID: propertyID)
+                        
+                        log("should delete added images")
+                        
+                        for propertyImage in self.propertyImages {
+                            guard let imageURL = propertyImage.imageURL else { return }
+                            let profileImageRef = FIRStorage.storage().reference(forURL: imageURL)
+                            
+                            let context: NSManagedObjectContext = CoreDataStack.context
+                            context.delete(propertyImage)
+                            
+                            profileImageRef.delete(completion: { (error) in
+                                if (error != nil) {
+                                    log("ERROR: Couldn't delete image. \(error)")
+                                }
+                            })
+                        }
+                        
+                        log("succesfully deleted added images")
+                    }
+                })
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addAction(dismissAction)
+            alert.addAction(cancelAction)
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 
     // needs work: shouldn't add images till property has been saved in firebase
     @IBAction func btnDeletePictures_TouchedUpInside(_ sender: UIButton) {
-        print("should delete \(selectedCellIndexPaths)")
+        log("should delete \(selectedCellIndexPaths)")
         
         let imagesAtIndexPaths = selectedCellIndexPaths.flatMap({ propertyImages[$0.row] })
         propertyImages = propertyImages.filter({ !imagesAtIndexPaths.contains($0) })
         for i in 0 ..< imagesAtIndexPaths.count {
             let propertyImage = imagesAtIndexPaths[i]
-            guard let imageURL = propertyImage.imageURL, let propertyID = property.propertyID else { return }
+            guard let imageURL = propertyImage.imageURL, let property = property, let propertyID = property.propertyID else { return }
             let profileImageRef = FIRStorage.storage().reference(forURL: imageURL)
             
             let context: NSManagedObjectContext = CoreDataStack.context
@@ -145,10 +200,9 @@ class PropertyDetailsViewController: UIViewController, UpdatePropertySettingsDel
         
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Identifiers.Segues.propertyDetailContainterVC.rawValue {
-            guard let property = property, let propertyDetailSettingsContainerTVC = segue.destination as? PropertyDetailSettingsContainerTableViewController else { return }
-            
-            propertyDetailSettingsContainerTVC.property = property
-            propertyDetailSettingsContainerTVC.propertyTask = propertyTask
+            guard let propertyDetailSettingsContainerTVC = segue.destination as? PropertyDetailSettingsContainerTableViewController else { return }
+            propertyDetailsContainerDelegate = propertyDetailSettingsContainerTVC
+            propertyDetailSettingsContainerTVC.parentVC = self
         }
     }
 }
@@ -165,8 +219,8 @@ extension PropertyDetailsViewController: UICollectionViewDelegate, UICollectionV
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.CollectionViewCells.PropertyImageCell.rawValue, for: indexPath) as! PropertyImageCollectionViewCell
-        let profileImage = propertyImages[indexPath.row]
         
+        let profileImage = propertyImages[indexPath.row]
         guard let image = UIImage(data: profileImage.imageData as! Data) else { return cell }
         
         cell.imgProperty.image = image
@@ -261,10 +315,12 @@ extension PropertyDetailsViewController: UIImagePickerControllerDelegate, UINavi
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         self.actIndCollectionView.startAnimating()
         picker.dismiss(animated: true) {
-            guard let propertyID = self.property.propertyID, let image = info[UIImagePickerControllerOriginalImage] as? UIImage else { return }
-            PropertyController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: self.property, completion: { imageURL in
+            guard let property = self.property, let propertyID = property.propertyID, let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+                return
+            }
+            PropertyController.savePropertyImagesToCoreDataAndFirebase(images: [image], landlord: self.landlord, forProperty: property, completion: { imageURL in
                 log("image uploaded to \(imageURL)")
-                guard let profileImageArray = self.property.profileImages?.array, let profileImages = profileImageArray as? [ProfileImage] else { return }
+                guard let profileImageArray = property.profileImages?.array, let profileImages = profileImageArray as? [ProfileImage] else { return }
                 let imageURLs = profileImages.map({$0.imageURL!})
                 // needs work: update so you don't have to delete every time
                 PropertyController.deletePropertyImageURLsInFirebase(id: propertyID)

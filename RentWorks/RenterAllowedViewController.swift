@@ -73,7 +73,7 @@ class RenterAllowedViewController: UIViewController {
         noSmokingButton.backgroundColor = AppearanceController.viewButtonPressedColor
         smokingAllowedButton.backgroundColor = .clear
         
-        smokingAllowed = true
+        smokingAllowed = false
         
         checkIfBothButtonsHaveBeenSelected()
     }

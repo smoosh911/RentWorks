@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, MatchControllerDelegate {
     
     // MARK: - Front swipeableView outlets
     
@@ -43,6 +43,7 @@ class MainViewController: UIViewController {
     // MARK: - Other outlets
     
     @IBOutlet weak var navigationBarView: UIView!
+    @IBOutlet weak var matchesButton: UIButton!
     
     // MARK: - Properties
 
@@ -57,40 +58,13 @@ class MainViewController: UIViewController {
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
-//    var loadingViewHasBeenDismissed = false
     var previousVCWasCardsLoadingVC = false
     
     var users: [Any] = []
     
     var matchingUsersAlertController: UIAlertController?
     
-    // needs work possibly: make sure there isn't a redundant amount of backgroundview.ishidden calls
-//    var imageIndex = 0 {
-//        didSet{
-//            if UserController.currentUserType == "renter"{
-//                if FirebaseController.properties.count < 2 {
-//                    self.backgroundView.isHidden = true
-//                } else {
-//                    self.backgroundView.isHidden = false
-//                }
-//            } else if UserController.currentUserType == "landlord" {
-//                if FirebaseController.renters.count < 2 {
-//                    self.backgroundView.isHidden = true
-//                } else {
-//                    self.backgroundView.isHidden = false
-//                }
-//            }
-//        }
-//    }
-//    var backgroundimageIndex: Int {
-//        if UserController.currentUserType == "renter"{
-//            return imageIndex + 1 <= FirebaseController.properties.count - 1 ? imageIndex + 1 : 0
-//        } else if UserController.currentUserType == "landlord" {
-//            return imageIndex + 1 <= FirebaseController.renters.count - 1 ? imageIndex + 1 : 0
-//        } else {
-//            return 0
-//        }
-//    }
+    let paddingConstant: CGFloat = 12.0 // this is for the swiping animations in the extension below
     
     // MARK: View life cycles
     
@@ -103,12 +77,19 @@ class MainViewController: UIViewController {
         
         swipeableView.delegate = self
         setupViews()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-
+        MatchController.delegate = self
+    }
+    
+    // MARK: helper 
+    
+    func setMatchesButtonImage() {
+        DispatchQueue.main.async {
+            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
+        }
     }
     
     // MARK: - UI Related
@@ -150,7 +131,6 @@ class MainViewController: UIViewController {
         default:
             _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
         }
-        
     }
     
     // set corner radius of views and image views
@@ -161,6 +141,12 @@ class MainViewController: UIViewController {
         
         backgroundImageView.layer.cornerRadius = 15
         backgroundView.layer.cornerRadius = 15
+    }
+    
+    // MARK: matchcontroller delegate
+    
+    func currentUserHasMatchesUpdated() { // overriden and implemented in child controllers
+        setMatchesButtonImage()
     }
 }
 
@@ -182,10 +168,9 @@ extension MainViewController: RWKSwipeableViewDelegate {
         let label = gesture.view!
         
         let swipeSpeed: CGFloat = 1.3
-        let paddingFromBottomOfScreen: CGFloat = 20.0
         let rotationSpeedBuffer: CGFloat = 800.0 // the higher the number the slower the rotation
         
-        label.center = CGPoint(x: self.view.bounds.width / 2 + translation.x * swipeSpeed, y: self.view.bounds.height / 2 + paddingFromBottomOfScreen)
+        label.center = CGPoint(x: self.view.bounds.width / 2 + translation.x * swipeSpeed, y: self.view.bounds.height / 2 + paddingConstant)
         
         let xFromCenter = label.center.x - self.view.bounds.width / 2.0
         
@@ -196,11 +181,10 @@ extension MainViewController: RWKSwipeableViewDelegate {
     }
     
     func swipeLeftCompleteTransform(view: UIView) {
-        let paddingFromBottomOfScreen: CGFloat = 20.0
         let rotationSpeedBuffer: CGFloat = 800.0 // the higher the number the slower the rotation
         let xEndPoint: CGFloat = 500.0 // this is where the card will animate to when the user lets go
         
-        view.center = CGPoint(x: self.view.bounds.width / 2 - xEndPoint, y: self.view.bounds.height / 2 + paddingFromBottomOfScreen)
+        view.center = CGPoint(x: self.view.bounds.width / 2 - xEndPoint, y: self.view.bounds.height / 2 + paddingConstant)
         
         let xFromCenter = view.center.x - self.view.bounds.width / 2.0
         
@@ -211,24 +195,19 @@ extension MainViewController: RWKSwipeableViewDelegate {
     }
     
     func swipeRightCompleteTransform(view: UIView) {
-        let paddingFromBottomOfScreen: CGFloat = 20.0
         let rotationSpeedBuffer: CGFloat = 800.0 // the higher the number the slower the rotation
         let xEndPoint: CGFloat = 500.0 // this is where the card will animate to when the user lets go
         
-        view.center = CGPoint(x: self.view.bounds.width / 2 + xEndPoint, y: self.view.bounds.height / 2 + paddingFromBottomOfScreen)
+        view.center = CGPoint(x: self.view.bounds.width / 2 + xEndPoint, y: self.view.bounds.height / 2 + paddingConstant)
         let xFromCenter = view.center.x - self.view.bounds.width / 2.0
         
         var anitransform = CGAffineTransform.identity
         anitransform = anitransform.rotated(by: xFromCenter / rotationSpeedBuffer)
         
         view.transform = anitransform
-        
-//        likeUser()
     }
     
     func resetFrontCardTransform(view: UIView) {
-        let paddingFromBottomOfScreen: CGFloat = 20.0
-        
         var endTransform = CGAffineTransform.identity
         
         endTransform = endTransform.rotated(by: 0.0)
@@ -236,41 +215,6 @@ extension MainViewController: RWKSwipeableViewDelegate {
         
         view.transform = endTransform
         
-        view.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2 + paddingFromBottomOfScreen)
+        view.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2 + paddingConstant)
     }
-    
-    // MARK: - update data
-    
-    // needs work: add to seperate landlord and renter mainVCs
-//    func likeUser() {
-//        if UserController.currentUserType == "renter" {
-//            guard let property = swipeableView.property else { return }
-//            MatchController.addCurrentRenter(toLikelistOf: property)
-//        } else if UserController.currentUserType == "landlord" {
-//            guard let renter = swipeableView.renter else { return }
-//            MatchController.addCurrentProperty(toLikelistOf: renter)
-//        }
-//    }
-    
-//    func resetData() {
-//        if UserController.currentUserType == "renter" {
-//            let property = FirebaseController.properties[imageIndex]
-//            swipeableView.property = property
-//            swipeableView.renter = nil
-//            if imageIndex < FirebaseController.properties.count - 1 {
-//                imageIndex += 1
-//            } else {
-//                imageIndex = 0
-//            }
-//        } else if UserController.currentUserType == "landlord" {
-//            let renter = FirebaseController.renters[imageIndex]
-//            swipeableView.renter = renter
-//            swipeableView.property = nil
-//            if imageIndex < FirebaseController.renters.count - 1 {
-//                imageIndex += 1
-//            } else {
-//                imageIndex = 0
-//            }
-//        }
-//    }
 }

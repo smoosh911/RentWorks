@@ -65,6 +65,7 @@ class RenterController: UserController {
                 _ = facebookDictionary?.flatMap({temporaryUserCreationDictionary[$0.0] = $0.1})
                 PropertyController.getFirstPropertyID(completion: { (propertyID) -> Void in
                     temporaryUserCreationDictionary[UserController.kStartAt] = propertyID
+                    temporaryUserCreationDictionary[UserController.kStarRating] = 0.0
                     guard let renter = Renter(dictionary: temporaryUserCreationDictionary) else { log("Renter could not be initialized from dictionary"); completion(nil); return }
                     completion(renter)
                 })
@@ -436,7 +437,7 @@ class RenterController: UserController {
     }
     
     static func getRenterFiltersDictionary() -> [String: Any] {
-        var filterDict = [String: Any]()
+        var filterDict: [String: Any] = [String: Any]()
         guard let renter = UserController.currentRenter?.dictionaryRepresentation else {
             log("ERROR: renter is nil")
             return filterDict
@@ -448,6 +449,21 @@ class RenterController: UserController {
         }
         
         return filterDict
+    }
+    
+    static func getRenterDetailsDictionary(forRenter renter: Renter) -> [String: Any] {
+        var detailsDict: [String: Any] = [String: Any]()
+        guard let renter = renter.dictionaryRepresentation else {
+            log("ERROR: renter is nil")
+            return detailsDict
+        }
+        
+        for detail in UserController.RenterDetails.allValues {
+            let detailString = detail.rawValue
+            detailsDict[detailString] = renter[detailString]
+        }
+        
+        return detailsDict
     }
     
     static func addHasBeenViewedByLandlordToRenterInFirebase(renterID: String, landlordID: String) {

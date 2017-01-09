@@ -10,9 +10,13 @@ import Foundation
 import FirebaseDatabase
 import UIKit
 
+protocol MatchControllerDelegate: class {
+    func currentUserHasMatchesUpdated()
+}
+
 class MatchController {
     
-    static weak var delegate: UserMatchingDelegate?
+    static weak var delegate: MatchControllerDelegate?
     
     static var isObservingCurrentUserLikeEndpoint = false
     
@@ -63,7 +67,7 @@ class MatchController {
                                 if !matchedProperties.contains(match) {
                                     matchedProperties.append(match)
                                     currentUserHasMatches = true
-                                    delegate?.currentUserHasMatches()
+                                    delegate?.currentUserHasMatchesUpdated()
                                 }
                             }
                         } else {
@@ -71,7 +75,7 @@ class MatchController {
                             matches = []
                             if matchedProperties.count > 0 {
                                 currentUserHasMatches = true
-                                delegate?.currentUserHasMatches()
+                                delegate?.currentUserHasMatchesUpdated()
                             }
                         }
                         let oldrenterMatchCount = UserDefaults.standard.integer(forKey: Identifiers.UserDefaults.renterMatchCount.rawValue)
@@ -130,20 +134,28 @@ class MatchController {
                             if currentRentersForProperty!.count > 0 {
                                 for match in matches {
                                     if !currentRentersForProperty!.contains(match) {
-                                        currentRentersForProperty!.append(match)
+                                        if currentRentersForProperty!.first(where: { $0.id! == match.id! }) == nil {
+                                            currentRentersForProperty!.append(match)
+                                        }
+                                        
                                         matchedRentersForProperties[propertyID] = currentRentersForProperty!
                                         currentUserHasNewMatches = true
                                         propertyIDsWithMatches.append(propertyID)
-                                        delegate?.currentUserHasMatches()
+                                        delegate?.currentUserHasMatchesUpdated()
                                     }
                                 }
                             } else {
-                                currentRentersForProperty! = matches
+                                for match in matches {
+                                    if currentRentersForProperty!.first(where: { $0.id! == match.id! }) == nil {
+                                        currentRentersForProperty!.append(match)
+                                    }
+                                }
+                                
                                 matchedRentersForProperties[propertyID] = currentRentersForProperty!
                                 matches = []
                                 if currentRentersForProperty!.count > 0 {
                                     currentUserHasMatches = true
-                                    delegate?.currentUserHasMatches()
+                                    delegate?.currentUserHasMatchesUpdated()
                                 }
                             }
                             let oldPropertyMatchCount = UserDefaults.standard.integer(forKey: "\(Identifiers.UserDefaults.propertyMatchCount.rawValue)/\(propertyID)")
@@ -228,9 +240,4 @@ class MatchController {
             completion(matchingUsersIDArray)
         }
     }
-}
-
-protocol UserMatchingDelegate: class {
-    
-    func currentUserHasMatches()
 }

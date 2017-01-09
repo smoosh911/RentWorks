@@ -29,7 +29,7 @@ class LandlordSettingsViewController: SettingsViewController {
     
     // NOTE FOR MIKE: I changed the buttons names to match the credit rating options in the user creation process. It might mess up some of the logic in the viewDidLoad if you try to find the index of say 'D' credit rating as this array does not have it anymore.
     
-    var creditRatings = ["Any","A+", "A", "B","Other"]
+    var creditRatings: [String] = ["Any","A+", "A", "B","Other"]
     
     
     // MARK: life cycle

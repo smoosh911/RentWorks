@@ -58,7 +58,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                             RenterController.createRenterForCurrentUser {
                                 self.dismissLoadingScreen()
                                 let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
-                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
                                 self.present(mainVC, animated: true, completion: nil)
                                 print("Successfuly created renter for current user.")
                             }
@@ -78,7 +78,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         } else {
                             let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
                             loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
-                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
                                 self.present(mainVC, animated: true, completion: nil)
                             })
                         }
@@ -156,7 +156,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                             RenterController.createRenterForCurrentUser {
                                 let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
                                 self.dismissLoadingScreen()
-                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
                                 self.present(mainVC, animated: true, completion: nil)
                                 print("Successfuly created renter for current user.")
                             }
@@ -178,7 +178,7 @@ class AccountCreationFacebookLoginViewController: UIViewController, FBSDKLoginBu
                         } else {
                             let storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
                             loginAction = UIAlertAction(title: "Log in", style: .default, handler: { (_) in
-                                let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                                let mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
                                 self.present(mainVC, animated: true, completion: nil)
                             })
                         }

@@ -77,14 +77,16 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
                 if FBSDKAccessToken.current() != nil { print(FBSDKAccessToken.current().expirationDate) }
                 FirebaseController.handleUserInformationScenarios(inViewController: self, completion: { (success) in
                     self.dismissLoadingScreen()
+                    let storyboard: UIStoryboard!
+                    let mainVC: UIViewController!
                     if success {
-                        let storyboard: UIStoryboard!
                         if UserController.userCreationType == "landlord" {
                             storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                            mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                         } else {
                             storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
+                            mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
                         }
-                        let mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
                         
                         self.present(mainVC, animated: true, completion: nil)
                     } else {

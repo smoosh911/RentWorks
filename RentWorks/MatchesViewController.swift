@@ -9,9 +9,13 @@
 import UIKit
 import MessageUI
 
-class MatchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UserMatchingDelegate, ContactEmailDelegate, MFMailComposeViewControllerDelegate {
+class MatchesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MatchControllerDelegate, MFMailComposeViewControllerDelegate {
+    
+    // MARK: outlets
     
     @IBOutlet weak var tableView: UITableView!
+    
+    // MARK: life cycles
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,7 +24,9 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
         MatchController.currentUserHasNewMatches = false
     }
     
-    func currentUserHasMatches() {
+    // MARK: helper functions
+    
+    func currentUserHasMatchesUpdated() {
         self.tableView.reloadData()
     }
     
@@ -58,31 +64,31 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? MatchTableViewCell else { return }
-        let emailComposeVC = MFMailComposeViewController()
-        if MFMailComposeViewController.canSendMail() {
-            emailComposeVC.view.tintColor = AppearanceController.vengaYellowColor
-            if let renter = cell.renter {
-                guard let email = renter.email else { return }
-                emailComposeVC.setToRecipients([email])
-                emailComposeVC.setSubject("We matched on Venga!")
-            } else if let property = cell.property {
-                // Fix this fetching later to pull the landlord from CoreData when they actually have that relationship.
-                if let email = property.landlord?.email {
-                    emailComposeVC.setToRecipients([email])
-                    emailComposeVC.setSubject("We matched on Venga!")
-                } else {
-                    FirebaseController.getLandlordFor(property: property, completion: { (landlord) in
-                        guard let landlord = landlord, let email = landlord.email else { return }
-                        emailComposeVC.setToRecipients([email])
-                        emailComposeVC.setSubject("We matched on Venga!")
-                    })
-                }
-            }
-
-            present(emailComposeVC: emailComposeVC)
-            tableView.deselectRow(at: indexPath, animated: true)
-        }
+        tableView.deselectRow(at: indexPath, animated: true)
+//        guard let cell = tableView.cellForRow(at: indexPath) as? MatchTableViewCell else { return }
+//        let emailComposeVC = MFMailComposeViewController()
+//        if MFMailComposeViewController.canSendMail() {
+//            emailComposeVC.view.tintColor = AppearanceController.vengaYellowColor
+//            if let renter = cell.renter {
+//                guard let email = renter.email else { return }
+//                emailComposeVC.setToRecipients([email])
+//                emailComposeVC.setSubject("We matched on Venga!")
+//            } else if let property = cell.property {
+//                // Fix this fetching later to pull the landlord from CoreData when they actually have that relationship.
+//                if let email = property.landlord?.email {
+//                    emailComposeVC.setToRecipients([email])
+//                    emailComposeVC.setSubject("We matched on Venga!")
+//                } else {
+//                    FirebaseController.getLandlordFor(property: property, completion: { (landlord) in
+//                        guard let landlord = landlord, let email = landlord.email else { return }
+//                        emailComposeVC.setToRecipients([email])
+//                        emailComposeVC.setSubject("We matched on Venga!")
+//                    })
+//                }
+//            }
+//
+//            present(emailComposeVC: emailComposeVC)
+//        }
     }
     
     // these two below functions enable the table view cell swipe to delete or report

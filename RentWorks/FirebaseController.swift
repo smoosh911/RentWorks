@@ -11,6 +11,7 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 import CoreData
+import FirebaseMessaging
 
 class FirebaseController {
     
@@ -21,6 +22,7 @@ class FirebaseController {
     static let rentersRef = ref.child("renters")
     static let propertiesRef = ref.child("properties")
     static let likesRef = ref.child("likes")
+    static let notificationsRef = ref.child("notificationRequests")
     
     static let storageRef = FIRStorage.storage().reference()
     static let profileImagesRef = storageRef.child("profileImages")
@@ -287,6 +289,12 @@ class FirebaseController {
     static func handleUserInformationScenarios(inViewController targetVC: UIViewController, completion: @escaping (_ success: Bool) -> Void) {
         
         FacebookRequestController.requestCurrentFacebookUserID { (userID) in
+            if let userID = userID {
+                FIRMessaging.messaging().subscribe(toTopic: "/topics/user_\(userID)")
+            } else {
+                log(ErrorManager.MessagingError.subscribingToUser.rawValue)
+            }
+            
             
             UserController.currentUserID = userID
             

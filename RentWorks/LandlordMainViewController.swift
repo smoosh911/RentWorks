@@ -57,6 +57,11 @@ class LandlordMainViewController: MainViewController {
         updateCardUI()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setMatchesButtonImage()
+    }
+    
     // MARK: actions
     
     @IBAction func btnResetCards_TouchedUpInside(_ sender: Any) {
@@ -147,6 +152,10 @@ class LandlordMainViewController: MainViewController {
         } else if segue.identifier == Identifiers.Segues.reportUserVC.rawValue {
             if let destinationVC = segue.destination as? ReportUserViewController {
                 destinationVC.userBeingReported = currentCardRenter
+            }
+        } else if segue.identifier == Identifiers.Segues.CardDetailVC.rawValue {
+            if let destinationVC = segue.destination as? LandlordCardDetailViewController {
+                destinationVC.renter = currentCardRenter
             }
         }
     }

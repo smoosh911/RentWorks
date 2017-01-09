@@ -13,7 +13,7 @@ class ReportUserViewController: UIViewController, MFMailComposeViewControllerDel
     
     // MARK: variables
     
-    let reportOptions = ["Inappropriate Emails", "Inappropriate Photoes", "Unprofessional Offline Behavior", "Spamming", "Other"]
+    let reportOptions: [String] = ["Inappropriate Emails", "Inappropriate Photoes", "Unprofessional Offline Behavior", "Spamming", "Other"]
     
     var userBeingReported: Any!
     var userReporting: Any!
