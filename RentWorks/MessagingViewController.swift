@@ -15,6 +15,8 @@ class MessagingViewController: UIViewController, NotificationControllerDelegate 
     @IBOutlet weak var clcvwMessages: UICollectionView!
     @IBOutlet weak var txtfldMessage: UITextField!
     
+    @IBOutlet weak var cnstrntSendMessageTextViewSpaceToBottom: NSLayoutConstraint!
+    
     // MARK: variables
     
     var messages: [Message] = []
@@ -87,34 +89,42 @@ class MessagingViewController: UIViewController, NotificationControllerDelegate 
         
     }
     
-    private func resetCollectionView(viewJustLoaded: Bool) {
+    private func resetCollectionView(viewJustLoaded: Bool = false) {
         clcvwMessages.reloadData()
         let lastItem = collectionView(clcvwMessages, numberOfItemsInSection: 0) - 1
         let lastItemIndex = NSIndexPath.init(item: lastItem, section: 0) as IndexPath
-        if viewJustLoaded && lastItemIndex[1] != -1 {
-            clcvwMessages.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: false)
-        } else if lastItemIndex[1] != -1 {
-            clcvwMessages.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: true)
+        let moreThanZeroMessages = lastItemIndex[1] != -1 // must check if there are more than zero messages before scrolling collection view or else app will crash
+        if moreThanZeroMessages {
+            if viewJustLoaded {
+                clcvwMessages.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: false)
+            } else {
+                clcvwMessages.scrollToItem(at: lastItemIndex, at: UICollectionViewScrollPosition.bottom, animated: true)
+            }
         }
-        
     }
     
     // MARK: keyboard
     
     func keyboardWillShow(notification: NSNotification) {
-        
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height
+            if cnstrntSendMessageTextViewSpaceToBottom.constant == 0 {
+                UIView.animate(withDuration: 0.3, animations: { 
+                    self.cnstrntSendMessageTextViewSpaceToBottom.constant += keyboardSize.height
+                    self.view.layoutIfNeeded()
+                }, completion: { success in
+                    self.resetCollectionView()
+                })
             }
         }
-        
     }
     
     func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height
+            if cnstrntSendMessageTextViewSpaceToBottom.constant != 0 {
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.cnstrntSendMessageTextViewSpaceToBottom.constant -= keyboardSize.height
+                    self.view.layoutIfNeeded()
+                })
             }
         }
     }
