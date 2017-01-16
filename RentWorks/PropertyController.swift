@@ -352,9 +352,9 @@ class PropertyController: UserController {
     //        })
     //    }
     
-    static func getFirstPropertyID(completion: @escaping (_ propertyID: String) -> Void) {
+    static func getFirstPropertyID(completion: @escaping (_ propertyID: String?) -> Void) {
         FirebaseController.propertiesRef.queryOrderedByKey().queryLimited(toFirst: 1).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("property nil"); return }
+            guard let child = snapshot.children.nextObject() as? FIRDataSnapshot else { log("property nil"); completion(nil); return }
             let key = child.key
             
             completion(key)

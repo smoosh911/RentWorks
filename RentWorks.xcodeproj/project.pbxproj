@@ -117,6 +117,7 @@
 		C79CE22B1DF1E50C00C57378 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CE22A1DF1E50C00C57378 /* AlertManager.swift */; };
 		C79CE22D1DF2A0A500C57378 /* Occupation + Convenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = C79CE22C1DF2A0A500C57378 /* Occupation + Convenience.swift */; };
 		C7A701371E14C1DF00A8615A /* AnimateLeftToRightSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A701361E14C1DF00A8615A /* AnimateLeftToRightSegue.swift */; };
+		C7C4F1611E2C8D990036C097 /* Occupation + Firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7C4F1601E2C8D990036C097 /* Occupation + Firebase.swift */; };
 		C7F93B701DE61624004F54F4 /* CreateFakeFireBaseDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */; };
 		C7F93B861DE7D87E004F54F4 /* NoInternetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */; };
 /* End PBXBuildFile section */
@@ -242,6 +243,7 @@
 		C79CE22A1DF1E50C00C57378 /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		C79CE22C1DF2A0A500C57378 /* Occupation + Convenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Occupation + Convenience.swift"; sourceTree = "<group>"; };
 		C7A701361E14C1DF00A8615A /* AnimateLeftToRightSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimateLeftToRightSegue.swift; sourceTree = "<group>"; };
+		C7C4F1601E2C8D990036C097 /* Occupation + Firebase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Occupation + Firebase.swift"; sourceTree = "<group>"; };
 		C7F93B6F1DE61624004F54F4 /* CreateFakeFireBaseDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateFakeFireBaseDataController.swift; sourceTree = "<group>"; };
 		C7F93B831DE79571004F54F4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7F93B851DE7D87D004F54F4 /* NoInternetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoInternetViewController.swift; sourceTree = "<group>"; };
@@ -429,6 +431,7 @@
 				468ABC351DB5C5A9009B105B /* Property + Convenience.swift */,
 				46E8877E1DB7F17900127D21 /* Property+Firebase.swift */,
 				C79CE22C1DF2A0A500C57378 /* Occupation + Convenience.swift */,
+				C7C4F1601E2C8D990036C097 /* Occupation + Firebase.swift */,
 				461E5CD01DB5621E00AD4509 /* Renter + Convenience.swift */,
 				46E887821DB82B0C00127D21 /* Renter + Firebase.swift */,
 				465E96941DA98230000B36AF /* TestUser.swift */,
@@ -839,6 +842,7 @@
 				C7F93B701DE61624004F54F4 /* CreateFakeFireBaseDataController.swift in Sources */,
 				465E96961DA98230000B36AF /* TestUser.swift in Sources */,
 				46E887831DB82B0C00127D21 /* Renter + Firebase.swift in Sources */,
+				C7C4F1611E2C8D990036C097 /* Occupation + Firebase.swift in Sources */,
 				C79CE22D1DF2A0A500C57378 /* Occupation + Convenience.swift in Sources */,
 				C77666271DE928D900F2A8EF /* HasBeenViewedBy + Convenience.swift in Sources */,
 				C73D0BEB1E21B36C00B412E6 /* RenterMessagingViewController.swift in Sources */,
@@ -948,6 +952,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -991,6 +996,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_SWIFT_FLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
@@ -1013,6 +1019,7 @@
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = RentWorks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.RentWorks.Venga;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "RentWorks/Bridging-Header.h";
@@ -1036,6 +1043,7 @@
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = RentWorks/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.RentWorks.Venga;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "RentWorks/Bridging-Header.h";

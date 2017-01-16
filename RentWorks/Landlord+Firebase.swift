@@ -17,11 +17,15 @@ extension Landlord {
             let wantsCreditRating = wantsCreditRating /*, let id = id, let birthday = birthday */
             else { return nil }
 
-        var dictionaryRepresentation: [String: Any] = [UserController.kFirstName: firstName,
-                                                       UserController.kLastName: lastName,
-                                                       UserController.kEmail: email,
-                                                       UserController.kWantsCreditRating: wantsCreditRating,
-                                                       UserController.kWithinRangeMiles: withinRangeMiles]
+        var dictionaryRepresentation: [String: Any] = [:]
+        
+        dictionaryRepresentation[UserController.kFirstName] = firstName
+        dictionaryRepresentation[UserController.kLastName] = lastName
+        dictionaryRepresentation[UserController.kEmail] = email
+        dictionaryRepresentation[UserController.kWantsCreditRating] = wantsCreditRating
+        dictionaryRepresentation[UserController.kWithinRangeMiles] = withinRangeMiles
+        dictionaryRepresentation[UserController.kPhoneNumber] = phoneNumber
+        dictionaryRepresentation[UserController.kDateAdded] = dateAdded ?? Date().timeIntervalSince1970
         
         guard let profileImageArray = self.profileImages?.array as? [ProfileImage] else { return dictionaryRepresentation }
         

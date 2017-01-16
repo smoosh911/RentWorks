@@ -121,12 +121,21 @@ extension UserController {
     static let kLandlordID = "landlordID"
     static let kPropertyID = "propertyID"
     
+    // MARK: property features
+    
     static let kWasherDryer = "washerDryer"
     static let kGarage = "garage"
     static let kDishwasher = "dishwasher"
     static let kBackyard = "backyard"
     static let kPool = "pool"
     static let kGym = "gym"
+    static let kLivingRoom = "livingRoom"
+    static let kHeating = "heating"
+    static let kKitchen = "kitchen"
+    static let kAirConditioning = "airConditioning"
+    static let kStorage = "storage"
+    static let kUtilities = "utilities"
+    static let kWifi = "wifi"
     
     static let kImageURLS = "images"
     
@@ -135,18 +144,50 @@ extension UserController {
     static let kWantsCreditRating = "wants_credit_rating"
     static let kCreditRating = "creditRating"
     static let kEmail = "email"
-    static let kMaritalStatus = "maritalStatus"
+    static let kPhoneNumber = "phoneNumber"
     static let kAdultCount = "adultCount"
     static let kChildCount = "childCount"
     static let kBio = "bio"
 //    static let kHasViewed = "hasViewed"
     static let kHasBeenViewedBy = "hasBeenViewedBy"
-    static let kOccupationHistory = "work"
-    static let kCurrentOccupation = "currentOccupation"
     
     static let kWithinRangeMiles = "within_range_miles"
     
     static let kStartAt = "startAt"
+    
+    static let kDateAdded = "dateAdded"
+    
+    // MARK: Property
+    
+    static let kName = "name"
+    static let kLeaseEnd = "leaseEnd"
+    static let kLeaseLengthMonths = "leaseLengthMonths"
+    
+    // MARK: renter
+    
+    static let kMaritalStatus = "maritalStatus"
+    static let kOccupationHistory = "work"
+    static let kCurrentOccupation = "currentOccupation"
+    static let kBankruptcies = "bankruptcies"
+    static let kCriminalHistory = "criminalHistory"
+    static let kDriversLicenseNumber = "driversLicenseNumber"
+    static let kDriversLicensePicURL = "driversLicensePicURL"
+    static let kEvictionHistory = "evictionHistory"
+    static let kIncome = "income"
+    static let kIsStudent = "isStudent"
+    static let kIsVerified = "isVerified"
+    static let kPreviousAddress = "previousAddress"
+    static let kReasonsForLeaving = "reasonsForLeaving"
+    static let kSchool = "school"
+    static let kStudentID = "studentID"
+    static let kStudentPhotoIdURL = "studentPhotoIdURL"
+    
+    // MARK: occupation
+    
+    static let kTitle = "occupationTitle"
+    static let kEmployer = "employer"
+    static let kStartDate = "startDate"
+    static let kEndDate = "endDate"
     
     enum RenterDetails: String {
         case kBio = "bio"
