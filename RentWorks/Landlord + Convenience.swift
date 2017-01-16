@@ -47,7 +47,7 @@ extension Landlord {
         if let withinRangeMiles = dictionary[UserController.kWithinRangeMiles] as? Int {
             self.withinRangeMiles = Int16(withinRangeMiles)
         } else {
-            self.withinRangeMiles = 5
+            self.withinRangeMiles = 50
         }
         
         if let starRating = dictionary[UserController.kStarRating] as? Double {

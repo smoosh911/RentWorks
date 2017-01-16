@@ -9,21 +9,21 @@
 import Foundation
 
 class CreateFakeFirebaseDataController {
-    static func saveMockRenterProfileImagesToCoreDataAndFirebase(forRenterID renterID: String, completion: @escaping (String) -> Void) {
-        
-        guard let image = UIImage(named: renterID) else { return }
-        
-        let count = 1
-        FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error, imageData) in
-            guard let imageURL = metadata?.downloadURL()?.absoluteString else {
-                if let error = error { print(error.localizedDescription) }
-                return
-            }
-            FirebaseController.likesRef.child(renterID).child("0").setValue(true)
-            print("Successfully uploaded image")
-            completion(imageURL)
-        })
-    }
+//    static func saveMockRenterProfileImagesToCoreDataAndFirebase(forRenterID renterID: String, completion: @escaping (String) -> Void) {
+//        
+//        guard let image = UIImage(named: renterID) else { return }
+//        
+//        let count = 1
+//        FirebaseController.store(profileImage: image, forUserID: renterID, with: count, completion: { (metadata, error, imageData) in
+//            guard let imageURL = metadata?.downloadURL()?.absoluteString else {
+//                if let error = error { print(error.localizedDescription) }
+//                return
+//            }
+//            FirebaseController.likesRef.child(renterID).child("0").setValue(true)
+//            print("Successfully uploaded image")
+//            completion(imageURL)
+//        })
+//    }
     // MARK: - Mock data related functions
     
 //    static func createMockRenters() {

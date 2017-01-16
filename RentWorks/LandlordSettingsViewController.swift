@@ -29,7 +29,7 @@ class LandlordSettingsViewController: SettingsViewController {
     
     // NOTE FOR MIKE: I changed the buttons names to match the credit rating options in the user creation process. It might mess up some of the logic in the viewDidLoad if you try to find the index of say 'D' credit rating as this array does not have it anymore.
     
-    var creditRatings: [String] = ["Any","A+", "A", "B","Other"]
+    var creditRatings: [String] = ["Any", "A+", "A", "B", "Other"]
     
     
     // MARK: life cycle
@@ -40,12 +40,17 @@ class LandlordSettingsViewController: SettingsViewController {
         self.creditButtons = [anyCreditButton, aPlusCreditButton, aCreditButton, bCreditButton, otherCreditButton]
         
         guard let landlord = UserController.currentLandlord,
+            let profileImages = landlord.profileImages?.array as? [ProfileImage],
             let desiredCreditRating = landlord.wantsCreditRating,
             let firstName = landlord.firstName,
             let lastName = landlord.lastName,
             let ratingIndex = creditRatings.index(of: desiredCreditRating),
-        let propertyCount = landlord.property?.count else {
+            let propertyCount = landlord.property?.count else {
             return
+        }
+        
+        if let profileImage = profileImages.first, let imageData = profileImage.imageData as? Data, let image = UIImage(data: imageData) {
+            imgviewProfilePic.image = image
         }
         
         let buttonToSelect = creditButtons[ratingIndex]

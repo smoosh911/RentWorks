@@ -28,7 +28,7 @@ class RenterSettingsViewController: SettingsViewController, UITextFieldDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let profileImages = UserController.currentRenter? .profileImages?.array as? [ProfileImage] else { return }
+        guard let profileImages = UserController.currentRenter?.profileImages?.array as? [ProfileImage] else { return }
         
         if let imageData = profileImages[0].imageData as? Data, let image = UIImage(data: imageData) {
             imgviewProfilePic.image = image

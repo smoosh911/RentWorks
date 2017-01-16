@@ -24,28 +24,24 @@ class LandlordController: UserController {
     }
     
     static func saveLandlordProfileImagesToCoreDataAndFirebase(forLandlord landlord: Landlord, completion: @escaping () -> Void) {
-        var count = 0
-        
+      
         FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080) { (image) in
             guard let image = image, let lanlordID = landlord.id else { return }
-            userCreationPhotos.append(image)
-            
             let group = DispatchGroup()
             
-            for image in userCreationPhotos {
-                group.enter()
-                count += 1
-                FirebaseController.store(profileImage: image, forUserID: lanlordID, with: count, completion: { (metadata, error, imageData) in
-                    guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString else {
-                        if let error = error { print(error.localizedDescription) }
-                        group.leave()
-                        return
-                    }
-                    print("Successfully uploaded image")
-                    _ = ProfileImage(userID: lanlordID, imageData: imageData as NSData, user: landlord, property: nil, imageURL: imageURL)
+            group.enter()
+            
+            FirebaseController.store(profileImage: image, forUserID: lanlordID, with: nil, completion: { (metadata, error, imageData) in
+                guard let imageData = imageData, let imageURL = metadata?.downloadURL()?.absoluteString else {
+                    if let error = error { print(error.localizedDescription) }
                     group.leave()
-                })
-            }
+                    return
+                }
+                print("Successfully uploaded image")
+                _ = ProfileImage(userID: lanlordID, imageData: imageData as NSData, user: landlord, property: nil, imageURL: imageURL)
+                group.leave()
+            })
+            
             group.notify(queue: DispatchQueue.main) {
                 completion()
             }
@@ -92,18 +88,20 @@ class LandlordController: UserController {
                 //                print("Landlord returned from completion closure is nil");
                 return
             }
-            createLandlordInFirebase(landlord: landlord, completion: {
-                NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.finishedCreatingLandlord.rawValue), object: nil)
-                NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.creatingProperty.rawValue), object: nil)
-                PropertyController.createPropertyInCoreDataFor(landlord: landlord, completion: { (property) in
-                    guard let property = property else { log("Error creating property"); return }
-                    NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageUploading.rawValue), object: nil)
-                    PropertyController.savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {_ in
-                        NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageFinishedUploading.rawValue), object: nil)
-                        PropertyController.createPropertyInFirebase(property: property) { success in
-                            NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.finishedCreatingProperty.rawValue), object: nil)
-                            completion()
-                        }
+            LandlordController.saveLandlordProfileImagesToCoreDataAndFirebase(forLandlord: landlord, completion: { 
+                createLandlordInFirebase(landlord: landlord, completion: {
+                    NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.finishedCreatingLandlord.rawValue), object: nil)
+                    NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.creatingProperty.rawValue), object: nil)
+                    PropertyController.createPropertyInCoreDataFor(landlord: landlord, completion: { (property) in
+                        guard let property = property else { log("Error creating property"); return }
+                        NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageUploading.rawValue), object: nil)
+                        PropertyController.savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {_ in
+                            NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageFinishedUploading.rawValue), object: nil)
+                            PropertyController.createPropertyInFirebase(property: property) { success in
+                                NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.finishedCreatingProperty.rawValue), object: nil)
+                                completion()
+                            }
+                        })
                     })
                 })
             })
@@ -146,37 +144,78 @@ class LandlordController: UserController {
         }
     }
     
+    static func fetchLandlordWithOneImageFor(landlordID: String, insertInto context: NSManagedObjectContext? = CoreDataStack.context, completion: @escaping (Landlord?) -> Void) {
+        FirebaseController.landlordsRef.child(landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
+            guard let landlordDictionary = snapshot.value as? [String: Any],
+                let landlord = Landlord(dictionary: landlordDictionary, id: landlordID, context: context)
+                else {
+                    log("couldn't create landlord")
+                    completion(nil)
+                    return
+            }
+            guard let imageURLs = landlordDictionary[UserController.kImageURLS] as? [String]
+                else {
+                    log("no landlord image URLs")
+                    completion(landlord)
+                    return
+            }
+            if let imageURL = imageURLs.first {
+                FirebaseController.downloadAndAddImagesFor(landlord: landlord, insertInto: context, profileImageURLs: [imageURL], completion: { (success) in
+                    if success {
+                        log("landlord images downloaded")
+                    }
+                    completion(landlord)
+                })
+            } else {
+                completion(nil)
+            }
+        })
+    }
+    
     static func fetchLandlordFromFirebaseFor(landlordID: String, insertInto context: NSManagedObjectContext? = CoreDataStack.context, completion: @escaping (Landlord?) -> Void) {
         
         FirebaseController.landlordsRef.child(landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
-            RenterController.getFirstRenterID(completion: { (renterID) in
-                guard let landlordDictionary = snapshot.value as? [String: Any] else { log("couldn't create landlord"); completion(nil); return }
-                //                landlordDictionary[UserController.kStartAt] = renterID
-                guard let landlord = Landlord(dictionary: landlordDictionary, id: landlordID, context: context) else { log("couldn't create landlord"); completion(nil); return }
+//            RenterController.getFirstRenterID(completion: { (renterID) in
+            //                landlordDictionary[UserController.kStartAt] = renterID
+            guard let landlordDictionary = snapshot.value as? [String: Any],
+                let landlord = Landlord(dictionary: landlordDictionary, id: landlordID, context: context),
+                let imageURLs = landlordDictionary[UserController.kImageURLS] as? [String]
+                else {
+                    log("couldn't create landlord")
+                    completion(nil)
+                    return
+            }
+            
+            FirebaseController.downloadAndAddImagesFor(landlord: landlord, insertInto: context, profileImageURLs: imageURLs, completion: { (success) in
+                if success {
+                    log("landlord images downloaded")
+                } else {
+                }
+            })
+            
+            FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                FirebaseController.propertiesRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                    
-                    // At this point, it pull all properties
-                    guard let propertyDictionary = snapshot.value as? [String: [String: Any]] else { return }
-                    
-                    let allProperties = propertyDictionary.flatMap({Property(dictionary: $0.value, context: context)})
-                    let landlordProperties = allProperties.filter({$0.landlordID == landlordID})
-                    let group = DispatchGroup()
-                    
-                    for property in landlordProperties {
-                        group.enter()
-                        PropertyController.downloadAndAddImagesFor(property: property, completion: { (_) in
-                            group.leave()
-                        })
-                        
-                    }
-                    group.notify(queue: DispatchQueue.main, execute: {
-                        for property in landlordProperties { property.landlord = landlord }
-                        
-                        completion(landlord)
+                // At this point, it pull all properties
+                guard let propertyDictionary = snapshot.value as? [String: [String: Any]] else { return }
+                
+                let allProperties = propertyDictionary.flatMap({Property(dictionary: $0.value, context: context)})
+                let landlordProperties = allProperties.filter({$0.landlordID == landlordID})
+                let group = DispatchGroup()
+                
+                for property in landlordProperties {
+                    group.enter()
+                    PropertyController.downloadAndAddImagesFor(property: property, completion: { (_) in
+                        group.leave()
                     })
+                    
+                }
+                group.notify(queue: DispatchQueue.main, execute: {
+                    for property in landlordProperties { property.landlord = landlord }
+                    
+                    completion(landlord)
                 })
             })
+//            })
         })
     }
     

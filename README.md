@@ -41,6 +41,9 @@ Firebase SDK (version 3.8.0)
 Geonames.org (http://www.geonames.org/export/web-services.html)
   - I am getting city names and locations using this api
 
+DropDown SDK - MIT license
+  - Drop down extension. Used for showing locations suggestions when signing up. 
+
 ### Maintenance Notes
 
 #### Getting Setup for Development
