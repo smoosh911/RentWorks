@@ -184,7 +184,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 log(error)
             }
         }
-        
     }
 }
 
