@@ -13,7 +13,7 @@ class FadeSegue: UIStoryboardSegue {
     
     override func perform() {
         let src: UIViewController = self.source
-        let dst: UIViewController = self.destination
+//        let dst: UIViewController = self.destination
         let transition: CATransition = CATransition()
         let timeFunc : CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         transition.duration = 0.25

@@ -10,12 +10,12 @@ import Foundation
 import CoreData
 
 extension Occupation {
-    @discardableResult convenience init?(occupation: String, landlordOrRenter: Any, context: NSManagedObjectContext? = CoreDataStack.context) {
+    @discardableResult convenience init?(occupationTitle: String, employer: String, city: String, state: String, address: String, startDate: Date?, endDate: Date?, landlordOrRenter: Any, context: NSManagedObjectContext? = CoreDataStack.context) {
         
         if let context = context {
             self.init(context: context)
         } else {
-            self.init(entity: HasBeenViewedBy.entity(), insertInto: nil)
+            self.init(entity: Occupation.entity(), insertInto: nil)
         }
         // TODO: - Change this to not a static value
         
@@ -25,6 +25,12 @@ extension Occupation {
             self.user = renter
         }
         
-        self.title = occupation
+        self.title = occupationTitle
+        self.employer = employer
+        self.city = city
+        self.state = state
+        self.address = address
+        self.startDate = startDate as NSDate?
+        self.endDate = endDate as NSDate?
     }
 }

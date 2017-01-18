@@ -7,7 +7,7 @@
     </entity>
     <entity name="Landlord" representedClassName="Landlord" parentEntity="User" syncable="YES" codeGenerationType="class">
         <attribute name="wantsCreditRating" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="profileImage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ProfileImage" inverseName="landlord" inverseEntity="ProfileImage" syncable="YES"/>
+        <relationship name="profileImages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ProfileImage" inverseName="landlord" inverseEntity="ProfileImage" syncable="YES"/>
         <relationship name="property" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Property" inverseName="landlord" inverseEntity="Property" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="class">
@@ -19,30 +19,44 @@
         <attribute name="toUserID" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Occupation" representedClassName="Occupation" syncable="YES" codeGenerationType="class">
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="employer" attributeType="String" syncable="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
         <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="occupation" inverseEntity="User" syncable="YES"/>
     </entity>
     <entity name="ProfileImage" representedClassName="ProfileImage" syncable="YES" codeGenerationType="class">
         <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="landlord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Landlord" inverseName="profileImage" inverseEntity="Landlord" syncable="YES"/>
+        <relationship name="landlord" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Landlord" inverseName="profileImages" inverseEntity="Landlord" syncable="YES"/>
         <relationship name="property" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Property" inverseName="profileImages" inverseEntity="Property" syncable="YES"/>
         <relationship name="renter" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Renter" inverseName="profileImages" inverseEntity="Renter" syncable="YES"/>
     </entity>
     <entity name="Property" representedClassName="Property" syncable="YES" codeGenerationType="class">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="airConditioning" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="availableDate" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="backyard" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="bathroomCount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="bedroomCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dishwasher" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="garage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="gym" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="heating" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="kitchen" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="landlordID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="leaseEnd" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="leaseLengthMonths" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="livingRoom" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="monthlyPayment" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="petFriendly" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="pool" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="propertyDescription" optional="YES" attributeType="String" syncable="YES"/>
@@ -51,18 +65,33 @@
         <attribute name="smokingAllowed" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="startAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="storage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="utilities" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="washerDryer" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="wifi" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="hasBeenViewedBy" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="HasBeenViewedBy" inverseName="property" inverseEntity="HasBeenViewedBy" syncable="YES"/>
         <relationship name="landlord" optional="YES" maxCount="1" deletionRule="Nullify" ordered="YES" destinationEntity="Landlord" inverseName="property" inverseEntity="Landlord" syncable="YES"/>
         <relationship name="profileImages" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="ProfileImage" inverseName="property" inverseEntity="ProfileImage" syncable="YES"/>
     </entity>
     <entity name="Renter" representedClassName="Renter" parentEntity="User" syncable="YES" codeGenerationType="class">
-        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bankruptcies" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="bio" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="creditRating" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="criminalHistory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="driversLicenceNum" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="driversLicensePicURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="evictionHistory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="income" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isStudent" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isVerified" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="maritalStatus" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="previousAddress" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reasonForLeaving" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="school" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="startAt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="studentID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="studentPhotoIDURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wantedBathroomCount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="wantedBedroomCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="wantedCity" optional="YES" attributeType="String" syncable="YES"/>
@@ -84,11 +113,12 @@
     <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
         <attribute name="birthday" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="currentOccupation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateAdded" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="occupationHistory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="phoneNumber" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="starRating" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="withinRangeMiles" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="occupation" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Occupation" inverseName="user" inverseEntity="Occupation" syncable="YES"/>
@@ -96,11 +126,11 @@
     <elements>
         <element name="HasBeenViewedBy" positionX="-38" positionY="486" width="128" height="88"/>
         <element name="Landlord" positionX="225" positionY="189" width="128" height="88"/>
-        <element name="Occupation" positionX="-333" positionY="-0" width="128" height="73"/>
-        <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="133"/>
-        <element name="Property" positionX="223" positionY="324" width="128" height="418"/>
-        <element name="Renter" positionX="-308" positionY="180" width="146" height="373"/>
-        <element name="User" positionX="-2" positionY="-52" width="128" height="193"/>
         <element name="Message" positionX="207" positionY="-0" width="128" height="133"/>
+        <element name="Occupation" positionX="-333" positionY="-0" width="128" height="163"/>
+        <element name="ProfileImage" positionX="-11" positionY="183" width="128" height="133"/>
+        <element name="Property" positionX="223" positionY="324" width="128" height="583"/>
+        <element name="Renter" positionX="-308" positionY="198" width="146" height="553"/>
+        <element name="User" positionX="-11" positionY="-198" width="128" height="210"/>
     </elements>
 </model>

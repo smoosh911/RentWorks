@@ -11,21 +11,21 @@ import CoreData
 
 extension Landlord {
     
-    @discardableResult convenience init?(email: String, firstName: String, lastName: String, id: String, starRating: Double = 5.0, context: NSManagedObjectContext? = CoreDataStack.context) {
-        
-        if let context = context {
-            self.init(context: context)
-        } else {
-            self.init(entity: Landlord.entity(), insertInto: nil)
-        }
-        
-        self.birthday = birthday
-        self.email = email
-        self.firstName = firstName
-        self.lastName = lastName
-        self.id = id
-        self.starRating = starRating
-    }
+//    @discardableResult convenience init?(email: String, firstName: String, lastName: String, id: String, starRating: Double = 5.0, context: NSManagedObjectContext? = CoreDataStack.context) {
+//        
+//        if let context = context {
+//            self.init(context: context)
+//        } else {
+//            self.init(entity: Landlord.entity(), insertInto: nil)
+//        }
+//        
+//        self.birthday = birthday
+//        self.email = email
+//        self.firstName = firstName
+//        self.lastName = lastName
+//        self.id = id
+//        self.starRating = starRating
+//    }
     
     @discardableResult convenience init?(dictionary: [String: Any], id: String? = nil, context: NSManagedObjectContext? = CoreDataStack.context) {
         guard let email = dictionary[UserController.kEmail] as? String,
@@ -47,7 +47,7 @@ extension Landlord {
         if let withinRangeMiles = dictionary[UserController.kWithinRangeMiles] as? Int {
             self.withinRangeMiles = Int16(withinRangeMiles)
         } else {
-            self.withinRangeMiles = 5
+            self.withinRangeMiles = 50
         }
         
         if let starRating = dictionary[UserController.kStarRating] as? Double {

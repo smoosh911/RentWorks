@@ -26,6 +26,7 @@ class LandlordMessagingViewController: MessagingViewController {
         }
         
         self.landlord = landlord
+        lblNameOfPersonMessging.text = renter.firstName
     }
     
     override func sendMessage(messageText: String, completion: @escaping (_ success: Bool) -> Void) {
@@ -79,5 +80,35 @@ class LandlordMessagingViewController: MessagingViewController {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         self.messages = self.getMessages()
         return messages.count
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.CollectionViewCells.MessageCell.rawValue, for: indexPath) as! MessageCollectionViewCell
+        
+        let message = messages[indexPath.row]
+        
+        cell.txtvwMessage.text = message.message
+        styleMessageTextView(forCell: cell, withMessage: message)
+        setMessageImage(forCell: cell)
+        
+        if indexPath.row == (messages.count - 1) {
+            lastCollectionViewItemIndexPath = indexPath
+        }
+        
+        return cell
+    }
+    
+    // MARK: collectionview helper functions
+    
+    private func setMessageImage(forCell cell: MessageCollectionViewCell) {
+        var profilePicture: UIImage?
+        if let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
+            profilePicture = profilePic
+        } else {
+            log("ERROR: couldn't load a profile image")
+            profilePicture = #imageLiteral(resourceName: "noImageProfile90x90")
+        }
+        cell.imgSender.image = profilePicture
+        cell.imgSender.layer.cornerRadius = cell.imgSender.frame.width / 2
     }
 }

@@ -38,33 +38,6 @@ class FirebaseController {
     
     // MARK: - Image storage/downloading
     
-//    static func downloadAndAddImagesFor(property: Property, completion: @escaping (_ success: Bool) -> Void) {
-//        guard let propertyProfileImages = property.profileImages?.array as? [ProfileImage] else { return }
-//        let profileImageURLs = propertyProfileImages.flatMap({$0.imageURL})
-//        
-//        let group = DispatchGroup()
-//        
-//        for imageURL in profileImageURLs {
-//            group.enter()
-//            let imageRef = FIRStorage.storage().reference(forURL: imageURL)
-//            
-//            imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
-//                guard let imageData = imageData, error == nil, let propertyID = property.propertyID else { group.leave(); completion(false); return }
-//                
-//                _ = ProfileImage(userID: propertyID, imageData: imageData as NSData, renter: nil, property: property, imageURL: imageURL, context: property.managedObjectContext)
-//                
-//                if property.managedObjectContext != nil {
-////                    UserController.saveToPersistentStore()
-//                }
-//                group.leave()
-//            }
-//        }
-//        
-//        group.notify(queue: DispatchQueue.main) {
-//            completion(true)
-//        }
-//    }
-    
     static func downloadAndAddImagesFor(renter: Renter, insertInto context: NSManagedObjectContext?, profileImageURLs: [String], completion: @escaping (_ success: Bool) -> Void) {
         
         let group = DispatchGroup()
@@ -90,69 +63,30 @@ class FirebaseController {
         }
     }
     
-    
-    
-//    static func downloadProfileImage(forUser user: User, and property: Property?, completion: @escaping (_ success: Bool) -> Void) {
-//        
-//        var profileImageRef = profileImagesRef
-//        
-//        
-//        if let renter = user as? Renter {
-//            guard let userID = user.id else { completion(false); return }
-//            profileImageRef = profileImageRef.child(userID)
-//            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
-//                
-//                guard let imageData = imageData, let imageURL = renter.profile, error == nil else { completion(false); return }
-//                
-//                _ = ProfileImage(userID: userID, imageData: imageData as NSData, renter: renter, property: nil)
-////                UserController.saveToPersistentStore()
-//            }
-//        } else if let propertyID = property?.propertyID, let landlordID = property?.landlord?.id, user as? Renter == nil {
-//            
-//            profileImageRef = profileImageRef.child(landlordID).child(propertyID)
-//            
-//            profileImageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
-//                
-//                guard let imageData = imageData, error == nil else { completion(false); return }
-//                
-//                _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, renter: nil, property: property)
-////                UserController.saveToPersistentStore()
-//            }
-//            completion(true)
-//        }
-//    }
-    
-//    static func downloadAndAddProfileImages(forUsers users: [User], andProperties properties: [Property]?, completion: (() -> Void)? = nil) {
-//        
-//        let group = DispatchGroup()
-//        
-//        for user in users {
-//            group.enter()
-//            downloadProfileImage(forUser: user, and: nil, completion: { (success) in
-//                
-//                
-//                //                user.profilePic = image
-//                group.leave()
-//            })
-//        }
-//        
-//        
-//        group.notify(queue: DispatchQueue.main) {
-//            completion?()
-//        }
-//        
-//    }
-    
-//    static func downloadProfileImageFor(id: String, completion: @escaping (UIImage?) -> Void) {
-//        
-//        let profileImageRef = profileImagesRef.child("\(id).jpg")
-//        
-//        profileImageRef.data(withMaxSize: 1 * 1024 * 1024) { (data, error) in
-//            if let error = error { print(error.localizedDescription) }
-//            guard let data = data, let image = UIImage(data: data) else { completion(nil); return }
-//            completion(image)
-//        }
-//    }
+    static func downloadAndAddImagesFor(landlord: Landlord, insertInto context: NSManagedObjectContext?, profileImageURLs: [String], completion: @escaping (_ success: Bool) -> Void) {
+        
+        let group = DispatchGroup()
+        
+        for imageURL in profileImageURLs {
+            group.enter()
+            let imageRef = FIRStorage.storage().reference(forURL: imageURL)
+            
+            imageRef.data(withMaxSize: 2 * 1024 * 1024) { (imageData, error) in
+                guard let imageData = imageData, error == nil, let landlordID = landlord.id else { group.leave(); completion(false); return }
+                
+                _ = ProfileImage(userID: landlordID, imageData: imageData as NSData, user: landlord, property: nil, imageURL: imageURL)
+                
+                if context != nil {
+                    //                    UserController.saveToPersistentStore()
+                }
+                group.leave()
+            }
+        }
+        
+        group.notify(queue: DispatchQueue.main) {
+            completion(true)
+        }
+    }
     
     static func downloadProfileImageFor(property: Property, withURL url: String, completion: @escaping () -> Void) {
         
@@ -180,44 +114,6 @@ class FirebaseController {
             completion(testUsers)
         })
     }
-    
-    // WARNING: - At its current state, this function will pull ALL the users, INCLUDING their profile pictures from Firebase. This is not a final function, but only to test.
-    
-    //    static func getAllFirebaseUsersAndTheirProfilePictures(completion: (([TestUser]?) -> Void)? = nil) {
-    //
-    //        // TODO: - Make an alertController that will tell the user that the cards (users) are loading so that all this stuff below can run.
-    //        AuthenticationController.checkFirebaseLoginStatus { (loggedIn) in
-    //            if loggedIn {
-    //
-    //                FirebaseController.fetchAllFirebaseUsers { (testUsers) in
-    //                    guard let testUsers = testUsers else { return }
-    //                    let group = DispatchGroup()
-    //                    for user in testUsers {
-    //                        group.enter()
-    //                        //                        FirebaseController.downloadProfileImage(forUser: user, and: nil, completion: { (image) in
-    //                        //                            guard let image = image else { group.leave(); return }
-    //                        //                            user.profilePic = image
-    //                        //                            group.leave()
-    //                        //                        })
-    //                    }
-    //
-    //                    group.notify(queue: DispatchQueue.main, execute: {
-    //                        // Dismiss the alertController here.
-    //                        self.users = testUsers.filter({$0 != AuthenticationController.currentUser})
-    //                        completion?(users)
-    //
-    //                    })
-    //                }
-    //            } else {
-    //                AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
-    //                    if success {
-    //                        getAllFirebaseUsersAndTheirProfilePictures(completion: nil)
-    //                    }
-    //                })
-    //                print("Not logged in")
-    //            }
-    //        }
-    //    }
     
     static func fetchUsersFor(userIDs: [String], completion: @escaping ([TestUser?]) -> Void) {
         let group = DispatchGroup()
@@ -295,12 +191,10 @@ class FirebaseController {
                 log(ErrorManager.MessagingError.subscribingToUser.rawValue)
             }
             
-            
             UserController.currentUserID = userID
             
             AuthenticationController.attemptToSignInToFirebase(completion: { (success) in
                 if success {
-                    
                     
                     let group = DispatchGroup()
                     var success = false
@@ -418,27 +312,27 @@ class FirebaseController {
         }
     }
     
-    static func store(profileImage: UIImage, forUser user: TestUser, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
-        
-        let profileImageRef = profileImagesRef.child(user.id)
-        guard let imageData = UIImageJPEGRepresentation(profileImage, 1.0) else { return }
-        
-        let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
-        
-        uploadTask.resume()
-        
-        uploadTask.observe(.progress) { (snapshot) in
-            if let progress = snapshot.progress {
-                let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
-                print("Upload percentage: \(percentComplete)%")
-            }
-        }
-        
-        uploadTask.observe(.failure) { (snapshot) in
-            guard let storageError = snapshot.error else { return }
-            print(storageError.localizedDescription)
-        }
-    }
+//    static func store(profileImage: UIImage, forUser user: TestUser, completion: @escaping (FIRStorageMetadata?, Error?) -> Void) {
+//        
+//        let profileImageRef = profileImagesRef.child(user.id)
+//        guard let imageData = UIImageJPEGRepresentation(profileImage, 1.0) else { return }
+//        
+//        let uploadTask = profileImageRef.put(imageData, metadata: nil, completion: completion)
+//        
+//        uploadTask.resume()
+//        
+//        uploadTask.observe(.progress) { (snapshot) in
+//            if let progress = snapshot.progress {
+//                let percentComplete = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
+//                print("Upload percentage: \(percentComplete)%")
+//            }
+//        }
+//        
+//        uploadTask.observe(.failure) { (snapshot) in
+//            guard let storageError = snapshot.error else { return }
+//            print(storageError.localizedDescription)
+//        }
+//    }
     
     static func store(profileImage: UIImage, forUserID userID: String, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?, Data?) -> Void) {
         
