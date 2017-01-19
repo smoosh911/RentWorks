@@ -25,7 +25,7 @@ class LandlordController: UserController {
     
     static func saveLandlordProfileImagesToCoreDataAndFirebase(forLandlord landlord: Landlord, completion: @escaping () -> Void) {
       
-        FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080) { (image) in
+        FacebookRequestController.requestImageForCurrentUserWith(height: 480, width: 480) { (image) in
             guard let image = image, let lanlordID = landlord.id else { return }
             let group = DispatchGroup()
             
