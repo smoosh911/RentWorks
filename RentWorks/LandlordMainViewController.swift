@@ -13,6 +13,7 @@ class LandlordMainViewController: MainViewController {
     // MARK: outlets
     
     @IBOutlet weak var vwLoadingNewCards: UIView!
+    @IBOutlet weak var vwNoMoreCards: UIView!
     
     @IBOutlet weak var lblFrontCardCreditRating: UILabel!
     @IBOutlet weak var lblRenterOccupation: UILabel!
@@ -41,6 +42,7 @@ class LandlordMainViewController: MainViewController {
         didSet {
             if cardsAreLoading {
                 vwLoadingNewCards.isHidden = false
+                vwNoMoreCards.isHidden = true
             } else {
                 vwLoadingNewCards.isHidden = true
             }
@@ -66,7 +68,9 @@ class LandlordMainViewController: MainViewController {
     
     @IBAction func btnResetCards_TouchedUpInside(_ sender: Any) {
         LandlordController.eraseAllHasBeenViewedByForLandlordFromRenters(landlordID: UserController.currentUserID!, completion: {
-            self.downloadMoreCards()
+            UserController.renterFetchCount = 0
+            PropertyController.resetStartAtForAllPropertiesInFirebase()
+            self.updateCardUI()
         })
     }
     
@@ -142,6 +146,11 @@ class LandlordMainViewController: MainViewController {
         MatchController.addCurrentProperty(property: property, toLikelistOf: renter)
     }
     
+    func swipableView(_ swipableView: RWKSwipeableView, didReject cardEntity: Any) {
+        guard let renter = cardEntity as? Renter, let renterID = renter.id, let propertyID = self.property.propertyID else { return }
+        PropertyController.reject(renterID: renterID, forPropertyID: propertyID)
+    }
+    
     // MARK: segues
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -167,7 +176,8 @@ class LandlordMainViewController: MainViewController {
             if super.previousVCWasCardsLoadingVC {
                 super.previousVCWasCardsLoadingVC = false
             } else if UserController.renterFetchCount == 1 { // if fetch count is one here then the last card in the database has already been pulled
-                performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+//                performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+                vwNoMoreCards.isHidden = false
                 return
             }
             FirebaseController.isFetchingNewRenters = true

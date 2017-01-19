@@ -11,7 +11,12 @@ import CoreData
 import Firebase
 
 class PropertyController: UserController {
+    
     // MARK: - Property Functions
+    
+    static func reject(renterID: String, forPropertyID propertyID: String) {
+        FirebaseController.propertiesRef.child(propertyID).child(UserController.kRejects).child(renterID).setValue(true)
+    }
     
     // needs work: user getfirstRenter func
     static func resetStartAtForPropertyInFirebase(property: Property) {

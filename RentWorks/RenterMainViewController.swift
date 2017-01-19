@@ -13,6 +13,7 @@ class RenterMainViewController: MainViewController {
     // MARK: outlets
     
     @IBOutlet weak var vwLoadingNewCards: UIView!
+    @IBOutlet weak var vwNoMoreCards: UIView!
     
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var bedroomCountLabel: UILabel!
@@ -47,6 +48,7 @@ class RenterMainViewController: MainViewController {
         didSet {
             if cardsAreLoading {
                 vwLoadingNewCards.isHidden = false
+                vwNoMoreCards.isHidden = true
             } else {
                 vwLoadingNewCards.isHidden = true
             }
@@ -69,10 +71,6 @@ class RenterMainViewController: MainViewController {
         } else {
             if SettingsViewController.settingsDidChange {
                 SettingsViewController.settingsDidChange = false
-                filteredProperties = getFilteredProperties()
-                if filteredProperties.isEmpty && UserController.propertyFetchCount == 1 {
-                    self.performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
-                }
                 self.updateCardUI()
             }
         }
@@ -82,7 +80,10 @@ class RenterMainViewController: MainViewController {
     
     @IBAction func btnResetCards_TouchedUpInside(_ sender: UIButton) {
         RenterController.eraseAllHasBeenViewedByForRenterFromProperties(renterID: UserController.currentUserID!, completion: {
-            self.downloadMoreCards()
+            guard let renter = UserController.currentRenter, let renterID = renter.id else { return }
+            UserController.propertyFetchCount = 0
+            RenterController.resetStartAtForRenterInFirebase(renterID: renterID)
+            self.updateCardUI()
         })
     }
     
@@ -175,6 +176,11 @@ class RenterMainViewController: MainViewController {
         MatchController.addCurrentRenter(renter: renter, toLikelistOf: property)
     }
     
+    func swipableView(_ swipableView: RWKSwipeableView, didReject cardEntity: Any) {
+        guard let property = cardEntity as? Property, let propertyID = property.propertyID, let renter = UserController.currentRenter, let renterID = renter.id else { return }
+        RenterController.reject(propertyID: propertyID, forRenterID: renterID)
+    }
+    
     // MARK: segues
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -204,7 +210,8 @@ class RenterMainViewController: MainViewController {
             if super.previousVCWasCardsLoadingVC {
                 super.previousVCWasCardsLoadingVC = false
             } else if UserController.propertyFetchCount == 1 { // if fetch count is one here then the last card in the database has already been pulled
-                performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+//                performSegue(withIdentifier: Identifiers.Segues.MoreCardsVC.rawValue, sender: self)
+                vwNoMoreCards.isHidden = false
                 return
             }
             FirebaseController.isFetchingNewProperties = true

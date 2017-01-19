@@ -120,6 +120,7 @@ extension UserController {
     static let kID = "id"
     static let kLandlordID = "landlordID"
     static let kPropertyID = "propertyID"
+    static let kRejects = "rejects"
     
     // MARK: property features
     

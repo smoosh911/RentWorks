@@ -15,6 +15,10 @@ class RenterController: UserController {
     
     // MARK: - Renter functions
     
+    static func reject(propertyID: String, forRenterID renterID: String) {
+        FirebaseController.rentersRef.child(renterID).child(UserController.kRejects).child(propertyID).setValue(true)
+    }
+    
     static func deleteRenterPropertyMatchInFirebase(propertyID: String, renterID: String) {
         FirebaseController.likesRef.child(propertyID).child(renterID).removeValue()
     }
@@ -405,7 +409,7 @@ class RenterController: UserController {
     static func saveRenterProfileImagesToCoreDataAndFirebase(forRenter renter: Renter, completion: @escaping () -> Void) {
         var count = 0
         
-        FacebookRequestController.requestImageForCurrentUserWith(height: 1080, width: 1080) { (image) in
+        FacebookRequestController.requestImageForCurrentUserWith(height: 480, width: 480) { (image) in
             guard let image = image, let renterID = renter.id else { return }
             userCreationPhotos.append(image)
             
