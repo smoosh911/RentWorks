@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ImageSlideshow
 
 class LandlordCardDetailViewController: DetailCardViewController {
     
@@ -24,7 +25,7 @@ class LandlordCardDetailViewController: DetailCardViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        getExtraProfileImages()
         updateUI()
     }
     
@@ -51,13 +52,36 @@ class LandlordCardDetailViewController: DetailCardViewController {
         lblCreditRating.text = renter.creditRating
         lblOccupation.text = renter.currentOccupation
         
-        var profilePicture: UIImage?
-        if let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
-            profilePicture = profilePic
-        } else {
-            log("ERROR: couldn't load a profile image")
+        guard let profileImages = renter.profileImages else {
+            log("no profile images to view")
+            return
         }
         
-        imgMain.image = profilePicture
+        var profilePicImageSources: [ImageSource] = []
+        for profileImage in profileImages {
+            if let firstProfileImage = profileImage as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
+                let imageSource = ImageSource(image: profilePic)
+                profilePicImageSources.append(imageSource)
+            } else {
+                log("ERROR: couldn't load a profile image")
+            }
+            
+        }
+        
+        imgSlideShow.setImageInputs(profilePicImageSources)
+        imgSlideShow.contentScaleMode = .scaleAspectFill
+    }
+    
+    private func getExtraProfileImages() {
+        guard let renter = renter, let renterID = renter.id else {
+            log("ERROR: couldn't get renter ID")
+            return
+        }
+        RenterController.fetchRenterFromFirebaseFor(renterID: renterID) { (renter) in
+            if renter != nil {
+                self.renter = renter
+                self.updateUI()
+            }
+        }
     }
 }

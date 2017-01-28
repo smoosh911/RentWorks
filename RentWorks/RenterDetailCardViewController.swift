@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import ImageSlideshow
 
 class RenterDetailCardViewController: DetailCardViewController {
     
@@ -23,7 +24,7 @@ class RenterDetailCardViewController: DetailCardViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        getExtraProfileImages()
         updateUI()
     }
     
@@ -49,13 +50,36 @@ class RenterDetailCardViewController: DetailCardViewController {
         lblAddress.text = property.address
         lblPrice.text = "$\(property.monthlyPayment)"
         
-        var profilePicture: UIImage?
-        if let firstProfileImage = property.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
-            profilePicture = profilePic
-        } else {
-            log("ERROR: couldn't load a profile image")
+        guard let profileImages = property.profileImages else {
+            log("no profile images to view")
+            return
         }
         
-        imgMain.image = profilePicture
+        var profilePicImageSources: [ImageSource] = []
+        for profileImage in profileImages {
+            if let firstProfileImage = profileImage as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
+                let imageSource = ImageSource(image: profilePic)
+                profilePicImageSources.append(imageSource)
+            } else {
+                log("ERROR: couldn't load a profile image")
+            }
+            
+        }
+        
+        imgSlideShow.setImageInputs(profilePicImageSources)
+        imgSlideShow.contentScaleMode = .scaleAspectFill
+    }
+    
+    private func getExtraProfileImages() {
+        guard let property = property, let propertyID = property.propertyID else {
+            log("ERROR: couldn't get renter ID")
+            return
+        }
+        PropertyController.fetchAllPropertyImagesFromFirebase(forPropertyID: propertyID) { (property) in
+            if property != nil {
+                self.property = property
+                self.updateUI()
+            }
+        }
     }
 }

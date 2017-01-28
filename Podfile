@@ -17,6 +17,8 @@ pod ‘Firebase/Messaging’
 
 pod 'DropDown'
 
+pod 'ImageSlideshow', '~> 1.0.0'
+
 #target 'RentWorksTests' do
 #  inherit! :search_paths
 #  # Pods for testing

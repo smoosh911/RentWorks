@@ -38,6 +38,36 @@ extension String {
     }
 }
 
+extension UIImage {
+    func resizeImage(longestEdge: CGFloat) -> UIImage {
+        let currentWidth = self.size.width
+        let currentHeight = self.size.height
+        var newWidth: CGFloat = 0.0
+        var newHeight: CGFloat = 0.0
+        var scale: CGFloat = 0.0
+        if currentWidth > currentHeight {
+            newWidth = longestEdge
+            scale = newWidth / self.size.width
+            newHeight = self.size.height * scale
+        } else {
+            newHeight = longestEdge
+            scale = newHeight / self.size.height
+            newWidth = self.size.width * scale
+        }
+        
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        self.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+        guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else {
+            log("ERROR: couldn't resize image")
+            UIGraphicsEndImageContext()
+            return self
+        }
+        UIGraphicsEndImageContext()
+        
+        return newImage
+    }
+}
+
 extension UIViewController {
     func hideKeyboardWhenViewIsTapped(viewToDismissWhenTapped: UIView? = nil) {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))

@@ -115,7 +115,7 @@ class RenterCardDetailsContainerViewController: UITableViewController {
                 swtBackyard.isOn = hasBackyard
                 break
             default:
-                log("no details")
+                log("no details for key \(detail.key)")
             }
         }
     }

@@ -279,7 +279,7 @@ class FirebaseController {
         }
     }
     
-    static func store(profileImage: UIImage, forUserID userID: String, and property: Property?, with count: Int?, completion: @escaping (FIRStorageMetadata?, Error?, Data?) -> Void) {
+    static func store(profileImage: UIImage, forUserID userID: String, and property: Property?, completion: @escaping (FIRStorageMetadata?, Error?, Data?) -> Void) {
         
         var profileImageRef = profileImagesRef.child(userID)
         let imageFileName = "\(Date().timeIntervalSince1970)"
