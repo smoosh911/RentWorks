@@ -299,7 +299,7 @@ class PropertyController: UserController {
             completion()
         })
     }
-    // test github
+    
     static func savePropertyImagesToCoreDataAndFirebase(images: [UIImage], landlord: Landlord, forProperty property: Property, completion: @escaping (_ imageURL: String) -> Void) {
         guard let landlordID = landlord.id else { return }
         let group = DispatchGroup()
