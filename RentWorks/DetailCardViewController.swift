@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import ImageSlideshow
 
 class DetailCardViewController: UIViewController {
     
     // MARK: outlets
     
-    @IBOutlet weak var imgMain: UIImageView!
+    @IBOutlet weak var imgSlideShow: ImageSlideshow!
     
     @IBOutlet weak var starImageView1: UIImageView!
     @IBOutlet weak var starImageView2: UIImageView!

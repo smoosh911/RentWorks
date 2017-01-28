@@ -103,6 +103,29 @@ class PropertyController: UserController {
         })
     }
     
+    static func fetchAllPropertyImagesFromFirebase(forPropertyID propertyID: String, andInsertInto context: NSManagedObjectContext? = CoreDataStack.context, completion: @escaping (Property?) -> Void) {
+        
+        FirebaseController.propertiesRef.child(propertyID).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            guard let propertyDictionary = snapshot.value as? [String: Any], let property = Property(dictionary: propertyDictionary, context: context), let imageURLs = propertyDictionary[UserController.kImageURLS] as? [String] else { completion(nil); return }
+            
+            let group = DispatchGroup()
+            
+            for imageURL in imageURLs {
+                group.enter()
+                FirebaseController.downloadProfileImageFor(property: property, withURL: imageURL, completion: {
+                    print("property image downloaded")
+                    group.leave()
+                })
+            }
+            
+            group.notify(queue: DispatchQueue.main, execute: {
+                completion(property)
+            })
+        })
+        
+    }
+    
     // refactor to not iterate over all propertydict
     static func fetchImagesForProperties(propertiesDict: [String: [String: Any]], coreDataProperties: [Property], completion: @escaping () -> Void) {
         
