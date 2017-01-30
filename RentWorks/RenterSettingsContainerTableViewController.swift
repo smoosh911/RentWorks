@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RenterSettingsContainerTableViewController: UITableViewController, UpdateSettingsDelegate {
+class RenterSettingsContainerTableViewController: UITableViewController, RenterFilterSettingsViewControllerDelegate {
 
     // MARK: outlets
     
@@ -45,10 +45,6 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
         super.viewDidLoad()
         
         updateSettingsInformation()
-        
-        guard let renterSettingsVC = self.parent as? RenterSettingsViewController else { return }
-        renterSettingsVC.delegate = self
-
     }
     
     // MARK: actions
@@ -70,7 +66,10 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
         }
         //        let priceString = "\(Int(sender.value))"
         UserController.currentRenter?.wantedPayment = price
-        RenterController.updateCurrentRenterInFirebase(id: UserController.currentUserID!, attributeToUpdate: filterKeys.kMonthlyPayment.rawValue, newValue: price)
+        if UserController.currentUserID != "" {
+            RenterController.updateCurrentRenterInFirebase(id: UserController.currentUserID!, attributeToUpdate: filterKeys.kMonthlyPayment.rawValue, newValue: price)
+        }
+        
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -87,7 +86,10 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
         let countString = "\(maxDistance)"
         lblMaxDistanceCount.text = countString
         renter?.withinRangeMiles = maxDistance
-        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
+        if UserController.currentUserID != "" {
+            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: UserController.kWithinRangeMiles, newValue: maxDistance)
+        }
+        
         // UserController.saveToPersistentStore()
         updateSettingsChanged()
     }
@@ -101,7 +103,10 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
         let countString = "\(bedroomCount)"
         lblBedroomCount.text = countString
         renter?.wantedBedroomCount = bedroomCount
-        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBedroomCount.rawValue, newValue: bedroomCount)
+        if UserController.currentUserID != "" {
+            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBedroomCount.rawValue, newValue: bedroomCount)
+        }
+        
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -113,7 +118,10 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
         let countString = "\(bathroomCount)"
         lblBathroomCount.text = countString
         renter?.wantedBathroomCount = bathroomCount
-        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: bathroomCount)
+        if UserController.currentUserID != "" {
+            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: bathroomCount)
+        }
+        
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -126,7 +134,10 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
         
         //        let boolString = "\(petsAllowed)"
         renter?.wantsPetFriendly = petsAllowed
-        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: petsAllowed)
+        if UserController.currentUserID != "" {
+            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: petsAllowed)
+        }
+        
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -137,7 +148,10 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
         
         //        let boolString = "\(smokingAllowed)"
         renter?.wantsSmoking = smokingAllowed
-        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: smokingAllowed)
+        if UserController.currentUserID != "" {
+            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: smokingAllowed)
+        }
+        
         updateSettingsChanged()
         // UserController.saveToPersistentStore()
     }
@@ -146,7 +160,9 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
     
     private func updateSettingsInformation() {
         filterSettingsDict = RenterController.getRenterFiltersDictionary()
-        
+        if filterSettingsDict == nil {
+            filterSettingsDict = RenterController.getEmptyRenterFiltersDictionary()
+        }
         guard let filterSettings = filterSettingsDict else { return }
         
         for filter in filterSettings {
@@ -191,7 +207,7 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
                 sldrMaxDistance.value = Float(maxDistance)
                 break
             default:
-                log("no filters")
+                log("no filters for setting \(filter.key)")
             }
         }
     }
@@ -203,7 +219,13 @@ class RenterSettingsContainerTableViewController: UITableViewController, UpdateS
     private func updateSettingsChanged() {
         SettingsViewController.settingsDidChange = true
         UserController.propertyFetchCount = 0
-        RenterController.resetStartAtForRenterInFirebase(renterID: renter!.id!)
+        if UserController.currentUserID != "" {
+            RenterController.resetStartAtForRenterInFirebase(renterID: renter!.id!)
+        } else {
+            PropertyController.getFirstPropertyID(completion: { (propertyID) in
+                self.renter?.startAt = propertyID
+            })
+        }
     }
 
     

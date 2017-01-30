@@ -439,9 +439,24 @@ class RenterController: UserController {
         FirebaseController.rentersRef.child(id).child(attributeToUpdate).setValue(newValue)
     }
     
-    static func getRenterFiltersDictionary() -> [String: Any] {
+    static func getRenterFiltersDictionary() -> [String: Any]? {
         var filterDict: [String: Any] = [String: Any]()
         guard let renter = UserController.currentRenter?.dictionaryRepresentation else {
+            log("ERROR: renter is nil")
+            return nil
+        }
+        
+        for filter in UserController.RenterFilters.allValues {
+            let filterString = filter.rawValue
+            filterDict[filterString] = renter[filterString]
+        }
+        
+        return filterDict
+    }
+    
+    static func getEmptyRenterFiltersDictionary() -> [String: Any]? {
+        var filterDict: [String: Any] = [String: Any]()
+        guard let renter = UserController.currentRenter?.emptyRenterDictionaryRepresentation else {
             log("ERROR: renter is nil")
             return filterDict
         }

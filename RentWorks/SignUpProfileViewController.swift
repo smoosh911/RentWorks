@@ -1,38 +1,31 @@
 //
-//  LoginViewController.swift
+//  SignUpProfileViewController.swift
 //  RentWorks
 //
-//  Created by Spencer Curtis on 10/3/16.
-//  Copyright © 2016 Michael Perry. All rights reserved.
+//  Created by Michael Perry on 1/29/17.
+//  Copyright © 2017 Michael Perry. All rights reserved.
 //
 
-import UIKit
-import FBSDKLoginKit
-import FirebaseDatabase
-import FirebaseStorage
-import FirebaseAuth
+import Foundation
 
-class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
+// needs work: this class is almost the same as the login class
+class SignUpProfileViewController: UIViewController, FBSDKLoginButtonDelegate {
     
     // MARK: outlets
     
-    @IBOutlet weak var btnRenter: UIButton!
-    @IBOutlet weak var btnLandlord: UIButton!
-
+    @IBOutlet weak var lblSignUpOrLogIn: UILabel!
+    
     // MARK: variables
+    
+    let facebookLoginButton = FBSDKLoginButton()
     
     var loadingView: UIView?
     var loadingActivityIndicator: UIActivityIndicatorView?
-    
-    let facebookLoginButton = FBSDKLoginButton()
     
     // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        btnRenter.layer.cornerRadius = 10
-        btnLandlord.layer.cornerRadius = 10
         
         facebookLoginButton.delegate = self
         facebookLoginButton.loginBehavior = .web
@@ -45,44 +38,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         constraintsForFacebookLoginButton()
     }
     
-    // MARK: actions
-    
-    @IBAction func btnRenterOrLandlord_TouchedUpInside(_ sender: UIButton) {
-        FIRAuth.auth()?.signInAnonymously(completion: { (user, error) in
-            if error != nil {
-                log(error!)
-                return
-            }
-            guard let buttonLabel = sender.titleLabel, let buttonText = buttonLabel.text else {
-                return
-            }
-            self.performCorrectSegue(buttonText: buttonText)
-        })
-    }
-    
-    // MARK: segues
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == Identifiers.Segues.renterMainVC.rawValue {
-            UserController.userCreationType = "renter"
-            UserController.currentUserType = "renter"
-            UserController.currentRenter = Renter(isEmpty: true)
-        } else if segue.identifier == "toLandlordPageVC" {
-            UserController.userCreationType = "landlord"
-            UserController.currentUserType = "landlord"
-        }
-    }
-    
-    // MARK: helper functions
-    
-    private func performCorrectSegue(buttonText: String) {
-        if buttonText == "Renter" {
-            performSegue(withIdentifier: Identifiers.Segues.renterMainVC.rawValue, sender: self)
-        } else {
-            
-        }
-    }
+    // MARK: facebook login button delegate
     
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         var validBirthday = false // Make sure user has birthday on facebook and they are older than 18
@@ -153,6 +109,8 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         return true
     }
     
+    // MARK: helper functions
+    
     func setUpAndDisplayLoadingScreen() {
         self.loadingView = UIView(frame: self.view.frame)
         self.loadingActivityIndicator = UIActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25, y: self.view.center.y - 25, width: 50, height: 50))
@@ -185,8 +143,6 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         }
     }
     
-    // MARK: alerts
-    
     func displayNoAccountCreatedAlert() {
         let alert = UIAlertController(title: "Hold on a second!", message: "Thanks for logging into Facebook, but you haven't created an account yet. Please tap the 'Create account' button below to begin creating your Venga account!", preferredStyle: .alert)
         
@@ -215,19 +171,17 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
+
     func constraintsForFacebookLoginButton() {
         facebookLoginButton.translatesAutoresizingMaskIntoConstraints = false
         
-        let widthConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal, toItem: btnRenter, attribute: .width, multiplier: 1, constant: 0)
-
-        let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: btnRenter, attribute: .height, multiplier: 3/5, constant: 0)
+        let widthConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .width, relatedBy: .equal, toItem: lblSignUpOrLogIn, attribute: .width, multiplier: 1, constant: 0)
+        
+        let heightConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .height, relatedBy: .equal, toItem: lblSignUpOrLogIn, attribute: .height, multiplier: 3/5, constant: 0)
         
         let centerXConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1, constant: 0)
-        let yConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .bottom, relatedBy: .equal, toItem: btnRenter, attribute: .top, multiplier: 1, constant: -20)
+        let yConstraint = NSLayoutConstraint(item: facebookLoginButton, attribute: .bottom, relatedBy: .equal, toItem: lblSignUpOrLogIn, attribute: .top, multiplier: 1, constant: -20)
         
         self.view.addConstraints([widthConstraint, heightConstraint, centerXConstraint, yConstraint])
     }
-
 }

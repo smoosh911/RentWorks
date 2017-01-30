@@ -64,7 +64,7 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     
     var matchingUsersAlertController: UIAlertController?
     
-    let paddingConstant: CGFloat = 12.0 // this is for the swiping animations in the extension below
+    let paddingConstant: CGFloat = -18.0 // this is for the swiping animations in the extension below
     
     // MARK: View life cycles
     
@@ -82,6 +82,16 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         MatchController.delegate = self
+    }
+    
+    // MARK: actions
+    
+    @IBAction func btnProfile_TouchedUpInside(_ sender: Any) {
+        if UserController.currentUserID == "" {
+            performSegue(withIdentifier: Identifiers.Segues.signUpProfileVC.rawValue, sender: self)
+        } else {
+            performSegue(withIdentifier: Identifiers.Segues.profileVC.rawValue, sender: self)
+        }
     }
     
     // MARK: helper 

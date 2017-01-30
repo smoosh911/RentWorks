@@ -25,6 +25,10 @@ class Identifiers {
         case chooseAccountTypeVC = "toAccountTypeVC"
         case propertyDetailContainterVC = "detailsContainerVC"
         case messagingVC = "segueToMessagingVC"
+        case renterMainVC = "segueToRenterMainVC"
+        case renterFilterVC = "segueToFiltersVC"
+        case profileVC = "segueToProfileVC"
+        case signUpProfileVC = "segueToSignUpProfileVC"
     }
     
     enum ViewControllers: String {

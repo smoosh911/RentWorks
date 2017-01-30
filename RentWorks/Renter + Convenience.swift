@@ -175,4 +175,32 @@ extension Renter {
         self.studentID = dictionary[UserController.kStudentID] as? String ?? ""
         self.studentPhotoIDURL = dictionary[UserController.kStudentPhotoIdURL] as? String ?? ""
     }
+    
+    @discardableResult convenience init?(isEmpty: Bool, context: NSManagedObjectContext? = CoreDataStack.context) {
+        
+        if let context = context {
+            self.init(context: context)
+        } else {
+            self.init(entity: Renter.entity(), insertInto: nil)
+        }
+        
+        UserController.currentUserID = ""
+        
+        self.wantedZipCode = ""
+        self.wantedCity = ""
+        self.wantedState = ""
+        self.wantedCountry = ""
+        self.wantsPetFriendly = false
+        self.wantedPayment = 3000
+        self.wantedBedroomCount = 1
+        self.wantedBathroomCount = 1
+        self.withinRangeMiles = 50
+        self.wantsSmoking = false
+        self.wantsWasherDryer = false
+        self.wantsGarage = false
+        self.wantsDishwasher = false
+        self.wantsBackyard = false
+        self.wantsPool = false
+        self.wantsGym = false
+    }
 }

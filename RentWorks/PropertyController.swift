@@ -73,56 +73,73 @@ class PropertyController: UserController {
     // don't grab directly from currentRenter.startAt
     static func fetchProperties(numberOfProperties: UInt, completion: @escaping () -> Void) {
         if UserController.propertyFetchCount == 1 { // if fecth count is one then you are at the end of the database
-            completion()
             let warning = "WARNING: out of properties"
             log(warning)
-            return
-        }
-        guard let renter = currentRenter, let startAt = renter.startAt else {
             completion()
-            let errorMessage = "ERROR: couldn't retrieve either renter or startat"
-            log(errorMessage)
             return
         }
-        log(startAt)
-        FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: startAt).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
-            
-            var landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
-            UserController.propertyFetchCount = landlordProperties.count
-            landlordProperties.sort {$0.propertyID! < $1.propertyID!}
-            let lastProperty = landlordProperties.removeLast()
-            // needs work: only get once and store
-            var filteredProperties: [Property] = []
-            let group = DispatchGroup()
-            group.enter()
-            if UserController.propertyFetchCount < 2 {
-                getFilteredProperties(properties: [lastProperty], completion: { properties in
-                    filteredProperties = properties
-                    group.leave()
-                })
-            } else {
-                getFilteredProperties(properties: landlordProperties, completion: { properties in
-                    filteredProperties = properties
-                    if filteredProperties.count < 2 {
-                        RenterController.updateCurrentRenterInFirebase(id: currentUserID!, attributeToUpdate: UserController.kStartAt, newValue: lastProperty.propertyID!)
-                        currentRenter!.startAt = lastProperty.propertyID!
-                    }
-                    group.leave()
-                })
-            }
-            group.notify(queue: .main, execute: {
-                if filteredProperties.isEmpty {
-                    fetchProperties(numberOfProperties: numberOfProperties, completion: {
-                        completion()
+        
+        guard let renter = currentRenter else {
+            let errorMessage = "ERROR: couldn't retrieve renter"
+            log(errorMessage)
+            completion()
+            return
+        }
+        
+        let startAtGroup = DispatchGroup()
+        startAtGroup.enter()
+        var startAt: String!
+        if let renterStartAt = renter.startAt {
+            startAt = renterStartAt
+            startAtGroup.leave()
+        } else {
+            getFirstPropertyID(completion: { (propertyID) in
+                startAt = propertyID
+                startAtGroup.leave()
+            })
+        }
+        startAtGroup.notify(queue: .main) { 
+            FirebaseController.propertiesRef.queryOrderedByKey().queryStarting(atValue: startAt).queryLimited(toFirst: numberOfProperties).observeSingleEvent(of: .value, with: { (snapshot) in
+                guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(); return }
+                
+                var landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
+                UserController.propertyFetchCount = landlordProperties.count
+                landlordProperties.sort {$0.propertyID! < $1.propertyID!}
+                let lastProperty = landlordProperties.removeLast()
+                // needs work: only get once and store
+                var filteredProperties: [Property] = []
+                let group = DispatchGroup()
+                group.enter()
+                if UserController.propertyFetchCount < 2 {
+                    getFilteredProperties(properties: [lastProperty], completion: { properties in
+                        filteredProperties = properties
+                        group.leave()
                     })
                 } else {
-                    fetchOneImageForPropertiesCards(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
-                        completion()
+                    getFilteredProperties(properties: landlordProperties, completion: { properties in
+                        filteredProperties = properties
+                        if filteredProperties.count < 2 {
+                            if currentUserID != "" {
+                                RenterController.updateCurrentRenterInFirebase(id: currentUserID!, attributeToUpdate: UserController.kStartAt, newValue: lastProperty.propertyID!)
+                            }
+                            currentRenter!.startAt = lastProperty.propertyID!
+                        }
+                        group.leave()
                     })
                 }
+                group.notify(queue: .main, execute: {
+                    if filteredProperties.isEmpty {
+                        fetchProperties(numberOfProperties: numberOfProperties, completion: {
+                            completion()
+                        })
+                    } else {
+                        fetchOneImageForPropertiesCards(propertiesDict: allPropertiesDict, coreDataProperties: filteredProperties, completion: {
+                            completion()
+                        })
+                    }
+                })
             })
-        })
+        }
     }
     
     static func createPropertyInCoreDataFor(landlord: Landlord, completion: @escaping (_ property: Property?) -> Void) {
@@ -359,7 +376,13 @@ class PropertyController: UserController {
     // MARK: helper functions
     
     static func getFilteredProperties(properties: [Property], completion: @escaping (_ properties: [Property]) -> Void) {
-        let filterSettingsDict = RenterController.getRenterFiltersDictionary()
+        var filterSettingsDict: [String: Any]!
+        
+        if let filterDict = RenterController.getRenterFiltersDictionary() {
+            filterSettingsDict = filterDict
+        } else if let filterDict = RenterController.getEmptyRenterFiltersDictionary() {
+            filterSettingsDict = filterDict
+        }
         
         guard let desiredBathroomCount = filterSettingsDict[RenterFilters.kBathroomCount.rawValue] as? Double,
             let desiredBedroomCount = filterSettingsDict[RenterFilters.kBedroomCount.rawValue] as? Int,
