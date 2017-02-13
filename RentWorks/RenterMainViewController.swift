@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import FirebaseAuth
 
-class RenterMainViewController: MainViewController {
+class RenterMainViewController: MainViewController, RenterFilterSettingsModalViewControllerDelegate {
     
     // MARK: outlets
     
@@ -91,6 +92,17 @@ class RenterMainViewController: MainViewController {
 //        performSegue(withIdentifier: Identifiers.Segues.CardDetailVC.rawValue, sender: self)
     }
     
+    @IBAction func btnMatches_TouchedUpInside(_ sender: Any) {
+        if UIApplication.shared.isRegisteredForRemoteNotifications && FIRAuth.auth()?.currentUser != nil {
+            performSegue(withIdentifier: Identifiers.Segues.renterMatchesVC.rawValue, sender: self)
+        } else if FIRAuth.auth()?.currentUser == nil {
+            AlertManager.alert(withTitle: "Not Logged In", withMessage: "Please sign in to use messaging", dismissTitle: "OK", inViewController: self)
+        } else {
+            AlertManager.alert(withTitle: "Notification Disabled", withMessage: "Please enable notifications in order to use messages", dismissTitle: "OK", inViewController: self)
+        }
+        
+    }
+    
     // MARK: Swipableview delegate
     
     override func updateCardUI() {
@@ -124,7 +136,9 @@ class RenterMainViewController: MainViewController {
             log("ERROR: couldn't load a profile image")
         }
         
-        RenterController.updateCurrentRenterInFirebase(id: renterID, attributeToUpdate: UserController.kStartAt, newValue: propertyID)
+        if UserController.currentUserID != "" {
+            RenterController.updateCurrentRenterInFirebase(id: renterID, attributeToUpdate: UserController.kStartAt, newValue: propertyID)
+        }
         
         imageView.image = profilePicture
         nameLabel.text = address
@@ -200,10 +214,21 @@ class RenterMainViewController: MainViewController {
             if let destinationVC = segue.destination as? RenterDetailCardViewController, let property = currentCardProperty {
                 destinationVC.property = property
             }
+        } else if segue.identifier == Identifiers.Segues.filterVC.rawValue {
+            if let destinationVC = segue.destination as? RenterFilterSettingsViewController {
+                destinationVC.modalViewDelegate = self
+            }
         }
     }
     
     // MARK: helper methods
+    
+    internal func viewDismissed() {
+        if SettingsViewController.settingsDidChange {
+            SettingsViewController.settingsDidChange = false
+            self.updateCardUI()
+        }
+    }
     
     func downloadMoreCards() {
         if !FirebaseController.isFetchingNewProperties {

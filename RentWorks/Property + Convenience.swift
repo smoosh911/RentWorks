@@ -136,4 +136,32 @@ extension Property {
         self.propertyDescription = "No description yet!"
         self.propertyID = UUID().uuidString
     }
+    
+    // this third initializer exists for landlords that don't have a login yet
+    // isEmpty has no purpose other than to allow us to overload this function without overriding the default initializer
+    @discardableResult convenience init?(isEmpty: Bool, context: NSManagedObjectContext? = CoreDataStack.context) {
+        
+        self.init(entity: Property.entity(), insertInto: context)
+        
+        self.availableDate = NSDate()
+        self.bathroomCount = 1
+        self.bedroomCount = 1
+        self.monthlyPayment = 0
+        self.petFriendly = false
+        self.smokingAllowed = false
+        self.rentalHistoryRating = 0.0
+        self.address = ""
+        self.zipCode = ""
+        self.city = ""
+        self.state = ""
+        self.country = ""
+        self.washerDryer = false
+        self.garage = false
+        self.dishwasher = false
+        self.backyard = false
+        self.pool = false
+        self.gym = false
+        self.propertyDescription = "No description yet!"
+        self.propertyID = UUID().uuidString
+    }
 }

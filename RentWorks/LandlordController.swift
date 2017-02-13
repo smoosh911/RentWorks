@@ -92,17 +92,18 @@ class LandlordController: UserController {
                 createLandlordInFirebase(landlord: landlord, completion: {
                     NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.finishedCreatingLandlord.rawValue), object: nil)
                     NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.creatingProperty.rawValue), object: nil)
-                    PropertyController.createPropertyInCoreDataFor(landlord: landlord, completion: { (property) in
-                        guard let property = property else { log("Error creating property"); return }
-                        NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageUploading.rawValue), object: nil)
-                        PropertyController.savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {_ in
-                            NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageFinishedUploading.rawValue), object: nil)
-                            PropertyController.createPropertyInFirebase(property: property) { success in
-                                NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.finishedCreatingProperty.rawValue), object: nil)
-                                completion()
-                            }
-                        })
-                    })
+//                    PropertyController.createPropertyInCoreDataFor(landlord: landlord, completion: { (property) in
+//                        guard let property = property else { log("Error creating property"); return }
+//                        NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageUploading.rawValue), object: nil)
+//                        PropertyController.savePropertyImagesToCoreDataAndFirebase(images: userCreationPhotos, landlord: landlord, forProperty: property, completion: {_ in
+//                            NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.imageFinishedUploading.rawValue), object: nil)
+//                            PropertyController.createPropertyInFirebase(property: property) { success in
+//                                NotificationCenter.default.post(name: Notification.Name(Identifiers.CreatingUserNotificationObserver.finishedCreatingProperty.rawValue), object: nil)
+//                                completion()
+//                            }
+//                        })
+//                    })
+                    completion()
                 })
             })
         }

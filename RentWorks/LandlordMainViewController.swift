@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import FirebaseAuth
 
-class LandlordMainViewController: MainViewController {
+class LandlordMainViewController: MainViewController, LandlordFilterSettingsViewControllerDelegate {
     
     // MARK: outlets
     
@@ -23,7 +24,7 @@ class LandlordMainViewController: MainViewController {
     
     // MARK: variables
     
-    var property: Property! = nil // set from previous VC segue
+    var property: Property? // set from previous VC segue
     var currentCardRenter: Renter? = nil
     
     var filteredRenters: [Renter] = [] {
@@ -56,6 +57,11 @@ class LandlordMainViewController: MainViewController {
         UserController.renterFetchCount = 0 // renter fetch count is shared between properties so we need to restart it when we switch to a new property
         swipeableView.isHidden = true
         backgroundView.isHidden = true
+        
+        if property == nil {
+            self.property = Property(isEmpty: true)
+        }
+        
         updateCardUI()
     }
     
@@ -75,7 +81,30 @@ class LandlordMainViewController: MainViewController {
     }
     
     @IBAction func backNavigationButtonTapped(_ sender: AnyObject) {
-        _ = self.navigationController?.popViewController(animated: true)
+        if FIRAuth.auth()?.currentUser == nil {
+            let alert = UIAlertController(title: "Not Logged In", message: "Must log in to view properties", preferredStyle: .alert)
+            
+            alert.view.tintColor = .black
+            
+            let logInOrCreateAccount = UIAlertAction(title: "Create Account", style: .default, handler: { (alertAction) in
+                self.performSegue(withIdentifier: Identifiers.Segues.signUpProfileVC.rawValue, sender: self)
+            })
+            let dismissAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            
+            alert.addAction(dismissAction)
+            alert.addAction(logInOrCreateAccount)
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            _ = self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    @IBAction func btnMessages_TouchedUpInside(_ sender: Any) {
+        if FIRAuth.auth()?.currentUser == nil {
+            AlertManager.alert(withTitle: "Not Logged In", withMessage: "Must log in to view messages", dismissTitle: "OK", inViewController: self)
+        } else {
+            self.performSegue(withIdentifier: Identifiers.Segues.propertyMatchesVC.rawValue, sender: self)
+        }
     }
     
     // MARK: rwkswipabelview delegate
@@ -102,7 +131,7 @@ class LandlordMainViewController: MainViewController {
             backCardRenter = filteredRenters.first
         }
         
-        guard let renterID = renter.id, let propertyID = property.propertyID else { return }
+        guard let renterID = renter.id, let property = self.property, let propertyID = property.propertyID else { return }
         
         var profilePicture: UIImage?
         if let firstProfileImage = renter.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data) {
@@ -142,12 +171,12 @@ class LandlordMainViewController: MainViewController {
     }
     
     func swipableView(_ swipableView: RWKSwipeableView, didAccept cardEntity: Any) {
-        guard let renter = cardEntity as? Renter else { return }
+        guard let renter = cardEntity as? Renter, let property = self.property else { return }
         MatchController.addCurrentProperty(property: property, toLikelistOf: renter)
     }
     
     func swipableView(_ swipableView: RWKSwipeableView, didReject cardEntity: Any) {
-        guard let renter = cardEntity as? Renter, let renterID = renter.id, let propertyID = self.property.propertyID else { return }
+        guard let renter = cardEntity as? Renter, let renterID = renter.id, let property = self.property, let propertyID = property.propertyID else { return }
         PropertyController.reject(renterID: renterID, forPropertyID: propertyID)
     }
     
@@ -166,10 +195,21 @@ class LandlordMainViewController: MainViewController {
             if let destinationVC = segue.destination as? LandlordCardDetailViewController {
                 destinationVC.renter = currentCardRenter
             }
+        } else if segue.identifier == Identifiers.Segues.filterVC.rawValue {
+            if let destinationVC = segue.destination as? LandlordFilterSettingsViewController {
+                destinationVC.delegate = self
+            }
         }
     }
     
     // MARK: helper methods
+    
+    internal func modalViewDismissed() {
+        if SettingsViewController.settingsDidChange {
+            SettingsViewController.settingsDidChange = false
+            self.updateCardUI()
+        }
+    }
     
     func downloadMoreCards() {
         if !FirebaseController.isFetchingNewRenters {
@@ -182,6 +222,11 @@ class LandlordMainViewController: MainViewController {
             }
             FirebaseController.isFetchingNewRenters = true
             cardsAreLoading = true
+            
+            guard let property = self.property else {
+                log("ERROR: property is nil")
+                return
+            }
             RenterController.fetchRentersForProperty(numberOfRenters: 6, property: property, completion: {
                 FirebaseController.isFetchingNewRenters = false
                 self.cardsAreLoading = false

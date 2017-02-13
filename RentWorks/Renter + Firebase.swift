@@ -9,6 +9,28 @@
 import Foundation
 
 extension Renter {
+    
+    var emptyRenterDictionaryRepresentation: [String: Any]? { // This is only used for users who are not signed in
+        var dictionaryRepresentation: [String: Any] = [:]
+        dictionaryRepresentation[UserController.kZipCode] = wantedZipCode
+        dictionaryRepresentation[UserController.kCity] = wantedCity
+        dictionaryRepresentation[UserController.kState] = wantedState
+        dictionaryRepresentation[UserController.kCountry] = wantedCountry
+        dictionaryRepresentation[UserController.kPetsAllowed] = wantsPetFriendly
+        dictionaryRepresentation[UserController.kSmokingAllowed] = wantsSmoking
+        dictionaryRepresentation[UserController.kWasherDryer] = wantsWasherDryer
+        dictionaryRepresentation[UserController.kGarage] = wantsGarage
+        dictionaryRepresentation[UserController.kDishwasher] = wantsDishwasher
+        dictionaryRepresentation[UserController.kBackyard] = wantsBackyard
+        dictionaryRepresentation[UserController.kPool] = wantsPool
+        dictionaryRepresentation[UserController.kGym] = wantsGym
+        dictionaryRepresentation[UserController.kMonthlyPayment] = Int(wantedPayment)
+        dictionaryRepresentation[UserController.kBedroomCount] = Int(wantedBedroomCount)
+        dictionaryRepresentation[UserController.kBathroomCount] = wantedBathroomCount
+        dictionaryRepresentation[UserController.kWithinRangeMiles] = withinRangeMiles
+        
+        return dictionaryRepresentation
+    }
     var dictionaryRepresentation: [String: Any]? {
         guard let email = email,
             let zipCode = wantedZipCode,

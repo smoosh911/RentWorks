@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RenterSettingsViewController: SettingsViewController, UITextFieldDelegate {
+class RenterSettingsViewController: SettingsViewController {
     
     // MARK: outlets
     
@@ -17,9 +17,9 @@ class RenterSettingsViewController: SettingsViewController, UITextFieldDelegate 
     
     // MARK: variables
     
-    var settingsTVC: RenterSettingsContainerTableViewController?
+//    var settingsTVC: RenterSettingsContainerTableViewController?
     
-    weak var delegate: UpdateSettingsDelegate?
+//    weak var delegate: UpdateSettingsDelegate?
     
     let renter = UserController.currentRenter
     
@@ -28,6 +28,36 @@ class RenterSettingsViewController: SettingsViewController, UITextFieldDelegate 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupUI()
+        
+//        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
+//        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+//        self.view.addGestureRecognizer(swipeDown)
+    }
+    
+    // MARK: actions
+    
+//    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        textField.resignFirstResponder()
+//        return true
+//    }
+    
+    @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: Any) {
+//        guard let id = UserController.currentUserID, let renter = renter, let settingsTVC = settingsTVC else { return }
+//        
+//        let zipcode = settingsTVC.txtfldZipCode.text!
+//        
+//        renter.wantedZipCode = zipcode
+//        if UserController.currentUserID != "" {
+//            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: settingsTVC.filterKeys.kZipCode.rawValue, newValue: zipcode)
+//        }
+//        
+//        self.delegate?.updateSettings()
+    }
+    
+    // MARK: helper functions
+    
+    private func setupUI() {
         guard let profileImages = UserController.currentRenter?.profileImages?.array as? [ProfileImage] else { return }
         
         if let imageData = profileImages[0].imageData as? Data, let image = UIImage(data: imageData) {
@@ -36,69 +66,51 @@ class RenterSettingsViewController: SettingsViewController, UITextFieldDelegate 
         
         lblUserName.text = "\(UserController.currentRenter!.firstName!) \(UserController.currentRenter!.lastName!)"
         
-        let filterSettingsDict = RenterController.getRenterFiltersDictionary()
+        guard let filterSettingsDict = RenterController.getRenterFiltersDictionary() else {
+            log("ERROR: couldnt' get renter filter dictionary")
+            return
+        }
         let kCurrentOccupation = UserController.RenterFilters.kCurrentOccupation
         guard let occupation = filterSettingsDict[kCurrentOccupation.rawValue] as? String else { return }
         
         lblOccupation.text = occupation
-        
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture(gesture:)))
-        swipeDown.direction = UISwipeGestureRecognizerDirection.down
-        self.view.addGestureRecognizer(swipeDown)
-    }
-    
-    // MARK: actions
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    @IBAction func btnSubmitChanges_TouchedUpInside(_ sender: Any) {
-        guard let id = UserController.currentUserID, let renter = renter, let settingsTVC = settingsTVC else { return }
-        
-        let zipcode = settingsTVC.txtfldZipCode.text!
-        
-        renter.wantedZipCode = zipcode
-        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: settingsTVC.filterKeys.kZipCode.rawValue, newValue: zipcode)
-        self.delegate?.updateSettings()
     }
     
     // MARK: segues
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "SettingsTVCEmbed" {
-            if let settingsTVC = segue.destination as? RenterSettingsContainerTableViewController {
-                self.settingsTVC = settingsTVC
-            }
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        
+//        if segue.identifier == "SettingsTVCEmbed" {
+//            if let settingsTVC = segue.destination as? RenterSettingsContainerTableViewController {
+//                self.settingsTVC = settingsTVC
+//            }
+//        }
+//    }
     
     // MARK: keyboard
     
-    func respondToSwipeGesture(gesture: UIGestureRecognizer) {
-        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
-            switch swipeGesture.direction {
-            case UISwipeGestureRecognizerDirection.right:
-                print("Swiped right")
-            case UISwipeGestureRecognizerDirection.down:
-                print("Swiped down")
-                
-                self.view.endEditing(true)
-                
-            case UISwipeGestureRecognizerDirection.left:
-                print("Swiped left")
-            case UISwipeGestureRecognizerDirection.up:
-                print("Swiped up")
-            default:
-                break
-            }
-        }
-    }
+//    func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+//        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+//            switch swipeGesture.direction {
+//            case UISwipeGestureRecognizerDirection.right:
+//                print("Swiped right")
+//            case UISwipeGestureRecognizerDirection.down:
+//                print("Swiped down")
+//                
+//                self.view.endEditing(true)
+//                
+//            case UISwipeGestureRecognizerDirection.left:
+//                print("Swiped left")
+//            case UISwipeGestureRecognizerDirection.up:
+//                print("Swiped up")
+//            default:
+//                break
+//            }
+//        }
+//    }
 }
 
 
-protocol UpdateSettingsDelegate: class {
-    func updateSettings()
-}
+//protocol UpdateSettingsDelegate: class {
+//    func updateSettings()
+//}

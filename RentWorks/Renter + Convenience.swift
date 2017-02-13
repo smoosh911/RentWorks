@@ -41,25 +41,9 @@ extension Renter {
     @discardableResult convenience init?(dictionary: [String: Any], context: NSManagedObjectContext? = CoreDataStack.context) {
         
         guard let email = dictionary[UserController.kEmail] as? String,
-            let zipCode = dictionary[UserController.kZipCode] as? String,
-            let city = dictionary[UserController.kCity] as? String,
-            let state = dictionary[UserController.kState] as? String,
-            let country = dictionary[UserController.kCountry] as? String,
-            let creditRating = dictionary[UserController.kCreditRating] as? String,
             let firstName = dictionary[UserController.kFirstName] as? String,
             let lastName = dictionary[UserController.kLastName] as? String,
-            let id = dictionary[UserController.kID] as? String,
-            let wantedPayment = dictionary[UserController.kMonthlyPayment] as? Int,
-            let wantedBedroomCount = dictionary[UserController.kBedroomCount] as? Double,
-            let wantedBathroomCount = dictionary[UserController.kBathroomCount] as? Double,
-            let wantsPetFriendly = dictionary[UserController.kPetsAllowed] as? Bool,
-            let wantsSmoking = dictionary[UserController.kSmokingAllowed] as? Bool,
-            let wantsWasherDryer = dictionary[UserController.kWasherDryer] as? Bool,
-            let wantsGarage = dictionary[UserController.kGarage] as? Bool,
-            let wantsDishwasher = dictionary[UserController.kBackyard] as? Bool,
-            let wantsBackyard = dictionary[UserController.kBackyard] as? Bool,
-            let wantsPool = dictionary[UserController.kPool] as? Bool,
-            let wantsGym = dictionary[UserController.kGym] as? Bool
+            let id = dictionary[UserController.kID] as? String
             else { return nil }
         
         if let context = context {
@@ -141,25 +125,25 @@ extension Renter {
         }
         
         self.email = email
-        self.creditRating = creditRating
-        self.wantedZipCode = zipCode
-        self.wantedCity = city
-        self.wantedState = state
-        self.wantedCountry = country
         self.firstName = firstName
         self.lastName = lastName
         self.id = id
-        self.wantsPetFriendly = wantsPetFriendly
-        self.wantedPayment = Int64(wantedPayment)
-        self.wantedBedroomCount = Int64(wantedBedroomCount)
-        self.wantedBathroomCount = wantedBathroomCount
-        self.wantsSmoking = wantsSmoking
-        self.wantsWasherDryer = wantsWasherDryer
-        self.wantsGarage = wantsGarage
-        self.wantsDishwasher = wantsDishwasher
-        self.wantsBackyard = wantsBackyard
-        self.wantsPool = wantsPool
-        self.wantsGym = wantsGym
+        self.creditRating = dictionary[UserController.kCreditRating] as? String ?? "Other"
+        self.wantedZipCode = dictionary[UserController.kZipCode] as? String ?? ""
+        self.wantedCity = dictionary[UserController.kCity] as? String ?? ""
+        self.wantedState = dictionary[UserController.kState] as? String ?? ""
+        self.wantedCountry = dictionary[UserController.kCountry] as? String ?? ""
+        self.wantsPetFriendly = dictionary[UserController.kPetsAllowed] as? Bool ?? false
+        self.wantedPayment = dictionary[UserController.kMonthlyPayment] as? Int64 ?? 1500
+        self.wantedBedroomCount = dictionary[UserController.kBedroomCount] as? Int64 ?? 1
+        self.wantedBathroomCount = dictionary[UserController.kBathroomCount] as? Double ?? 1.0
+        self.wantsSmoking = dictionary[UserController.kSmokingAllowed] as? Bool ?? false
+        self.wantsWasherDryer = dictionary[UserController.kWasherDryer] as? Bool ?? false
+        self.wantsGarage = dictionary[UserController.kGarage] as? Bool ?? false
+        self.wantsDishwasher = dictionary[UserController.kDishwasher] as? Bool ?? false
+        self.wantsBackyard = dictionary[UserController.kBackyard] as? Bool ?? false
+        self.wantsPool = dictionary[UserController.kPool] as? Bool ?? false
+        self.wantsGym = dictionary[UserController.kGym] as? Bool ?? false
         self.maritalStatus = dictionary[UserController.kMaritalStatus] as? String ?? "Not specified"
         self.bankruptcies = dictionary[UserController.kBankruptcies] as? Int16 ?? 0
         self.criminalHistory = dictionary[UserController.kCriminalHistory] as? String ?? ""
@@ -174,5 +158,33 @@ extension Renter {
         self.school = dictionary[UserController.kSchool] as? String ?? ""
         self.studentID = dictionary[UserController.kStudentID] as? String ?? ""
         self.studentPhotoIDURL = dictionary[UserController.kStudentPhotoIdURL] as? String ?? ""
+    }
+    
+    @discardableResult convenience init?(isEmpty: Bool, context: NSManagedObjectContext? = CoreDataStack.context) {
+        
+        if let context = context {
+            self.init(context: context)
+        } else {
+            self.init(entity: Renter.entity(), insertInto: nil)
+        }
+        
+        UserController.currentUserID = ""
+        
+        self.wantedZipCode = "84604"
+        self.wantedCity = ""
+        self.wantedState = ""
+        self.wantedCountry = ""
+        self.wantsPetFriendly = false
+        self.wantedPayment = 3000
+        self.wantedBedroomCount = 1
+        self.wantedBathroomCount = 1
+        self.withinRangeMiles = 50
+        self.wantsSmoking = false
+        self.wantsWasherDryer = false
+        self.wantsGarage = false
+        self.wantsDishwasher = false
+        self.wantsBackyard = false
+        self.wantsPool = false
+        self.wantsGym = false
     }
 }

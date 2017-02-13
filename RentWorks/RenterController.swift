@@ -213,52 +213,79 @@ class RenterController: UserController {
     //    }
     
     static func fetchRentersForProperty(numberOfRenters: UInt, property: Property, completion: @escaping () -> Void) {
-        guard let propertyID = property.propertyID, let startAt = property.startAt else { completion(); return }
+        guard let propertyID = property.propertyID else {
+            completion()
+            return
+        }
+        
         if UserController.renterFetchCount == 1 { // if fecth count is one then you are at the end of the database
             log("WARNING: reached end of renter list on firebase")
             completion()
             return
         }
         
-        log(startAt)
-        FirebaseController.rentersRef.queryOrdered(byChild: UserController.kID).queryStarting(atValue: startAt).queryLimited(toFirst: numberOfRenters).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let allRentersDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { completion(); return }
-            UserController.renterFetchCount = allRentersDict.count
-            var rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
-            rentersArray.sort {
-                $0.id! < $1.id!
-            }
-            let lastRenter = rentersArray.removeLast()
-            var filteredRenters: [Renter] = []
-            let group = DispatchGroup()
-            group.enter()
-            if UserController.renterFetchCount < 2 {
-                getFilteredRentersForProperty(renters: [lastRenter], property: property, completion: { filtered in
-                    filteredRenters = filtered
-                    group.leave()
-                })
-            } else {
-                getFilteredRentersForProperty(renters: rentersArray, property: property, completion: { filtered in
-                    filteredRenters = filtered
-                    if filteredRenters.count == 0 {
-                        PropertyController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kStartAt, newValue: lastRenter.id!)
-                        property.startAt = lastRenter.id!
-                    }
-                    group.leave()
-                })
-            }
-            group.notify(queue: .main, execute: {
-                if filteredRenters.isEmpty {
-                    fetchRentersForProperty(numberOfRenters: numberOfRenters, property: property, completion: {
-                        completion()
-                    })
-                } else {
-                    fetchOneImageForRentersCards(rentersDict: allRentersDict, coreDataRenters: filteredRenters, completion: {
-                        completion()
-                    })
-                }
+        let startAtGroup = DispatchGroup()
+        startAtGroup.enter()
+        var startAt: String!
+        if let renterStartAt = property.startAt {
+            startAt = renterStartAt
+            startAtGroup.leave()
+        } else {
+            getFirstRenterID(completion: { (renterID) in
+                startAt = renterID
+                startAtGroup.leave()
             })
-        })
+        }
+        startAtGroup.notify(queue: .main) { 
+            FirebaseController.rentersRef.queryOrdered(byChild: UserController.kID).queryStarting(atValue: startAt).queryLimited(toFirst: numberOfRenters).observeSingleEvent(of: .value, with: { (snapshot) in
+                guard let allRentersDict = snapshot.valueInExportFormat() as? [String: [String: Any]] else { completion(); return }
+                UserController.renterFetchCount = allRentersDict.count
+                var rentersArray = allRentersDict.flatMap({Renter(dictionary: $0.value)})
+                rentersArray.sort {
+                    $0.id! < $1.id!
+                }
+                let lastRenter = rentersArray.removeLast()
+                var filteredRenters: [Renter] = []
+                let group = DispatchGroup()
+                group.enter()
+                if UserController.renterFetchCount < 2 {
+                    if FIRAuth.auth()?.currentUser == nil {
+                        filteredRenters.append(lastRenter)
+                        group.leave()
+                    } else {
+                        getFilteredRentersForProperty(renters: [lastRenter], property: property, completion: { filtered in
+                            filteredRenters = filtered
+                            group.leave()
+                        })
+                    }
+                } else {
+                    if FIRAuth.auth()?.currentUser == nil {
+                        filteredRenters = rentersArray
+                        group.leave()
+                    } else {
+                        getFilteredRentersForProperty(renters: rentersArray, property: property, completion: { filtered in
+                            filteredRenters = filtered
+                            if filteredRenters.count == 0 {
+                                PropertyController.updateCurrentPropertyInFirebase(id: propertyID, attributeToUpdate: UserController.kStartAt, newValue: lastRenter.id!)
+                                property.startAt = lastRenter.id!
+                            }
+                            group.leave()
+                        })
+                    }
+                }
+                group.notify(queue: .main, execute: {
+                    if filteredRenters.isEmpty {
+                        fetchRentersForProperty(numberOfRenters: numberOfRenters, property: property, completion: {
+                            completion()
+                        })
+                    } else {
+                        fetchOneImageForRentersCards(rentersDict: allRentersDict, coreDataRenters: filteredRenters, completion: {
+                            completion()
+                        })
+                    }
+                })
+            })
+        }
     }
     
     //    static func getFilteredRenters(renters: [Renter]) -> [Renter] {
@@ -439,9 +466,24 @@ class RenterController: UserController {
         FirebaseController.rentersRef.child(id).child(attributeToUpdate).setValue(newValue)
     }
     
-    static func getRenterFiltersDictionary() -> [String: Any] {
+    static func getRenterFiltersDictionary() -> [String: Any]? {
         var filterDict: [String: Any] = [String: Any]()
         guard let renter = UserController.currentRenter?.dictionaryRepresentation else {
+            log("ERROR: renter is nil")
+            return nil
+        }
+        
+        for filter in UserController.RenterFilters.allValues {
+            let filterString = filter.rawValue
+            filterDict[filterString] = renter[filterString]
+        }
+        
+        return filterDict
+    }
+    
+    static func getEmptyRenterFiltersDictionary() -> [String: Any]? {
+        var filterDict: [String: Any] = [String: Any]()
+        guard let renter = UserController.currentRenter?.emptyRenterDictionaryRepresentation else {
             log("ERROR: renter is nil")
             return filterDict
         }
