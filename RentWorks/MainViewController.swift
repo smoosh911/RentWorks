@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class MainViewController: UIViewController, MatchControllerDelegate {
     
@@ -87,7 +88,13 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     // MARK: actions
     
     @IBAction func btnProfile_TouchedUpInside(_ sender: Any) {
-        if UserController.currentUserID == "" {
+//        do {
+//            try FIRAuth.auth()?.signOut()
+//        } catch let e {
+//            log(e)
+//        }
+        
+        if FIRAuth.auth()?.currentUser == nil {
             performSegue(withIdentifier: Identifiers.Segues.signUpProfileVC.rawValue, sender: self)
         } else {
             performSegue(withIdentifier: Identifiers.Segues.profileVC.rawValue, sender: self)

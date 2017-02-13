@@ -8,6 +8,7 @@
 
 import UIKit
 import FBSDKLoginKit
+import FirebaseAuth
 
 class SettingsViewController: UIViewController {
 
@@ -37,6 +38,13 @@ class SettingsViewController: UIViewController {
     // needs work: there should be a global function that clears global data upon sign outs
     @IBAction func signOutButtonTapped(_ sender: UIButton) {
         manager.logOut()
+        
+        do {
+            try FIRAuth.auth()?.signOut()
+        } catch let error as NSError {
+            log(error)
+        }
+        
         for renter in MatchController.matchedRentersForProperties {
             UserDefaults.standard.set(0, forKey: "\(Identifiers.UserDefaults.propertyMatchCount.rawValue)/\(renter.key)")
         }

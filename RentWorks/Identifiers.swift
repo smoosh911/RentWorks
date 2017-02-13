@@ -15,7 +15,7 @@ class Identifiers {
         case MoreCardsVC = "segueShowNoMoreCardsVC"
         case CardDetailVC = "segueShowCardDetailsVC"
         case cardDetailContainerVC = "segueCardDetailContainerVC"
-        case MainSwipingVC = "toMainSwipingVC"
+        case PropertiesViewVC = "toPropertiesViewVC"
         case noInternetVC = "segueToNoInternetVC"
         case propertyMatchesVC = "segueToPropertyMatchesVC"
         case mainVC = "segueToMainVC"
@@ -26,9 +26,11 @@ class Identifiers {
         case propertyDetailContainterVC = "detailsContainerVC"
         case messagingVC = "segueToMessagingVC"
         case renterMainVC = "segueToRenterMainVC"
-        case renterFilterVC = "segueToFiltersVC"
+        case filterVC = "segueToFiltersVC"
         case profileVC = "segueToProfileVC"
         case signUpProfileVC = "segueToSignUpProfileVC"
+        case swipingVC = "toSwipingVC"
+        case landlordMainVC = "segueToLandlordMainVC"
     }
     
     enum ViewControllers: String {
@@ -65,8 +67,9 @@ class Identifiers {
     enum RentWorksAdmin: String {
         case email = "rentworksdev@gmail.com"
         case complaintsEmail = "rentworkscomplaints@gmail.com"
-        case EULA_URL = "http://www.myrentworks.com/copy-of-public-texts"
-        case PrivacyPolicyURL = "http://www.myrentworks.com/privacy-policy"
+        case EULA_URL = "http://www.garteum.com/eula"
+        case PrivacyPolicyURL = "http://www.garteum.com/privacy-policy"
+        case MIT_URL = "http://www.garteum.com/mit"
     }
     
     enum CreatingUserNotificationObserver: String {

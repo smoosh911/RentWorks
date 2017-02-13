@@ -213,7 +213,7 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
             if let destinationVC = segue.destination as? RenterDetailCardViewController, let property = currentCardProperty {
                 destinationVC.property = property
             }
-        } else if segue.identifier == Identifiers.Segues.renterFilterVC.rawValue {
+        } else if segue.identifier == Identifiers.Segues.filterVC.rawValue {
             if let destinationVC = segue.destination as? RenterFilterSettingsViewController {
                 destinationVC.modalViewDelegate = self
             }

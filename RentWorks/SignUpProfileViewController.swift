@@ -109,6 +109,12 @@ class SignUpProfileViewController: UIViewController, FBSDKLoginButtonDelegate {
         return true
     }
     
+    // MARK: actions
+    
+    @IBAction func btnCancel_TouchedUpInside(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     // MARK: helper functions
     
     func setUpAndDisplayLoadingScreen() {
@@ -148,12 +154,34 @@ class SignUpProfileViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
         
-        let createAccountAction = UIAlertAction(title: "Create account", style: .default) { (_) in
-            self.performSegue(withIdentifier: Identifiers.Segues.chooseAccountTypeVC.rawValue, sender: nil)
+        var storyboard: UIStoryboard!
+        var mainVC: UIViewController!
+        
+        if UserController.userCreationType == "landlord" {
+            let createLandlordAccount = UIAlertAction(title: "Create Landlord", style: .default) { (_) in
+                LandlordController.createLandlordAndPropertyForCurrentUser {
+                    self.dismissLoadingScreen()
+                    
+                    storyboard = UIStoryboard(name: "LandlordMain", bundle: nil)
+                    mainVC = storyboard.instantiateViewController(withIdentifier: "cardLoadingVC")
+                    
+                    self.present(mainVC, animated: true, completion: nil)
+                }
+            }
+            alert.addAction(createLandlordAccount)
+        } else {
+            let createRenterAccount = UIAlertAction(title: "Create Renter", style: .default) { (_) in
+                RenterController.createRenterForCurrentUser {
+                    self.dismissLoadingScreen()
+                    storyboard = UIStoryboard(name: "RenterMain", bundle: nil)
+                    mainVC = storyboard.instantiateViewController(withIdentifier: "mainVC")
+                    self.present(mainVC, animated: true, completion: nil)
+                }
+            }
+            alert.addAction(createRenterAccount)
         }
         
         alert.addAction(dismissAction)
-        alert.addAction(createAccountAction)
         
         alert.view.tintColor = .black
         

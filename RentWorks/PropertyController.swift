@@ -33,7 +33,11 @@ class PropertyController: UserController {
     
     static func fetchPropertiesForLandlord(landlordID: String, completion: @escaping (_ success: Bool) -> Void) {
         FirebaseController.propertiesRef.queryOrdered(byChild: UserController.kLandlordID).queryEqual(toValue: landlordID).observeSingleEvent(of: .value, with: { (snapshot) in
-            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else { completion(false); return }
+            guard let allPropertiesDict = snapshot.value as? [String: [String: Any]] else {
+                log("ERROR: no property dictionaries")
+                completion(true)
+                return
+            }
             
             let landlordProperties = allPropertiesDict.flatMap({Property(dictionary: $0.value)})
             

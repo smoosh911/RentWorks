@@ -48,16 +48,10 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     // MARK: actions
     
     @IBAction func btnRenterOrLandlord_TouchedUpInside(_ sender: UIButton) {
-        FIRAuth.auth()?.signInAnonymously(completion: { (user, error) in
-            if error != nil {
-                log(error!)
-                return
-            }
-            guard let buttonLabel = sender.titleLabel, let buttonText = buttonLabel.text else {
-                return
-            }
-            self.performCorrectSegue(buttonText: buttonText)
-        })
+        guard let buttonLabel = sender.titleLabel, let buttonText = buttonLabel.text else {
+            return
+        }
+        self.performCorrectSegue(buttonText: buttonText)
     }
     
     // MARK: segues
@@ -68,7 +62,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
             UserController.userCreationType = "renter"
             UserController.currentUserType = "renter"
             UserController.currentRenter = Renter(isEmpty: true)
-        } else if segue.identifier == "toLandlordPageVC" {
+        } else if segue.identifier == Identifiers.Segues.landlordMainVC.rawValue {
             UserController.userCreationType = "landlord"
             UserController.currentUserType = "landlord"
         }
@@ -192,12 +186,23 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
         
         let dismissAction = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
         
-        let createAccountAction = UIAlertAction(title: "Create account", style: .default) { (_) in
-            self.performSegue(withIdentifier: Identifiers.Segues.chooseAccountTypeVC.rawValue, sender: nil)
+        let createLandlordAccount = UIAlertAction(title: "Create Landlord", style: .default) { (_) in
+            LandlordController.createLandlordAndPropertyForCurrentUser {
+                self.dismissLoadingScreen()
+                self.performSegue(withIdentifier: Identifiers.Segues.landlordMainVC.rawValue, sender: self)
+            }
+        }
+        
+        let createRenterAccount = UIAlertAction(title: "Create Renter", style: .default) { (_) in
+            RenterController.createRenterForCurrentUser {
+                self.dismissLoadingScreen()
+                self.performSegue(withIdentifier: Identifiers.Segues.renterMainVC.rawValue, sender: self)
+            }
         }
         
         alert.addAction(dismissAction)
-        alert.addAction(createAccountAction)
+        alert.addAction(createRenterAccount)
+        alert.addAction(createLandlordAccount)
         
         alert.view.tintColor = .black
         
