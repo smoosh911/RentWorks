@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class RenterMainViewController: MainViewController, RenterFilterSettingsModalViewControllerDelegate {
     
@@ -92,9 +93,9 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
     }
     
     @IBAction func btnMatches_TouchedUpInside(_ sender: Any) {
-        if UIApplication.shared.isRegisteredForRemoteNotifications {
+        if UIApplication.shared.isRegisteredForRemoteNotifications && FIRAuth.auth()?.currentUser != nil {
             performSegue(withIdentifier: Identifiers.Segues.renterMatchesVC.rawValue, sender: self)
-        } else if UserController.currentUserID == "" {
+        } else if FIRAuth.auth()?.currentUser == nil {
             AlertManager.alert(withTitle: "Not Logged In", withMessage: "Please sign in to use messaging", dismissTitle: "OK", inViewController: self)
         } else {
             AlertManager.alert(withTitle: "Notification Disabled", withMessage: "Please enable notifications in order to use messages", dismissTitle: "OK", inViewController: self)
