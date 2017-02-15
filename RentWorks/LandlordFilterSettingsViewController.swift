@@ -84,15 +84,15 @@ class LandlordFilterSettingsViewController: UIViewController {
     }
     
     @IBAction func applyFiltersBtnPressed(_ sender: Any) {
-        guard let landlord = UserController.currentLandlord, let _ = landlord.id else {
+        if FIRAuth.auth()?.currentUser == nil {
+            AlertManager.alert(withTitle: "Not Logged In", withMessage: "Must log in to use filters", dismissTitle: "OK", inViewController: self)
+        } else {
+            guard let landlord = UserController.currentLandlord, let _ = landlord.id else { return }
+            
+            // update landlord filter settings and dismiss modal.
+            updateLandLordValues()
             self.dismiss(animated: true, completion: nil)
-            // TO DO: should let the user know they aren't logged in
-            return
         }
-        
-        // update landlord filter settings and dismiss modal. Should there be a call back?
-        updateLandLordValues()
-        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func creditIndexChanged(_ sender: Any) {
