@@ -13,6 +13,9 @@ class LandlordMainViewController: MainViewController, LandlordFilterSettingsView
     
     // MARK: outlets
     
+    @IBOutlet weak var imgvwSmall: UIImageView!
+    @IBOutlet weak var backgroundImgvwSmall: UIImageView!
+    
     @IBOutlet weak var vwLoadingNewCards: UIView!
     @IBOutlet weak var vwNoMoreCards: UIView!
     
@@ -63,6 +66,9 @@ class LandlordMainViewController: MainViewController, LandlordFilterSettingsView
         }
         
         updateCardUI()
+        blurImageView(imageView: self.imageView)
+        blurImageView(imageView: self.backgroundImageView)
+        setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -145,10 +151,13 @@ class LandlordMainViewController: MainViewController, LandlordFilterSettingsView
         
         lblFrontCardCreditRating.text = renter.creditRating
         imageView.image = profilePicture
+        imgvwSmall.image = profilePicture
         nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
         lblRenterOccupation.text = renter.currentOccupation ?? "No listed occupation"
         
-        guard let nextRenter = backCardRenter else { return }
+        guard let nextRenter = backCardRenter else {
+            return
+        }
         
         var backgroundProfilePicture: UIImage?
         if let backCardRenter = backCardRenter, let firstBackgroundProfileImage = backCardRenter.profileImages?.firstObject as? ProfileImage, let backgroundImageData = firstBackgroundProfileImage.imageData, let backgroundProfilePic = UIImage(data: backgroundImageData as Data) {
@@ -159,6 +168,7 @@ class LandlordMainViewController: MainViewController, LandlordFilterSettingsView
         }
         
         backgroundImageView.image = backgroundProfilePicture
+        backgroundImgvwSmall.image = backgroundProfilePicture
         backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
         lblBackCardRenterOccupation.text = nextRenter.currentOccupation ?? "No listed occupation"
         
@@ -203,6 +213,40 @@ class LandlordMainViewController: MainViewController, LandlordFilterSettingsView
     }
     
     // MARK: helper methods
+    
+    private func setupUI() {
+        zoomImageView(imageView: self.imageView)
+        zoomImageView(imageView: self.backgroundImageView)
+        imgvwSmall.layer.cornerRadius = imgvwSmall.frame.width / 2
+        imgvwSmall.layer.borderWidth = 3
+        imgvwSmall.layer.borderColor = UIColor.white.cgColor
+        backgroundImgvwSmall.layer.cornerRadius = backgroundImgvwSmall.frame.width / 2
+        backgroundImgvwSmall.layer.borderWidth = 3
+        backgroundImgvwSmall.layer.borderColor = UIColor.white.cgColor
+        lblRenterOccupation.adjustsFontSizeToFitWidth = false
+    }
+    
+    private func blurImageView(imageView: UIImageView) {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = imageView.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.alpha = 0.9
+        imageView.addSubview(blurEffectView)
+    }
+    
+    private func zoomImageView(imageView: UIImageView) {
+        if let image = imageView.image {
+            let newWidth = imageView.frame.width * 1.3
+            let scale = newWidth / image.size.width
+            let newHeight = image.size.height * scale
+            UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+            image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
+            let newImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            imageView.image = newImage
+        }
+    }
     
     internal func modalViewDismissed() {
         if SettingsViewController.settingsDidChange {
