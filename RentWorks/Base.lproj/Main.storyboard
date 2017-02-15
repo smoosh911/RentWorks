@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qq3-1I-Axi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qq3-1I-Axi">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -231,16 +231,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Vho-VV-lu4">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Venga.png" translatesAutoresizingMaskIntoConstraints="NO" id="hH8-DZ-W97">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="568" id="kUi-4t-w4L"/>
+                                    <constraint firstAttribute="width" constant="320" id="n8A-vF-zb4"/>
+                                </constraints>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.15294117647058825" green="0.15686274509803921" blue="0.23529411764705882" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Vho-VV-lu4" secondAttribute="trailing" id="4Jl-ki-Y6F"/>
-                            <constraint firstItem="Vho-VV-lu4" firstAttribute="top" secondItem="LOS-Uu-5tr" secondAttribute="top" id="bOd-0L-g6W"/>
-                            <constraint firstAttribute="bottom" secondItem="Vho-VV-lu4" secondAttribute="bottom" id="mZP-KD-WWp"/>
-                            <constraint firstItem="Vho-VV-lu4" firstAttribute="leading" secondItem="LOS-Uu-5tr" secondAttribute="leading" id="wwH-sX-mHb"/>
+                            <constraint firstItem="hH8-DZ-W97" firstAttribute="leading" secondItem="LOS-Uu-5tr" secondAttribute="leading" id="08b-bK-nGf"/>
+                            <constraint firstItem="hH8-DZ-W97" firstAttribute="centerX" secondItem="LOS-Uu-5tr" secondAttribute="centerX" id="2My-OP-9mG"/>
+                            <constraint firstItem="tva-Zd-ymP" firstAttribute="top" secondItem="hH8-DZ-W97" secondAttribute="bottom" id="9H5-Op-gSX"/>
+                            <constraint firstAttribute="trailing" secondItem="hH8-DZ-W97" secondAttribute="trailing" id="akY-RT-InH"/>
+                            <constraint firstItem="hH8-DZ-W97" firstAttribute="top" secondItem="LOS-Uu-5tr" secondAttribute="top" id="eAR-sM-TJ3"/>
+                            <constraint firstItem="hH8-DZ-W97" firstAttribute="centerY" secondItem="LOS-Uu-5tr" secondAttribute="centerY" id="nzF-y7-cgO"/>
                         </constraints>
                     </view>
                     <connections>
@@ -249,11 +255,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QjK-Mh-fmG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="38" y="8"/>
+            <point key="canvasLocation" x="37.5" y="7.394366197183099"/>
         </scene>
     </scenes>
     <resources>
         <image name="LaunchScreen" width="375" height="667"/>
         <image name="LaunchScreenNoText" width="375" height="667"/>
+        <image name="Venga.png" width="1920" height="962"/>
     </resources>
 </document>
