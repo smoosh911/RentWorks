@@ -18,7 +18,7 @@ class LandlordFilterSettingsViewController: UIViewController {
     // MARK: outlets
     @IBOutlet weak var modalView: UIView!
     @IBOutlet weak var creditSegmentedControl: UISegmentedControl!
-    @IBOutlet weak var incomeSlider: Slider!
+    @IBOutlet weak var incomeSlider: RentWorksSlider!
     @IBOutlet weak var studentSegmentedControl: UISegmentedControl!
     @IBOutlet weak var bankruptcySegmentedControl: UISegmentedControl!
     @IBOutlet weak var maritalSegmentedControl: UISegmentedControl!
@@ -111,7 +111,7 @@ class LandlordFilterSettingsViewController: UIViewController {
          studentLabel.text = studentSegmentedControl.titleForSegment(at: studentSegmentedControl.selectedSegmentIndex)
     }
     
-    @IBAction func incomeLevelChanged(_ sender: Slider) {
+    @IBAction func incomeLevelChanged(_ sender: RentWorksSlider) {
         let num = Int(sender.value)
         
         let numberFormatter = NumberFormatter()
