@@ -43,6 +43,7 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     
     // MARK: - Other outlets
     
+    @IBOutlet weak var vwFilters: UIView!
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var matchesButton: UIButton!
     
@@ -65,7 +66,7 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     
     var matchingUsersAlertController: UIAlertController?
     
-    let paddingConstant: CGFloat = -18.0 // this is for the swiping animations in the extension below
+    let paddingConstant: CGFloat = -90.0 // this is for the swiping animations in the extension below
     
     // MARK: View life cycles
     
@@ -77,12 +78,16 @@ class MainViewController: UIViewController, MatchControllerDelegate {
         self.backgroundView.isHidden = true
         
         swipeableView.delegate = self
-        setupViews()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         MatchController.delegate = self
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setupViews()
     }
     
     // MARK: actions
@@ -105,7 +110,7 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     
     func setMatchesButtonImage() {
         DispatchQueue.main.async {
-            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubble"), for: .normal)
+            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "Nav bar chat bubble"), for: .normal)
         }
     }
     
@@ -153,11 +158,23 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     // set corner radius of views and image views
     func setupViews() {
         
-        swipeableView.layer.cornerRadius = 15
-        imageView.layer.cornerRadius = 15
+        let path = UIBezierPath(roundedRect:imageView.bounds,
+                                byRoundingCorners:[.topRight, .topLeft],
+                                cornerRadii: CGSize(width: 10, height:  10))
         
-        backgroundImageView.layer.cornerRadius = 15
-        backgroundView.layer.cornerRadius = 15
+        let maskLayer = CAShapeLayer()
+        let maskLayer2 = CAShapeLayer()
+        
+        maskLayer.path = path.cgPath
+        maskLayer2.path = path.cgPath
+        
+        imageView.layer.mask = maskLayer
+        backgroundImageView.layer.mask = maskLayer2
+        
+        swipeableView.layer.cornerRadius = 10
+        backgroundView.layer.cornerRadius = 10
+        
+        vwFilters.layer.cornerRadius = vwFilters.frame.width / 2
     }
     
     // MARK: matchcontroller delegate
