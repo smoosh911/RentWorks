@@ -13,7 +13,7 @@ pod 'Firebase/Auth'
 pod 'Firebase/Database'
 pod 'Firebase/Storage'
 pod 'Firebase/Crash'
-pod ‘Firebase/Messaging’
+pod 'Firebase/Messaging'
 
 pod 'DropDown'
 
