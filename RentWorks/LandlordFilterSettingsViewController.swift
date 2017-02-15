@@ -85,8 +85,7 @@ class LandlordFilterSettingsViewController: UIViewController {
     
     @IBAction func applyFiltersBtnPressed(_ sender: Any) {
         guard let landlord = UserController.currentLandlord, let _ = landlord.id else {
-            self.dismiss(animated: true, completion: nil)
-            // TO DO: should let the user know they aren't logged in
+            AlertManager.alert(withTitle: "Not Logged In", withMessage: "Must log in to use filters", dismissTitle: "OK", inViewController: self)
             return
         }
         
