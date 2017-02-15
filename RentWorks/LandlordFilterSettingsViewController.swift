@@ -41,24 +41,14 @@ class LandlordFilterSettingsViewController: UIViewController {
     
      // MARK: variables
     var creditRatings: [String] = ["Any", "A+", "A", "B", "Other"]
-//    var studentStatus: [String] = ["Full Time", "Part Time", "Not a Student"]
-//    var sliderNUmber = [0, 10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 10000]
-    
     var delegate: LandlordFilterSettingsViewControllerDelegate?
     
     // MARK: life cycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         modalView.layer.cornerRadius = 10;
-        
-        // Do landlords have a set perfered credit rating? If so, i'll update code to the inital value isn't the first index
-//        guard let landlord = UserController.currentLandlord,
-//            let desiredCreditRating = landlord.wantsCreditRating,
-//            let ratingIndex = creditRatings.index(of: desiredCreditRating) else {
-//                return
-//        }
+        setCurrentLandlordFilters()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -79,8 +69,9 @@ class LandlordFilterSettingsViewController: UIViewController {
         creditSegmentedControl.selectedSegmentIndex = 0
         creditLabel.text = creditSegmentedControl.titleForSegment(at: creditSegmentedControl.selectedSegmentIndex)
         
-        incomeSlider.value = 0.0
-        incomeLabel.text = "$" + incomeSlider.value.description + " +"
+        let num = Int(incomeSlider.minimumValue)
+        incomeSlider.value = incomeSlider.minimumValue
+        incomeLabel.text = "$" + num.description + " +"
         
         maritalSegmentedControl.selectedSegmentIndex = 0
         maritalLabel.text = maritalSegmentedControl.titleForSegment(at: maritalSegmentedControl.selectedSegmentIndex)
@@ -93,23 +84,14 @@ class LandlordFilterSettingsViewController: UIViewController {
     }
     
     @IBAction func applyFiltersBtnPressed(_ sender: Any) {
-        guard let landlord = UserController.currentLandlord, let id = landlord.id else {
+        guard let landlord = UserController.currentLandlord, let _ = landlord.id else {
             self.dismiss(animated: true, completion: nil)
             // TO DO: should let the user know they aren't logged in
             return
         }
         
-        //TO DO: check if index == 0 if this mean there is no filter? Might need to change depending on how filters work.
-        // set value for credit rating
-        let creditRating = creditSegmentedControl.titleForSegment(at: creditSegmentedControl.selectedSegmentIndex)
-        landlord.wantsCreditRating = creditRating
-        LandlordController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kWantsCreditRating, newValue: creditRating!)
-        
-        
-        // update other values here
-        
         // update landlord filter settings and dismiss modal. Should there be a call back?
-        updateSettingsChanged()
+        updateLandLordValues()
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -117,7 +99,7 @@ class LandlordFilterSettingsViewController: UIViewController {
          creditLabel.text = creditSegmentedControl.titleForSegment(at: creditSegmentedControl.selectedSegmentIndex)
     }
     
-    @IBAction func maritalIndexChanged(_ sender: Any) {
+    @IBAction func maritalIndexChanged(_ sender: UISegmentedControl) {
         maritalLabel.text = maritalSegmentedControl.titleForSegment(at: maritalSegmentedControl.selectedSegmentIndex)
     }
     
@@ -130,17 +112,48 @@ class LandlordFilterSettingsViewController: UIViewController {
     }
     
     @IBAction func incomeLevelChanged(_ sender: Slider) {
-        let num = sender.value
-        incomeLabel.text = "$" + num.description + " +"
+        let num = Int(sender.value)
+        
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = NumberFormatter.Style.decimal
+        let numString = numberFormatter.string(from: NSNumber(value: num))
+        
+        incomeLabel.text = "$" + numString! + " +"
     }
     
     // MARK: helper functions
-    private func updateCreditRating(creditRating : String) {
-        guard let landlord = UserController.currentLandlord, let id = landlord.id else { return }
+    private func updateLandLordValues() {
+        guard let landlord = UserController.currentLandlord, let id = landlord.id else {
+            self.dismiss(animated: true, completion: nil)
+            // TO DO: should let the user know they aren't logged in
+            return
+        }
         
+        //TO DO: check if index == 0 if this mean there is no filter? Might need to change depending on how filters work.
+        // set value for credit rating
+        let creditRating = creditSegmentedControl.titleForSegment(at: creditSegmentedControl.selectedSegmentIndex)
         landlord.wantsCreditRating = creditRating
-        LandlordController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kWantsCreditRating, newValue: creditRating)
+        LandlordController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kWantsCreditRating, newValue: creditRating!)
+        
+         //TO DO: set other filter values here
+        
         updateSettingsChanged()
+    }
+    
+    private func setCurrentLandlordFilters() {
+        guard let landlord = UserController.currentLandlord,
+            let desiredCreditRating = landlord.wantsCreditRating,
+            let idx = creditRatings.index(of: desiredCreditRating) else {
+                return
+        }
+        
+        creditSegmentedControl.selectedSegmentIndex = idx
+        creditLabel.text = creditSegmentedControl.titleForSegment(at: creditSegmentedControl.selectedSegmentIndex)
+        
+        //TO DO: set other filter values here
+        
+        updateSettingsChanged()
+        
     }
     
     private func updateSettingsChanged() {
