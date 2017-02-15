@@ -180,12 +180,14 @@ extension MessagingViewController: UICollectionViewDelegate, UICollectionViewDat
             if let currentUserID = UserController.currentUserID {
                 if message.fromUserID == currentUserID {
                     cell.imgSender.isHidden = true
-                    cell.txtvwMessage.backgroundColor = AppearanceController.vengaYellowColor
+                    cell.txtvwMessage.textColor = UIColor.white
+                    cell.txtvwMessage.backgroundColor = AppearanceController.vengaBlueColor
                     let textRect = CGRect(x: offsetX, y: 0, width: estimatedSize.width + 16, height: estimatedSize.height + 20)
                     cell.txtvwMessage.frame = textRect
                 } else {
                     cell.imgSender.isHidden = false
                     cell.txtvwMessage.textAlignment = .left
+                    cell.txtvwMessage.textColor = UIColor.black
                     cell.txtvwMessage.backgroundColor = UIColor(white: 0.95, alpha: 1)
                     cell.txtvwMessage.frame = CGRect(x: 0, y: 0, width: estimatedSize.width + 16, height: estimatedSize.height + 20)
                 }
