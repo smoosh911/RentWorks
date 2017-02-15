@@ -43,6 +43,7 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     
     // MARK: - Other outlets
     
+    @IBOutlet weak var vwFilters: UIView!
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var matchesButton: UIButton!
     
@@ -77,7 +78,6 @@ class MainViewController: UIViewController, MatchControllerDelegate {
         self.backgroundView.isHidden = true
         
         swipeableView.delegate = self
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -172,8 +172,9 @@ class MainViewController: UIViewController, MatchControllerDelegate {
         backgroundImageView.layer.mask = maskLayer2
         
         swipeableView.layer.cornerRadius = 10
-        
         backgroundView.layer.cornerRadius = 10
+        
+        vwFilters.layer.cornerRadius = vwFilters.frame.width / 2
     }
     
     // MARK: matchcontroller delegate
