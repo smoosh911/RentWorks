@@ -25,6 +25,7 @@ class PropertiesViewController: UIViewController {
         super.viewDidLoad()
         properties = FirebaseController.properties.filter({ $0.landlordID == landlordID})
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.tblvwProperties.separatorStyle = .none
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -34,9 +35,6 @@ class PropertiesViewController: UIViewController {
     }
     
     // MARK: actions
-    
-    @IBAction func addNewPropertyButtonTapped(_ sender: UIButton) {
-    }
     
     @IBAction func editPropertyButtonTapped(_ sender: UIButton) {
         guard let contentView = sender.superview, let cell = contentView.superview as? PropertyTableViewCell else { return }
@@ -79,6 +77,18 @@ extension PropertiesViewController: UITableViewDelegate, UITableViewDataSource {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM-dd-yyyy"
         
+        let today = Date()
+        
+        if let availableDate = property.availableDate {
+            let laterDay = availableDate.laterDate(today)
+            
+            if laterDay == today {
+                cell.imgBlipPropertyAvailableIndicator.image = #imageLiteral(resourceName: "popup-green-blip-icon")
+            } else {
+                cell.imgBlipPropertyAvailableIndicator.image = #imageLiteral(resourceName: "popup-gray-blip-icon")
+            }
+        }
+
         cell.property = property
         cell.addressLabel.text = property.address
 //        cell.availableDate.text = dateFormatter.string(from: property.availableDate as! Date)
@@ -126,9 +136,23 @@ extension PropertiesViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as! PropertiesHeaderCell
+        
+        return headerCell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
+    }
+    
     // MARK: datasource
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return properties.count
+    }
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
 }

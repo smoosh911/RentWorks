@@ -231,16 +231,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Vho-VV-lu4">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-logo" translatesAutoresizingMaskIntoConstraints="NO" id="vVl-ZJ-HAx">
+                                <rect key="frame" x="52.5" y="248.5" width="215" height="71"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.15436828136444092" green="0.15910971164703369" blue="0.2314913421869278" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Vho-VV-lu4" secondAttribute="trailing" id="4Jl-ki-Y6F"/>
-                            <constraint firstItem="Vho-VV-lu4" firstAttribute="top" secondItem="LOS-Uu-5tr" secondAttribute="top" id="bOd-0L-g6W"/>
-                            <constraint firstAttribute="bottom" secondItem="Vho-VV-lu4" secondAttribute="bottom" id="mZP-KD-WWp"/>
-                            <constraint firstItem="Vho-VV-lu4" firstAttribute="leading" secondItem="LOS-Uu-5tr" secondAttribute="leading" id="wwH-sX-mHb"/>
+                            <constraint firstItem="vVl-ZJ-HAx" firstAttribute="centerX" secondItem="LOS-Uu-5tr" secondAttribute="centerX" id="5g1-1H-3h0"/>
+                            <constraint firstItem="vVl-ZJ-HAx" firstAttribute="centerY" secondItem="LOS-Uu-5tr" secondAttribute="centerY" id="Svv-zm-Ta8"/>
                         </constraints>
                     </view>
                     <connections>
@@ -255,5 +253,6 @@
     <resources>
         <image name="LaunchScreen" width="375" height="667"/>
         <image name="LaunchScreenNoText" width="375" height="667"/>
+        <image name="splash-logo" width="215" height="71"/>
     </resources>
 </document>
