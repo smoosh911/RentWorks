@@ -114,12 +114,12 @@ class LandlordCardDetailViewController: DetailCardViewController, UICollectionVi
     }
     
     private func getTagItems() {
-        // temporary until actual values are decided
+        // temporary until actual values are decided on.
         guard let renter = renter else { return }
         if renter.isStudent {
             tagItems.append("Student")
         } else {
-            tagItems.append("Non-Students")
+            tagItems.append("Non-Student")
         }
         
         if renter.wantsSmoking {
