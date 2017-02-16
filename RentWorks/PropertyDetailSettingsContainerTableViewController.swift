@@ -267,12 +267,15 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
     // MARK: propertydetails delegate
     
     func settingsUpdated() {
-        guard let id = property.propertyID, let address = txtfldPropertyAddress.text, let zipcode = txtfldZipCode.text, let city = txtfldCity.text, let state = txtfldState.text, let propertyDescription = txtfldDescription.text, let delegate = propertySettingsDelegate else { return }
+        guard let id = property.propertyID, let address = txtfldPropertyAddress.text, let zipcode = txtfldZipCode.text, let city = txtfldCity.text, let state = txtfldState.text, let propertyDescription = txtfldDescription.text, let delegate = propertySettingsDelegate else {
+            return
+        }
         property.address = address
         property.zipCode = zipcode
         property.city = city
         property.state = state
         property.propertyDescription = propertyDescription
+        property.availableDate = dtpckrDateAvailable.date as NSDate?
         
         if self.parentVC.propertyTask == PropertyTask.editing {
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kZipCode, newValue: zipcode)
@@ -280,6 +283,7 @@ class PropertyDetailSettingsContainerTableViewController: UITableViewController,
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kCity, newValue: city)
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kState, newValue: state)
             PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kPropertyDescription, newValue: propertyDescription)
+            PropertyController.updateCurrentPropertyInFirebase(id: id, attributeToUpdate: UserController.kAvailableDate, newValue: dtpckrDateAvailable.date.timeIntervalSince1970)
             delegate.updatePropertySettingsWith(saveResult: SaveResults.success.rawValue)
             // UserController.saveToPersistentStore()
         } else {
