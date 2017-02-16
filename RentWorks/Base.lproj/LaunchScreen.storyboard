@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,16 +21,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="aln-kQ-J2P">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-logo" translatesAutoresizingMaskIntoConstraints="NO" id="aln-kQ-J2P">
+                                <rect key="frame" x="80" y="298" width="215" height="71"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.15436828136444092" green="0.15910971164703369" blue="0.2314913421869278" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="aln-kQ-J2P" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="JSL-7P-IFv"/>
-                            <constraint firstAttribute="trailing" secondItem="aln-kQ-J2P" secondAttribute="trailing" id="RJb-Kf-UIm"/>
-                            <constraint firstItem="aln-kQ-J2P" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="ahR-JU-xfX"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="aln-kQ-J2P" secondAttribute="bottom" id="nG7-96-4fR"/>
+                            <constraint firstItem="aln-kQ-J2P" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="5Va-uV-8A0"/>
+                            <constraint firstItem="aln-kQ-J2P" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="nPD-Sm-Pms"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -40,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="375" height="667"/>
+        <image name="splash-logo" width="215" height="71"/>
     </resources>
 </document>
