@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qq3-1I-Axi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qq3-1I-Axi">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -32,18 +32,11 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="welcome_white_button" translatesAutoresizingMaskIntoConstraints="NO" id="Mmx-Va-qe5">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome_white_button" translatesAutoresizingMaskIntoConstraints="NO" id="Mmx-Va-qe5">
                                 <rect key="frame" x="40" y="293" width="240" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="240" id="ECB-eP-QhK"/>
                                     <constraint firstAttribute="height" constant="50" id="Pxw-w7-Aw0"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="welcome_transparent_button" translatesAutoresizingMaskIntoConstraints="NO" id="SFj-eq-oXL">
-                                <rect key="frame" x="40" y="351" width="240" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="QED-K3-GOG"/>
-                                    <constraint firstAttribute="width" constant="240" id="idC-4x-WKM"/>
                                 </constraints>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcomeToVenga" translatesAutoresizingMaskIntoConstraints="NO" id="jVq-9C-9cI">
@@ -60,22 +53,38 @@
                                     <constraint firstAttribute="width" constant="56" id="EM0-Ev-fG1"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By continuing, I agree to Venga's Terms of Service and Privacy Policy" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BqZ-Sp-zYB">
+                                <rect key="frame" x="40" y="430" width="240" height="30.5"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                <color key="textColor" red="1" green="0.99998784065246582" blue="0.99999213218688965" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="welcome_transparent_button" translatesAutoresizingMaskIntoConstraints="NO" id="SFj-eq-oXL">
+                                <rect key="frame" x="40" y="351" width="240" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="QED-K3-GOG"/>
+                                    <constraint firstAttribute="width" constant="240" id="idC-4x-WKM"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="SFj-eq-oXL" secondAttribute="trailing" constant="24" id="451-Iq-5oL"/>
+                            <constraint firstItem="BqZ-Sp-zYB" firstAttribute="top" secondItem="SFj-eq-oXL" secondAttribute="bottom" constant="29" id="4Eq-zo-iSz"/>
+                            <constraint firstItem="SFj-eq-oXL" firstAttribute="top" secondItem="Mmx-Va-qe5" secondAttribute="bottom" constant="8" id="6CP-8c-F5B"/>
                             <constraint firstItem="jVq-9C-9cI" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="24" id="CJB-Hq-O5i"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Mmx-Va-qe5" secondAttribute="trailing" constant="24" id="CXh-D4-gwF"/>
                             <constraint firstItem="ZDu-6y-A15" firstAttribute="top" secondItem="Uva-PS-c7E" secondAttribute="bottom" constant="40" id="Dd5-br-UDB"/>
                             <constraint firstItem="SFj-eq-oXL" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="24" id="Eom-S5-PCB"/>
                             <constraint firstItem="SFj-eq-oXL" firstAttribute="centerX" secondItem="WhI-ay-VfP" secondAttribute="centerX" id="RwC-HO-6K2"/>
+                            <constraint firstItem="Mmx-Va-qe5" firstAttribute="top" secondItem="jVq-9C-9cI" secondAttribute="bottom" constant="38" id="b1R-x2-CcF"/>
                             <constraint firstItem="Mmx-Va-qe5" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="24" id="eOM-Ni-HI2"/>
                             <constraint firstItem="jVq-9C-9cI" firstAttribute="top" secondItem="ZDu-6y-A15" secondAttribute="bottom" constant="50" id="eTl-xA-bB8"/>
                             <constraint firstItem="jVq-9C-9cI" firstAttribute="top" secondItem="ZDu-6y-A15" secondAttribute="bottom" constant="50" id="gaN-sC-m7k"/>
-                            <constraint firstItem="Mmx-Va-qe5" firstAttribute="top" secondItem="Uva-PS-c7E" secondAttribute="bottom" constant="345" id="iPs-qN-Vvc"/>
                             <constraint firstItem="Mmx-Va-qe5" firstAttribute="centerX" secondItem="WhI-ay-VfP" secondAttribute="centerX" id="omu-BE-kog"/>
+                            <constraint firstItem="BqZ-Sp-zYB" firstAttribute="trailing" secondItem="SFj-eq-oXL" secondAttribute="trailing" id="ozL-cC-XbC"/>
                             <constraint firstItem="ZDu-6y-A15" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="24" id="vpn-rj-J2h"/>
-                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="SFj-eq-oXL" secondAttribute="bottom" constant="202" id="yBS-wg-LKg"/>
+                            <constraint firstItem="BqZ-Sp-zYB" firstAttribute="leading" secondItem="SFj-eq-oXL" secondAttribute="leading" id="zQo-H7-0Ot"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="j1s-F7-pRL"/>
