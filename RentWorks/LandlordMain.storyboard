@@ -2193,19 +2193,28 @@ available:</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sA0-mz-G6c">
-                                <rect key="frame" x="41" y="170" width="165" height="43.5"/>
+                                <rect key="frame" x="36" y="170" width="165" height="43.5"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="37"/>
                                 <color key="textColor" red="1" green="0.99998784070000002" blue="0.99999213220000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-yellow-no-background" translatesAutoresizingMaskIntoConstraints="NO" id="Dt2-JN-wT6">
+                                <rect key="frame" x="36" y="80" width="56" height="59"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="59" id="29a-hc-Heb"/>
+                                    <constraint firstAttribute="width" constant="56" id="TuE-bk-OZF"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                         <constraints>
+                            <constraint firstItem="Dt2-JN-wT6" firstAttribute="top" secondItem="WuA-Hr-4G3" secondAttribute="bottom" constant="60" id="19r-GZ-I1N"/>
                             <constraint firstItem="L68-PI-ZiO" firstAttribute="top" secondItem="0Wu-kG-KSH" secondAttribute="top" id="Nwb-pv-dYt"/>
                             <constraint firstItem="vOX-FX-eWM" firstAttribute="top" secondItem="L68-PI-ZiO" secondAttribute="bottom" id="Rbw-G1-mW6"/>
                             <constraint firstItem="L68-PI-ZiO" firstAttribute="leading" secondItem="0Wu-kG-KSH" secondAttribute="leading" id="hsu-7p-KFd"/>
                             <constraint firstItem="sA0-mz-G6c" firstAttribute="top" secondItem="WuA-Hr-4G3" secondAttribute="bottom" constant="150" id="kDL-Ey-F7u"/>
-                            <constraint firstItem="sA0-mz-G6c" firstAttribute="leading" secondItem="0Wu-kG-KSH" secondAttribute="leadingMargin" constant="25" id="tUr-Tl-5fm"/>
+                            <constraint firstItem="Dt2-JN-wT6" firstAttribute="leading" secondItem="0Wu-kG-KSH" secondAttribute="leadingMargin" constant="20" id="qnm-He-PpS"/>
+                            <constraint firstItem="sA0-mz-G6c" firstAttribute="leading" secondItem="0Wu-kG-KSH" secondAttribute="leadingMargin" constant="20" id="tUr-Tl-5fm"/>
                             <constraint firstAttribute="trailing" secondItem="L68-PI-ZiO" secondAttribute="trailing" id="u8v-rV-9my"/>
                         </constraints>
                     </view>
@@ -2890,6 +2899,7 @@ available:</string>
         <image name="Star" width="2028" height="1928"/>
         <image name="VengaLogoV1" width="286" height="286"/>
         <image name="filter-button-icon" width="22" height="25"/>
+        <image name="logo-yellow-no-background" width="56" height="59"/>
         <image name="navbar-logo" width="71" height="17"/>
         <image name="navbar-profile-icon" width="20" height="20"/>
         <image name="noImageProfile90x90" width="186" height="186"/>
