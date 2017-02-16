@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -21,23 +21,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="venga_new.png" translatesAutoresizingMaskIntoConstraints="NO" id="nIq-3f-Bl9">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="aln-kQ-J2P">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" red="0.1524202823638916" green="0.1591942310333252" blue="0.23380818963050842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="375" id="UnT-s6-dET"/>
-                                    <constraint firstAttribute="height" constant="667" id="psv-Wd-Nmg"/>
-                                </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="nIq-3f-Bl9" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="7DS-7t-RDF"/>
-                            <constraint firstItem="nIq-3f-Bl9" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Hv9-lR-wBZ"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="nIq-3f-Bl9" secondAttribute="bottom" id="JfJ-YR-Sam"/>
-                            <constraint firstItem="nIq-3f-Bl9" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="k4s-W0-Y5K"/>
-                            <constraint firstItem="nIq-3f-Bl9" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ldk-uh-ikm"/>
-                            <constraint firstAttribute="trailing" secondItem="nIq-3f-Bl9" secondAttribute="trailing" id="sTw-oM-5ih"/>
+                            <constraint firstItem="aln-kQ-J2P" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="JSL-7P-IFv"/>
+                            <constraint firstAttribute="trailing" secondItem="aln-kQ-J2P" secondAttribute="trailing" id="RJb-Kf-UIm"/>
+                            <constraint firstItem="aln-kQ-J2P" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="ahR-JU-xfX"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="aln-kQ-J2P" secondAttribute="bottom" id="nG7-96-4fR"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -47,6 +40,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="venga_new.png" width="1920" height="962"/>
+        <image name="LaunchScreen" width="375" height="667"/>
     </resources>
 </document>
