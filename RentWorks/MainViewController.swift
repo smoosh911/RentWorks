@@ -46,6 +46,7 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     @IBOutlet weak var vwFilters: UIView!
     @IBOutlet weak var navigationBarView: UIView!
     @IBOutlet weak var matchesButton: UIButton!
+    @IBOutlet weak var imgvwNewMessagesBlip: UIImageView!
     
     // MARK: - Properties
 
@@ -110,7 +111,11 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     
     func setMatchesButtonImage() {
         DispatchQueue.main.async {
-            MatchController.currentUserHasNewMatches ? self.matchesButton.setImage(#imageLiteral(resourceName: "ChatBubbleFilled"), for: .normal) : self.matchesButton.setImage(#imageLiteral(resourceName: "Nav bar chat bubble"), for: .normal)
+            if MatchController.currentUserHasNewMatches {
+                self.imgvwNewMessagesBlip.isHidden = false
+            } else {
+                self.imgvwNewMessagesBlip.isHidden = true
+            }
         }
     }
     
