@@ -17,14 +17,14 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     
-    @IBOutlet weak var petFriendlyImageView: UIImageView!
-    @IBOutlet weak var smokingAllowedImageView: UIImageView!
-    
-    @IBOutlet weak var starImageView1: UIImageView!
-    @IBOutlet weak var starImageView2: UIImageView!
-    @IBOutlet weak var starImageView3: UIImageView!
-    @IBOutlet weak var starImageView4: UIImageView!
-    @IBOutlet weak var starImageView5: UIImageView!
+//    @IBOutlet weak var petFriendlyImageView: UIImageView!
+//    @IBOutlet weak var smokingAllowedImageView: UIImageView!
+//    
+//    @IBOutlet weak var starImageView1: UIImageView!
+//    @IBOutlet weak var starImageView2: UIImageView!
+//    @IBOutlet weak var starImageView3: UIImageView!
+//    @IBOutlet weak var starImageView4: UIImageView!
+//    @IBOutlet weak var starImageView5: UIImageView!
     
     // MARK: - Outlets for backgroundView that acts as a faux swipeableView
     
@@ -32,14 +32,14 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var backgroundNameLabel: UILabel!
     
-    @IBOutlet weak var backgroundPetFriendlyImageview: UIImageView!
-    @IBOutlet weak var backgroundSmokingAllowedImageView: UIImageView!
-    
-    @IBOutlet weak var backgroundStarImageView1: UIImageView!
-    @IBOutlet weak var backgroundStarImageView2: UIImageView!
-    @IBOutlet weak var backgroundStarImageView3: UIImageView!
-    @IBOutlet weak var backgroundStarImageView4: UIImageView!
-    @IBOutlet weak var backgroundStarImageView5: UIImageView!
+//    @IBOutlet weak var backgroundPetFriendlyImageview: UIImageView!
+//    @IBOutlet weak var backgroundSmokingAllowedImageView: UIImageView!
+//    
+//    @IBOutlet weak var backgroundStarImageView1: UIImageView!
+//    @IBOutlet weak var backgroundStarImageView2: UIImageView!
+//    @IBOutlet weak var backgroundStarImageView3: UIImageView!
+//    @IBOutlet weak var backgroundStarImageView4: UIImageView!
+//    @IBOutlet weak var backgroundStarImageView5: UIImageView!
     
     // MARK: - Other outlets
     
@@ -67,7 +67,7 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     
     var matchingUsersAlertController: UIAlertController?
     
-    let paddingConstant: CGFloat = -90.0 // this is for the swiping animations in the extension below
+    let paddingConstant: CGFloat = -94.0 // this is for the swiping animations in the extension below
     
     // MARK: View life cycles
     
@@ -121,44 +121,44 @@ class MainViewController: UIViewController, MatchControllerDelegate {
     
     // MARK: - UI Related
     // needs work: this fuction occurs multiple times in code
-    func updateStars(starImageViews: [UIImageView], for rating: Double) {
-        
-        switch rating {
-        case 1:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "Star")
-            starImageViews[2].image = #imageLiteral(resourceName: "Star")
-            starImageViews[3].image = #imageLiteral(resourceName: "Star")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
-            
-        case 2:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[2].image = #imageLiteral(resourceName: "Star")
-            starImageViews[3].image = #imageLiteral(resourceName: "Star")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
-        case 3:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[3].image = #imageLiteral(resourceName: "Star")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
-        case 4:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[4].image = #imageLiteral(resourceName: "Star")
-        case 5:
-            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
-            starImageViews[4].image = #imageLiteral(resourceName: "StarFilled")
-        default:
-            _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
-        }
-    }
+//    func updateStars(starImageViews: [UIImageView], for rating: Double) {
+//        
+//        switch rating {
+//        case 1:
+//            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[1].image = #imageLiteral(resourceName: "Star")
+//            starImageViews[2].image = #imageLiteral(resourceName: "Star")
+//            starImageViews[3].image = #imageLiteral(resourceName: "Star")
+//            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+//            
+//        case 2:
+//            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[2].image = #imageLiteral(resourceName: "Star")
+//            starImageViews[3].image = #imageLiteral(resourceName: "Star")
+//            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+//        case 3:
+//            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[3].image = #imageLiteral(resourceName: "Star")
+//            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+//        case 4:
+//            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[4].image = #imageLiteral(resourceName: "Star")
+//        case 5:
+//            starImageViews[0].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[1].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[2].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[3].image = #imageLiteral(resourceName: "StarFilled")
+//            starImageViews[4].image = #imageLiteral(resourceName: "StarFilled")
+//        default:
+//            _ = starImageViews.map({$0.image = #imageLiteral(resourceName: "Star")})
+//        }
+//    }
     
     // set corner radius of views and image views
     func setupViews() {
