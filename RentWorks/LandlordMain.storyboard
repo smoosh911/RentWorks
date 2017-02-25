@@ -1870,27 +1870,27 @@ available:</string>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t3G-XV-IZt">
-                                        <rect key="frame" x="8" y="21" width="34" height="30"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="15"/>
+                                        <rect key="frame" x="8" y="21" width="32" height="30"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Light" family="SF UI Display" pointSize="15"/>
                                         <state key="normal" title="Back">
-                                            <color key="titleColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="backNavigationButtonTapped:" destination="z2y-ul-bUZ" eventType="touchUpInside" id="2gq-Nv-d1z"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SWw-8B-URe">
-                                        <rect key="frame" x="274" y="20" width="38" height="32"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="17"/>
+                                        <rect key="frame" x="276" y="19.5" width="36" height="33"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Light" family="SF UI Display" pointSize="17"/>
                                         <state key="normal" title="Save">
-                                            <color key="titleColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleColor" red="0.1524202824" green="0.15919423099999999" blue="0.23380818959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="btnSubmitChanges_TouchedUpInside:" destination="z2y-ul-bUZ" eventType="touchUpInside" id="AUV-CE-s3m"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.95260304210000002" green="0.96072906260000002" blue="0.96892410520000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstItem="KYi-zp-cgg" firstAttribute="centerX" secondItem="JcZ-Tr-zYs" secondAttribute="centerX" id="7EG-Tw-Q0m"/>
                                     <constraint firstAttribute="trailing" secondItem="SWw-8B-URe" secondAttribute="trailing" constant="8" id="Dik-3Q-CFi"/>
@@ -1923,8 +1923,8 @@ available:</string>
                                 </connections>
                             </containerView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="kAP-jk-s90">
-                                <rect key="frame" x="16" y="64" width="288" height="117"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="16" y="64" width="288" height="114"/>
+                                <color key="backgroundColor" red="0.95260304210000002" green="0.96072906260000002" blue="0.96892410520000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="zuo-7c-Zfx">
                                     <size key="itemSize" width="100" height="100"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -1961,27 +1961,33 @@ available:</string>
                                 </connections>
                             </collectionView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="GlD-4X-t64">
-                                <rect key="frame" x="16" y="189" width="288" height="30"/>
+                                <rect key="frame" x="16" y="186" width="288" height="33"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UUe-ZB-NYq">
-                                        <rect key="frame" x="0.0" y="0.0" width="105" height="30"/>
-                                        <state key="normal" title="Delete Pictures"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="108" height="33"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Light" family="SF UI Display" pointSize="17"/>
+                                        <state key="normal" title="Delete Pictures">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
                                         <connections>
                                             <action selector="btnDeletePictures_TouchedUpInside:" destination="z2y-ul-bUZ" eventType="touchUpInside" id="IAa-Sq-zUb"/>
                                         </connections>
                                     </button>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save result" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="WUB-7a-vdK">
-                                        <rect key="frame" x="111.5" y="0.0" width="90" height="30"/>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save Result" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.20000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="WUB-7a-vdK">
+                                        <rect key="frame" x="111.5" y="0.0" width="90" height="33"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="90" id="Kq3-SP-Sg4"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Regular" family="SF UI Display" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="752" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hpf-9Q-Hx4">
-                                        <rect key="frame" x="208" y="0.0" width="80" height="30"/>
-                                        <state key="normal" title="Add Picture"/>
+                                        <rect key="frame" x="205" y="0.0" width="83" height="33"/>
+                                        <fontDescription key="fontDescription" name="SFUIDisplay-Light" family="SF UI Display" pointSize="17"/>
+                                        <state key="normal" title="Add Picture">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
                                         <connections>
                                             <action selector="addPhotoButtonTapped:" destination="z2y-ul-bUZ" eventType="touchUpInside" id="ekz-QD-jAt"/>
                                         </connections>
@@ -1989,7 +1995,7 @@ available:</string>
                                 </subviews>
                             </stackView>
                             <activityIndicatorView hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ZA2-yN-px5">
-                                <rect key="frame" x="140" y="103" width="40" height="40"/>
+                                <rect key="frame" x="140" y="101.5" width="40" height="40"/>
                                 <color key="backgroundColor" red="0.89304828661056734" green="0.89183069785550662" blue="0.91309894057753171" alpha="0.72397667253521125" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="1wY-B1-qkX"/>
@@ -1997,7 +2003,7 @@ available:</string>
                                 </constraints>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.9526030421257019" green="0.96072906255722046" blue="0.96892410516738892" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="GlD-4X-t64" firstAttribute="top" secondItem="kAP-jk-s90" secondAttribute="bottom" constant="8" id="1J9-Eo-9od"/>
                             <constraint firstItem="Rxx-5e-321" firstAttribute="top" secondItem="yz9-2g-te5" secondAttribute="top" constant="227" id="1cb-an-XA7"/>
