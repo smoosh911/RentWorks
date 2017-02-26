@@ -19,8 +19,8 @@ class MatchTableViewCell: UITableViewCell {
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
-    @IBOutlet weak var newChatBadge: UIView!
     @IBOutlet weak var btnViewDetails: UIButton!
+    @IBOutlet weak var imgChatBadge: UIImageView!
     
     // MARK: variables
     
@@ -33,7 +33,7 @@ class MatchTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        newChatBadge.isHidden = hideNewChatBadge()
+        setChatBadgeImage()
     }
     
     // MARK: actions
@@ -67,10 +67,18 @@ class MatchTableViewCell: UITableViewCell {
             }
             UserDefaults.standard.set(matchedPropertyIDs, forKey: Identifiers.UserDefaults.renterMatchedPropertiesIDs.rawValue)
         }
-        newChatBadge.isHidden = hideNewChatBadge()
+        setChatBadgeImage()
     }
     
-    private func hideNewChatBadge() -> Bool {
+    private func setChatBadgeImage() {
+        if showGrayChatBadge() {
+            imgChatBadge.image = #imageLiteral(resourceName: "popup-gray-blip-icon")
+        } else {
+            imgChatBadge.image = #imageLiteral(resourceName: "popup-yellow-blip-icon")
+        }
+    }
+    
+    private func showGrayChatBadge() -> Bool {
         if let renter = renter, let renterID = renter.id {
             guard let matchedRenterIDs: [String] = UserDefaults.standard.array(forKey: Identifiers.UserDefaults.propertyMatchedRenterIDs.rawValue) as? [String] else {
                 return false
@@ -113,6 +121,6 @@ class MatchTableViewCell: UITableViewCell {
         profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
         profileImageView.clipsToBounds = true
         
-        newChatBadge.layer.cornerRadius = newChatBadge.bounds.width / 2
+        imgChatBadge.layer.cornerRadius = imgChatBadge.bounds.width / 2
     }
 }
