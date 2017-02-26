@@ -68,7 +68,7 @@ class LandlordMessagingViewController: MessagingViewController {
             return []
         }
         
-        let allMessages = getAllMessages()
+        let allMessages = Message.getAllMessages()
         
         messages = allMessages.filter({ $0.forPropertyID == propertyID && ($0.fromUserID == renterID || $0.toUserID == renterID) })
         

@@ -10,6 +10,10 @@ import Foundation
 
 class PropertyMatchesViewController: MatchesViewController, MatchTableViewCellDelegate {
     
+    // MARK: outlets
+    
+    @IBOutlet weak var tblvwMatches: UITableView!
+    
     // MARK: variables
     
     var property: Property!
@@ -34,6 +38,12 @@ class PropertyMatchesViewController: MatchesViewController, MatchTableViewCellDe
                 MatchController.propertyIDsWithMatches = MatchController.propertyIDsWithMatches.filter({$0 != propertyID})
             }
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        tblvwMatches.reloadData()
     }
 
     // MARK: segues
@@ -66,7 +76,7 @@ class PropertyMatchesViewController: MatchesViewController, MatchTableViewCellDe
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "matchCell", for: indexPath) as? MatchTableViewCell else { return UITableViewCell() }
         
         let matchingRenter = matchedRentersForProperty[indexPath.row]
-        cell.updateWith(renter: matchingRenter)
+        cell.updateWith(renter: matchingRenter, property: property)
         cell.matchesDelegate = self
 //        cell.delegate = self
         
@@ -99,6 +109,18 @@ class PropertyMatchesViewController: MatchesViewController, MatchTableViewCellDe
         guard let cell = tableView.cellForRow(at: indexPath) as? MatchTableViewCell else { return }
         self.selectedCell = cell
         performSegue(withIdentifier: Identifiers.Segues.messagingVC.rawValue, sender: self)
+    }
+    
+    // MARK: header cell
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerCell = tableView.dequeueReusableCell(withIdentifier: "matchHeaderCell") as! MessagesHeaderCell
+        
+        return headerCell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
     }
     
     // MARK: match table view cell delegate

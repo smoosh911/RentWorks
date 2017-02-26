@@ -18,9 +18,11 @@ class MatchTableViewCell: UITableViewCell {
     // MARK: outlets
     
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var lblLastMessage: UILabel!
+    @IBOutlet weak var lblTimeOfLastMessage: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
-    @IBOutlet weak var newChatBadge: UIView!
     @IBOutlet weak var btnViewDetails: UIButton!
+    @IBOutlet weak var imgChatBadge: UIImageView!
     
     // MARK: variables
     
@@ -33,7 +35,7 @@ class MatchTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        newChatBadge.isHidden = hideNewChatBadge()
+        setChatBadgeImage()
     }
     
     // MARK: actions
@@ -67,10 +69,18 @@ class MatchTableViewCell: UITableViewCell {
             }
             UserDefaults.standard.set(matchedPropertyIDs, forKey: Identifiers.UserDefaults.renterMatchedPropertiesIDs.rawValue)
         }
-        newChatBadge.isHidden = hideNewChatBadge()
+        setChatBadgeImage()
     }
     
-    private func hideNewChatBadge() -> Bool {
+    private func setChatBadgeImage() {
+        if showGrayChatBadge() {
+            imgChatBadge.image = #imageLiteral(resourceName: "popup-gray-blip-icon")
+        } else {
+            imgChatBadge.image = #imageLiteral(resourceName: "popup-yellow-blip-icon")
+        }
+    }
+    
+    private func showGrayChatBadge() -> Bool {
         if let renter = renter, let renterID = renter.id {
             guard let matchedRenterIDs: [String] = UserDefaults.standard.array(forKey: Identifiers.UserDefaults.propertyMatchedRenterIDs.rawValue) as? [String] else {
                 return false
@@ -85,7 +95,9 @@ class MatchTableViewCell: UITableViewCell {
         return true
     }
     
-    func updateWith(renter: Renter) {
+    func updateWith(renter: Renter, property: Property) {
+        setupCell()
+        
         self.renter = renter
         
         self.nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
@@ -93,10 +105,17 @@ class MatchTableViewCell: UITableViewCell {
         guard let imageData = (renter.profileImages?.firstObject as? ProfileImage)?.imageData else { return }
         self.profileImageView.image = UIImage(data: imageData as Data)
         
-        setupCell()
+        guard let lastMessage = getLastMessage(renter: renter, property: property) else {
+            self.lblLastMessage.text = ""
+            self.lblTimeOfLastMessage.text = ""
+            return
+        }
+        setCellLastMessageInfo(message: lastMessage)
     }
     
     func updateWith(property: Property) {
+        setupCell()
+        
         self.property = property
         
         self.nameLabel.text = property.propertyDescription ?? "No description available"
@@ -104,15 +123,69 @@ class MatchTableViewCell: UITableViewCell {
         guard let imageData = (property.profileImages?.firstObject as? ProfileImage)?.imageData else { return }
         self.profileImageView.image = UIImage(data: imageData as Data)
         
-        setupCell()
+        guard let lastMessage = getLastMessage(property: property) else {
+            self.lblLastMessage.text = ""
+            self.lblTimeOfLastMessage.text = ""
+            return
+        }
+        setCellLastMessageInfo(message: lastMessage)
     }
     
-    func setupCell() {
+    private func setupCell() {
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = false
         profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
         profileImageView.clipsToBounds = true
         
-        newChatBadge.layer.cornerRadius = newChatBadge.bounds.width / 2
+        imgChatBadge.layer.cornerRadius = imgChatBadge.bounds.width / 2
+    }
+    
+    private func setCellLastMessageInfo(message: Message) {
+        self.lblLastMessage.text = message.message
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.amSymbol = "am"
+        dateFormatter.pmSymbol = "pm"
+        let dateString = dateFormatter.string(from: message.timeDateSent as! Date)
+        self.lblTimeOfLastMessage.text = dateString
+    }
+    
+    private func getLastMessage(property: Property) -> Message? {
+        
+        guard
+            let propertyID = property.propertyID,
+            let landlordID = property.landlordID else {
+                return nil
+        }
+        
+        let allMessages = Message.getAllMessages()
+        
+        let messages = allMessages.filter({ $0.forPropertyID == propertyID && ($0.fromUserID == landlordID || $0.toUserID == landlordID) })
+        
+        if messages.count > 0 {
+            return messages.last!
+        } else {
+            return nil
+        }
+    }
+    
+    private func getLastMessage(renter: Renter, property: Property) -> Message? {
+        
+        guard
+            let propertyID = property.propertyID,
+            let renterID = renter.id else {
+                return nil
+        }
+        
+        let allMessages = Message.getAllMessages()
+        
+        let messages = allMessages.filter({ $0.forPropertyID == propertyID && ($0.fromUserID == renterID || $0.toUserID == renterID) })
+        
+        if messages.count > 0 {
+            return messages.last!
+        } else {
+            return nil
+        }
     }
 }
