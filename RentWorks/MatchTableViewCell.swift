@@ -18,6 +18,8 @@ class MatchTableViewCell: UITableViewCell {
     // MARK: outlets
     
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var lblLastMessage: UILabel!
+    @IBOutlet weak var lblTimeOfLastMessage: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var btnViewDetails: UIButton!
     @IBOutlet weak var imgChatBadge: UIImageView!
@@ -105,6 +107,8 @@ class MatchTableViewCell: UITableViewCell {
     }
     
     func updateWith(property: Property) {
+        setupCell()
+        
         self.property = property
         
         self.nameLabel.text = property.propertyDescription ?? "No description available"
@@ -112,7 +116,19 @@ class MatchTableViewCell: UITableViewCell {
         guard let imageData = (property.profileImages?.firstObject as? ProfileImage)?.imageData else { return }
         self.profileImageView.image = UIImage(data: imageData as Data)
         
-        setupCell()
+        guard let lastMessage = getLastMessage(property: property) else {
+            self.lblLastMessage.text = ""
+            self.lblTimeOfLastMessage.text = ""
+            return
+        }
+        self.lblLastMessage.text = lastMessage.message
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.amSymbol = "am"
+        dateFormatter.pmSymbol = "pm"
+        let dateString = dateFormatter.string(from: lastMessage.timeDateSent as! Date)
+        self.lblTimeOfLastMessage.text = dateString
     }
     
     func setupCell() {
@@ -122,5 +138,44 @@ class MatchTableViewCell: UITableViewCell {
         profileImageView.clipsToBounds = true
         
         imgChatBadge.layer.cornerRadius = imgChatBadge.bounds.width / 2
+    }
+    
+    private func getLastMessage(property: Property) -> Message? {
+        
+        guard
+            let propertyID = property.propertyID,
+            let landlordID = property.landlordID else {
+                return nil
+        }
+        
+        let allMessages = Message.getAllMessages()
+        
+        let messages = allMessages.filter({ $0.forPropertyID == propertyID && ($0.fromUserID == landlordID || $0.toUserID == landlordID) })
+        
+        if messages.count > 0 {
+            return messages.last!
+        } else {
+            return nil
+        }
+    }
+    
+    private func getLastMessage(renter: Renter, property: Property) -> Message? {
+        
+        guard
+            let property = self.property,
+            let propertyID = property.propertyID,
+            let renterID = renter.id else {
+                return nil
+        }
+        
+        let allMessages = Message.getAllMessages()
+        
+        let messages = allMessages.filter({ $0.forPropertyID == propertyID && ($0.fromUserID == renterID || $0.toUserID == renterID) })
+        
+        if messages.count > 0 {
+            return messages.last!
+        } else {
+            return nil
+        }
     }
 }

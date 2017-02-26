@@ -24,4 +24,16 @@ extension Message {
         self.forPropertyID = forPropertyID
         self.timeDateSent = NSDate()
     }
+    
+    static internal func getAllMessages() -> [Message] {
+        do {
+            guard let allMessages = try CoreDataStack.context.fetch(Message.fetchRequest()) as? [Message] else {
+                return []
+            }
+            return allMessages
+        } catch let e {
+            log(e)
+        }
+        return []
+    }
 }
