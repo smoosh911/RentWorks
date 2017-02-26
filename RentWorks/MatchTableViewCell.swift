@@ -95,7 +95,9 @@ class MatchTableViewCell: UITableViewCell {
         return true
     }
     
-    func updateWith(renter: Renter) {
+    func updateWith(renter: Renter, property: Property) {
+        setupCell()
+        
         self.renter = renter
         
         self.nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
@@ -103,7 +105,12 @@ class MatchTableViewCell: UITableViewCell {
         guard let imageData = (renter.profileImages?.firstObject as? ProfileImage)?.imageData else { return }
         self.profileImageView.image = UIImage(data: imageData as Data)
         
-        setupCell()
+        guard let lastMessage = getLastMessage(renter: renter, property: property) else {
+            self.lblLastMessage.text = ""
+            self.lblTimeOfLastMessage.text = ""
+            return
+        }
+        setCellLastMessageInfo(message: lastMessage)
     }
     
     func updateWith(property: Property) {
@@ -121,23 +128,27 @@ class MatchTableViewCell: UITableViewCell {
             self.lblTimeOfLastMessage.text = ""
             return
         }
-        self.lblLastMessage.text = lastMessage.message
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "h:mm a"
-        dateFormatter.amSymbol = "am"
-        dateFormatter.pmSymbol = "pm"
-        let dateString = dateFormatter.string(from: lastMessage.timeDateSent as! Date)
-        self.lblTimeOfLastMessage.text = dateString
+        setCellLastMessageInfo(message: lastMessage)
     }
     
-    func setupCell() {
+    private func setupCell() {
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.masksToBounds = false
         profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
         profileImageView.clipsToBounds = true
         
         imgChatBadge.layer.cornerRadius = imgChatBadge.bounds.width / 2
+    }
+    
+    private func setCellLastMessageInfo(message: Message) {
+        self.lblLastMessage.text = message.message
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.amSymbol = "am"
+        dateFormatter.pmSymbol = "pm"
+        let dateString = dateFormatter.string(from: message.timeDateSent as! Date)
+        self.lblTimeOfLastMessage.text = dateString
     }
     
     private func getLastMessage(property: Property) -> Message? {
@@ -162,7 +173,6 @@ class MatchTableViewCell: UITableViewCell {
     private func getLastMessage(renter: Renter, property: Property) -> Message? {
         
         guard
-            let property = self.property,
             let propertyID = property.propertyID,
             let renterID = renter.id else {
                 return nil

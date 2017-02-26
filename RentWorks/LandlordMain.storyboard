@@ -2219,6 +2219,10 @@ available:</string>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="G7r-hE-7SL" id="cdT-CW-gjv"/>
+                                    <outlet property="delegate" destination="G7r-hE-7SL" id="uXL-pe-v1a"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2233,6 +2237,7 @@ available:</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="tblvwMatches" destination="ebr-VK-Hkc" id="Jms-Uk-2aT"/>
                         <segue destination="sXY-hB-ARP" kind="presentation" identifier="segueToReportUserVC" modalPresentationStyle="overCurrentContext" id="nMh-2Y-NIK"/>
                         <segue destination="vdP-0r-hEv" kind="custom" identifier="segueShowCardDetailsVC" customClass="RevealSegue" customModule="RentWorks" id="MDw-CR-BRy"/>
                         <segue destination="98O-6n-GRG" kind="show" identifier="segueToMessagingVC" id="brm-pO-2ZB"/>
