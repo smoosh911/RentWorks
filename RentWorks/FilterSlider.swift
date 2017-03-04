@@ -8,7 +8,7 @@
 
 import Foundation
 
-class RentWorksSlider: UISlider {
+class FilterSlider: UISlider {
     
     @IBInspectable var trackHeight: CGFloat = 7
     
