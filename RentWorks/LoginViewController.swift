@@ -31,18 +31,20 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        btnRenter.layer.cornerRadius = 10
-        btnLandlord.layer.cornerRadius = 10
+        btnRenter.layer.cornerRadius = btnRenter.frame.height / 2
+        btnLandlord.layer.cornerRadius = btnLandlord.frame.height / 2
+        btnLandlord.layer.borderColor = UIColor.white.cgColor
+        btnLandlord.layer.borderWidth = 2
         
-        facebookLoginButton.delegate = self
-        facebookLoginButton.loginBehavior = .web
-        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue, FacebookRequestController.FacebookPermissions.user_work_history_permission.rawValue]
+//        facebookLoginButton.delegate = self
+//        facebookLoginButton.loginBehavior = .web
+//        facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue, FacebookRequestController.FacebookPermissions.user_work_history_permission.rawValue]
         
-        self.view.addSubview(facebookLoginButton)
+//        self.view.addSubview(facebookLoginButton)
         
         AppearanceController.appearanceFor(navigationController: self.navigationController)
         
-        constraintsForFacebookLoginButton()
+//        constraintsForFacebookLoginButton()
     }
     
     // MARK: actions
@@ -71,7 +73,7 @@ class LoginViewController: UIViewController, FBSDKLoginButtonDelegate {
     // MARK: helper functions
     
     private func performCorrectSegue(buttonText: String) {
-        if buttonText == "Renter" {
+        if buttonText == "I'm a Renter" {
             performSegue(withIdentifier: Identifiers.Segues.renterMainVC.rawValue, sender: self)
         } else {
             

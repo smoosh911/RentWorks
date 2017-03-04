@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qq3-1I-Axi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16B2657" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Qq3-1I-Axi">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -13,6 +13,12 @@
     <customFonts key="customFonts">
         <array key="Roboto-Bold.ttf">
             <string>Roboto-Bold</string>
+        </array>
+        <array key="SF-UI-Display-Light.otf">
+            <string>SFUIDisplay-Light</string>
+        </array>
+        <array key="SF-UI-Text-Medium.otf">
+            <string>SFUIText-Medium</string>
         </array>
     </customFonts>
     <scenes>
@@ -28,95 +34,169 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Rar-Th-1YO">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="table-and-flowers" translatesAutoresizingMaskIntoConstraints="NO" id="Rar-Th-1YO">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cF8-N0-YSp">
-                                <rect key="frame" x="36" y="476" width="248" height="57"/>
-                                <color key="backgroundColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="apK-XH-4lj">
+                                <rect key="frame" x="36" y="288" width="248" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="57" id="KGT-JZ-DXm"/>
+                                    <constraint firstAttribute="height" constant="50" id="syN-Sc-Xdc"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="38"/>
-                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="13" maxY="0.0"/>
-                                <state key="normal" title="Landlord">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="SFUIText-Medium" family="SF UI Text" pointSize="17"/>
+                                <state key="normal" title="I'm a Renter">
+                                    <color key="titleColor" red="0.15297728776931763" green="0.16068622469902039" blue="0.23547554016113281" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
-                                        <real key="value" value="0.20000000000000001"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
-                                        <point key="value" x="0.0" y="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="btnRenterOrLandlord_TouchedUpInside:" destination="9Z4-ai-1st" eventType="touchUpInside" id="EMR-yi-oHG"/>
-                                    <segue destination="yLP-gJ-WFg" kind="presentation" identifier="segueToLandlordMainVC" id="wVO-Mc-cAZ"/>
+                                    <action selector="btnRenterOrLandlord_TouchedUpInside:" destination="9Z4-ai-1st" eventType="touchUpInside" id="S7F-XF-CA0"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfB-UU-hAm">
-                                <rect key="frame" x="36" y="394" width="248" height="57"/>
-                                <color key="backgroundColor" red="0.8862745098" green="0.73725490199999999" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FGz-S8-Wqh">
+                                <rect key="frame" x="36" y="358" width="248" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="57" id="ggI-nD-kJy"/>
+                                    <constraint firstAttribute="height" constant="50" id="oqr-Es-nP6"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="38"/>
-                                <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="50" maxY="0.0"/>
-                                <state key="normal" title="Renter">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="SFUIText-Medium" family="SF UI Text" pointSize="18"/>
+                                <state key="normal" title="I'm a Landlord">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
-                                        <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
-                                        <real key="value" value="0.20000000000000001"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="point" keyPath="shadowOffset">
-                                        <point key="value" x="0.0" y="0.0"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="btnRenterOrLandlord_TouchedUpInside:" destination="9Z4-ai-1st" eventType="touchUpInside" id="2JU-Xa-GvL"/>
+                                    <segue destination="yLP-gJ-WFg" kind="presentation" identifier="segueToLandlordMainVC" id="9G3-eW-hmM"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-yellow-no-background" translatesAutoresizingMaskIntoConstraints="NO" id="Zrd-K6-MDZ">
+                                <rect key="frame" x="36" y="76" width="56" height="59"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="59" id="Qhr-Zp-U50"/>
+                                    <constraint firstAttribute="width" constant="56" id="WVI-EF-zgG"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome To Venga" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pzh-tv-HXD">
+                                <rect key="frame" x="36" y="170" width="190" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="190" id="iye-Wm-Wan"/>
+                                    <constraint firstAttribute="height" constant="90" id="j2x-MP-8ie"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="SFUIDisplay-Light" family="SF UI Display" pointSize="36"/>
+                                <color key="textColor" red="1" green="0.99998784070000002" blue="0.99999213220000005" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Jo-Yz-JQg">
+                                <rect key="frame" x="36" y="416" width="248" height="34"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="By continuing, I agree to Venga's ">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Light"/>
+                                            <font key="NSOriginalFont" size="14" name="SFUIText-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="P">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="rivacy ">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Medium"/>
+                                            <font key="NSOriginalFont" size="14" name="SFUIText-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="P">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="olicy">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Medium"/>
+                                            <font key="NSOriginalFont" size="14" name="SFUIText-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content=" and ">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Light"/>
+                                            <font key="NSOriginalFont" size="14" name="SFUIText-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="T">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="erms of ">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Medium"/>
+                                            <font key="NSOriginalFont" size="14" name="SFUIText-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="S">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="ervice">
+                                        <attributes>
+                                            <color key="NSColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="14" name="SFUIText-Medium"/>
+                                            <font key="NSOriginalFont" size="14" name="SFUIText-Medium"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wfB-UU-hAm" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="20" id="0HQ-Ym-ShD"/>
+                            <constraint firstItem="FGz-S8-Wqh" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="20" id="3bv-v5-1f4"/>
+                            <constraint firstItem="apK-XH-4lj" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="20" id="9Qc-5b-1v4"/>
                             <constraint firstItem="Rar-Th-1YO" firstAttribute="top" secondItem="WhI-ay-VfP" secondAttribute="top" id="BYz-TC-fjR"/>
                             <constraint firstAttribute="trailing" secondItem="Rar-Th-1YO" secondAttribute="trailing" id="Bn5-zM-vse"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="wfB-UU-hAm" secondAttribute="trailing" constant="20" id="Du6-Tk-8bm"/>
-                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="cF8-N0-YSp" secondAttribute="bottom" constant="35" id="EG9-hL-eob"/>
+                            <constraint firstItem="Pzh-tv-HXD" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="20" id="F2M-yQ-RNB"/>
                             <constraint firstAttribute="bottom" secondItem="Rar-Th-1YO" secondAttribute="bottom" id="Hqf-Q9-JIY"/>
-                            <constraint firstItem="cF8-N0-YSp" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="20" id="Kfl-Tl-d1D"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="cF8-N0-YSp" secondAttribute="trailing" constant="20" id="Lcg-77-qDK"/>
                             <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="Rar-Th-1YO" secondAttribute="bottom" id="OEC-kQ-AsE"/>
+                            <constraint firstItem="Pzh-tv-HXD" firstAttribute="top" secondItem="Zrd-K6-MDZ" secondAttribute="bottom" constant="35" id="Pl8-s9-a0d"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="FGz-S8-Wqh" secondAttribute="trailing" constant="20" id="b2m-so-mEi"/>
+                            <constraint firstItem="8Jo-Yz-JQg" firstAttribute="top" secondItem="FGz-S8-Wqh" secondAttribute="bottom" constant="8" symbolic="YES" id="bfd-8L-7aT"/>
+                            <constraint firstItem="FGz-S8-Wqh" firstAttribute="top" secondItem="apK-XH-4lj" secondAttribute="bottom" constant="20" id="d1W-2S-dW4"/>
+                            <constraint firstItem="Zrd-K6-MDZ" firstAttribute="top" secondItem="Uva-PS-c7E" secondAttribute="bottom" constant="56" id="d9g-o6-hpq"/>
                             <constraint firstItem="Rar-Th-1YO" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leading" id="fvk-28-AUj"/>
-                            <constraint firstItem="cF8-N0-YSp" firstAttribute="top" secondItem="wfB-UU-hAm" secondAttribute="bottom" constant="25" id="r1m-6B-LCn"/>
+                            <constraint firstItem="UqD-JY-oma" firstAttribute="top" secondItem="FGz-S8-Wqh" secondAttribute="bottom" constant="160" id="gQd-0u-nPI"/>
+                            <constraint firstItem="Zrd-K6-MDZ" firstAttribute="leading" secondItem="WhI-ay-VfP" secondAttribute="leadingMargin" constant="20" id="kUd-T8-czf"/>
+                            <constraint firstItem="8Jo-Yz-JQg" firstAttribute="leading" secondItem="FGz-S8-Wqh" secondAttribute="leading" id="tJu-rZ-Btx"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="apK-XH-4lj" secondAttribute="trailing" constant="20" id="uMY-0V-9YH"/>
+                            <constraint firstItem="8Jo-Yz-JQg" firstAttribute="trailing" secondItem="FGz-S8-Wqh" secondAttribute="trailing" id="uju-eS-mfO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="j1s-F7-pRL"/>
                     <connections>
-                        <outlet property="btnLandlord" destination="cF8-N0-YSp" id="SV5-n9-rUh"/>
-                        <outlet property="btnRenter" destination="wfB-UU-hAm" id="ppS-fz-mVR"/>
+                        <outlet property="btnLandlord" destination="FGz-S8-Wqh" id="2r8-mY-EXy"/>
+                        <outlet property="btnRenter" destination="apK-XH-4lj" id="IuI-GJ-5sX"/>
                         <segue destination="T7G-mW-4Wi" kind="presentation" identifier="segueToRenterMainVC" id="Iaq-mK-LFU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YLq-Mj-cPN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1832.8" y="8.5457271364317844"/>
+            <point key="canvasLocation" x="1831.875" y="8.4507042253521121"/>
         </scene>
         <!--cardLoadingVC-->
         <scene sceneID="xXF-Kb-57g">
@@ -137,7 +217,7 @@
         <!--Navigation Controller-->
         <scene sceneID="Pyw-jd-FXN">
             <objects>
-                <navigationController storyboardIdentifier="loginVC" automaticallyAdjustsScrollViewInsets="NO" id="Qq3-1I-Axi" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="loginVC" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="Qq3-1I-Axi" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8G6-qI-0GL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -231,16 +311,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreen" translatesAutoresizingMaskIntoConstraints="NO" id="Vho-VV-lu4">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-logo" translatesAutoresizingMaskIntoConstraints="NO" id="vVl-ZJ-HAx">
+                                <rect key="frame" x="52.5" y="248.5" width="215" height="71"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.15436828136444092" green="0.15910971164703369" blue="0.2314913421869278" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Vho-VV-lu4" secondAttribute="trailing" id="4Jl-ki-Y6F"/>
-                            <constraint firstItem="Vho-VV-lu4" firstAttribute="top" secondItem="LOS-Uu-5tr" secondAttribute="top" id="bOd-0L-g6W"/>
-                            <constraint firstAttribute="bottom" secondItem="Vho-VV-lu4" secondAttribute="bottom" id="mZP-KD-WWp"/>
-                            <constraint firstItem="Vho-VV-lu4" firstAttribute="leading" secondItem="LOS-Uu-5tr" secondAttribute="leading" id="wwH-sX-mHb"/>
+                            <constraint firstItem="vVl-ZJ-HAx" firstAttribute="centerX" secondItem="LOS-Uu-5tr" secondAttribute="centerX" id="5g1-1H-3h0"/>
+                            <constraint firstItem="vVl-ZJ-HAx" firstAttribute="centerY" secondItem="LOS-Uu-5tr" secondAttribute="centerY" id="Svv-zm-Ta8"/>
                         </constraints>
                     </view>
                     <connections>
@@ -253,7 +331,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchScreen" width="375" height="667"/>
         <image name="LaunchScreenNoText" width="375" height="667"/>
+        <image name="logo-yellow-no-background" width="56" height="59"/>
+        <image name="splash-logo" width="215" height="71"/>
+        <image name="table-and-flowers" width="375" height="667"/>
     </resources>
 </document>
