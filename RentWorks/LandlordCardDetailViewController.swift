@@ -12,21 +12,19 @@ import ImageSlideshow
 class LandlordCardDetailViewController: DetailCardViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     // MARK: outlets
-    @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var secondImageView: UIImageView!
+    @IBOutlet weak var imgvwProfile: UIImageView!
+    @IBOutlet weak var imgvwBackground: UIImageView!
+    @IBOutlet weak var imgvwBio: UIImageView!
     
-    @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var creditGradeLabel: UILabel!
-    @IBOutlet weak var availabilityLabel: UILabel!
-    @IBOutlet weak var tagLabel: UILabel!
-    @IBOutlet weak var bioTextField: UITextView!
-    @IBOutlet weak var aboutLabel: UILabel!
+    @IBOutlet weak var lblUserName: UILabel!
+    @IBOutlet weak var lblCreditGrade: UILabel!
+    @IBOutlet weak var lblAvailability: UILabel!
+    @IBOutlet weak var txtFldBio: UITextView!
+    @IBOutlet weak var lblAbout: UILabel!
     
     // MARK: variables
     var renter: Renter?
-    let reuseIdentifier = "cell" // also enter this string as the cell identifier in the storyboard
-//    var tagItems = ["Non-Student", "Employed", "4 Adults, 2 Kids", "Smoking"]
+    let reuseIdentifier = "cell"
     var tagItems: [String] = []
 
     
@@ -56,11 +54,11 @@ class LandlordCardDetailViewController: DetailCardViewController, UICollectionVi
         
         setupImages()
         
-        userNameLabel.text = "\(firstName) \(lastName)"
-        creditGradeLabel.text = renter.creditRating
+        lblUserName.text = "\(firstName) \(lastName)"
+        lblCreditGrade.text = renter.creditRating
 //        availabilityLabel.text = renter.startAt - not in the database yet
-        bioTextField.text = renter.bio
-        aboutLabel.text = "About " + firstName
+        txtFldBio.text = renter.bio
+        lblAbout.text = "About " + firstName
     }
     
     private func setupImages() {
@@ -74,21 +72,21 @@ class LandlordCardDetailViewController: DetailCardViewController, UICollectionVi
             profilePicture = #imageLiteral(resourceName: "noImageProfile90x90")
         }
         
-        imageView.image = profilePicture
-        secondImageView.image = profilePicture
-        backgroundImageView.image = profilePicture
-        backgroundImageView.contentMode = UIViewContentMode.scaleAspectFill
+        imgvwProfile.image = profilePicture
+        imgvwBio.image = profilePicture
+        imgvwBackground.image = profilePicture
+        imgvwBackground.contentMode = UIViewContentMode.scaleAspectFill
         
-        blurImageView(imageView: self.backgroundImageView)
-        zoomImageView(imageView: self.backgroundImageView)
+        blurImageView(imageView: self.imgvwBackground)
+        zoomImageView(imageView: self.imgvwBackground)
     
-        imageView.layer.cornerRadius = imageView.frame.width / 2
-        secondImageView.layer.cornerRadius = secondImageView.frame.width / 2
+        imgvwProfile.layer.cornerRadius = imgvwProfile.frame.width / 2
+        imgvwBio.layer.cornerRadius = imgvwBio.frame.width / 2
         
-        imageView.layer.borderWidth = 3
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.masksToBounds = true
-        secondImageView.layer.masksToBounds = true
+        imgvwProfile.layer.borderWidth = 3
+        imgvwProfile.layer.borderColor = UIColor.white.cgColor
+        imgvwProfile.layer.masksToBounds = true
+        imgvwBio.layer.masksToBounds = true
     }
 
     private func blurImageView(imageView: UIImageView) {
@@ -141,8 +139,8 @@ class LandlordCardDetailViewController: DetailCardViewController, UICollectionVi
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath as IndexPath) as! TagCollectionViewCell
     
-        cell.tagLabel.text = self.tagItems[indexPath.item]
-        cell.tagLabel.sizeToFit()
+        cell.lblTag.text = self.tagItems[indexPath.item]
+        cell.lblTag.sizeToFit()
         cell.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
         
         return cell
