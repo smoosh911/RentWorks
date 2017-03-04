@@ -196,16 +196,4 @@ extension MessagingViewController: UICollectionViewDelegate, UICollectionViewDat
             cell.vwMessage.frame = CGRect(x: viewOrigin.x, y: viewOrigin.y, width: view.frame.width, height: estimatedSize.height + 20)
         }
     }
-    
-    internal func getAllMessages() -> [Message] {
-        do {
-            guard let allMessages = try CoreDataStack.context.fetch(Message.fetchRequest()) as? [Message] else {
-                return []
-            }
-            return allMessages
-        } catch let e {
-            log(e)
-        }
-        return []
-    }
 }

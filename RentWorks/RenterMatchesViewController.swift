@@ -10,6 +10,10 @@ import Foundation
 
 class RenterMatchesViewController: MatchesViewController, MatchTableViewCellDelegate {
     
+    // MARK: outlets
+    
+    @IBOutlet weak var tblvwMatches: UITableView!
+    
     // MARK: variables
     
     var renter: Renter!
@@ -27,6 +31,11 @@ class RenterMatchesViewController: MatchesViewController, MatchTableViewCellDele
             
             MatchController.currentUserHasNewMatches = false
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        tblvwMatches.reloadData()
     }
     
     // MARK: segues
@@ -92,6 +101,18 @@ class RenterMatchesViewController: MatchesViewController, MatchTableViewCellDele
         guard let cell = tableView.cellForRow(at: indexPath) as? MatchTableViewCell else { return }
         self.selectedCell = cell
         performSegue(withIdentifier: Identifiers.Segues.messagingVC.rawValue, sender: self)
+    }
+    
+    // MARK: header cell
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerCell = tableView.dequeueReusableCell(withIdentifier: "matchHeaderCell") as! MessagesHeaderCell
+        
+        return headerCell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 30
     }
     
     // MARK: match table view cell delegate
