@@ -1701,14 +1701,14 @@ available:</string>
                                                         <constraint firstAttribute="width" constant="15" id="Zhq-91-Nqn"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vacancy:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Cw-Lc-I7F">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Vacancy:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Cw-Lc-I7F">
                                                     <rect key="frame" x="98" y="48" width="59" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rented" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w0d-Zs-8bL">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rented" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w0d-Zs-8bL">
                                                     <rect key="frame" x="165" y="49" width="46" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -2433,9 +2433,9 @@ available:</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ty6-Tt-bnH">
-                                        <rect key="frame" x="15" y="35" width="30" height="30"/>
+                                        <rect key="frame" x="20" y="35" width="17" height="17"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="v4e-b9-bKG"/>
+                                            <constraint firstAttribute="width" constant="17" id="v4e-b9-bKG"/>
                                         </constraints>
                                         <state key="normal" image="popup-x-icon-white">
                                             <color key="titleColor" red="0.90980392160000001" green="0.78039215689999997" blue="0.45098039220000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2447,11 +2447,11 @@ available:</string>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Ty6-Tt-bnH" firstAttribute="leading" secondItem="EN7-jB-nSK" secondAttribute="leading" constant="15" id="2Py-4v-5Gw"/>
+                                    <constraint firstItem="Ty6-Tt-bnH" firstAttribute="leading" secondItem="EN7-jB-nSK" secondAttribute="leading" constant="20" id="2Py-4v-5Gw"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="56" id="3IV-uW-AUj"/>
                                     <constraint firstItem="Ty6-Tt-bnH" firstAttribute="top" secondItem="EN7-jB-nSK" secondAttribute="top" constant="35" id="Tk6-9e-Vml"/>
                                     <constraint firstAttribute="height" constant="56" id="oHM-qh-OFy"/>
-                                    <constraint firstAttribute="bottom" secondItem="Ty6-Tt-bnH" secondAttribute="bottom" constant="-9" id="omQ-Ef-7DR"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ty6-Tt-bnH" secondAttribute="bottom" constant="4" id="omQ-Ef-7DR"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
@@ -2571,7 +2571,7 @@ available:</string>
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D0a-eg-p1L">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D0a-eg-p1L">
                                                     <rect key="frame" x="8" y="2" width="42" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="SFUIText-Regular" family="SF UI Text" pointSize="14"/>
@@ -2581,7 +2581,7 @@ available:</string>
                                             </subviews>
                                         </view>
                                         <connections>
-                                            <outlet property="lblTag" destination="D0a-eg-p1L" id="sAq-ig-hsb"/>
+                                            <outlet property="tagLabel" destination="D0a-eg-p1L" id="rtz-Mt-aq4"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -2627,14 +2627,15 @@ available:</string>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="imgvwBackground" destination="TgU-Cr-vtA" id="9IH-0o-4G3"/>
-                        <outlet property="imgvwBio" destination="6ib-ho-mT9" id="JJh-aO-dgw"/>
-                        <outlet property="imgvwProfile" destination="6bZ-Hs-nQq" id="g7y-gs-3uh"/>
-                        <outlet property="lblAbout" destination="cYH-zX-B0B" id="YQw-tf-6IN"/>
-                        <outlet property="lblAvailability" destination="vGp-2S-CPz" id="s3j-oA-fYO"/>
-                        <outlet property="lblCreditGrade" destination="G8J-MT-SEI" id="Zu8-nr-lwo"/>
-                        <outlet property="lblUserName" destination="ZKS-Ap-TrQ" id="yVe-0B-n6Q"/>
-                        <outlet property="txtFldBio" destination="rm7-Ky-Sy9" id="NVR-Dg-Fsx"/>
+                        <outlet property="aboutLabel" destination="cYH-zX-B0B" id="e2h-P1-vPy"/>
+                        <outlet property="availabilityLabel" destination="vGp-2S-CPz" id="y9B-dg-ebJ"/>
+                        <outlet property="backgroundImageView" destination="TgU-Cr-vtA" id="ieu-xj-S31"/>
+                        <outlet property="bioTextField" destination="rm7-Ky-Sy9" id="E20-Dt-CTM"/>
+                        <outlet property="creditGradeLabel" destination="G8J-MT-SEI" id="mFa-yd-q6k"/>
+                        <outlet property="imageView" destination="6bZ-Hs-nQq" id="xwm-Bd-ful"/>
+                        <outlet property="secondImageView" destination="6ib-ho-mT9" id="0WW-jq-TDz"/>
+                        <outlet property="userNameLabel" destination="ZKS-Ap-TrQ" id="KQN-ch-eJK"/>
+                        <segue destination="sXY-hB-ARP" kind="presentation" identifier="segueToReportUserVC" modalPresentationStyle="overCurrentContext" id="aie-ib-yZZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MRg-ne-nCx" userLabel="First Responder" sceneMemberID="firstResponder"/>
