@@ -51,10 +51,10 @@
                                 <rect key="frame" x="0.0" y="220" width="320" height="128"/>
                                 <subviews>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="VfA-3G-VnX">
-                                        <rect key="frame" x="150" y="82.5" width="20" height="20"/>
+                                        <rect key="frame" x="150" y="83" width="20" height="20"/>
                                     </activityIndicatorView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading New Cards..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l8B-ji-5MK">
-                                        <rect key="frame" x="78" y="53.5" width="164" height="21"/>
+                                        <rect key="frame" x="78" y="54" width="164" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -411,7 +411,7 @@
                                 <rect key="frame" x="125" y="453" width="70" height="70"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DPY-zc-eqS">
-                                        <rect key="frame" x="24.5" y="22.5" width="22" height="25"/>
+                                        <rect key="frame" x="24" y="23" width="22" height="25"/>
                                         <state key="normal" image="filter-button-icon"/>
                                         <connections>
                                             <segue destination="Yxh-ci-xaM" kind="presentation" identifier="segueToFiltersVC" modalPresentationStyle="overCurrentContext" id="Pqq-8q-rPO"/>
@@ -1382,7 +1382,7 @@ available:</string>
                                                 <color key="textColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="highlightedColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="oB7-Xp-hsq" customClass="SegmentedControl" customModule="RentWorks" customModuleProvider="target">
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="oB7-Xp-hsq" customClass="FilterSegmentedControl" customModule="RentWorks" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="60" width="280" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 <segments>
@@ -1411,7 +1411,7 @@ available:</string>
                                                 <color key="textColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1000" minValue="0.0" maxValue="100000" translatesAutoresizingMaskIntoConstraints="NO" id="IOY-lJ-ZQw" customClass="Slider" customModule="RentWorks" customModuleProvider="target">
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1000" minValue="0.0" maxValue="100000" translatesAutoresizingMaskIntoConstraints="NO" id="IOY-lJ-ZQw" customClass="FilterSlider" customModule="RentWorks" customModuleProvider="target">
                                                 <rect key="frame" x="18" y="150" width="282" height="31"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 <color key="tintColor" red="0.15294117647058825" green="0.15686274509803921" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1439,7 +1439,7 @@ available:</string>
                                                 <color key="textColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="highlightedColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QOo-GW-4br" customClass="SegmentedControl" customModule="RentWorks" customModuleProvider="target">
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="QOo-GW-4br" customClass="FilterSegmentedControl" customModule="RentWorks" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="222" width="280" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 <segments>
@@ -1465,7 +1465,7 @@ available:</string>
                                                 <color key="textColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="highlightedColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="569-NW-lPG" customClass="SegmentedControl" customModule="RentWorks" customModuleProvider="target">
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="569-NW-lPG" customClass="FilterSegmentedControl" customModule="RentWorks" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="307" width="280" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 <segments>
@@ -1491,7 +1491,7 @@ available:</string>
                                                 <color key="textColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.61568627450980395" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="highlightedColor" red="0.57647058823529407" green="0.57647058823529407" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </label>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8oi-ai-6VU" customClass="SegmentedControl" customModule="RentWorks" customModuleProvider="target">
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="8oi-ai-6VU" customClass="FilterSegmentedControl" customModule="RentWorks" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="392" width="280" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                                 <segments>
@@ -1542,17 +1542,17 @@ available:</string>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bankruptcyLabel" destination="guJ-Bx-R62" id="ooI-3Z-xci"/>
-                        <outlet property="bankruptcySegmentedControl" destination="569-NW-lPG" id="S0U-IX-nfS"/>
-                        <outlet property="creditLabel" destination="jzW-vc-qDD" id="t4O-Kz-mJp"/>
-                        <outlet property="creditSegmentedControl" destination="oB7-Xp-hsq" id="2ep-P9-WEv"/>
-                        <outlet property="incomeLabel" destination="pPy-sI-xF4" id="1be-D4-t1L"/>
-                        <outlet property="incomeSlider" destination="IOY-lJ-ZQw" id="tDp-QZ-sjw"/>
-                        <outlet property="maritalLabel" destination="SFN-Qr-8Kn" id="d8P-Ow-HRU"/>
-                        <outlet property="maritalSegmentedControl" destination="QOo-GW-4br" id="NDd-mN-ZbU"/>
+                        <outlet property="lblBankruptcy" destination="guJ-Bx-R62" id="nQg-TS-I1a"/>
+                        <outlet property="lblCredit" destination="jzW-vc-qDD" id="eMC-Vk-hjL"/>
+                        <outlet property="lblIncome" destination="pPy-sI-xF4" id="nvq-K5-qko"/>
+                        <outlet property="lblMarital" destination="SFN-Qr-8Kn" id="Kht-iU-YrO"/>
+                        <outlet property="lblStudent" destination="TDC-5U-hU3" id="cHk-Jk-EeT"/>
                         <outlet property="modalView" destination="TmR-58-dQX" id="5EO-EJ-esO"/>
-                        <outlet property="studentLabel" destination="TDC-5U-hU3" id="bKt-tZ-3yb"/>
-                        <outlet property="studentSegmentedControl" destination="8oi-ai-6VU" id="RfE-ns-FKr"/>
+                        <outlet property="segCtrlBankruptcy" destination="569-NW-lPG" id="7Rw-ae-y74"/>
+                        <outlet property="segCtrlCredit" destination="oB7-Xp-hsq" id="eax-Jg-hk0"/>
+                        <outlet property="segCtrlMarital" destination="QOo-GW-4br" id="7rD-vm-n6Q"/>
+                        <outlet property="segCtrlStudent" destination="8oi-ai-6VU" id="JT3-LE-RZD"/>
+                        <outlet property="sldIncome" destination="IOY-lJ-ZQw" id="xwo-uK-RTf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GWS-z1-p8N" userLabel="First Responder" sceneMemberID="firstResponder"/>
