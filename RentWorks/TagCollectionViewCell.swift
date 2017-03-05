@@ -9,9 +9,9 @@
 import UIKit
 class TagCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var lblTag: UILabel!
+    @IBOutlet weak var tagLabel: UILabel!
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return lblTag.intrinsicContentSize
+        return tagLabel.intrinsicContentSize
     }
 }
