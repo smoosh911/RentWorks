@@ -8,7 +8,7 @@
 
 import Foundation
 
-@IBDesignable class SegmentedControl: UISegmentedControl {
+@IBDesignable class FilterSegmentedControl: UISegmentedControl {
     
     @IBInspectable var height: CGFloat = 34
     @IBInspectable var background: UIColor = UIColor.clear
@@ -45,8 +45,8 @@ import Foundation
 //            NSFontAttributeName as NSObject : UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightMedium)
         ]
         
-        SegmentedControl.appearance().setTitleTextAttributes(textAttributes, for: UIControlState.selected)
-        SegmentedControl.appearance().setTitleTextAttributes(textAttributes, for: UIControlState.normal)
+        FilterSegmentedControl.appearance().setTitleTextAttributes(textAttributes, for: UIControlState.selected)
+        FilterSegmentedControl.appearance().setTitleTextAttributes(textAttributes, for: UIControlState.normal)
         
 //        setDividerImage(UIImage(), forLeftSegmentState: UIControlState.normal, rightSegmentState: UIControlState.normal, barMetrics: UIBarMetrics.default)
     }

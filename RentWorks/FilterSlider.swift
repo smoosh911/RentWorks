@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Slider: UISlider {
+class FilterSlider: UISlider {
     
     @IBInspectable var trackHeight: CGFloat = 7
     
