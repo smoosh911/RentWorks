@@ -239,7 +239,8 @@ extension UserController {
         case kBackyard = "backyard"
         case kPool = "pool"
         case kGym = "gym"
-        static let allValues: [PropertyDetailValues] = [kPropertyDescription, kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kStarRating, kZipCode, kCity, kState, kCountry,kWasherDryer, kGarage, kDishwasher, kBackyard, kPool, kGym]
+        case kLeaseEnd = "leaseEnd"
+        static let allValues: [PropertyDetailValues] = [kPropertyDescription, kAddress, kAvailableDate, kBathroomCount, kBedroomCount, kMonthlyPayment, kPetsAllowed, kSmokingAllowed, kStarRating, kZipCode, kCity, kState, kCountry,kWasherDryer, kGarage, kDishwasher, kBackyard, kPool, kGym, kLeaseEnd]
     }
     
     enum PropertyType: String {
