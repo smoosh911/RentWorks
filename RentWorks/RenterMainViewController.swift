@@ -306,6 +306,7 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
         return filtered
     }
     
+    // needs work: this function occurs multiple times in code
     private func getFeaturesArray(forProperty property: Property) -> [String] {
         
         var collectionViewItems: [String] = []
