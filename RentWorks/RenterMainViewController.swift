@@ -383,8 +383,8 @@ extension RenterMainViewController: UICollectionViewDelegate, UICollectionViewDa
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "propertyFeatureCell", for: indexPath as IndexPath) as! TagCollectionViewCell
         
-        cell.tagLabel.text = self.frontCardPropertyFeaturesCollectionViewItems[indexPath.item]
-        cell.tagLabel.sizeToFit()
+        cell.lblTag.text = self.frontCardPropertyFeaturesCollectionViewItems[indexPath.item]
+        cell.lblTag.sizeToFit()
         cell.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
         cell.layer.cornerRadius = 3
         
