@@ -16,8 +16,8 @@ class LandlordSettingsViewController: SettingsViewController, UITableViewDelegat
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var propertyCountLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var txtfldBio: UITextView!
     
-    @IBOutlet weak var bioTextView: UITextView!
     var profileItems: [String] = []
     
      // MARK: life cycle
@@ -25,7 +25,6 @@ class LandlordSettingsViewController: SettingsViewController, UITableViewDelegat
         super.viewDidLoad()
         setProfileInfo()
     }
-    
     
     // MARK tableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -39,23 +38,8 @@ class LandlordSettingsViewController: SettingsViewController, UITableViewDelegat
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        print ("here")
-    }
-    
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let headerCell = tableView.dequeueReusableCell(withIdentifier: "headerCell") as! PropertiesHeaderCell
-//        headerCell.lblTitle.text = ""
-//        return headerCell
-//    }
-//    
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 30
-//    }
-    
-    
-    // MARK helper functions 
-    
+
+    // MARK helper functions
     private func setProfileInfo() {
         guard let landlord = UserController.currentLandlord,
             let firstProfileImage = landlord.profileImages?.firstObject as? ProfileImage, let imageData = firstProfileImage.imageData, let profilePic = UIImage(data: imageData as Data),
@@ -74,9 +58,7 @@ class LandlordSettingsViewController: SettingsViewController, UITableViewDelegat
         profileItems.append(lastName)
         profileItems.append(email)
         profileItems.append("Properties: " + propertyCount.description)
-//        bioTextView.text = "This is where I would write my bio and talk a little about myself"
-    
-//        lblUserName.text = "\(firstName) \(lastName)"
+        txtfldBio.text = "Venga's next update will allow me to put a bio here to describe what an awesome landlord I will be!"
     }
     
     
