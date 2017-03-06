@@ -23,12 +23,12 @@ class RenterFilterSettingsViewController: UIViewController {
     @IBOutlet weak var modalView: UIView!
     @IBOutlet weak var txtFldZipcode: UITextField!
     @IBOutlet weak var txtFldState: UITextField!
-    @IBOutlet weak var sldRent: Slider!
-    @IBOutlet weak var segCtrlBeds: SegmentedControl!
-    @IBOutlet weak var segCtrlBaths: SegmentedControl!
-    @IBOutlet weak var segCtrlAllow: SegmentedControl!
-    @IBOutlet weak var segCtrlAmenities: SegmentedControl!
-    @IBOutlet weak var segCtrlOutside: SegmentedControl!
+    @IBOutlet weak var sldRent: FilterSlider!
+    @IBOutlet weak var segCtrlBeds: UISegmentedControl!
+    @IBOutlet weak var segCtrlBaths: UISegmentedControl!
+    @IBOutlet weak var segCtrlAllow: UISegmentedControl!
+    @IBOutlet weak var segCtrlAmenities: UISegmentedControl!
+    @IBOutlet weak var segCtrlOutside: UISegmentedControl!
 
     @IBOutlet weak var lblLocation: UILabel!
     @IBOutlet weak var lblRent: UILabel!
@@ -106,7 +106,7 @@ class RenterFilterSettingsViewController: UIViewController {
         setLocation()
     }
  
-    @IBAction func rentValueChanged(_ sender: Slider) {
+    @IBAction func rentValueChanged(_ sender: FilterSlider) {
         let num = Int(sender.value)
         
         let numberFormatter = NumberFormatter()
