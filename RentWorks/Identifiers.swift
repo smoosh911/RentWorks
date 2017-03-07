@@ -70,6 +70,7 @@ class Identifiers {
         case EULA_URL = "http://www.garteum.com/eula"
         case PrivacyPolicyURL = "http://www.garteum.com/privacy-policy"
         case MIT_URL = "http://www.garteum.com/mit"
+        case Acknowledgments = "http://www.garteum.com/acknowledgements"
     }
     
     enum CreatingUserNotificationObserver: String {

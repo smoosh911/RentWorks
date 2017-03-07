@@ -12,7 +12,7 @@ class AppInformationViewController: UIViewController, UITableViewDelegate, UITab
     
     // MARK: variables
     
-    private var optionsDict: [String: String] = ["EULA": Identifiers.RentWorksAdmin.EULA_URL.rawValue, "Privacy Policy": Identifiers.RentWorksAdmin.PrivacyPolicyURL.rawValue, "DropDown and Image slide show MIT": Identifiers.RentWorksAdmin.MIT_URL.rawValue]
+    private var optionsDict: [String: String] = ["EULA": Identifiers.RentWorksAdmin.EULA_URL.rawValue, "Privacy Policy": Identifiers.RentWorksAdmin.PrivacyPolicyURL.rawValue, "DropDown and Image slide show MIT": Identifiers.RentWorksAdmin.MIT_URL.rawValue, "Acknowledgments": Identifiers.RentWorksAdmin.Acknowledgments.rawValue]
     private var options: [Option] = []
     private var selectedOption: Option?
     
