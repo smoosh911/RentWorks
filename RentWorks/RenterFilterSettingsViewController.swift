@@ -8,6 +8,8 @@
 
 import Foundation
 import FirebaseAuth
+import ATHMultiSelectionSegmentedControl
+
 
 protocol RenterFilterSettingsModalViewControllerDelegate {
     func viewDismissed()
@@ -45,8 +47,10 @@ class RenterFilterSettingsViewController: UIViewController {
     // MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        modalView.layer.cornerRadius = 10;
-        
+        modalView.layer.cornerRadius = 10
+        setCurrentLandlordFilters()
+        let segmentedControl = MultiSelectionSegmentedControl(items: nil)
+        segmentedControl.insertSegmentsWithTitles(["1", "2", "3", "4"])
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -179,11 +183,48 @@ class RenterFilterSettingsViewController: UIViewController {
     
     private func setCurrentLandlordFilters() {
         guard let renter = UserController.currentRenter,
-            let zipcode = renter.wantedZipCode else {
+            let zipcode = renter.wantedZipCode,
+            let city = renter.wantedCity,
+            let state = renter.wantedState
+            else {
                 return
         }
         
-        lblLocation.text = zipcode
+        lblLocation.text = zipcode + (city != "" ? ", " + city + ", " + state : "")
+        
+        lblRent.text = String(renter.wantedPayment)
+        sldRent.value = Float(renter.wantedPayment)
+        
+        let bed = renter.wantedBedroomCount
+        let bath = renter.wantedBathroomCount
+        lblLooking.text = String(bed) + " Bed, " + String(bath) + " Bath"
+        segCtrlBeds.selectedSegmentIndex = bed-1
+        segCtrlBaths.selectedSegmentIndex = Int(bath - 1)
+        
+        let pets = renter.wantsPetFriendly
+        if (pets){
+            segCtrlAllow.selectedSegmentIndex = 0
+            lblAllowed.text = "Pets"
+         }
+        let smoking = renter.wantsSmoking
+        if (smoking) {
+            segCtrlAllow.selectedSegmentIndex = 1
+            lblAllowed.text = "Smoking"
+        }
+
+//        let washer = renter.wantsWasherDryer
+//        let dishwasher = renter.wantsDishwasher
+//        let garage = renter.wantsGarage
+//        let gym = renter.wantsGym
+//        let pool = renter.wantsPool
+        
+        lblNeed.text = "washer"
+        
+        
+        
+        
+        
+        
         //TO DO: set other filter values here
     }
 }
