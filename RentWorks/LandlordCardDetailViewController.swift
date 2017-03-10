@@ -43,11 +43,16 @@ class LandlordCardDetailViewController: DetailCardViewController, UICollectionVi
             if let destinationVC = segue.destination as? LandlordCardDetailContainterViewController, let renter = renter {
                 destinationVC.renter = renter
             }
+        } else if segue.identifier == Identifiers.Segues.reportUserVC.rawValue {
+            if let destinationVC = segue.destination as? ReportUserViewController, let renter = self.renter {
+                destinationVC.userBeingReported = renter
+            }
         }
     }
     
     // TO DO: connect flag buttons
     @IBAction func flagBtnPressed(_ sender: Any) {
+        performSegue(withIdentifier: Identifiers.Segues.reportUserVC.rawValue, sender: self)
     }
     
     // MARK: helper functions

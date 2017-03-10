@@ -153,7 +153,7 @@ class LandlordMainViewController: MainViewController, LandlordFilterSettingsView
         imageView.image = profilePicture
         imgvwSmall.image = profilePicture
         nameLabel.text = "\(renter.firstName ?? "No name available") \(renter.lastName ?? "")"
-        lblRenterOccupation.text = renter.currentOccupation ?? "No listed occupation"
+        lblRenterOccupation.text = renter.currentOccupation != nil || renter.currentOccupation != "" ? "Employed" : "No listed occupation"
         
         guard let nextRenter = backCardRenter else {
             return
@@ -170,7 +170,7 @@ class LandlordMainViewController: MainViewController, LandlordFilterSettingsView
         backgroundImageView.image = backgroundProfilePicture
         backgroundImgvwSmall.image = backgroundProfilePicture
         backgroundNameLabel.text = "\(nextRenter.firstName ?? "No name available") \(nextRenter.lastName ?? "")"
-        lblBackCardRenterOccupation.text = nextRenter.currentOccupation ?? "No listed occupation"
+        lblBackCardRenterOccupation.text = nextRenter.currentOccupation != nil || nextRenter.currentOccupation != "" ? "Employed" : "No listed occupation"
         
         lblBackCardCreditRating.text = nextRenter.creditRating
     }

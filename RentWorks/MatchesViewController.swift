@@ -50,7 +50,7 @@ class MatchesViewController: UIViewController, UITableViewDataSource, UITableVie
     // MARK: table view
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 122
+        return 95
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

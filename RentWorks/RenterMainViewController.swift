@@ -16,22 +16,28 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
     @IBOutlet weak var vwLoadingNewCards: UIView!
     @IBOutlet weak var vwNoMoreCards: UIView!
     
+    @IBOutlet weak var clctvwFrontCardPropertyFeatures: UICollectionView!
     @IBOutlet weak var lblPrice: UILabel!
     @IBOutlet weak var bedroomCountLabel: UILabel!
-    @IBOutlet weak var bedroomImageView: UIImageView!
+//    @IBOutlet weak var bedroomImageView: UIImageView!
     @IBOutlet weak var bathroomCountLabel: UILabel!
-    @IBOutlet weak var bathroomImageView: UIImageView!
+//    @IBOutlet weak var bathroomImageView: UIImageView!
+    @IBOutlet weak var lblCityState: UILabel!
     
+    @IBOutlet weak var clctvwBackCardPropertyFeatures: UICollectionView!
     @IBOutlet weak var lblBackgroundPrice: UILabel!
     @IBOutlet weak var backgroundBedroomCountLabel: UILabel!
-    @IBOutlet weak var backgroundBedroomImageView: UIImageView!
+//    @IBOutlet weak var backgroundBedroomImageView: UIImageView!
     @IBOutlet weak var backgroundBathroomCountLabel: UILabel!
-    @IBOutlet weak var backgroundBathroomImageView: UIImageView!
+//    @IBOutlet weak var backgroundBathroomImageView: UIImageView!
+    @IBOutlet weak var lblBackCityState: UILabel!
     
     // MARK: variables
     
-    let filterKeys = UserController.RenterFilters.self
+//    let filterKeys = UserController.RenterFilters.self
     var currentCardProperty: Property? = nil
+    
+    var frontCardPropertyFeaturesCollectionViewItems: [String] = []
     
     var filteredProperties: [Property] = [] {
         didSet {
@@ -144,13 +150,18 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
         nameLabel.text = address
         lblPrice.text = "$\(property.monthlyPayment)"
         
-        bedroomCountLabel.text = "\(property.bedroomCount)"
-        bathroomCountLabel.text = property.bathroomCount.isInteger ? "\(Int(property.bathroomCount))" : "\(property.bathroomCount)"
+        bedroomCountLabel.text = "\(property.bedroomCount) Bed"
+        bathroomCountLabel.text = property.bathroomCount.isInteger ? "\(Int(property.bathroomCount)) Bath" : "\(property.bathroomCount) Bath"
         
-        petFriendlyImageView.image = property.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
-        smokingAllowedImageView.image = property.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
+        lblCityState.text = "\(property.city ?? "")\(property.state == "" ? "" : ",") \(property.state ?? "")"
         
-        updateStars(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
+        frontCardPropertyFeaturesCollectionViewItems = getFeaturesArray(forProperty: property)
+        clctvwFrontCardPropertyFeatures.reloadData()
+        
+//        petFriendlyImageView.image = property.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
+//        smokingAllowedImageView.image = property.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
+        
+//        updateStars(starImageViews: [starImageView1, starImageView2, starImageView3, starImageView4, starImageView5], for: property.rentalHistoryRating)
         
         guard let nextProperty = backCardProperty else {
             
@@ -174,23 +185,35 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
         backgroundBedroomCountLabel.text = "\(nextProperty.bedroomCount)"
         backgroundBathroomCountLabel.text = nextProperty.bathroomCount.isInteger ? "\(Int(nextProperty.bathroomCount))" : "\(nextProperty.bathroomCount)"
         
-        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
-        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
+//        backgroundPetFriendlyImageview.image = nextProperty.petFriendly ? #imageLiteral(resourceName: "Paw") : #imageLiteral(resourceName: "NoPaw")
+//        backgroundSmokingAllowedImageView.image = nextProperty.smokingAllowed ? #imageLiteral(resourceName: "SmokingAllowed") : #imageLiteral(resourceName: "NoSmokingAllowed")
         
-        updateStars(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
+//        updateStars(starImageViews: [backgroundStarImageView1, backgroundStarImageView2, backgroundStarImageView3, backgroundStarImageView4, backgroundStarImageView5], for: nextProperty.rentalHistoryRating)
     }
     
     override func swipableView(_ swipableView: RWKSwipeableView, didSwipeOn cardEntity: Any) {
+        
+        if FIRAuth.auth()?.currentUser == nil {
+            AlertManager.alert(withTitle: "Not Logged In", withMessage: "Please sign in to use start swiping", dismissTitle: "OK", inViewController: self)
+            return
+        }
+        
         guard let property = cardEntity as? Property, let propertyID = property.propertyID, let renterID = UserController.currentUserID else { return }
         PropertyController.addHasBeenViewedByRenterToPropertyInFirebase(propertyID: propertyID, renterID: renterID)
     }
     
     func swipableView(_ swipableView: RWKSwipeableView, didAccept cardEntity: Any) {
+        if FIRAuth.auth()?.currentUser == nil {
+            return
+        }
         guard let renter = UserController.currentRenter, let property = cardEntity as? Property else { return }
         MatchController.addCurrentRenter(renter: renter, toLikelistOf: property)
     }
     
     func swipableView(_ swipableView: RWKSwipeableView, didReject cardEntity: Any) {
+        if FIRAuth.auth()?.currentUser == nil {
+            return
+        }
         guard let property = cardEntity as? Property, let propertyID = property.propertyID, let renter = UserController.currentRenter, let renterID = renter.id else { return }
         RenterController.reject(propertyID: propertyID, forRenterID: renterID)
     }
@@ -282,4 +305,104 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
         
         return filtered
     }
+    
+    // needs work: this function occurs multiple times in code
+    private func getFeaturesArray(forProperty property: Property) -> [String] {
+        
+        var collectionViewItems: [String] = []
+        
+        if property.petFriendly {
+            collectionViewItems.append("Pets")
+        }
+        
+        if property.smokingAllowed {
+            collectionViewItems.append("Smoking")
+        }
+        
+        if property.washerDryer {
+            collectionViewItems.append("Washer/Dryer")
+        }
+        
+        if property.dishwasher {
+            collectionViewItems.append("Dishwasher")
+        }
+        
+        if property.gym {
+            collectionViewItems.append("Gym")
+        }
+        
+        if property.backyard {
+            collectionViewItems.append("Backyard")
+        }
+        
+        if property.airConditioning {
+            collectionViewItems.append("Air Conditioning")
+        }
+        
+        if property.garage {
+            collectionViewItems.append("Garage")
+        }
+        
+        if property.heating {
+            collectionViewItems.append("Heating")
+        }
+        
+        if property.kitchen {
+            collectionViewItems.append("Kitchen")
+        }
+        
+        if property.livingRoom {
+            collectionViewItems.append("Living Room")
+        }
+        
+        if property.pool {
+            collectionViewItems.append("Pool")
+        }
+        
+        if property.storage {
+            collectionViewItems.append("Storage")
+        }
+        
+        if property.wifi {
+            collectionViewItems.append("Wifi")
+        }
+        
+        return collectionViewItems
+    }
+}
+
+extension RenterMainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    // MARK: - UICollectionViewDelegate protocol
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.frontCardPropertyFeaturesCollectionViewItems.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "propertyFeatureCell", for: indexPath as IndexPath) as! TagCollectionViewCell
+        
+        cell.tagLabel.text = self.frontCardPropertyFeaturesCollectionViewItems[indexPath.item]
+        cell.tagLabel.sizeToFit()
+        cell.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
+        cell.layer.cornerRadius = 3
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // handle tap events
+        print("You selected cell #\(indexPath.item)!")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize{
+        let tagString = frontCardPropertyFeaturesCollectionViewItems[indexPath.item]
+        let cellSize: CGSize = tagString.size(attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18.0)])
+        return cellSize
+    }
+
 }

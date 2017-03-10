@@ -104,6 +104,7 @@ extension Property {
         self.pool = pool
         self.gym = gym
         self.propertyDescription = dictionary[UserController.kPropertyDescription] as? String ?? "No description yet!"
+        self.leaseEnd = dictionary[UserController.kLeaseEnd] as? NSDate ?? nil
         guard let propertyID = dictionary[UserController.kPropertyID] as? String else { self.propertyID = UUID().uuidString; return}
         self.propertyID = propertyID
     }
