@@ -8,8 +8,7 @@
 
 import Foundation
 import FirebaseAuth
-import ATHMultiSelectionSegmentedControl
-
+//import FilterMultiSelectionSegmentedControl
 
 protocol RenterFilterSettingsModalViewControllerDelegate {
     func viewDismissed()
@@ -19,7 +18,7 @@ protocol RenterFilterSettingsViewControllerDelegate: class {
     func updateSettings()
 }
 
-class RenterFilterSettingsViewController: UIViewController {
+class RenterFilterSettingsViewController: UIViewController, FilterMultiSelectionSegmentedControlDelegate {
     
     // MARK: outlets
     @IBOutlet weak var modalView: UIView!
@@ -28,9 +27,6 @@ class RenterFilterSettingsViewController: UIViewController {
     @IBOutlet weak var sldRent: FilterSlider!
     @IBOutlet weak var segCtrlBeds: UISegmentedControl!
     @IBOutlet weak var segCtrlBaths: UISegmentedControl!
-    @IBOutlet weak var segCtrlAllow: UISegmentedControl!
-    @IBOutlet weak var segCtrlAmenities: UISegmentedControl!
-    @IBOutlet weak var segCtrlOutside: UISegmentedControl!
 
     @IBOutlet weak var lblLocation: UILabel!
     @IBOutlet weak var lblRent: UILabel!
@@ -38,25 +34,33 @@ class RenterFilterSettingsViewController: UIViewController {
     @IBOutlet weak var lblAllowed: UILabel!
     @IBOutlet weak var lblNeed: UILabel!
 
+    @IBOutlet weak var mulSegCtrlAllow: FilterMultiSelectionSegmentedControl!
+    @IBOutlet weak var multSegCtrlAmenities: FilterMultiSelectionSegmentedControl!
+    @IBOutlet weak var multSegCtrlOutside: FilterMultiSelectionSegmentedControl!
+    
     // MARK: variables
     weak var delegate: RenterFilterSettingsViewControllerDelegate?
     var modalViewDelegate: RenterFilterSettingsModalViewControllerDelegate?
-    var settingsTVC: RenterSettingsContainerTableViewController?
     let renter = UserController.currentRenter
+    
+    let allowedLabels: [String] = ["Pets", "Smoking"]
+    let amenitiesLabels: [String] = ["Washer/Dryer","Dishwasher", "Garage"]
+    let outsideLabels: [String] = ["Pool","Gym", "Backyard"]
+    
     
     // MARK: life cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         modalView.layer.cornerRadius = 10
-        setCurrentLandlordFilters()
-        let segmentedControl = MultiSelectionSegmentedControl(items: nil)
-        segmentedControl.insertSegmentsWithTitles(["1", "2", "3", "4"])
+        setCurrentRenterFilters()
+        setUpMultiSegCtrl()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         modalViewDelegate?.viewDismissed()
     }
+    
     
     // MARK: actions
     @IBAction func cancelBtnPressed(_ sender: Any) {
@@ -77,17 +81,10 @@ class RenterFilterSettingsViewController: UIViewController {
         let bed = segCtrlBeds.titleForSegment(at: segCtrlBeds.selectedSegmentIndex)
         let bath = segCtrlBaths.titleForSegment(at: segCtrlBaths.selectedSegmentIndex)
         lblLooking.text = bed! + ", " + bath!
-        
-        segCtrlAllow.selectedSegmentIndex = 0
-        lblAllowed.text = segCtrlAllow.titleForSegment(at: segCtrlAllow.selectedSegmentIndex)
-        
-        segCtrlAmenities.selectedSegmentIndex = 0
-        segCtrlOutside.selectedSegmentIndex = 0
-        let amenities = segCtrlAmenities.titleForSegment(at: segCtrlAmenities.selectedSegmentIndex)
-        let outside = segCtrlOutside.titleForSegment(at: segCtrlOutside.selectedSegmentIndex)
-        lblNeed.text = amenities! + ", " + outside!
-
-
+   
+        mulSegCtrlAllow.selectedSegmentIndices = []
+        multSegCtrlAmenities.selectedSegmentIndices = []
+        multSegCtrlOutside.selectedSegmentIndices = []
     }
     
     @IBAction func applyFiltersBtnPressed(_ sender: Any) {
@@ -95,7 +92,6 @@ class RenterFilterSettingsViewController: UIViewController {
             AlertManager.alert(withTitle: "Not Logged In", withMessage: "Must log in to use filters", dismissTitle: "OK", inViewController: self)
         } else {
             guard let renter = UserController.currentRenter, let _ = renter.id else { return }
-            
             // update landlord filter settings and dismiss modal.
             updateRenterValues()
             self.dismiss(animated: true, completion: nil)
@@ -128,17 +124,6 @@ class RenterFilterSettingsViewController: UIViewController {
         setLooking()
     }
 
-    @IBAction func allowIndexChanged(_ sender: Any) {
-        lblAllowed.text = segCtrlAllow.titleForSegment(at: segCtrlAllow.selectedSegmentIndex)
-    }
-
-    @IBAction func needAmenitiesIndexChanged(_ sender: Any) {
-        setNeed()
-    }
-  
-    @IBAction func needOutsideIndexChanged(_ sender: Any) {
-        setNeed()
-    }
 
     // MARK: helper functions
     private func setLocation() {
@@ -155,43 +140,69 @@ class RenterFilterSettingsViewController: UIViewController {
         if (segCtrlBaths.selectedSegmentIndex == 4) {
             bath = "5+ Baths"
         }
-        
         lblLooking.text = bed! + ", " + bath!
     }
     
-    private func setNeed() {
-        let amenities = segCtrlAmenities.titleForSegment(at: segCtrlAmenities.selectedSegmentIndex)
-        let outside = segCtrlOutside.titleForSegment(at: segCtrlOutside.selectedSegmentIndex)
-        
-        lblNeed.text = amenities! + ", " + outside!
-    }
-    
     private func updateRenterValues() {
-        guard let id = UserController.currentUserID, let renter = renter, let settingsTVC = settingsTVC else { return }
-        
-        let zipcode = settingsTVC.txtfldZipCode.text!
-        
-        renter.wantedZipCode = zipcode
-        if UserController.currentUserID != "" {
-            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: settingsTVC.filterKeys.kZipCode.rawValue, newValue: zipcode)
+        guard let renter = UserController.currentRenter, let id = renter.id else {
+            self.dismiss(animated: true, completion: nil)
+            return
         }
         
-        self.delegate?.updateSettings()
+//        let zipcode = txtFldZipcode.text!
+//        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantedZipCode)!, newValue: zipcode)
+//        
+//        let state = txtFldState.text!
+//        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantedState)!, newValue: state)
         
+//        let beds = segCtrlBeds.selectedSegmentIndex + 1
+//        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: String(renter.wantedBedroomCount), newValue: Int(beds))
+        
+//        let baths = segCtrlBaths.selectedSegmentIndex + 1
+//         RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: renter., newValue: Double(baths))
+//        
+//        let allowedIndices = mulSegCtrlAllow.selectedSegmentIndices
+//        if (allowedIndices.contains(0)){
+//             RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantsPetFriendly)!, newValue: Bool(true))
+//        }
+//        if (allowedIndices.contains(1)) {
+//            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantsSmoking)!, newValue: true)
+//        }
+//        
+//        let amenitiesIndices = multSegCtrlAmenities.selectedSegmentIndices
+//        if (allowedIndices.contains(0)){
+//            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantsWasherDryer)!, newValue: true)
+//        }
+//        if (allowedIndices.contains(1)) {
+//            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantsDishwasher)!, newValue: true)
+//        }
+//        if (allowedIndices.contains(2)) {
+//            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantsGarage)!, newValue: true)
+//        }
+//        
+//        let outsideIndices = multSegCtrlOutside.selectedSegmentIndices
+//        if (allowedIndices.contains(0)){
+//            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantsPool)!, newValue: true)
+//        }
+//        if (allowedIndices.contains(1)) {
+//            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantsGym)!, newValue: true)
+//        }
+//        if (allowedIndices.contains(2)) {
+//            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: (UserController.currentRenter?.wantsBackyard)!, newValue: true)
+//        }
+        
+//        self.delegate?.updateSettings()
         self.dismiss(animated: true, completion: nil)
     }
     
-    private func setCurrentLandlordFilters() {
+    private func setCurrentRenterFilters() {
         guard let renter = UserController.currentRenter,
             let zipcode = renter.wantedZipCode,
             let city = renter.wantedCity,
             let state = renter.wantedState
-            else {
-                return
-        }
+            else { return }
         
         lblLocation.text = zipcode + (city != "" ? ", " + city + ", " + state : "")
-        
         lblRent.text = String(renter.wantedPayment)
         sldRent.value = Float(renter.wantedPayment)
         
@@ -201,30 +212,89 @@ class RenterFilterSettingsViewController: UIViewController {
         segCtrlBeds.selectedSegmentIndex = bed-1
         segCtrlBaths.selectedSegmentIndex = Int(bath - 1)
         
-        let pets = renter.wantsPetFriendly
-        if (pets){
-            segCtrlAllow.selectedSegmentIndex = 0
-            lblAllowed.text = "Pets"
+        var allowedIndices = [Int]()
+        if (renter.wantsPetFriendly){
+            allowedIndices.append(0)
          }
-        let smoking = renter.wantsSmoking
-        if (smoking) {
-            segCtrlAllow.selectedSegmentIndex = 1
-            lblAllowed.text = "Smoking"
+        if (renter.wantsSmoking) {
+           allowedIndices.append(1)
         }
-
-//        let washer = renter.wantsWasherDryer
-//        let dishwasher = renter.wantsDishwasher
-//        let garage = renter.wantsGarage
-//        let gym = renter.wantsGym
-//        let pool = renter.wantsPool
+        mulSegCtrlAllow.selectedSegmentIndices = allowedIndices
+        multiSelectionSegmentedControl(mulSegCtrlAllow, selectedIndices: mulSegCtrlAllow.selectedSegmentIndices)
         
-        lblNeed.text = "washer"
+        var amenititesIndices = [Int]()
+        if(renter.wantsWasherDryer) {
+            amenititesIndices.append(0)
+        }
+        if(renter.wantsDishwasher) {
+            amenititesIndices.append(1)
+        }
+        if(renter.wantsGarage) {
+            amenititesIndices.append(2)
+        }
+        multSegCtrlAmenities.selectedSegmentIndices = amenititesIndices
+        multiSelectionSegmentedControl(multSegCtrlAmenities, selectedIndices: multSegCtrlAmenities.selectedSegmentIndices)
         
+        var outsideIndices = [Int]()
+        if(renter.wantsGym) {
+           outsideIndices.append(0)
+        }
+        if(renter.wantsPool) {
+            outsideIndices.append(1)
+        }
+        if(renter.wantsBackyard) {
+            outsideIndices.append(2)
+        }
+        multSegCtrlOutside.selectedSegmentIndices = outsideIndices
+        multiSelectionSegmentedControl(multSegCtrlOutside, selectedIndices: multSegCtrlOutside.selectedSegmentIndices)
+    }
+    
+    //MARK: ATHMultiSelectionSegmentedControl
+    func setUpMultiSegCtrl() {
+        mulSegCtrlAllow.insertSegmentsWithTitles(allowedLabels)
+        mulSegCtrlAllow.delegate = self
+        mulSegCtrlAllow.tintColor = UIColor(red:0.95, green:0.96, blue:0.97, alpha:1.0)
         
+        multSegCtrlAmenities.insertSegmentsWithTitles(amenitiesLabels)
+        multSegCtrlAmenities.delegate = self
+        multSegCtrlAmenities.tintColor = UIColor(red:0.95, green:0.96, blue:0.97, alpha:1.0)
         
-        
-        
-        
-        //TO DO: set other filter values here
+        multSegCtrlOutside.insertSegmentsWithTitles(outsideLabels)
+        multSegCtrlOutside.delegate = self
+        multSegCtrlOutside.tintColor = UIColor(red:0.95, green:0.96, blue:0.97, alpha:1.0)
+    }
+    
+    func multiSelectionSegmentedControl(_ control: FilterMultiSelectionSegmentedControl, selectedIndices indices: [Int]) {
+        if (control == mulSegCtrlAllow) {
+            var selectedIndicesLabels = ""
+            for index in indices {
+                selectedIndicesLabels.append("\(allowedLabels[index]),")
+            }
+            lblAllowed.text = selectedIndicesLabels
+            
+        } else if (control == multSegCtrlAmenities) {
+            var selectedIndicesLabels = ""
+            
+            for index in indices {
+                selectedIndicesLabels.append("\(amenitiesLabels[index]),")
+            }
+            let outsideIndices = multSegCtrlOutside.selectedSegmentIndices
+            for index in outsideIndices {
+                selectedIndicesLabels.append("\(outsideLabels[index]),")
+            }
+            lblNeed.text = selectedIndicesLabels
+            
+        } else if (control == multSegCtrlOutside) {
+            var selectedIndicesLabels = ""
+            
+            let amenitiesIndices = multSegCtrlAmenities.selectedSegmentIndices
+            for index in amenitiesIndices {
+                selectedIndicesLabels.append("\(amenitiesLabels[index]),")
+            }
+            for index in indices {
+                selectedIndicesLabels.append("\(outsideLabels[index]),")
+            }
+            lblNeed.text = selectedIndicesLabels
+        }
     }
 }
