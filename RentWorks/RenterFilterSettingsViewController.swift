@@ -86,8 +86,11 @@ class RenterFilterSettingsViewController: UIViewController, FilterMultiSelection
         lblLooking.text = bed! + ", " + bath!
    
         mulSegCtrlAllow.selectedSegmentIndices = []
+        lblAllowed.text = ""
+        
         multSegCtrlAmenities.selectedSegmentIndices = []
         multSegCtrlOutside.selectedSegmentIndices = []
+        lblNeed.text = ""
     }
     
     @IBAction func applyFiltersBtnPressed(_ sender: Any) {
@@ -173,17 +176,15 @@ class RenterFilterSettingsViewController: UIViewController, FilterMultiSelection
         RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kBathroomCount.rawValue, newValue: baths)
         
         let allowedIndices = mulSegCtrlAllow.selectedSegmentIndices
-        if (allowedIndices.contains(0)){
-            renter.wantsPetFriendly = true
-            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: true)
-        }
-        if (allowedIndices.contains(1)) {
-            renter.wantsSmoking = true;
-            RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: true)
-        }
-    
+        let wantsPets = allowedIndices.contains(0)
+        renter.wantsPetFriendly = wantsPets
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kPetsAllowed.rawValue, newValue: wantsPets)
+  
+        let wantsSmoking = allowedIndices.contains(1)
+        renter.wantsSmoking = wantsSmoking;
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: wantsSmoking)
+        
         updateSettingsChanged()
-        //UserController.saveToPersistentStore()
     }
     
     private func setCurrentRenterFilters() {
@@ -246,48 +247,74 @@ class RenterFilterSettingsViewController: UIViewController, FilterMultiSelection
     
     //MARK: ATHMultiSelectionSegmentedControl
     func setUpMultiSegCtrl() {
-        mulSegCtrlAllow.insertSegmentsWithTitles(allowedLabels)
         mulSegCtrlAllow.delegate = self
         mulSegCtrlAllow.tintColor = UIColor(red:0.95, green:0.96, blue:0.97, alpha:1.0)
+        for (idx, label) in allowedLabels.enumerated() {
+            mulSegCtrlAllow.insertSegmentWithTitle(label, atIndex: idx, animated: false)
+        }
         
-        multSegCtrlAmenities.insertSegmentsWithTitles(amenitiesLabels)
         multSegCtrlAmenities.delegate = self
         multSegCtrlAmenities.tintColor = UIColor(red:0.95, green:0.96, blue:0.97, alpha:1.0)
+        for (idx, label) in amenitiesLabels.enumerated() {
+            multSegCtrlAmenities.insertSegmentWithTitle(label, atIndex: idx, animated: false)
+        }
         
-        multSegCtrlOutside.insertSegmentsWithTitles(outsideLabels)
         multSegCtrlOutside.delegate = self
         multSegCtrlOutside.tintColor = UIColor(red:0.95, green:0.96, blue:0.97, alpha:1.0)
+        for (idx, label) in outsideLabels.enumerated() {
+            multSegCtrlOutside.insertSegmentWithTitle(label, atIndex: idx, animated: false)
+        }
     }
     
     func multiSelectionSegmentedControl(_ control: FilterMultiSelectionSegmentedControl, selectedIndices indices: [Int]) {
         if (control == mulSegCtrlAllow) {
             var selectedIndicesLabels = ""
-            for index in indices {
-                selectedIndicesLabels.append("\(allowedLabels[index]), ")
+            for (i, index) in indices.enumerated() {
+                if (i == indices.count - 1) {
+                    selectedIndicesLabels.append("\(allowedLabels[index]) ")
+                } else {
+                    selectedIndicesLabels.append("\(allowedLabels[index]), ")
+                }
             }
             lblAllowed.text = selectedIndicesLabels
             
         } else if (control == multSegCtrlAmenities) {
             var selectedIndicesLabels = ""
-            
-            for index in indices {
-                selectedIndicesLabels.append("\(amenitiesLabels[index]) ")
-            }
             let outsideIndices = multSegCtrlOutside.selectedSegmentIndices
-            for index in outsideIndices {
-                selectedIndicesLabels.append("\(outsideLabels[index]) ")
+            
+            for (i, index) in indices.enumerated() {
+                if ( i == indices.count - 1 && outsideIndices.count < 1) {
+                    selectedIndicesLabels.append("\(amenitiesLabels[index]) ")
+                } else {
+                    selectedIndicesLabels.append("\(amenitiesLabels[index]), ")
+                }
+            }
+            for (i, index) in outsideIndices.enumerated() {
+                if (i == outsideIndices.count - 1) {
+                    selectedIndicesLabels.append("\(outsideLabels[index]) ")
+                } else {
+                    selectedIndicesLabels.append("\(outsideLabels[index]), ")
+                }
             }
             lblNeed.text = selectedIndicesLabels
             
         } else if (control == multSegCtrlOutside) {
             var selectedIndicesLabels = ""
-            
             let amenitiesIndices = multSegCtrlAmenities.selectedSegmentIndices
-            for index in amenitiesIndices {
-                selectedIndicesLabels.append("\(amenitiesLabels[index]) ")
+            
+            for (i, index) in indices.enumerated() {
+                if ( i == indices.count - 1) {
+                    selectedIndicesLabels.append("\(outsideLabels[index]) ")
+                } else {
+                    selectedIndicesLabels.append("\(outsideLabels[index]), ")
+                }
             }
-            for index in indices {
-                selectedIndicesLabels.append("\(outsideLabels[index]) ")
+            for (i, index) in amenitiesIndices.enumerated() {
+                if (i == amenitiesIndices.count - 1 && indices.count < 1) {
+                    selectedIndicesLabels.append("\(amenitiesLabels[index]) ")
+                } else {
+                    selectedIndicesLabels.append("\(amenitiesLabels[index]), ")
+                }
             }
             lblNeed.text = selectedIndicesLabels
         }
