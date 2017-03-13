@@ -16,9 +16,16 @@ class RenterDetailCardViewController: DetailCardViewController {
     @IBOutlet weak var lblAddress: UILabel!
     @IBOutlet weak var lblPrice: UILabel!
     
+    @IBOutlet weak var lblBed: UILabel!
+    @IBOutlet weak var lblBath: UILabel!
+    @IBOutlet weak var lblCityState: UILabel!
+    @IBOutlet weak var lblDateAvailable: UILabel!
+    
     // MARK: variables
     
     var property: Property?
+    
+    var propertyFeaturesCollectionViewItems: [String] = []
     
     // MARK: life cycle
     
@@ -26,6 +33,11 @@ class RenterDetailCardViewController: DetailCardViewController {
         super.viewDidLoad()
         getExtraProfileImages()
         updateUI()
+        
+        guard let property = self.property else {
+            return
+        }
+        propertyFeaturesCollectionViewItems = getFeaturesArray(forProperty: property)
     }
     
     // MARK: segue
@@ -35,6 +47,14 @@ class RenterDetailCardViewController: DetailCardViewController {
             if let destinationVC = segue.destination as? RenterCardDetailsContainerViewController, let property = property {
                 destinationVC.property = property
             }
+        } else if segue.identifier == Identifiers.Segues.reportUserVC.rawValue {
+            if let destinationVC = segue.destination as? ReportUserViewController, let property = self.property, let landlordID = property.landlordID {
+                LandlordController.getLandlordWithID(landlordID: landlordID, completion: { (landlord) in
+                    guard let landlord = landlord else { return }
+                    destinationVC.userBeingReported = landlord
+                    destinationVC.propertyBeingReported = property
+                })
+            }
         }
     }
     
@@ -43,12 +63,17 @@ class RenterDetailCardViewController: DetailCardViewController {
     private func updateUI() {
         guard let property = property else { return }
         
-        let starViews: [UIImageView] = [super.starImageView1, super.starImageView2, super.starImageView3, super.starImageView4, super.starImageView5]
-        
-        super.updateStars(starImageViews: starViews, for: property.rentalHistoryRating)
-        
         lblAddress.text = property.address
         lblPrice.text = "$\(property.monthlyPayment)"
+        
+        lblBed.text = "\(property.bedroomCount) Bed"
+        lblBath.text = "\(property.bathroomCount) Bath"
+        lblCityState.text = "\(property.city!), \(property.state!)"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .long
+        
+        lblDateAvailable.text = "Available \(dateFormatter.string(from: property.availableDate! as Date))"
         
         guard let profileImages = property.profileImages else {
             log("no profile images to view")
@@ -63,7 +88,6 @@ class RenterDetailCardViewController: DetailCardViewController {
             } else {
                 log("ERROR: couldn't load a profile image")
             }
-            
         }
         
         imgSlideShow.setImageInputs(profilePicImageSources)
@@ -82,4 +106,103 @@ class RenterDetailCardViewController: DetailCardViewController {
             }
         }
     }
+    
+    private func getFeaturesArray(forProperty property: Property) -> [String] {
+        
+        var collectionViewItems: [String] = []
+        
+        if property.petFriendly {
+            collectionViewItems.append("Pets")
+        }
+        
+        if property.smokingAllowed {
+            collectionViewItems.append("Smoking")
+        }
+        
+        if property.washerDryer {
+            collectionViewItems.append("Washer/Dryer")
+        }
+        
+        if property.dishwasher {
+            collectionViewItems.append("Dishwasher")
+        }
+        
+        if property.gym {
+            collectionViewItems.append("Gym")
+        }
+        
+        if property.backyard {
+            collectionViewItems.append("Backyard")
+        }
+        
+        if property.airConditioning {
+            collectionViewItems.append("Air Conditioning")
+        }
+        
+        if property.garage {
+            collectionViewItems.append("Garage")
+        }
+        
+        if property.heating {
+            collectionViewItems.append("Heating")
+        }
+        
+        if property.kitchen {
+            collectionViewItems.append("Kitchen")
+        }
+        
+        if property.livingRoom {
+            collectionViewItems.append("Living Room")
+        }
+        
+        if property.pool {
+            collectionViewItems.append("Pool")
+        }
+        
+        if property.storage {
+            collectionViewItems.append("Storage")
+        }
+        
+        if property.wifi {
+            collectionViewItems.append("Wifi")
+        }
+        
+        return collectionViewItems
+    }
+}
+
+extension RenterDetailCardViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    // MARK: - UICollectionViewDelegate protocol
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.propertyFeaturesCollectionViewItems.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "propertyFeatureCell", for: indexPath as IndexPath) as! TagCollectionViewCell
+        
+        cell.tagLabel.text = self.propertyFeaturesCollectionViewItems[indexPath.item]
+        cell.tagLabel.sizeToFit()
+        cell.backgroundColor = UIColor(red:0.93, green:0.93, blue:0.93, alpha:1.0)
+        cell.layer.cornerRadius = 3
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // handle tap events
+        print("You selected cell #\(indexPath.item)!")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize{
+        let tagString = propertyFeaturesCollectionViewItems[indexPath.item]
+        let cellSize: CGSize = tagString.size(attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18.0)])
+        return cellSize
+    }
+    
 }

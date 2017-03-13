@@ -12,7 +12,7 @@ class RenterCardDetailsContainerViewController: UITableViewController {
     
     // MARK: outlets
     
-    @IBOutlet weak var propertyNameTextField: UITextField!
+//    @IBOutlet weak var propertyNameTextField: UITextField!
     @IBOutlet weak var txtfldPropertyAddress: UITextField!
     @IBOutlet weak var dtpckrDateAvailable: UIDatePicker!
     
@@ -32,6 +32,11 @@ class RenterCardDetailsContainerViewController: UITableViewController {
     @IBOutlet weak var txtfldZipCode: UITextField!
     @IBOutlet weak var txtfldCity: UITextField!
     @IBOutlet weak var txtfldState: UITextField!
+    
+    @IBOutlet weak var lblLeaseEndDate: UILabel!
+    @IBOutlet weak var lblDescription: UILabel!
+    @IBOutlet weak var lblZipcode: UILabel!
+    
     
     // MARK: variables
     
@@ -53,67 +58,16 @@ class RenterCardDetailsContainerViewController: UITableViewController {
         
         for detail in propertyDetailsDict {
             switch detail.key {
-            case propertyDetailKeys.kAddress.rawValue:
-                let address = detail.value as! String
-                txtfldPropertyAddress.text = address
-                break
-            case propertyDetailKeys.kAvailableDate.rawValue:
-                guard let timeInterval = detail.value as? TimeInterval else { break }
-                let availableDate = Date(timeIntervalSince1970: timeInterval)
-                dtpckrDateAvailable.date = availableDate
-                break
-            case propertyDetailKeys.kBedroomCount.rawValue:
-                let bedroomCount = detail.value as! Int
-                lblBedroomCount.text = "\(bedroomCount)"
-                break
-            case propertyDetailKeys.kBathroomCount.rawValue:
-                let bathroomCount = detail.value as! Double
-                lblBathroomCount.text = "\(bathroomCount)"
-                break
-            case propertyDetailKeys.kPetsAllowed.rawValue:
-                let petsAllowed = detail.value as! Bool
-                swtPets.isOn = petsAllowed
-                break
-            case propertyDetailKeys.kSmokingAllowed.rawValue:
-                let smokingAllowed = detail.value as! Bool
-                swtSmoking.isOn = smokingAllowed
-                break
+            case propertyDetailKeys.kPropertyDescription.rawValue:
+                let propertyDescription = detail.value as! String
+                lblDescription.text = propertyDescription
             case propertyDetailKeys.kZipCode.rawValue:
                 let zipcode = detail.value as! String
-                txtfldZipCode.text = zipcode
+                lblZipcode.text = zipcode
                 break
-            case propertyDetailKeys.kCity.rawValue:
-                let city = detail.value as! String
-                txtfldCity.text = city
-                break
-            case propertyDetailKeys.kState.rawValue:
-                let state = detail.value as! String
-                txtfldState.text = state
-                break
-            case propertyDetailKeys.kWasherDryer.rawValue:
-                let hasWasherDryer = detail.value as! Bool
-                swtWasherDryer.isOn = hasWasherDryer
-                break
-            case propertyDetailKeys.kGarage.rawValue:
-                let hasGarage = detail.value as! Bool
-                swtGarage.isOn = hasGarage
-                break
-            case propertyDetailKeys.kDishwasher.rawValue:
-                let hasDishwasher = detail.value as! Bool
-                swtDishwasher.isOn = hasDishwasher
-                break
-            case propertyDetailKeys.kPool.rawValue:
-                let hasPool = detail.value as! Bool
-                swtPool.isOn = hasPool
-                break
-            case propertyDetailKeys.kGym.rawValue:
-                let hasGym = detail.value as! Bool
-                swtGym.isOn = hasGym
-                break
-            case propertyDetailKeys.kBackyard.rawValue:
-                let hasBackyard = detail.value as! Bool
-                swtBackyard.isOn = hasBackyard
-                break
+            case propertyDetailKeys.kLeaseEnd.rawValue:
+                let leaseEnd = detail.value as! NSDate
+                lblLeaseEndDate.text = "\(leaseEnd)"
             default:
                 log("no details for key \(detail.key)")
             }
