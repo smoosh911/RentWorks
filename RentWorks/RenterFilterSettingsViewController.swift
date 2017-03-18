@@ -184,6 +184,32 @@ class RenterFilterSettingsViewController: UIViewController, FilterMultiSelection
         renter.wantsSmoking = wantsSmoking;
         RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kSmokingAllowed.rawValue, newValue: wantsSmoking)
         
+        let amenitiesIndices = multSegCtrlAmenities.selectedSegmentIndices
+        let washerDryer = amenitiesIndices.contains(0)
+        renter.wantsWasherDryer = washerDryer;
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kWasherDryer.rawValue, newValue: washerDryer)
+        
+        let dishwasher = amenitiesIndices.contains(1)
+        renter.wantsDishwasher = dishwasher;
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kWasherDryer.rawValue, newValue: dishwasher)
+        
+        let garage = amenitiesIndices.contains(2)
+        renter.wantsGarage = garage;
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kWasherDryer.rawValue, newValue: garage)
+        
+        let outsideIndices = multSegCtrlOutside.selectedSegmentIndices
+        let pool = outsideIndices.contains(0)
+        renter.wantsPool = pool;
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kWasherDryer.rawValue, newValue: pool)
+        
+        let gym = outsideIndices.contains(1)
+        renter.wantsGym = gym;
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kWasherDryer.rawValue, newValue: gym)
+        
+        let backyard = outsideIndices.contains(2)
+        renter.wantsBackyard = backyard;
+        RenterController.updateCurrentRenterInFirebase(id: id, attributeToUpdate: filterKeys.kWasherDryer.rawValue, newValue: backyard)
+    
         updateSettingsChanged()
     }
     
@@ -232,10 +258,10 @@ class RenterFilterSettingsViewController: UIViewController, FilterMultiSelection
         multiSelectionSegmentedControl(multSegCtrlAmenities, selectedIndices: amenititesIndices)
         
         var outsideIndices = [Int]()
-        if(renter.wantsGym) {
+        if(renter.wantsPool) {
            outsideIndices.append(0)
         }
-        if(renter.wantsPool) {
+        if(renter.wantsGym) {
             outsideIndices.append(1)
         }
         if(renter.wantsBackyard) {
