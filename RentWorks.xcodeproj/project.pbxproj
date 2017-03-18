@@ -31,8 +31,10 @@
 		321E54C01E540AE30069BB69 /* SF-UI-Text-SemiboldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 321E54AA1E540A580069BB69 /* SF-UI-Text-SemiboldItalic.otf */; };
 		321E54C11E540AE30069BB69 /* SF-UI-Text-Ultrathin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 321E54AB1E540A580069BB69 /* SF-UI-Text-Ultrathin.otf */; };
 		321E54C21E540AE30069BB69 /* SF-UI-Text-UltrathinItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 321E54AC1E540A580069BB69 /* SF-UI-Text-UltrathinItalic.otf */; };
-		32DD6A081E53D64C00F70922 /* FilterSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DD6A071E53D64C00F70922 /* FilterSegmentedControl.swift */; };
 		327A87FC1E55725C00523253 /* TagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327A87FB1E55725C00523253 /* TagCollectionViewCell.swift */; };
+		32DD6A081E53D64C00F70922 /* FilterSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DD6A071E53D64C00F70922 /* FilterSegmentedControl.swift */; };
+		32EF03B11E74763B00FB1C78 /* FilterMultiSelectionSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32EF03B01E74763B00FB1C78 /* FilterMultiSelectionSegmentedControl.swift */; };
+		32EF03B31E74765000FB1C78 /* FilterMultiSelectionControlSegmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32EF03B21E74765000FB1C78 /* FilterMultiSelectionControlSegmentButton.swift */; };
 		4602B09B1DB13CE400908D00 /* UIVIewIBDesignable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4602B09A1DB13CE400908D00 /* UIVIewIBDesignable.swift */; };
 		460D722F1DB6C71400853402 /* PhotoSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460D722E1DB6C71400853402 /* PhotoSelectorViewController.swift */; };
 		460D72311DB6D84700853402 /* PhotoSelectorTwoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460D72301DB6D84700853402 /* PhotoSelectorTwoViewController.swift */; };
@@ -178,8 +180,10 @@
 		321E54AA1E540A580069BB69 /* SF-UI-Text-SemiboldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Text-SemiboldItalic.otf"; sourceTree = "<group>"; };
 		321E54AB1E540A580069BB69 /* SF-UI-Text-Ultrathin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Text-Ultrathin.otf"; sourceTree = "<group>"; };
 		321E54AC1E540A580069BB69 /* SF-UI-Text-UltrathinItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-UI-Text-UltrathinItalic.otf"; sourceTree = "<group>"; };
-		32DD6A071E53D64C00F70922 /* FilterSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterSegmentedControl.swift; sourceTree = "<group>"; };
 		327A87FB1E55725C00523253 /* TagCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagCollectionViewCell.swift; sourceTree = "<group>"; };
+		32DD6A071E53D64C00F70922 /* FilterSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterSegmentedControl.swift; sourceTree = "<group>"; };
+		32EF03B01E74763B00FB1C78 /* FilterMultiSelectionSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterMultiSelectionSegmentedControl.swift; sourceTree = "<group>"; };
+		32EF03B21E74765000FB1C78 /* FilterMultiSelectionControlSegmentButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterMultiSelectionControlSegmentButton.swift; sourceTree = "<group>"; };
 		3EE42ACDB92816245A76D5BE /* Pods-RentWorksTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RentWorksTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RentWorksTests/Pods-RentWorksTests.release.xcconfig"; sourceTree = "<group>"; };
 		4056C05B39B990DA4031004E /* Pods_RentWorksUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RentWorksUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4602B09A1DB13CE400908D00 /* UIVIewIBDesignable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIVIewIBDesignable.swift; sourceTree = "<group>"; };
@@ -497,6 +501,8 @@
 				4602B09A1DB13CE400908D00 /* UIVIewIBDesignable.swift */,
 				32057F181E5386D000BDA88A /* FilterSlider.swift */,
 				32DD6A071E53D64C00F70922 /* FilterSegmentedControl.swift */,
+				32EF03B01E74763B00FB1C78 /* FilterMultiSelectionSegmentedControl.swift */,
+				32EF03B21E74765000FB1C78 /* FilterMultiSelectionControlSegmentButton.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -981,6 +987,7 @@
 				460D723B1DB7450800853402 /* RenterBedroomViewController.swift in Sources */,
 				C724D0F91DF5244100C22C87 /* LocationManager.swift in Sources */,
 				460D723D1DB7455000853402 /* RenterPaymentViewController.swift in Sources */,
+				32EF03B11E74763B00FB1C78 /* FilterMultiSelectionSegmentedControl.swift in Sources */,
 				C7648DA51E07988100958E69 /* AppInformationSelectionViewController.swift in Sources */,
 				461E8DEA1DB7C4E3003FE3F8 /* LandlordPropertyAvailableDateViewController.swift in Sources */,
 				460D72351DB6D87500853402 /* PhotoSelectorFourViewController.swift in Sources */,
@@ -999,6 +1006,7 @@
 				C711AE041E18385F008D5A85 /* LandlordCardDetailViewController.swift in Sources */,
 				468828D21DAAFE350011985F /* NetworkController.swift in Sources */,
 				C748D8BE1DE2A259009EC662 /* PropertiesViewController.swift in Sources */,
+				32EF03B31E74765000FB1C78 /* FilterMultiSelectionControlSegmentButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

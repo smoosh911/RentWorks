@@ -42,13 +42,12 @@ import Foundation
         let textAttributes: [NSObject : AnyObject] = [
             NSForegroundColorAttributeName as NSObject: textColor,
             NSFontAttributeName as NSObject: UIFont(name: "SF UI Text", size: 14.0)!,
-//            NSFontAttributeName as NSObject : UIFont.systemFont(ofSize: 14.0, weight: UIFontWeightMedium)
         ]
         
         FilterSegmentedControl.appearance().setTitleTextAttributes(textAttributes, for: UIControlState.selected)
         FilterSegmentedControl.appearance().setTitleTextAttributes(textAttributes, for: UIControlState.normal)
         
-//        setDividerImage(UIImage(), forLeftSegmentState: UIControlState.normal, rightSegmentState: UIControlState.normal, barMetrics: UIBarMetrics.default)
+
     }
 
     
