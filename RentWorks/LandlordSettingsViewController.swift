@@ -89,7 +89,7 @@ class LandlordSettingsViewController: SettingsViewController {
         landlord.lastName = lastName
         LandlordController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kLastName, newValue: lastName!)
         
-        let email = txtfldFirstName.text
+        let email = txtfldEmail.text
         landlord.email = email
         LandlordController.updateCurrentLandlordInFirebase(id: id, attributeToUpdate: UserController.kEmail, newValue: email!)
         
