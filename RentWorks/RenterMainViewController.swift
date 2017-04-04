@@ -13,6 +13,7 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
     
     // MARK: outlets
     
+    
     @IBOutlet weak var vwLoadingNewCards: UIView!
     @IBOutlet weak var vwNoMoreCards: UIView!
     
@@ -108,7 +109,17 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
         }
         
     }
-    
+    @IBAction func userProfileViewButton(_ sender: Any) {
+        if FIRAuth.auth()?.currentUser == nil
+        {
+            print("Not logged in")
+            performSegue(withIdentifier: "segueToSignUpProfileVC", sender: self)
+        }
+        else{
+            print("Logged in")
+            performSegue(withIdentifier: "segueToProfile", sender: self)
+        }
+    }
     // MARK: Swipableview delegate
     
     override func updateCardUI() {
