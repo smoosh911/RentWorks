@@ -10,7 +10,24 @@ import Foundation
 import UIKit
 import FirebaseAuth
 
+extension UIView {
+    func roundCorners(corners:UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
+    }
+}
+
 class RenterProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    class View: UIView {
+        override func layoutSubviews() {
+            super.layoutSubviews()
+        }
+    }
+    
+    //MARK IBOutlets
     
     @IBOutlet weak var modalView: UIView!
     @IBOutlet weak var profileNavBarView: UIView!
@@ -19,6 +36,7 @@ class RenterProfileViewController: UIViewController, UITableViewDataSource, UITa
 
     }
     
+    //MARK Variables
     
     let accountArray = ["Edit Profile","Change Password","Credit Score"]
     
@@ -26,6 +44,8 @@ class RenterProfileViewController: UIViewController, UITableViewDataSource, UITa
     
     let lastArray = ["Log Out"]
     
+    
+    //MARK Functions
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
@@ -109,10 +129,18 @@ class RenterProfileViewController: UIViewController, UITableViewDataSource, UITa
             self.present(loginVC, animated: true, completion: nil)
         }
     }
+    
+    
+    //MARK Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        modalView.layer.cornerRadius = 10
+        //modalView.layer.cornerRadius = 10
         //profileNavBarView.layer.cornerRadius = 10
+        profileNavBarView.roundCorners(corners: [.topRight, .topLeft], radius: 10)
+        
+    }
+    override func viewDidLayoutSubviews() {
+        profileNavBarView.roundCorners(corners: [.topRight, .topLeft], radius: 10)
     }
     
     override func didReceiveMemoryWarning() {

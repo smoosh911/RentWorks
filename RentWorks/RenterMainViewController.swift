@@ -109,6 +109,9 @@ class RenterMainViewController: MainViewController, RenterFilterSettingsModalVie
         }
         
     }
+    
+    //~~~~Here it is Matt!~~~~
+    
     @IBAction func userProfileViewButton(_ sender: Any) {
         if FIRAuth.auth()?.currentUser == nil
         {
