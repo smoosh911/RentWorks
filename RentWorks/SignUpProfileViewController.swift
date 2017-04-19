@@ -28,7 +28,7 @@ class SignUpProfileViewController: UIViewController, FBSDKLoginButtonDelegate {
         super.viewDidLoad()
         
         facebookLoginButton.delegate = self
-        facebookLoginButton.loginBehavior = .web
+        facebookLoginButton.loginBehavior = .systemAccount
         facebookLoginButton.readPermissions = [FacebookRequestController.FacebookPermissions.email.rawValue, FacebookRequestController.FacebookPermissions.user_birthday.rawValue, FacebookRequestController.FacebookPermissions.user_work_history_permission.rawValue]
         
         self.view.addSubview(facebookLoginButton)
